@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "452949760750",
+    "project_id": "kmu-capstone30",
+    "storage_bucket": "kmu-capstone30.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:452949760750:android:2304470e3a79a1af0bb1ff",
+        "android_client_info": {
+          "package_name": "com.example.capstone_front"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdMRgiGjf9KX1EEqRSCnzmTPrFY9U-Fwc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

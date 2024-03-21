@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
+import 'package:go_router/go_router.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -17,9 +19,15 @@ class _HomeScreenState extends State<HomeScreen> {
           const Center(
             child: Text("캡스톤"),
           ),
+          // 로그인 버튼
           IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.login),
+            onPressed: () {
+              context.push('/login');
+            },
+            icon: const Icon(
+              Icons.login,
+              size: 100,
+            ),
           ),
         ],
       ),
