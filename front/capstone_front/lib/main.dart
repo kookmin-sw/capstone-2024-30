@@ -2,9 +2,28 @@ import 'package:capstone_front/firebase_options.dart';
 import 'package:capstone_front/screens/home_screen.dart';
 import 'package:capstone_front/screens/login/login_screen.dart';
 import 'package:capstone_front/screens/login/signup_screen.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
+
+// 앱에서 지원하는 언어 리스트 변수
+final supportedLocales = [const Locale('en', 'US'), const Locale('ko', 'KR')];
+
+// 기본적으로 한국어로 세팅
+List<String> languageSetting = ['ko', 'KR'];
+
+// 언어를 설정해주는 함수
+Future<void> setLanguage() async {
+  const storage = FlutterSecureStorage();
+  String? language = await storage.read(key: 'language');
+  if (language == 'english') {
+    languageSetting = ['en', 'US'];
+  } else {
+    languageSetting = ['ko', 'KR'];
+  }
+}
 
 void initializeFirebase() async {
   await Firebase.initializeApp(
@@ -15,7 +34,22 @@ void initializeFirebase() async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   initializeFirebase();
-  runApp(const App());
+  await setLanguage();
+  await EasyLocalization.ensureInitialized();
+
+  runApp(EasyLocalization(
+    // 지원 언어 리스트
+    supportedLocales: supportedLocales,
+    //path: 언어 파일 경로
+    path: 'assets/translations',
+    //fallbackLocale supportedLocales에 설정한 언어가 없는 경우 설정되는 언어
+    fallbackLocale: const Locale('en', 'US'),
+
+    //startLocale을 지정하면 초기 언어가 설정한 언어로 변경됨
+    //만일 이 설정을 하지 않으면 OS 언어를 따라 기본 언어가 설정됨
+    startLocale: Locale(languageSetting[0], languageSetting[1]),
+    child: const App(),
+  ));
 }
 
 final GoRouter router = GoRouter(
@@ -45,6 +79,9 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
       routerConfig: router,
       theme: ThemeData(
         fontFamily: 'pretendard',
