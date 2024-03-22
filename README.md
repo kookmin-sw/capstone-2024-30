@@ -2,24 +2,55 @@
 
 프로젝트
 
-### 2. 소개 영상
+### 2. Abstract
+
+Hi
+
+### 3. 소개 영상
 
 프로젝트 소개하는 영상을 추가하세요
 
-### 3. 팀원 소개
+### 4. 팀원 소개
 
-| 최지훈                                                                                                                      |            김민제             | 조현진                        | 채원찬                        | 김혜성                        | 최영락                                                                                                                      |
-| --------------------------------------------------------------------------------------------------------------------------- | :---------------------------: | ----------------------------- | ----------------------------- | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| <img src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/5a581293-0461-462b-b14d-5c98c079860f" width="200"> |   <img src="" width="200">    | <img src="" width="200">      | <img src="" width="200">      | <img src="" width="200">      | <img src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/454b8f82-a9b9-4966-9a7e-f8399b9c7265" width="200"> |
-| <center> \*\*\*\*1683<center>                                                                                               | <center> \*\*\*\*1557<center> | <center> \*\*\*\*1675<center> | <center> \*\*\*\*1676<center> | <center> \*\*\*\*1582<center> | <center> \*\*\*\*1678<center>                                                                                               |
-| <center> 👑 Frontend<center>                                                                                                |   <center> Frontend<center>   | <center> Backend<center>      | <center> Backend<center>      | <center> AI<center>           | <center> AI<center>                                                                                                         |
+<table>
+    <tr align="center">
+        <td><img src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/5a581293-0461-462b-b14d-5c98c079860f" width="100"></td>
+        <td><img src="이미지2.jpg" width="100"></td>
+        <td><img src="이미지1.jpg" width="100"></td>
+        <td><img src="이미지2.jpg" width="100"></td>
+        <td><img src="이미지1.jpg" width="100"></td>
+        <td><img src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/454b8f82-a9b9-4966-9a7e-f8399b9c7265" width="100"></td>
+    </tr>
+    <tr align="center">
+        <td>최지훈</td>
+        <td>김민제</td>
+        <td>조현진</td>
+        <td>채원찬</td>
+        <td>김혜성</td>
+        <td>최영락</td>
+    </tr>
+    <tr align="center">
+        <td>****1683</td>
+        <td>****1557</td>
+        <td>****1675</td>
+        <td>****1676</td>
+        <td>****1582</td>
+        <td>****1678</td>
+    </tr>
+    <tr align="center">
+        <td>👑 Frontend</td>
+        <td>Frontend</td>
+        <td>Backend</td>
+        <td>Backend</td>
+        <td>AI</td>
+        <td>AI</td>
+    </tr>
+</table>
 
-### 4. 기술스택
+### 5. 기술스택
 
-### 5. 시스템 구조
+### 6. 시스템 구조
 
-### 6. 사용법
+### 7. 사용법
 
-잘
-
-### 5. 기타
+### 8. 기타
