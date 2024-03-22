@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -11,7 +12,15 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<SignupScreen> {
-  final List<String> _userInfo = ['', ''];
+  final Map<String, String> _userInfo = {
+    'id': '',
+    'pw': '',
+    'pwRe': '',
+    'country': '',
+    'college': '',
+    'department': '',
+    'studentNum': '',
+  };
   bool _canSignup = false;
 
   @override
@@ -19,7 +28,7 @@ class _LoginScreenState extends State<SignupScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          '회원가입',
+          tr('signup'),
           style: Theme.of(context).textTheme.titleMedium,
         ),
         centerTitle: true,
@@ -38,12 +47,14 @@ class _LoginScreenState extends State<SignupScreen> {
               Row(
                 children: [
                   Flexible(
-                    child: loginTextField(context, "국민대 이메일", 0, false),
+                    child:
+                        signupTextField(context, tr('kmu_email'), 'id', false),
                   ),
                   const Text("@kookmin.ac.kr"),
                 ],
               ),
-              loginTextField(context, "비밀번호", 1, true),
+              signupTextField(context, tr("password"), 'pw', true),
+              signupTextField(context, tr("password_re"), 'pwRe', true),
               InkWell(
                 onTap: () async {
                   if (_canSignup) {
@@ -87,8 +98,8 @@ class _LoginScreenState extends State<SignupScreen> {
     );
   }
 
-  TextField loginTextField(
-      BuildContext context, String label, int index, bool isObscure) {
+  TextField signupTextField(
+      BuildContext context, String label, String info, bool isObscure) {
     return TextField(
       obscureText: isObscure,
       decoration: InputDecoration(
@@ -103,7 +114,7 @@ class _LoginScreenState extends State<SignupScreen> {
       style: Theme.of(context).textTheme.bodyMedium,
       onChanged: (text) {
         setState(() {
-          _userInfo[index] = text;
+          _userInfo[info] = text;
           _checkCanSignup();
         });
       },
@@ -124,8 +135,8 @@ class _LoginScreenState extends State<SignupScreen> {
     try {
       UserCredential credential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: '${_userInfo[0]}@kookmin.ac.kr',
-        password: _userInfo[1],
+        email: '${_userInfo['id']}@kookmin.ac.kr',
+        password: _userInfo['pw']!,
       );
       await credential.user!.sendEmailVerification();
       return 'success';

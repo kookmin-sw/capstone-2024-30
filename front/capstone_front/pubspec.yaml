@@ -43,6 +43,9 @@ dependencies:
   shared_preferences: ^2.2.2
   logger: ^2.1.0
   fluttertoast: ^8.2.4
+  easy_localization: ^3.0.5
+  restart_app: ^1.2.1
+  flutter_secure_storage: ^9.0.0
 
 dev_dependencies:
   flutter_test:
@@ -61,6 +64,9 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
   uses-material-design: true
+
+  assets:
+  - assets/translations/
   
   fonts:
   - family: pretendard
