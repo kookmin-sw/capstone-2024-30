@@ -1,5 +1,9 @@
+// import 'dart:js';
+
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:async';
 
@@ -19,7 +23,16 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
+        title: const Text(
+          "Our App",
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         automaticallyImplyLeading: false,
+        backgroundColor: Theme.of(context).primaryColor,
         actions: [
           IconButton(
             icon: const Text("\u{1f1f0}\u{1f1f7}"), // 한국어
@@ -39,11 +52,84 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: Row(
+      body: Column(
         children: [
-          Center(
-            child: Text(tr('test')),
-          ),
+          Padding(
+            padding: const EdgeInsets.all(30),
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 250,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    MenuButton(
+                      title: "공지사항",
+                      icon: Icons.notifications_rounded,
+                      routeCallbackFun: () => context.push("/login"),
+                    ),
+                    MenuButton(
+                      title: "학식",
+                      icon: Icons.restaurant_menu_rounded,
+                      routeCallbackFun: () => context.push("/login"),
+                    ),
+                    MenuButton(
+                      title: "학교정보",
+                      icon: Icons.school_rounded,
+                      routeCallbackFun: () => context.push("/login"),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    MenuButton(
+                      title: "QnA",
+                      icon: Icons.question_answer_outlined,
+                      routeCallbackFun: () => context.push("/login"),
+                    ),
+                    MenuButton(
+                      title: "FAQ",
+                      icon: Icons.question_mark_rounded,
+                      routeCallbackFun: () => context.push("/login"),
+                    ),
+                    MenuButton(
+                      title: "커뮤니티",
+                      icon: Icons.question_answer_rounded,
+                      routeCallbackFun: () => context.push("/login"),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    MenuButton(
+                      title: "가이드",
+                      icon: Icons.help_center_rounded,
+                      routeCallbackFun: () => context.push("/login"),
+                    ),
+                    MenuButton(
+                      title: "헬퍼",
+                      icon: Icons.person_2_rounded,
+                      routeCallbackFun: () => context.push("/login"),
+                    ),
+                    MenuButton(
+                      title: "발음연습",
+                      icon: Icons.speaker_group_rounded,
+                      routeCallbackFun: () => context.push("/login"),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );
@@ -75,5 +161,80 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           );
         }));
+  }
+}
+
+class MenuButton extends StatelessWidget {
+  final String title;
+  final IconData icon;
+  final VoidCallback routeCallbackFun;
+
+  const MenuButton({
+    super.key,
+    required this.title,
+    required this.icon,
+    required this.routeCallbackFun,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        InkWell(
+          onTap: routeCallbackFun,
+          child: SizedBox(
+            height: 90,
+            width: 90,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.2),
+                    spreadRadius: 3,
+                    blurRadius: 10,
+                    offset: const Offset(0, 8),
+                  ),
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.1),
+                    spreadRadius: 0,
+                    blurRadius: 0,
+                    offset: const Offset(-1, 0),
+                  ),
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.1),
+                    spreadRadius: 0,
+                    blurRadius: 0,
+                    offset: const Offset(1, 0),
+                  ),
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.1),
+                    spreadRadius: 0,
+                    blurRadius: 0,
+                    offset: const Offset(0, -1),
+                  ),
+                ],
+              ),
+              child: Center(
+                child: Icon(
+                  icon,
+                  size: 40,
+                ),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 16,
+          ),
+        )
+      ],
+    );
   }
 }
