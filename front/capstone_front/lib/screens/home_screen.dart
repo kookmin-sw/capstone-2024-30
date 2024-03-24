@@ -8,6 +8,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:async';
 
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:restart_app/restart_app.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -42,14 +43,11 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
           IconButton(
-            icon: const Text("\u{1f1fa}\u{1f1f8}"), // 영어
-            onPressed: () async {
-              await storage.write(key: 'language', value: 'english');
-              String? a = await storage.read(key: 'language');
-              print(a);
-              restartDialog(context);
-            },
-          ),
+              icon: const Text("\u{1f1fa}\u{1f1f8}"), // 영어
+              onPressed: () async {
+                await storage.write(key: 'language', value: 'english');
+                restartDialog(context);
+              }),
         ],
       ),
       body: Column(
