@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -21,7 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          '로그인',
+          tr('login'),
           style: Theme.of(context).textTheme.titleMedium,
         ),
         centerTitle: true,
@@ -40,12 +41,12 @@ class _LoginScreenState extends State<LoginScreen> {
               Row(
                 children: [
                   Flexible(
-                    child: loginTextField(context, "국민대 이메일", 0, false),
+                    child: loginTextField(context, tr("kmu_email"), 0, false),
                   ),
                   const Text("@kookmin.ac.kr"),
                 ],
               ),
-              loginTextField(context, "비밀번호", 1, true),
+              loginTextField(context, tr("password"), 1, true),
               Row(
                 children: [
                   Flexible(
@@ -67,8 +68,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Ink(
                         height: 50,
                         decoration: BoxDecoration(
-                          color:
-                              _canLogin ? Colors.blue : const Color(0xffd2d7dd),
+                          color: _canLogin
+                              ? Theme.of(context).colorScheme.primary
+                              : Theme.of(context).colorScheme.secondary,
                           borderRadius:
                               const BorderRadius.all(Radius.circular(16)),
                         ),
@@ -96,18 +98,24 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       child: Ink(
                         height: 50,
-                        decoration: const BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.all(Radius.circular(16)),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.background,
+                          border: Border.all(
+                            color: Theme.of(context).colorScheme.primary,
+                            width: 2,
+                          ),
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(16),
+                          ),
                         ),
-                        child: const Align(
+                        child: Align(
                           alignment: Alignment.center,
                           child: Text(
                             '회원가입',
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
-                              color: Colors.white,
+                              color: Theme.of(context).colorScheme.primary,
                             ),
                           ),
                         ),

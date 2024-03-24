@@ -85,10 +85,18 @@ class App extends StatelessWidget {
       routerConfig: router,
       theme: ThemeData(
         fontFamily: 'pretendard',
-        colorScheme: ColorScheme.fromSwatch(
-          backgroundColor: Colors.white,
-          accentColor: const Color(0xff0099fc),
-        ),
+        colorScheme: const ColorScheme(
+            brightness: Brightness.light,
+            primary: Color(0xff6E2FF4),
+            onPrimary: Colors.red,
+            secondary: Color(0xFFE8E8FC),
+            onSecondary: Colors.yellow,
+            error: Colors.green,
+            onError: Colors.blue,
+            background: Colors.white,
+            onBackground: Colors.lightBlue,
+            surface: Colors.white,
+            onSurface: Colors.black),
         textTheme: const TextTheme(
           headlineLarge: TextStyle(
               fontFamily: 'pretendard',
