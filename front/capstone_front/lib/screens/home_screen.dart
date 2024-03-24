@@ -58,8 +58,60 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: const EdgeInsets.all(30),
             child: Column(
               children: [
+                const Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("공지사항",
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w500,
+                            )),
+                        Icon(
+                          Icons.add,
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 ...",
+                      style: TextStyle(
+                        fontSize: 14,
+                      ),
+                    ),
+                    Text(
+                      "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 ...",
+                      style: TextStyle(
+                        fontSize: 14,
+                      ),
+                    ),
+                    Text(
+                      "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 ...",
+                      style: TextStyle(
+                        fontSize: 14,
+                      ),
+                    ),
+                    Text(
+                      "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 ...",
+                      style: TextStyle(
+                        fontSize: 14,
+                      ),
+                    ),
+                    Text(
+                      "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 ...",
+                      style: TextStyle(
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
                 const SizedBox(
-                  height: 250,
+                  height: 100,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
