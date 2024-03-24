@@ -180,12 +180,13 @@ class MenuButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        InkWell(
-          onTap: routeCallbackFun,
-          child: SizedBox(
-            height: 90,
-            width: 90,
-            child: Container(
+        SizedBox(
+          height: 90,
+          width: 90,
+          child: InkWell(
+            onTap: routeCallbackFun,
+            borderRadius: BorderRadius.circular(20),
+            child: Ink(
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
