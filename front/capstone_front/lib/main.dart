@@ -7,6 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 // 앱에서 지원하는 언어 리스트 변수
 final supportedLocales = [const Locale('en', 'US'), const Locale('ko', 'KR')];
@@ -53,6 +54,7 @@ void main() async {
 }
 
 final GoRouter router = GoRouter(
+  initialLocation: '/login',
   routes: [
     GoRoute(
       path: '/',
@@ -86,26 +88,29 @@ class App extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'pretendard',
         colorScheme: const ColorScheme(
-            brightness: Brightness.light,
-            primary: Color(0xff6E2FF4),
-            onPrimary: Colors.red,
-            secondary: Color(0xFFE8E8FC),
-            onSecondary: Colors.yellow,
-            error: Colors.green,
-            onError: Colors.blue,
-            background: Colors.white,
-            onBackground: Colors.lightBlue,
-            surface: Colors.white,
-            onSurface: Colors.black),
+          brightness: Brightness.light,
+          primary: Color(0xff6E2FF4),
+          onPrimary: Colors.red,
+          secondary: Color(0xFFE8E8FC),
+          onSecondary: Colors.yellow,
+          error: Colors.green,
+          onError: Colors.blue,
+          background: Colors.white,
+          onBackground: Colors.lightBlue,
+          surface: Colors.white,
+          onSurface: Colors.black,
+        ),
         textTheme: const TextTheme(
           headlineLarge: TextStyle(
-              fontFamily: 'pretendard',
-              fontSize: 50,
-              fontWeight: FontWeight.w600),
+            fontFamily: 'pretendard',
+            fontSize: 50,
+            fontWeight: FontWeight.w600,
+          ),
           titleMedium: TextStyle(
-              fontFamily: 'pretendard',
-              fontSize: 20,
-              fontWeight: FontWeight.w600),
+            fontFamily: 'pretendard',
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+          ),
           bodyMedium: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w400,

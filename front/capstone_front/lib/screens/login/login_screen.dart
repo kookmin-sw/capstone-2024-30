@@ -52,6 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Flexible(
                     child: InkWell(
                       onTap: () async {
+                        context.go('/');
                         String result = await _login(
                             '${_userInfo[0]}@kookmin.ac.kr', _userInfo[1]);
                         switch (result) {
@@ -74,11 +75,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           borderRadius:
                               const BorderRadius.all(Radius.circular(16)),
                         ),
-                        child: const Align(
+                        child: Align(
                           alignment: Alignment.center,
                           child: Text(
-                            '로그인',
-                            style: TextStyle(
+                            tr('login'),
+                            style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
                               color: Colors.white,
@@ -111,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Align(
                           alignment: Alignment.center,
                           child: Text(
-                            '회원가입',
+                            tr('signup'),
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
