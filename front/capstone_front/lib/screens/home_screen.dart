@@ -65,17 +65,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     MenuButton(
-                      title: "공지사항",
+                      title: tr("mainScreen.notice"),
                       icon: Icons.notifications_rounded,
                       routeCallbackFun: () => context.push("/login"),
                     ),
                     MenuButton(
-                      title: "학식",
+                      title: tr("mainScreen.cafeteria"),
                       icon: Icons.restaurant_menu_rounded,
                       routeCallbackFun: () => context.push("/login"),
                     ),
                     MenuButton(
-                      title: "학교정보",
+                      title: tr("mainScreen.school_info"),
                       icon: Icons.school_rounded,
                       routeCallbackFun: () => context.push("/login"),
                     ),
@@ -88,17 +88,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     MenuButton(
-                      title: "QnA",
+                      title: tr("mainScreen.qna"),
                       icon: Icons.question_answer_outlined,
                       routeCallbackFun: () => context.push("/login"),
                     ),
                     MenuButton(
-                      title: "FAQ",
+                      title: tr("mainScreen.faq"),
                       icon: Icons.question_mark_rounded,
                       routeCallbackFun: () => context.push("/login"),
                     ),
                     MenuButton(
-                      title: "커뮤니티",
+                      title: tr("mainScreen.community"),
                       icon: Icons.question_answer_rounded,
                       routeCallbackFun: () => context.push("/login"),
                     ),
@@ -111,17 +111,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     MenuButton(
-                      title: "가이드",
+                      title: tr("mainScreen.guide"),
                       icon: Icons.help_center_rounded,
                       routeCallbackFun: () => context.push("/login"),
                     ),
                     MenuButton(
-                      title: "헬퍼",
+                      title: tr("mainScreen.helper"),
                       icon: Icons.person_2_rounded,
                       routeCallbackFun: () => context.push("/login"),
                     ),
                     MenuButton(
-                      title: "발음연습",
+                      title: tr("mainScreen.pronunciation_practice"),
                       icon: Icons.speaker_group_rounded,
                       routeCallbackFun: () => context.push("/login"),
                     ),
