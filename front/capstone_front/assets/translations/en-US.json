@@ -9,5 +9,16 @@
   "country": "Country",
   "college": "College",
   "department": "Department",
-  "student_number": "Student Number"
+  "student_number": "Student Number",
+  "mainScreen": {
+    "notice": "Notices",
+    "cafeteria": "Cafeteria",
+    "school_info": "School Info",
+    "qna": "Q&A",
+    "faq": "FAQ",
+    "community": "Community",
+    "guide": "Guide",
+    "helper": "Helper",
+    "pronunciation_practice": "Pronunciation"
+  }
 }
