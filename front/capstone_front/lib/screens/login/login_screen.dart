@@ -52,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Flexible(
                     child: InkWell(
                       onTap: () async {
-                        context.push('/');
+                        context.go('/');
                         String result = await _login(
                             '${_userInfo[0]}@kookmin.ac.kr', _userInfo[1]);
                         switch (result) {
