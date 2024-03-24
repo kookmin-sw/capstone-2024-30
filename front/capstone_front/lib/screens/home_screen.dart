@@ -19,37 +19,30 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         actions: [
           IconButton(
-              icon: const Text("\u{1f1f0}\u{1f1f7}"), // 한국어
-              onPressed: () async {
-                await storage.write(key: 'language', value: 'korean');
-                restartDialog(context);
-              }),
+            icon: const Text("\u{1f1f0}\u{1f1f7}"), // 한국어
+            onPressed: () async {
+              await storage.write(key: 'language', value: 'korean');
+              restartDialog(context);
+            },
+          ),
           IconButton(
-              icon: const Text("\u{1f1fa}\u{1f1f8}"), // 영어
-              onPressed: () async {
-                await storage.write(key: 'language', value: 'english');
-                String? a = await storage.read(key: 'language');
-                print(a);
-                restartDialog(context);
-              }),
+            icon: const Text("\u{1f1fa}\u{1f1f8}"), // 영어
+            onPressed: () async {
+              await storage.write(key: 'language', value: 'english');
+              String? a = await storage.read(key: 'language');
+              print(a);
+              restartDialog(context);
+            },
+          ),
         ],
       ),
       body: Row(
         children: [
           Center(
             child: Text(tr('test')),
-          ),
-          // 로그인 버튼
-          IconButton(
-            onPressed: () {
-              context.push('/login');
-            },
-            icon: const Icon(
-              Icons.login,
-              size: 100,
-            ),
           ),
         ],
       ),
