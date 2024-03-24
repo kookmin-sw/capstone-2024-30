@@ -25,6 +25,8 @@
 .settings/
 .vscode/*
 
+devtools_options.yaml
+
 # Flutter repo-specific
 /bin/cache/
 /bin/internal/bootstrap.bat
