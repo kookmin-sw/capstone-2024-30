@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<LINK REL="SHORTCUT ICON" href="/favicon.ico">
+<meta charset="UTF-8">
+<meta http-equiv="Expires" content="0" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta name="Author" content="NHIS">
+<meta name="Keywords" content="국민건강보험,건강보험,건보,NHIS">
+<meta name="Description" content="국민건강보험 홈페이지 입니다.">
+<title>국민건강보험</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="/_res/_common/css/meterial/app.meterial2.css" rel="stylesheet">
+<script type="text/javascript" src="/3rdparty/netfunnel/netfunnel.js" charset="utf-8"></script>
+<script type="text/javascript">
+	function load() {
+		NetFunnel_Action({service_id:"service_1", action_id : "act_5"}, "/nhis/index.do");
+		//NetFunnel_Action({service_id:"service_1", action_id : "act_5"}, "/nhis/minwon/retrieveStimmyInit.do");				
+		/* NetFunnel_Action({service_id:"service_1", action_id : "act_5"},{
+			success:function(ev, ret){			
+				document.covidForm.netfunnelKey.value = ret.data.key; // 암호화된 넷퍼넬 키
+				//$("#netfunnelKey").val(ret.data.key); // 암호화된 넷퍼넬 키			
+				document.covidForm.submit(); //form submit
+			}
+		}); */
+	}
+</script>
+<style type="text/css">
+ body {
+ 	font-family: "nanumgothic", "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+	min-height: 600px;
+	padding:0px;
+	margin:0px;
+ }
+ .four-zero h2 { font-size: 100px; }
+ .jini { font-size: 27px; position: absolute; right: 30px; bottom: 10px; }
+ .jini .sm { font-size: 14px; }
+ .four-zero small { margin-top:20px;  font-size: 16px; }
+</style>
+</head>
+<body class="four-zero-content" onload="load()">
+	<div style="top:50%;left:50%;width:500px;height:200px;margin-left:-250px;martin-top:-150px;position:absolute;text-align:center;">
+		<!-- <img src="/_res/_common/ableu/images/logo.png" alt="logo" style="padding-top:70px;"/> -->
+		<img src="/_res/nhis/nhis/img/images/logo.png" alt="logo" style="padding-top:70px;"/>
+	</div> 
+	<form name="covidForm" method="post" action="nhis/minwon/retrieveStimmyInit.do">
+		<input type="hidden" name="netfunnelKey" value=""/>
+	</form>
+</body>
+</html>
