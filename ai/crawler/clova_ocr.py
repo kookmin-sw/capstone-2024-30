@@ -30,6 +30,7 @@ class OCR:
         f.write(resp.content)
     files = [('file', open('./tmp_image.jpg','rb'))]
     response = requests.request("POST", self.api_url, headers=self.headers, data=self.payload, files=files)
+    time.sleep(0.5)
     res = response.json()
 
     if 'images' not in res.keys():
