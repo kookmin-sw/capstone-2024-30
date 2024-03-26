@@ -5,6 +5,8 @@ import bs4
 from tqdm import tqdm
 import re
 from clova_ocr import OCR
+import time
+import random
 
 class NoticeCrawler:
   def __init__(self, secret_key, api_url):
@@ -13,9 +15,12 @@ class NoticeCrawler:
     self.title_lst = None
     self.date_time_lst = None
     self.ocr = OCR(secret_key, api_url)
+    self.header =  {'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36'}
+    self.sleeptime = 1
 
   def get_notice_list(self, page_no):
-    response = requests.get(self.url + str(page_no))
+    time.sleep(random.uniform(2,4))
+    response = requests.get(self.url + str(page_no), headers=self.header, verify=False)
     
     # 응답의 상태코드를 확인
     if response.status_code == 200:
@@ -51,6 +56,7 @@ class NoticeCrawler:
     docs = []
     print(f"\n ... start crawling = page_no: {page_no}, {len(notice_url_lst)} pages ...")
     for lnk in tqdm(notice_url_lst):
+      time.sleep(random.uniform(2,4))
       loader = WebBaseLoader(
           web_paths=([lnk]),
           bs_kwargs=dict(
@@ -74,13 +80,14 @@ class NoticeCrawler:
     return docs
   
   def get_img_url_list(self, url):
-    response = requests.get(url)
+    time.sleep(random.uniform(2,5))
+    response = requests.get(url, headers=self.header, verify=False)
 
     # 응답의 상태코드를 확인
     if response.status_code == 200:
         json_data = response.json()
         string = json_data['result']['info']['noticeSntncCn']
-        links = re.findall(r'(https?://\S+?)(?=")', string)
+        links = re.findall(r'https://kep.kookmin.ac.kr/com/cmsv/FileCtr/findUploadImg\S*', string)
 
         return links
 
