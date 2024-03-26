@@ -6,3 +6,4 @@ langchainhub
 beautifulsoup4
 pypdf
 python-dotenv
+langchain.text_splitter
