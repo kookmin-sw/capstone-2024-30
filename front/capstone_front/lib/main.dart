@@ -1,5 +1,5 @@
 import 'package:capstone_front/firebase_options.dart';
-import 'package:capstone_front/screens/login/cafeteriaMenu/cafeteriaMenuScreen.dart';
+import 'package:capstone_front/screens/cafeteriaMenu/cafeteriaMenuScreen.dart';
 import 'package:capstone_front/screens/home_screen.dart';
 import 'package:capstone_front/screens/login/login_screen.dart';
 import 'package:capstone_front/screens/login/signup_screen.dart';
