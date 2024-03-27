@@ -87,11 +87,11 @@ class _CafeteriaMenuScreenState extends State<CafeteriaMenuScreen>
                       color: const Color(0xFFF8F8F8),
                       child: const Column(
                         children: [
-                          // MenuCard(
-                          //   section: "인터쉐프 중식",
-                          //   menu: "고깃집 볶음밥",
-                          //   price: "5,000",
-                          // ),
+                          MenuCard(
+                            section: "인터쉐프 중식",
+                            menu: "고깃집 볶음밥",
+                            price: "5,000",
+                          ),
                         ],
                       )),
                 ),
