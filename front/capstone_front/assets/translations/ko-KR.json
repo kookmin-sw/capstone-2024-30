@@ -20,5 +20,8 @@
     "guide": "가이드",
     "helper": "헬퍼",
     "pronunciation_practice": "발음 연습"
+  },
+  "speekingPracticeScreen": {
+    "pronunciation_practice": "발음 연습"
   }
 }

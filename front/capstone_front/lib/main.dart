@@ -2,6 +2,7 @@ import 'package:capstone_front/firebase_options.dart';
 import 'package:capstone_front/screens/home_screen.dart';
 import 'package:capstone_front/screens/login/login_screen.dart';
 import 'package:capstone_front/screens/login/signup_screen.dart';
+import 'package:capstone_front/screens/speeking_practice/speeking_practice_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -64,9 +65,15 @@ final GoRouter router = GoRouter(
   initialLocation: _isLogin ? '/' : '/login',
   routes: [
     GoRoute(
-      path: '/',
-      builder: (context, state) => const HomeScreen(),
-    ),
+        path: '/',
+        builder: (context, state) => const HomeScreen(),
+        routes: [
+          GoRoute(
+            name: 'speeking',
+            path: 'speeking',
+            builder: (context, state) => const SpeekingPracticeScreen(),
+          )
+        ]),
     GoRoute(
       name: 'login',
       path: '/login',
