@@ -1,0 +1,24 @@
+{
+  "test": "This is test",
+  "_comment": "로그인 및 회원가입 페이지",
+  "login": "Login",
+  "kmu_email": "KMU E-mail",
+  "password": "Password",
+  "signup": "Sign Up",
+  "password_re": "Re-Enter Password",
+  "country": "Country",
+  "college": "College",
+  "department": "Department",
+  "student_number": "Student Number",
+  "mainScreen": {
+    "notice": "Notices",
+    "cafeteria": "Cafeteria",
+    "school_info": "School Info",
+    "qna": "Q&A",
+    "faq": "FAQ",
+    "community": "Community",
+    "guide": "Guide",
+    "helper": "Helper",
+    "pronunciation_practice": "Pronunciation"
+  }
+}
