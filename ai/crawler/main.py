@@ -1,8 +1,7 @@
 import clawler_utils
-from dotenv import load_dotenv
 import os
-
-load_dotenv()
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # 현재 스크립트가 위치한 디렉토리 경로를 가져옵니다.
 current_directory = os.path.dirname(os.path.realpath(__file__))
@@ -11,6 +10,4 @@ os.chdir(current_directory)
 
 
 # 공지사항 크롤링 시작
-clawler_utils.Clawling_notice_page_to_page(start=1, end=194, path='./data/Notice/') #1~194
-
-# 16, 7
+clawler_utils.Clawling_notice_page_to_page(start=109, end=194, path='./data/Notice/') #1~194

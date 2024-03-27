@@ -7,9 +7,9 @@ current_directory = os.path.dirname(os.path.realpath(__file__))
 os.chdir(current_directory)
 
 # 파일에서 객체를 불러옵니다.
-with open('./data/Notice/notice_1.pkl', 'rb') as f:
+with open('./data/Notice/notice_4.pkl', 'rb') as f:
     loaded_data = pickle.load(f, encoding='utf-8')
 
 # 불러온 객체를 출력합니다.
-sample = loaded_data[-2]
+sample = loaded_data[-3]
 print(sample)
