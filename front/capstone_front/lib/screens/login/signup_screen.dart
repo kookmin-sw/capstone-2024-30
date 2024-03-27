@@ -260,7 +260,7 @@ class _LoginScreenState extends State<SignupScreen> {
                             String result = await _signup();
                             switch (result) {
                               case "success":
-                                context.go('/');
+                                context.go('/login');
                                 makeToast("인증메일이 발송되었습니다");
                               case "weak-password":
                                 makeToast("비밀번호가 너무 짧습니다");
