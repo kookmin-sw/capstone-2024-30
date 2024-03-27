@@ -173,7 +173,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     MenuButton(
                       title: tr("mainScreen.pronunciation_practice"),
                       icon: Icons.speaker_group_rounded,
-                      routeCallbackFun: () => context.push("/login"),
+                      routeCallbackFun: () => context.push("/speeking"),
                     ),
                   ],
                 ),
