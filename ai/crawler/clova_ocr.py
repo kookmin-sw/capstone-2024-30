@@ -4,11 +4,7 @@ import requests
 import json
 import time
 import uuid
-<<<<<<< Updated upstream
-# util import 해야됨
-=======
 import random
->>>>>>> Stashed changes
 
 class OCR:
   def __init__(self, secret_key, api_url):
@@ -28,10 +24,6 @@ class OCR:
     self.sleep_time = 1
 
   def img_to_txt(self, img_url):
-<<<<<<< Updated upstream
-    filename = "tmp_image.jpg"
-    resp = requests.get(img_url)
-=======
     headers = {'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36'}
     filename = "tmp_image.jpg"
     time.sleep(random.uniform(2,5))
@@ -39,8 +31,6 @@ class OCR:
 
     if resp.status_code != 200:
       return ''
-    
->>>>>>> Stashed changes
     with open(filename, "wb") as f:
         f.write(resp.content)
     files = [('file', open('./tmp_image.jpg','rb'))]
