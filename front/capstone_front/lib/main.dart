@@ -15,14 +15,21 @@ final supportedLocales = [const Locale('en', 'US'), const Locale('ko', 'KR')];
 // 기본적으로 한국어로 세팅
 List<String> languageSetting = ['ko', 'KR'];
 
-// 언어를 설정해주는 함수
-Future<void> setLanguage() async {
+// 로그인 되어있었는지 여부
+bool _isLogin = false;
+
+// 언어를 설정해주고 로그인 정보를 불러오는 함수
+Future<void> setSetting() async {
   const storage = FlutterSecureStorage();
   String? language = await storage.read(key: 'language');
   if (language == 'english') {
     languageSetting = ['en', 'US'];
   } else {
     languageSetting = ['ko', 'KR'];
+  }
+  String? str = await storage.read(key: 'isLogin');
+  if (str == 'true') {
+    _isLogin = true;
   }
 }
 
@@ -35,7 +42,7 @@ void initializeFirebase() async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   initializeFirebase();
-  await setLanguage();
+  await setSetting();
   await EasyLocalization.ensureInitialized();
 
   runApp(EasyLocalization(
@@ -54,7 +61,7 @@ void main() async {
 }
 
 final GoRouter router = GoRouter(
-  initialLocation: '/login',
+  initialLocation: _isLogin ? '/' : '/login',
   routes: [
     GoRoute(
       path: '/',
