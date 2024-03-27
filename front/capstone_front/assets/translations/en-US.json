@@ -12,7 +12,7 @@
   "student_number": "Student Number",
   "mainScreen": {
     "notice": "Notices",
-    "cafeteria": "Cafeteria",
+    "cafeteria": "CafeteriaMenu",
     "school_info": "School Info",
     "qna": "Q&A",
     "faq": "FAQ",
