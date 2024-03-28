@@ -1,16 +1,16 @@
-### 1. 프로젝트 소개
+## 1. 프로젝트 소개
 
-프로젝트
+이 프로젝트는 국민대학교에서 공부하는 외국인 유학생들을 위한 종합적인 앱 서비스를 개발하는 것입니다. 앱은 학생들이 캠퍼스 생활에 빠르게 적응할 수 있도록 다양한 정보와 서비스를 제공합니다.
 
-### 2. Abstract
+## 2. Abstract
 
-Hi
+This project aims to develop a comprehensive app service for international students studying at Kookmin University. The app provides a variety of information and services to help students quickly adapt to campus life.
 
-### 3. 소개 영상
+## 3. 소개 영상
 
 프로젝트 소개하는 영상을 추가하세요
 
-### 4. 팀원 소개
+## 4. 팀원 소개
 
 <table>
     <tr align="center">
@@ -58,12 +58,37 @@ Hi
     </tr>
 </table>
 
-### 5. 기술스택
+## 5. 기술스택
 
-### 6. 시스템 구조
+### Frontend
 
-### 7. 사용법
+<div style="display: flex; gap: 6px;">
+    <img src="https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white"/>
+    <img src="https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white"/>
+</div>
+
+### Backend
+
+<div style="display: flex; gap: 6px;">
+    <img src="https://img.shields.io/badge/spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white">
+    <img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white">
+    <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
+</div>
+
+### Tools
+
+<div style="display: flex; gap: 6px;">
+    <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white">
+    <img src="https://img.shields.io/badge/AMAZON AWS-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white"/>
+    <img src="https://img.shields.io/badge/slack-4A154B?style=for-the-badge&logo=slack&logoColor=white">
+    <img src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=Postman&logoColor=white"/>
+    <img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white"/>
+</div>
+
+## 6. 시스템 구조
+
+## 7. 사용법
 
 잘
 
-### 8. 기타
+## 8. 기타
