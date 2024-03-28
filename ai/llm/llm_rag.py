@@ -12,7 +12,7 @@ class LLM_RAG:
         if api_key:
             os.environ['OPENAI_API_KEY'] = api_key
 
-        self.llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
+        self.llm = ChatOpenAI(model_name="gpt-4", temperature=0)
         self.prompt = hub.pull("rlm/rag-prompt")
 
     def set_ragchain(self, retriever):
@@ -24,8 +24,8 @@ class LLM_RAG:
         )
 
     def format_docs(self, docs):
-    # 검색한 문서 결과를 하나의 문단으로 합쳐줍니다.
-        return "\n\n".join(doc.page_content for doc in docs)
+        # 검색한 문서 결과를 하나의 문단으로 합쳐줍니다.
+        return "\n\n".join(doc.page_content + '\nmetadata=' + doc.metadata['source'] for doc in docs)
     
     def query(self, question):
         return self.rag_chain.invoke(question)
