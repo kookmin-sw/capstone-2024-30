@@ -2,7 +2,9 @@ import 'package:capstone_front/firebase_options.dart';
 import 'package:capstone_front/screens/home_screen.dart';
 import 'package:capstone_front/screens/login/login_screen.dart';
 import 'package:capstone_front/screens/login/signup_screen.dart';
-import 'package:capstone_front/screens/speeking_practice/speeking_practice_screen.dart';
+import 'package:capstone_front/screens/speeking_practice/pronunciation_practice_screen.dart';
+import 'package:capstone_front/screens/speeking_practice/pronunciation_senctence_screen.dart';
+import 'package:capstone_front/utils/page_animation.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -65,15 +67,25 @@ final GoRouter router = GoRouter(
   initialLocation: _isLogin ? '/' : '/login',
   routes: [
     GoRoute(
-        path: '/',
-        builder: (context, state) => const HomeScreen(),
-        routes: [
-          GoRoute(
-            name: 'speeking',
-            path: 'speeking',
-            builder: (context, state) => const SpeekingPracticeScreen(),
-          )
-        ]),
+      path: '/',
+      builder: (context, state) => const HomeScreen(),
+      routes: [
+        GoRoute(
+          name: 'pronunciation',
+          path: 'pronunciation',
+          builder: (context, state) => const PronunciationSentenceScreen(),
+          routes: [
+            GoRoute(
+                name: 'practice',
+                path: 'practice',
+                pageBuilder: (context, state) => buildPageWithSlideRight<void>(
+                    state: state,
+                    context: context,
+                    child: const PronunciationPracticeScreen())),
+          ],
+        ),
+      ],
+    ),
     GoRoute(
       name: 'login',
       path: '/login',
@@ -124,6 +136,10 @@ class App extends StatelessWidget {
             fontFamily: 'pretendard',
             fontSize: 20,
             fontWeight: FontWeight.w600,
+          ),
+          bodyLarge: TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.w500,
           ),
           bodyMedium: TextStyle(
             fontSize: 20,
