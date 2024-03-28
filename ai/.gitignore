@@ -3,3 +3,4 @@
 .env
 *.pkl
 *.zip
+.pyc
