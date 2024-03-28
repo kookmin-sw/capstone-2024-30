@@ -1,10 +1,14 @@
-package com.example.capstone.domain.jwt;
+package com.example.capstone.domain.auth.jwt;
 
+import com.example.capstone.domain.auth.jwt.exception.JwtTokenInvalidException;
+import com.example.capstone.global.error.exception.BusinessException;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SecurityException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -89,11 +93,9 @@ public class JwtTokenProvider {
                     .build()
                     .parseClaimsJws(token);
             return true;
+        } catch(JwtTokenInvalidException e){
+            throw JwtTokenInvalidException.INSTANCE;
         }
-        catch(SecurityException e){
-            //TODO : JWTException처리
-            log.info("Unexptected Exception", e);
-            throw e;
-        }
+
     }
 }

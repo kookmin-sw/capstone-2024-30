@@ -1,6 +1,6 @@
 package com.example.capstone.global.config;
 
-import com.example.capstone.domain.jwt.JwtAuthenticationFilter;
+import com.example.capstone.domain.auth.jwt.JwtAuthenticationFilter;
 import com.example.capstone.global.error.JwtAccessDeniedHandler;
 import com.example.capstone.global.error.JwtAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,6 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration

@@ -1,4 +1,4 @@
-package com.example.capstone.domain.jwt;
+package com.example.capstone.domain.auth.jwt;
 
 
 import jakarta.servlet.FilterChain;

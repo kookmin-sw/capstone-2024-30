@@ -1,4 +1,4 @@
-package com.example.capstone.domain.jwt;
+package com.example.capstone.domain.auth.jwt;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,6 +15,7 @@ public class PrincipalDetails implements UserDetails {
     private String name;
     private String major;
     private boolean lock;
+
     private Collection<? extends GrantedAuthority> authorities;
 
     @Override
