@@ -3,10 +3,12 @@ package com.example.capstone.global.error;
 import com.example.capstone.domain.auth.jwt.exception.JwtTokenInvalidException;
 import com.example.capstone.global.error.exception.BusinessException;
 import com.example.capstone.global.error.exception.ErrorCode;
+import com.example.capstone.global.error.exception.InvalidValueException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -16,7 +18,7 @@ import java.nio.file.AccessDeniedException;
 @ControllerAdvice
 public class GlobalExceptionHandler {
     /**
-     * 지원하지 않은 HTTP method 호출 할 경우 발생
+     * 지원하지 않은 HTTP method 호출 할 경우 발생합니다.
      */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     protected ResponseEntity<ErrorResponse> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
@@ -33,11 +35,32 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * {@link jakarta.validation.Valid} annotaion에 의해 validation이 실패했을경우
+     * Controller 단에서 발생하여 Error가 넘어옵니다.
+     */
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(final MethodArgumentNotValidException e) {
+        log.error("handleMethodArgumentNotValidException", e);
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.INVALID_INPUT_VALUE);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
      * 유효하지 않은 Token일 경우 발생
+     * {@link com.example.capstone.domain.auth.jwt.JwtTokenProvider}에서 try catch에 의해 넘어옵니다.
      */
     @ExceptionHandler(JwtTokenInvalidException.class)
-    public ResponseEntity<ErrorResponse> handleJwtTokenInvalidException(final JwtTokenInvalidException e){
+    protected ResponseEntity<ErrorResponse> handleJwtTokenInvalidException(final JwtTokenInvalidException e){
         log.error("handleJwtTokenInvalid", e);
+        final ErrorCode errorCode = e.getErrorCode();
+        final ErrorResponse response = ErrorResponse.of(errorCode);
+        return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatus()));
+    }
+
+    @ExceptionHandler(InvalidValueException.class)
+    protected ResponseEntity<ErrorResponse> handleInvalidValueException(final InvalidValueException e){
+        log.error("handleInvalidValueException", e);
+        log.error(e.getValue());
         final ErrorCode errorCode = e.getErrorCode();
         final ErrorResponse response = ErrorResponse.of(errorCode);
         return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatus()));
@@ -52,7 +75,7 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * 예상치 못한 오류들은 다 이 곳에서 처리됨
+     * 예상치 못한 오류들은 다 이 곳에서 처리됩니다.
      */
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<ErrorResponse> handleUnExpectedException(final Exception e) {

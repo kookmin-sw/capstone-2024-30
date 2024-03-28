@@ -16,7 +16,10 @@ public enum ErrorCode {
     HANDLE_ACCESS_DENIED(403, "C006", "Access is Denied"),
 
     // JWT Error
-    INVALID_JWT_TOKEN(401, "J001", "Invalid JWT Token")
+    INVALID_JWT_TOKEN(401, "J001", "Invalid JWT Token"),
+
+    // User Error
+    ALREADY_EMAIL_EXIST(400, "U001", "Already email exists")
     ;
 
     private int status;
