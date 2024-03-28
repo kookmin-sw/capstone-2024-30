@@ -1,5 +1,6 @@
 package com.example.capstone.global.config;
 
+import com.example.capstone.domain.jwt.JwtAuthenticationFilter;
 import com.example.capstone.global.error.JwtAccessDeniedHandler;
 import com.example.capstone.global.error.JwtAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ public class SecurityConfig {
 
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
@@ -47,6 +49,7 @@ public class SecurityConfig {
                         .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                         .accessDeniedHandler(jwtAccessDeniedHandler)
                 )
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
 
     }
