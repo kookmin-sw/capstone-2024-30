@@ -2,13 +2,19 @@
 
 이 프로젝트는 국민대학교에서 공부하는 외국인 유학생들을 위한 종합적인 앱 서비스를 개발하는 것입니다. 앱은 학생들이 캠퍼스 생활에 빠르게 적응할 수 있도록 다양한 정보와 서비스를 제공합니다.
 
+<br>
+
 ## 2. Abstract
 
 This project aims to develop a comprehensive app service for international students studying at Kookmin University. The app provides a variety of information and services to help students quickly adapt to campus life.
 
+<br>
+
 ## 3. 소개 영상
 
 프로젝트 소개하는 영상을 추가하세요
+
+<br>
 
 ## 4. 팀원 소개
 
@@ -58,6 +64,8 @@ This project aims to develop a comprehensive app service for international stude
     </tr>
 </table>
 
+<br>
+
 ## 5. 기술스택
 
 ### Frontend
@@ -85,10 +93,16 @@ This project aims to develop a comprehensive app service for international stude
     <img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white"/>
 </div>
 
+<br>
+
 ## 6. 시스템 구조
+
+<br>
 
 ## 7. 사용법
 
-잘
+<br>
 
 ## 8. 기타
+
+<br>
