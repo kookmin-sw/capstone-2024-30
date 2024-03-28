@@ -12,36 +12,28 @@ import java.util.UUID;
 @AllArgsConstructor
 public class PrincipalDetails implements UserDetails {
     private UUID uuid;
+    private String name;
+    private String major;
+    private boolean lock;
+    private Collection<? extends GrantedAuthority> authorities;
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
+    public Collection<? extends GrantedAuthority> getAuthorities() {return this.authorities;}
 
     @Override
-    public String getPassword() {
-        return null;
-    }
+    public String getPassword() {return null;}
 
     @Override
-    public String getUsername() {
-        return null;
-    }
+    public String getUsername() {return this.name;}
 
     @Override
-    public boolean isAccountNonExpired() {
-        return false;
-    }
+    public boolean isAccountNonExpired() {return false;}
 
     @Override
-    public boolean isAccountNonLocked() {
-        return false;
-    }
+    public boolean isAccountNonLocked() {return this.lock;}
 
     @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
+    public boolean isCredentialsNonExpired() {return false;}
 
     @Override
     public boolean isEnabled() {
