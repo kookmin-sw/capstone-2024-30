@@ -2,11 +2,6 @@ import requests
 import json
 import time
 import uuid
-<<<<<<< Updated upstream
-import os
-
-=======
->>>>>>> Stashed changes
 
 class OCR:
   def __init__(self, secret_key, api_url):
