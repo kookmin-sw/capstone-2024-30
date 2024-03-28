@@ -52,7 +52,7 @@ class VectorDB:
         try:
             self.vectorstore = FAISS.load_local(path, self.embedding, allow_dangerous_deserialization=True)
         except:
-            print('create new vectorDB')
+            print(' === Create new vectorDB === ')
             self.vectorstore = FAISS.from_texts(' ', self.embedding)
             
     def similarity_search(self, query, k=1):
