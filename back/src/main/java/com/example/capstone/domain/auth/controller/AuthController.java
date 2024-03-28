@@ -25,13 +25,15 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody @Valid SignupRequest signupRequest){
         //TODO : HMAC을 통한 검증 로직 추가 필요
-        loginService.Signup(signupRequest);
+        loginService.signUp(signupRequest);
         return ResponseEntity.ok().body("Successfully Signup");
     }
 
     @PostMapping("/signin")
     public ResponseEntity<SigninResponse> signin(@RequestBody @Valid SigninRequest signinRequest){
         //TODO : HMAC을 통한 검증 로직 추가 필요
+        SigninResponse response = loginService.signIn(signinRequest);
+        return ResponseEntity.ok().body(response);
     }
 
 

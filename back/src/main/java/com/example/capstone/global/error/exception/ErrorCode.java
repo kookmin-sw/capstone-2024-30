@@ -19,7 +19,8 @@ public enum ErrorCode {
     INVALID_JWT_TOKEN(401, "J001", "Invalid JWT Token"),
 
     // User Error
-    ALREADY_EMAIL_EXIST(400, "U001", "Already email exists")
+    ALREADY_EMAIL_EXIST(400, "U001", "Already email exists"),
+    USER_NOT_FOUND(400, "U002", "User Not Found")
     ;
 
     private int status;

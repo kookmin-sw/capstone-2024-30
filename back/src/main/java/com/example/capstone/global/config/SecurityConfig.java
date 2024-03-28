@@ -1,6 +1,6 @@
 package com.example.capstone.global.config;
 
-import com.example.capstone.domain.auth.jwt.JwtAuthenticationFilter;
+import com.example.capstone.domain.jwt.JwtAuthenticationFilter;
 import com.example.capstone.global.error.JwtAccessDeniedHandler;
 import com.example.capstone.global.error.JwtAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +28,7 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web.ignoring()
+                .requestMatchers("/favicon.ico")
                 .requestMatchers(PathRequest.toH2Console())
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
@@ -40,15 +41,17 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/favicon.ico").permitAll()
                         .requestMatchers(PathRequest.toH2Console()).permitAll()
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers( "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
                         .anyRequest().permitAll())
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                         .accessDeniedHandler(jwtAccessDeniedHandler)
                 )
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
 
     }

@@ -1,4 +1,4 @@
-package com.example.capstone.domain.auth.jwt;
+package com.example.capstone.domain.jwt;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

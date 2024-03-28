@@ -1,4 +1,4 @@
-package com.example.capstone.domain.auth.jwt.exception;
+package com.example.capstone.domain.jwt.exception;
 
 import com.example.capstone.global.error.exception.BusinessException;
 import com.example.capstone.global.error.exception.ErrorCode;

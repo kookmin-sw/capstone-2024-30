@@ -1,6 +1,7 @@
 package com.example.capstone.global.error;
 
-import com.example.capstone.domain.auth.jwt.exception.JwtTokenInvalidException;
+import com.example.capstone.domain.jwt.JwtTokenProvider;
+import com.example.capstone.domain.jwt.exception.JwtTokenInvalidException;
 import com.example.capstone.global.error.exception.BusinessException;
 import com.example.capstone.global.error.exception.ErrorCode;
 import com.example.capstone.global.error.exception.InvalidValueException;
@@ -11,6 +12,8 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.nio.file.AccessDeniedException;
 
@@ -47,7 +50,7 @@ public class GlobalExceptionHandler {
 
     /**
      * 유효하지 않은 Token일 경우 발생
-     * {@link com.example.capstone.domain.auth.jwt.JwtTokenProvider}에서 try catch에 의해 넘어옵니다.
+     * {@link JwtTokenProvider}에서 try catch에 의해 넘어옵니다.
      */
     @ExceptionHandler(JwtTokenInvalidException.class)
     protected ResponseEntity<ErrorResponse> handleJwtTokenInvalidException(final JwtTokenInvalidException e){
@@ -72,6 +75,17 @@ public class GlobalExceptionHandler {
         final ErrorCode errorCode = e.getErrorCode();
         final ErrorResponse response = ErrorResponse.of(errorCode);
         return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatus()));
+    }
+
+    @ExceptionHandler(NoHandlerFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<ErrorResponse> handle404(NoHandlerFoundException e){
+        return ResponseEntity
+                .status(e.getStatusCode())
+                .body(ErrorResponse.builder()
+                        .status(e.getStatusCode().value())
+                        .message(e.getMessage())
+                        .build());
     }
 
     /**

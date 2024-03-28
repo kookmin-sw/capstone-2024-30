@@ -1,9 +1,6 @@
 package com.example.capstone.domain.user.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -53,5 +50,9 @@ public class User {
         this.major = major;
         this.country = country;
         this.phoneNumber = phoneNumber;
+    }
+
+    public void setId(String id){
+        this.id = id;
     }
 }

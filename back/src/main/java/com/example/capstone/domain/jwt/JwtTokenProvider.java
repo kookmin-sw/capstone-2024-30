@@ -1,14 +1,11 @@
-package com.example.capstone.domain.auth.jwt;
+package com.example.capstone.domain.jwt;
 
-import com.example.capstone.domain.auth.jwt.exception.JwtTokenInvalidException;
-import com.example.capstone.global.error.exception.BusinessException;
+import com.example.capstone.domain.jwt.exception.JwtTokenInvalidException;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.security.SecurityException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,7 +15,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -51,7 +50,7 @@ public class JwtTokenProvider {
                 .claim(JwtClaim.MAJOR.getKey(), authentication.getMajor())
                 .setIssuedAt(now)
                 .setExpiration(expireDate)
-                .signWith(key, SignatureAlgorithm.ES256)
+                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
@@ -67,7 +66,7 @@ public class JwtTokenProvider {
                 .parseClaimsJws(token)
                 .getBody();
 
-        UUID userId = claims.get(JwtClaim.UUID.getKey(), UUID.class);
+        String userId = claims.get(JwtClaim.UUID.getKey(), String.class);
         String name = claims.get(JwtClaim.NAME.getKey(), String.class);
         String major = claims.get(JwtClaim.MAJOR.getKey(), String.class);
 
