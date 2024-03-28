@@ -43,7 +43,7 @@ This project aims to develop a comprehensive app service for international stude
 
 <table>
     <tr align="center">
-        <td><img src="" width="250"></td>
+        <td><img src="https://github.com/kookmin-sw/capstone-2024-30/assets/53148103/9c6d6e4b-0f85-4489-9f93-f1cf6774fd50" width="250"></td>
         <td><img src="" width="250"></td>
         <td><img src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/1c9ac172-5d97-4002-b254-c003f5d07ac2" width="250"></td>
     </tr>
