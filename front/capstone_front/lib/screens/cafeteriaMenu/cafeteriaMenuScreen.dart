@@ -1,3 +1,4 @@
+import 'package:capstone_front/screens/cafeteriaMenu/dateChanger.dart';
 import 'package:capstone_front/screens/cafeteriaMenu/menuCard.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -32,24 +33,7 @@ class _CafeteriaMenuScreenState extends State<CafeteriaMenuScreen>
       ),
       body: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              IconButton(
-                icon: const Icon(Icons.arrow_left),
-                onPressed: () {
-                  // 날짜 감소 로직
-                },
-              ),
-              const Text('03.27(수)'),
-              IconButton(
-                icon: const Icon(Icons.arrow_right),
-                onPressed: () {
-                  // 날짜 증가 로직
-                },
-              ),
-            ],
-          ),
+          const DateChanger(),
           TabBar(
             tabAlignment: TabAlignment.start,
             isScrollable: true,
