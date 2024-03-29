@@ -20,5 +20,9 @@
     "guide": "Guide",
     "helper": "Helper",
     "pronunciation_practice": "Pronunciation"
+  },
+  "pronunciationPracticeScreen": {
+    "pronunciation_practice": "Pronunciation Practice",
+    "permission_allow_notice": "You must allow voice recording permission to use pronunciation practice"
   }
 }

@@ -4,7 +4,7 @@ import 'package:capstone_front/screens/home_screen.dart';
 import 'package:capstone_front/screens/login/login_screen.dart';
 import 'package:capstone_front/screens/login/signup_screen.dart';
 import 'package:capstone_front/screens/speeking_practice/pronunciation_practice_screen.dart';
-import 'package:capstone_front/screens/speeking_practice/pronunciation_senctence_screen.dart';
+import 'package:capstone_front/screens/speeking_practice/pronunciation_select_sentence_screen.dart';
 import 'package:capstone_front/utils/page_animation.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -72,19 +72,20 @@ final GoRouter router = GoRouter(
       builder: (context, state) => const HomeScreen(),
       routes: [
         GoRoute(
-          name: 'pronunciation',
-          path: 'pronunciation',
-          builder: (context, state) => const PronunciationSentenceScreen(),
-          routes: [
-            GoRoute(
-                name: 'practice',
-                path: 'practice',
-                pageBuilder: (context, state) => buildPageWithSlideRight<void>(
-                    state: state,
-                    context: context,
-                    child: const PronunciationPracticeScreen())),
-          ],
-        ),
+            name: 'pronunciation',
+            path: 'pronunciation',
+            builder: (context, state) => const PronunciationSentenceScreen(),
+            routes: [
+              GoRoute(
+                  path: 'practice',
+                  pageBuilder: (context, state) {
+                    return buildPageWithSlideRight(
+                      context: context,
+                      state: state,
+                      child: const PronunciationPracticeScreen(),
+                    );
+                  }),
+            ]),
       ],
     ),
     GoRoute(
@@ -132,25 +133,28 @@ class App extends StatelessWidget {
           onSurface: Colors.black,
         ),
         textTheme: const TextTheme(
-          headlineLarge: TextStyle(
-            fontFamily: 'pretendard',
-            fontSize: 50,
-            fontWeight: FontWeight.w600,
-          ),
-          titleMedium: TextStyle(
-            fontFamily: 'pretendard',
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-          ),
-          bodyLarge: TextStyle(
-            fontSize: 30,
-            fontWeight: FontWeight.w500,
-          ),
-          bodyMedium: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
+            headlineLarge: TextStyle(
+              fontFamily: 'pretendard',
+              fontSize: 50,
+              fontWeight: FontWeight.w600,
+            ),
+            titleMedium: TextStyle(
+              fontFamily: 'pretendard',
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+            ),
+            bodyLarge: TextStyle(
+              fontSize: 30,
+              fontWeight: FontWeight.w500,
+            ),
+            bodyMedium: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w400,
+            ),
+            bodySmall: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w300,
+            )),
       ),
     );
   }
