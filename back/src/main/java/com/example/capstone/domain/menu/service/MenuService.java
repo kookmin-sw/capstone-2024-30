@@ -5,6 +5,7 @@ import com.example.capstone.domain.menu.repository.MenuRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -48,7 +49,7 @@ public class MenuService {
                                 name = context.getValue().toString();
                             }
                             else if(context.getKey().equals("가격")) {
-                                price = Long.parseLong(context.getValue().toString());
+                                price = NumberUtils.toLong(context.getValue().toString());
                             }
                         }
                         menuRepository.save(Menu.builder().cafeteria(cafeteria).section(section).date(date).name(name).price(price).language("KR").build());
@@ -63,6 +64,5 @@ public class MenuService {
 
     public void findMenuByDate(LocalDateTime dateTime){
         Optional<Menu> menuList = menuRepository.findMenuByDate(dateTime);
-        String url = "https://kmucoop.kookmin.ac.kr/menu/menujson.php?callback=jQuery112401919322099601417_1711424604017";
     }
 }
