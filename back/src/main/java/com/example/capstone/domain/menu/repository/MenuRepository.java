@@ -1,6 +1,6 @@
 package com.example.capstone.domain.menu.repository;
 
-import com.example.capstone.domain.menu.domain.Menu;
+import com.example.capstone.domain.menu.entity.Menu;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

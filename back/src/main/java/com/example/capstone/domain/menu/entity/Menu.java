@@ -1,4 +1,4 @@
-package com.example.capstone.domain.menu.domain;
+package com.example.capstone.domain.menu.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
