@@ -216,15 +216,18 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
             Column(
               children: [
                 IconButton(
-                    iconSize: 50,
-                    onPressed: getPlaybackFn(),
-                    //color: Colors.white,
-                    //disabledColor: Colors.grey,
-                    icon: const Icon(Icons.check)),
+                  iconSize: 50,
+                  onPressed: getPlaybackFn(),
+                  //color: Colors.white,
+                  //disabledColor: Colors.grey,
+                  icon: _mPlayer!.isPlaying
+                      ? const Icon(Icons.stop)
+                      : const Icon(Icons.play_arrow),
+                ),
                 Transform.translate(
                   offset: const Offset(0, -10),
                   child: const Text(
-                    "전송하기",
+                    "나의 발음",
                     style: TextStyle(fontSize: 16),
                   ),
                 ),
@@ -262,18 +265,15 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
             Column(
               children: [
                 IconButton(
-                  iconSize: 50,
-                  onPressed: getPlaybackFn(),
-                  //color: Colors.white,
-                  //disabledColor: Colors.grey,
-                  icon: _mPlayer!.isPlaying
-                      ? const Icon(Icons.stop)
-                      : const Icon(Icons.play_arrow),
-                ),
+                    iconSize: 50,
+                    onPressed: getPlaybackFn(),
+                    //color: Colors.white,
+                    //disabledColor: Colors.grey,
+                    icon: const Icon(Icons.check)),
                 Transform.translate(
                   offset: const Offset(0, -10),
                   child: const Text(
-                    "나의 발음",
+                    "결과 확인",
                     style: TextStyle(fontSize: 16),
                   ),
                 ),
