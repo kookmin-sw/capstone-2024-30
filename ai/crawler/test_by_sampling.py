@@ -1,14 +1,30 @@
 import pickle
 import os
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 
-# 현재 스크립트가 위치한 디렉토리 경로를 가져옵니다.
-current_directory = os.path.dirname(os.path.realpath(__file__))
-os.chdir(current_directory)
+# 현재 스크립트의 디렉터리 경로를 가져옴
+current_dir = os.path.dirname(__file__)
+
+# 상위 디렉터리의 경로를 얻기 위해 다시 한 번 os.path.dirname()을 호출
+parent_dir = os.path.dirname(current_dir)
+os.chdir(parent_dir)
 
 # 파일에서 객체를 불러옵니다.
-with open('./data/Notice/notice_194.pkl', 'rb') as f:
-    loaded_data = pickle.load(f, encoding='utf-8')
+with open('./data/Cradle/cradle3.pkl', 'rb') as f:
+    loaded_data1 = pickle.load(f, encoding='utf-8')
+
+with open('./data/Cradle/1.pkl', 'rb') as f:
+    loaded_data2 = pickle.load(f, encoding='utf-8')
 
 # 불러온 객체를 출력합니다.
-sample = loaded_data[-6]
-print(sample)
+# print(type([loaded_data1][0]))
+# print(type(loaded_data2[0]))
+#print(loaded_data1)
+
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=50)
+
+splits1 = text_splitter.split_documents([loaded_data1])
+splits2 = text_splitter.split_documents(loaded_data2)
+print(splits1)
+print('++++++++++++++++++++++++++++')
+#print(splits2)

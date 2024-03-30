@@ -22,6 +22,6 @@ def access_all_folders_and_files(vdb, source_directory_path, dest_directory_path
         # 폴더 내의 모든 파일에 접근
         for file in tqdm.tqdm(files):
             if file.endswith(extension_name):
-                vdb.add_content(data_dir_path+'/'+file, dest_directory_path)
+                vdb.add_content(root+'/'+file, dest_directory_path)
 
 access_all_folders_and_files(vdb, data_dir_path, FAISS_path, '.pkl')
