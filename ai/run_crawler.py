@@ -4,15 +4,17 @@ import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 import os
 
+# 현재 스크립트가 위치한 디렉토리 경로를 가져옵니다.
+current_directory = os.path.dirname(os.path.realpath(__file__))
+os.chdir(current_directory)
+
 load_dotenv()
 
 CLOVA_API_KEY = os.getenv('CLOVA_KEY')
 CLOVA_API_URL = os.getenv('CLOVA_URL')
 
-directory_path = './crawler/data/'
-
 nc = NoticeCrawler(CLOVA_API_KEY, CLOVA_API_URL)
-path = './crawler/data/Notice/'
+path = './data/Notice/'
 start_point = 1
 with open(path+'notice_count.txt') as r:
     start_point = int(r.readline())
