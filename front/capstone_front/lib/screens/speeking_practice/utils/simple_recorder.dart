@@ -195,38 +195,94 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
     return _mPlayer!.isStopped ? play : stopPlayer;
   }
 
+  _Fn? sendRecord() {
+    if (!_mPlayerIsInited || !_mplaybackReady || !_mRecorder!.isStopped) {
+      return null;
+    }
+    return _mPlayer!.isStopped ? null : null;
+  }
+
   @override
   Widget build(BuildContext context) {
-    Widget makeBody() {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          IconButton(
-            iconSize: 100,
-            onPressed: getRecorderFn(),
-            // color: Colors.white,
-            // disabledColor: Colors.gray,
-            icon: _mRecorder!.isRecording
-                ? const Icon(Icons.stop)
-                : Icon(
-                    Icons.radio_button_checked_rounded,
-                    color: _mPlayer!.isPlaying ? Colors.red[100] : Colors.red,
+    return Container(
+      decoration: const BoxDecoration(
+          color: Colors.white,
+          border: Border(top: BorderSide(color: Color(0xffd2d7dd), width: 2))),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 50, right: 50),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              children: [
+                IconButton(
+                  iconSize: 50,
+                  onPressed: getPlaybackFn(),
+                  //color: Colors.white,
+                  //disabledColor: Colors.grey,
+                  icon: _mPlayer!.isPlaying
+                      ? const Icon(Icons.stop)
+                      : const Icon(Icons.play_arrow),
+                ),
+                Transform.translate(
+                  offset: const Offset(0, -10),
+                  child: const Text(
+                    "나의 발음",
+                    style: TextStyle(fontSize: 16),
                   ),
-          ),
-          IconButton(
-            iconSize: 100,
-            onPressed: getPlaybackFn(),
-            //color: Colors.white,
-            //disabledColor: Colors.grey,
-            icon: _mPlayer!.isPlaying
-                ? const Icon(Icons.stop)
-                : const Icon(Icons.play_arrow),
-          ),
-        ],
-      );
-    }
-
-    return makeBody();
+                ),
+              ],
+            ),
+            Transform.translate(
+              offset: const Offset(0, -40),
+              child: Container(
+                width: 75,
+                height: 75,
+                decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    shape: BoxShape.circle,
+                    border:
+                        Border.all(color: const Color(0xffd2d7dd), width: 1)),
+                child: IconButton(
+                  iconSize: 50,
+                  onPressed: getRecorderFn(),
+                  // color: Colors.white,
+                  // disabledColor: Colors.gray,
+                  icon: _mRecorder!.isRecording
+                      ? const Icon(
+                          Icons.stop,
+                          color: Colors.white,
+                        )
+                      : Icon(
+                          Icons.mic,
+                          color: _mPlayer!.isPlaying
+                              ? Colors.red[100]
+                              : Colors.white,
+                        ),
+                ),
+              ),
+            ),
+            Column(
+              children: [
+                IconButton(
+                    iconSize: 50,
+                    onPressed: getPlaybackFn(),
+                    //color: Colors.white,
+                    //disabledColor: Colors.grey,
+                    icon: const Icon(Icons.check)),
+                Transform.translate(
+                  offset: const Offset(0, -10),
+                  child: const Text(
+                    "결과 확인",
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 

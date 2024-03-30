@@ -190,7 +190,7 @@ class _HomeScreenState extends State<HomeScreen> {
         context: context,
         builder: ((context) {
           return AlertDialog(
-            content: const Text("언어 변경을 적용하려면 앱을 재시작해야 합니다.\n 재시작하시겠습니까?"),
+            content: const Text("언어 변경을 적용하려면 앱을 재시작해야 합니다.\n재시작하시겠습니까?"),
             actions: [
               Container(
                 child: ElevatedButton(

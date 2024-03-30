@@ -23,6 +23,7 @@ CustomTransitionPage buildPageWithSlideRight<T>({
   return CustomTransitionPage<T>(
     key: state.pageKey,
     child: child,
+    transitionDuration: const Duration(milliseconds: 500),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       var begin = const Offset(1.0, 0.0); // 시작 위치는 오른쪽
       var end = Offset.zero; // 끝 위치는 화면의 중앙
