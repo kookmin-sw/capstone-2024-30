@@ -1,5 +1,5 @@
 // .gitignore
 
 .env
-*.pkl
 *.zip
+data/
