@@ -2,10 +2,6 @@ import requests
 import json
 import time
 import uuid
-<<<<<<< HEAD
-=======
-import random
->>>>>>> develop-ai
 
 class OCR:
   def __init__(self, secret_key, api_url):
