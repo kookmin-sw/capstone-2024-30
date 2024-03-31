@@ -2,7 +2,6 @@ package com.example.capstone.domain.menu.service;
 
 import com.example.capstone.domain.menu.entity.Menu;
 import com.example.capstone.domain.menu.repository.MenuRepository;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -13,9 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -64,7 +61,25 @@ public class MenuService {
         }
     }
 
-    public void findMenuByDate(LocalDateTime dateTime){
-        Optional<Menu> menuList = menuRepository.findMenuByDate(dateTime);
+    public String findMenuByDate(LocalDateTime dateTime) {
+        List<String> cafeList = List.of("한울식당(법학관 지하1층)", "학생식당(복지관 1층)",
+                "교직원식당(복지관 1층)", "청향 한식당(법학관 5층)",
+                "청향 양식당(법학관 5층)", "생활관식당 일반식(생활관 A동 1층)");
+        List<String> infos = new ArrayList<>();
+
+        for(String cafe : cafeList) {
+            List<Menu> menuList = menuRepository.findMenuByDateAndCafeteria(dateTime, cafe);
+            List<String> subInfos = new ArrayList<>();
+
+            for(Menu menu : menuList) {
+                subInfos.add(Map.of(menu.getSection(), Map.of("메뉴", menu.getName(), "가격", menu.getPrice())).toString());
+            }
+
+            infos.add(Map.of(cafe, Map.of(dateTime, subInfos.toString())).toString());
+        }
+
+        System.out.println(infos);
+
+        return infos.toString();
     }
 }
