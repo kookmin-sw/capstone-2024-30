@@ -52,7 +52,9 @@ public class MenuService {
                                 price = NumberUtils.toLong(context.getValue().toString());
                             }
                         }
-                        menuRepository.save(Menu.builder().cafeteria(cafeteria).section(section).date(date).name(name).price(price).language("KR").build());
+                        if(name.equals("") == false) {
+                            menuRepository.save(Menu.builder().cafeteria(cafeteria).section(section).date(date).name(name).price(price).language("KR").build());
+                        }
                     }
                 }
             }
