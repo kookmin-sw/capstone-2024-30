@@ -28,14 +28,18 @@ class VectorDB:
         elif content.endswith('.pkl'):
             with open(content, 'rb') as f:
                 loaded_data = pickle.load(f)
+                if type(loaded_data) != list:
+                    loaded_data = [loaded_data]
                 splits = text_splitter.split_documents(loaded_data)
-                FAISS.add_documents(self.vectorstore, splits)
+                if splits:
+                    FAISS.add_documents(self.vectorstore, splits)
                 
                 self.save_local(vector_db_path)
             return
         else:
             splits = text_splitter.split_text(content)
-            FAISS.add_texts(self.vectorstore, splits)
+            if splits:
+                FAISS.add_texts(self.vectorstore, splits)
             return
         
         docs = loader.load()

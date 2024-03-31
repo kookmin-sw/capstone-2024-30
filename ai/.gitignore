@@ -1,5 +1,7 @@
 // .gitignore
 
 .env
-*.pkl
 *.zip
+*.pyc
+__pycache__
+data/

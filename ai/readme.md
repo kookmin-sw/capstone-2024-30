@@ -10,12 +10,13 @@
 
 # 실행 방법
 
+
 2024_03_30 아나콘다 환경 python 3.8 에서 실행 확인
 
 1. /ai 경로로 작업 디렉토리 이동
 2. 패키지 설치  `pip install -r requirements.txt` 
-4. /ai 경로에 .env 파일 생성 (OPENAI_API_KEY = 'your_api')
-5. `python run_chatbot.py` 
+3. /ai 경로에 .env 파일 생성 (OPENAI_API_KEY = 'your_api')
+4. `python run_chatbot.py` 
 
 # TEST
 
