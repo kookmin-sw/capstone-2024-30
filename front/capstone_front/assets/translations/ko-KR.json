@@ -24,5 +24,8 @@
   "pronunciationPracticeScreen": {
     "pronunciation_practice": "발음 연습",
     "permission_allow_notice": "음성 녹음 권한을 허용해야 발음 연습을 이용할 수 있습니다"
+  },
+  "chatbotScreen": {
+    "chatbot": "챗봇"
   }
 }

@@ -163,7 +163,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     MenuButton(
                       title: tr("mainScreen.guide"),
                       icon: Icons.help_center_rounded,
-                      routeCallbackFun: () => context.push("/login"),
+                      routeCallbackFun: () => context.push("/chatbot"),
                     ),
                     MenuButton(
                       title: tr("mainScreen.helper"),

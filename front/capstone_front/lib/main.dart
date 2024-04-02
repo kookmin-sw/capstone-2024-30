@@ -1,5 +1,6 @@
 import 'package:capstone_front/firebase_options.dart';
 import 'package:capstone_front/screens/cafeteriaMenu/cafeteriaMenuScreen.dart';
+import 'package:capstone_front/screens/chatbot/chatbot.dart';
 import 'package:capstone_front/screens/home_screen.dart';
 import 'package:capstone_front/screens/login/login_screen.dart';
 import 'package:capstone_front/screens/login/signup_screen.dart';
@@ -104,6 +105,11 @@ final GoRouter router = GoRouter(
         ),
       ],
     ),
+    GoRoute(
+      name: 'chatbot',
+      path: '/chatbot',
+      builder: (context, state) => const ChatbotScreen(),
+    ),
   ],
 );
 
@@ -149,11 +155,11 @@ class App extends StatelessWidget {
             ),
             bodyMedium: TextStyle(
               fontSize: 20,
-              fontWeight: FontWeight.w400,
+              fontWeight: FontWeight.w500,
             ),
             bodySmall: TextStyle(
               fontSize: 16,
-              fontWeight: FontWeight.w300,
+              fontWeight: FontWeight.w500,
             )),
       ),
     );
