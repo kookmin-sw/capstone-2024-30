@@ -109,8 +109,8 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                         maxLines: 3,
                         controller: _textController,
                         textInputAction: TextInputAction.newline,
-                        decoration: const InputDecoration.collapsed(
-                          hintText: '궁금한 내용을 입력해주세요',
+                        decoration: InputDecoration.collapsed(
+                          hintText: tr('chatbotScreen.textfield_hint'),
                         ),
                         style: Theme.of(context).textTheme.bodySmall,
                         // onTap: () {
