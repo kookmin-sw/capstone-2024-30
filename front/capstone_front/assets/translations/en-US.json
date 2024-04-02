@@ -24,5 +24,9 @@
   "pronunciationPracticeScreen": {
     "pronunciation_practice": "Pronunciation Practice",
     "permission_allow_notice": "You must allow voice recording permission to use pronunciation practice"
+  },
+  "chatbotScreen": {
+    "chatbot": "Chat Bot",
+    "textfield_hint": "Please enter your questions"
   }
 }
