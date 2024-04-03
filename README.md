@@ -103,6 +103,23 @@ This project aims to develop a comprehensive app service for international stude
 
 <br>
 
+### Backend
+
+`env.example`을 바탕으로 `.env`를 작성합니다. 그 다음
+```
+chmod +x ./gradlew
+./gradlew
+```
+또는
+```
+gradle clean build
+```
+를 통해 실행 .jar 파일을 생성합니다. 실행파일을 생성했으면
+```
+docker-compose up --build -d
+```
+를 통해 docker compose build를 진행하여 실행하시면 됩니다.
+
 ## 8. 기타
 
 <br>
