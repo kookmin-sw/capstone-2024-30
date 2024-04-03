@@ -105,7 +105,7 @@ This project aims to develop a comprehensive app service for international stude
 
 ### Backend
 
-`env.example`을 바탕으로 `.env`를 작성합니다. 그 다음
+`.env.example`을 바탕으로 `.env`를 작성합니다. 그 다음
 ```
 chmod +x ./gradlew
 ./gradlew
