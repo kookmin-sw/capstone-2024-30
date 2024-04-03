@@ -72,14 +72,13 @@ public class MenuService {
             List<String> subInfos = new ArrayList<>();
 
             for(Menu menu : menuList) {
-                subInfos.add(Map.of(menu.getSection(), Map.of("메뉴", menu.getName(), "가격", menu.getPrice())).toString());
+                subInfos.add(Map.of("\"" + menu.getSection() + "\"", Map.of("\"메뉴\"", "\"" + menu.getName() + "\"", "\"가격\"", "\"" + menu.getPrice() + "\"")).toString());
             }
 
-            infos.add(Map.of(cafe, Map.of(dateTime, subInfos.toString())).toString());
+            infos.add(Map.of("\"" + cafe + "\"", Map.of("\"" + dateTime.toLocalDate() + "\"", subInfos.toString())).toString());
         }
 
         System.out.println(infos);
-
-        return infos.toString();
+        return infos.toString().replaceAll("=", ":").replaceAll("\\[|\\]", "");
     }
 }
