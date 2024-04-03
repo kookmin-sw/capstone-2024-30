@@ -98,6 +98,8 @@ This project aims to develop a comprehensive app service for international stude
 ## 6. 시스템 구조
 
 <br>
+<img src ="https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/9ca1e9f4-7ac4-4930-b89b-72e4a489035d" width = "800">
+
 
 ## 7. 사용법
 
