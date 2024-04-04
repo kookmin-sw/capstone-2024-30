@@ -1,0 +1,24 @@
+{
+  "test": "이것은 테스트 입니다",
+  "_comment": "로그인 및 회원가입 페이지",
+  "login": "로그인",
+  "kmu_email": "국민대 이메일",
+  "password": "비밀번호",
+  "signup": "회원가입",
+  "password_re": "비밀번호 재입력",
+  "country": "국가",
+  "college": "단과대학",
+  "department": "학부ㆍ학과",
+  "student_number": "학번",
+  "mainScreen": {
+    "notice": "공지사항",
+    "cafeteria": "학식",
+    "school_info": "학교정보",
+    "qna": "질문과 답변",
+    "faq": "자주 묻는 질문",
+    "community": "커뮤니티",
+    "guide": "가이드",
+    "helper": "헬퍼",
+    "pronunciation_practice": "발음 연습"
+  }
+}
