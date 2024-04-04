@@ -10,6 +10,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.hibernate.cfg.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -25,7 +26,16 @@ public class MenuService {
     private final MenuRepository menuRepository;
     private final String authKey = "";
 
-    public void addMenus(LocalDateTime startTime) {
+    @Scheduled(fixedRate= 604800000)
+    private void crawlingMenu(){
+        LocalDateTime startDay = LocalDateTime.now();
+
+        for(int i=0; i<7; i++){
+            addMenus(startDay.plusDays(i));
+        }
+    }
+
+    private void addMenus(LocalDateTime startTime) {
         RestTemplate restTemplate = new RestTemplateBuilder().build();
         String sdate = startTime.format(DateTimeFormatter.ISO_LOCAL_DATE);
         String url = "https://kmucoop.kookmin.ac.kr/menu/menujson.php?callback=jQuery112401919322099601417_1711424604017";
@@ -80,9 +90,9 @@ public class MenuService {
         List<String> infos = new ArrayList<>();
 
         for(String cafe : cafeList) {
-            List<Menu> menuList = menuRepository.findMenuByDateAndCafeteria(dateTime, cafe);
+            List<Menu> menuList = menuRepository.findMenuByDateAndCafeteria(dateTime, cafe, language);
             List<String> subInfos = new ArrayList<>();
-
+            System.out.println(cafe);
             for(Menu menu : menuList) {
                 subInfos.add(Map.of("\"" + menu.getSection() + "\"", Map.of("\"메뉴\"", "\"" + menu.getName() + "\"", "\"가격\"", "\"" + menu.getPrice() + "\"")).toString());
             }
@@ -90,8 +100,8 @@ public class MenuService {
             infos.add(Map.of("\"" + cafe + "\"", Map.of("\"" + dateTime.toLocalDate() + "\"", subInfos.toString())).toString());
         }
 
-        System.out.println(infos);
-        return infos.toString().replaceAll("=", ":").replaceAll("\\[|\\]", "");
+        //System.out.println(infos);
+        return infos.toString().replaceAll("=", ":").replaceAll("\\[|\\]|", "");
     }
 
     private String decodeUnicode(String str){

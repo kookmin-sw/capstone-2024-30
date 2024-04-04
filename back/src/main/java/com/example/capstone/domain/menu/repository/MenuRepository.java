@@ -18,8 +18,8 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
 
     @Query("SELECT m FROM Menu m " +
             "WHERE m.date = :menuDate " +
-            "AND m.cafeteria = :cafe")
-    List<Menu> findMenuByDateAndCafeteria(@Param("menuDate") LocalDateTime date, @Param("cafe") String cafe);
+            "AND m.cafeteria = :cafe ")
+    List<Menu> findMenuByDateAndCafeteria(@Param("menuDate") LocalDateTime date, @Param("cafe") String cafe, @Param("lang") String lang);
 
     @Query("SELECT DISTINCT m.cafeteria FROM Menu m " +
             "WHERE m.date = :menuDate " +
