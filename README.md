@@ -100,27 +100,62 @@ This project aims to develop a comprehensive app service for international stude
 <br>
 <img src ="https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/9ca1e9f4-7ac4-4930-b89b-72e4a489035d" width = "800">
 
-
 ## 7. 사용법
-
-<br>
 
 ### Backend
 
 `.env.example`을 바탕으로 `.env`를 작성합니다. 그 다음
+
 ```
 chmod +x ./gradlew
 ./gradlew
 ```
+
 또는
+
 ```
 gradle clean build
 ```
+
 를 통해 실행 .jar 파일을 생성합니다. 실행파일을 생성했으면
+
 ```
 docker-compose up --build -d
 ```
+
 를 통해 docker compose build를 진행하여 실행하시면 됩니다.
+
+<br>
+
+### Frontend
+
+#### 1. 플러터 설치
+
+1. Flutter 공식 웹사이트([https://flutter.dev](https://flutter.dev))에 접속
+2. `Get Started`를 클릭하여 설치 가이드를 따라 설치
+3. 설치가 완료되면, 터미널 또는 커맨드 프롬프트를 열고 `flutter doctor` 명령어를 실행하여 설치가 올바르게 되었는지 확인
+
+#### 2. 프로젝트 디렉토리 이동
+
+```
+cd front/capstone_front
+```
+
+#### 3. 플러터 패키지 설치
+
+```
+flutter pub get
+```
+
+#### 4. 프로젝트 실행
+
+```
+flutter run
+```
+
+<br>
+
+### AI
 
 ## 8. 기타
 
