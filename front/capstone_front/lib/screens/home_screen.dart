@@ -1,5 +1,3 @@
-// import 'dart:js';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -122,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     MenuButton(
                       title: tr("mainScreen.cafeteria"),
                       icon: Icons.restaurant_menu_rounded,
-                      routeCallbackFun: () => context.push("/login"),
+                      routeCallbackFun: () => context.push("/cafeteriamenu"),
                     ),
                     MenuButton(
                       title: tr("mainScreen.school_info"),
@@ -163,7 +161,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     MenuButton(
                       title: tr("mainScreen.guide"),
                       icon: Icons.help_center_rounded,
-                      routeCallbackFun: () => context.push("/login"),
+                      routeCallbackFun: () => context.push("/chatbot"),
                     ),
                     MenuButton(
                       title: tr("mainScreen.helper"),
@@ -173,7 +171,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     MenuButton(
                       title: tr("mainScreen.pronunciation_practice"),
                       icon: Icons.speaker_group_rounded,
-                      routeCallbackFun: () => context.push("/login"),
+                      routeCallbackFun: () => context.push("/pronunciation"),
                     ),
                   ],
                 ),
@@ -190,7 +188,7 @@ class _HomeScreenState extends State<HomeScreen> {
         context: context,
         builder: ((context) {
           return AlertDialog(
-            content: const Text("언어 변경을 적용하려면 앱을 재시작해야 합니다.\n 재시작하시겠습니까?"),
+            content: const Text("언어 변경을 적용하려면 앱을 재시작해야 합니다.\n재시작하시겠습니까?"),
             actions: [
               Container(
                 child: ElevatedButton(

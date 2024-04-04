@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
@@ -16,6 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _canLogin = false;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   User? user;
+  FlutterSecureStorage storage = const FlutterSecureStorage();
 
   @override
   Widget build(BuildContext context) {
@@ -52,12 +54,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   Flexible(
                     child: InkWell(
                       onTap: () async {
-                        context.go('/');
                         String result = await _login(
                             '${_userInfo[0]}@kookmin.ac.kr', _userInfo[1]);
                         switch (result) {
                           case "success":
-                            makeToast("로그인 성공!!!!");
+                            makeToast("로그인에 성공하였습니다");
+                            await storage.write(key: 'isLogin', value: 'true');
+                            await storage.write(
+                                key: 'userEmail',
+                                value: '${_userInfo[0]}@kookmin.ac.kr');
+                            context.go('/');
                           case "email":
                             makeToast("이메일이 인증되지 않았습니다");
                           case "invalid-credential":

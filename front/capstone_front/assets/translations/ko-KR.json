@@ -12,7 +12,7 @@
   "student_number": "학번",
   "mainScreen": {
     "notice": "공지사항",
-    "cafeteria": "학식",
+    "cafeteria": "학식정보",
     "school_info": "학교정보",
     "qna": "질문과 답변",
     "faq": "자주 묻는 질문",
@@ -20,5 +20,13 @@
     "guide": "가이드",
     "helper": "헬퍼",
     "pronunciation_practice": "발음 연습"
+  },
+  "pronunciationPracticeScreen": {
+    "pronunciation_practice": "발음 연습",
+    "permission_allow_notice": "음성 녹음 권한을 허용해야 발음 연습을 이용할 수 있습니다"
+  },
+  "chatbotScreen": {
+    "chatbot": "챗봇",
+    "textfield_hint": "궁금한 내용을 입력해주세요"
   }
 }
