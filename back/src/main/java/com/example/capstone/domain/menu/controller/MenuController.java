@@ -16,7 +16,7 @@ public class MenuController {
     @GetMapping("/api/menu/test")
     public void getMenuTest(){
         LocalDateTime test = LocalDateTime.of(2024, 3, 26, 0, 0);
-        menuService.addMenus(test, test, test);
+        menuService.addMenus(test);
     }
 
     @GetMapping("/api/menu/daily")
