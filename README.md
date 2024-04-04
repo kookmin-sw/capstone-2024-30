@@ -98,10 +98,29 @@ This project aims to develop a comprehensive app service for international stude
 ## 6. 시스템 구조
 
 <br>
+<img src ="https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/9ca1e9f4-7ac4-4930-b89b-72e4a489035d" width = "800">
+
 
 ## 7. 사용법
 
 <br>
+
+### Backend
+
+`.env.example`을 바탕으로 `.env`를 작성합니다. 그 다음
+```
+chmod +x ./gradlew
+./gradlew
+```
+또는
+```
+gradle clean build
+```
+를 통해 실행 .jar 파일을 생성합니다. 실행파일을 생성했으면
+```
+docker-compose up --build -d
+```
+를 통해 docker compose build를 진행하여 실행하시면 됩니다.
 
 ## 8. 기타
 
