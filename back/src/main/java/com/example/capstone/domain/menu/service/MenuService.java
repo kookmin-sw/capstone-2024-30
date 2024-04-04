@@ -75,10 +75,8 @@ public class MenuService {
         }
     }
 
-    public String findMenuByDate(LocalDateTime dateTime) {
-        List<String> cafeList = List.of("한울식당(법학관 지하1층)", "학생식당(복지관 1층)",
-                "교직원식당(복지관 1층)", "청향 한식당(법학관 5층)",
-                "청향 양식당(법학관 5층)", "생활관식당 일반식(생활관 A동 1층)");
+    public String findMenuByDate(LocalDateTime dateTime, String language) {
+        List<String> cafeList = menuRepository.findMenuCafeByDateAndLang(dateTime, language);
         List<String> infos = new ArrayList<>();
 
         for(String cafe : cafeList) {
