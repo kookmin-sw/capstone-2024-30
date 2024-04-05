@@ -1,3 +1,7 @@
+## 0. 중간발표 자료
+
+https://drive.google.com/drive/folders/1qLw6-LrNG9_9Of6zh4YmYm2VoOt31NlA?usp=drive_link
+
 ## 1. 프로젝트 소개
 
 이 프로젝트는 국민대학교에서 공부하는 외국인 유학생들을 위한 종합적인 앱 서비스를 개발하는 것입니다. 앱은 학생들이 캠퍼스 생활에 빠르게 적응할 수 있도록 다양한 정보와 서비스를 제공합니다.
@@ -160,7 +164,7 @@ flutter run
 ### Chat bot `KUKU` 소개
 
 국민대에 관한 모든 것을 물어보세요 !  
-국민대 관련 데이터를 기반으로 답변을 생성하는 챗봇 <쿠쿠>입니다.  
+국민대 관련 데이터를 기반으로 답변을 생성하는 챗봇 <쿠쿠>입니다.
 
 ### 학습한 데이터
 
@@ -169,13 +173,12 @@ flutter run
 
 ### 실행 방법
 
-
 2024_03_30 아나콘다 환경 python 3.8 에서 실행 확인
 
 1. /ai 경로로 작업 디렉토리 이동
-2. 패키지 설치  `pip install -r requirements.txt` 
+2. 패키지 설치 `pip install -r requirements.txt`
 3. /ai 경로에 .env 파일 생성 (OPENAI_API_KEY = 'your_api')
-4. `python run_chatbot.py` 
+4. `python run_chatbot.py`
 
 ### TEST
 
