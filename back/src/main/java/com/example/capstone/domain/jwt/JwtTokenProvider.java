@@ -10,6 +10,7 @@ import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,23 +30,18 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Component
-@RequiredArgsConstructor
 public class JwtTokenProvider {
-    private final RedisTemplate<String, String> redisTemplate;
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
 
     private Key key;
-
-    @Value("${jwt.secret}")
-    private String secret;
-
-    @Value("${jwt.token.access-expiration-time}")
     private long accessExpirationTime;
-
-    @Value("${jwt.token.refresh-expiration-time}")
     private long refreshExpirationTime;
 
-    @PostConstruct
-    public void init() {
+    public JwtTokenProvider(@Value("${jwt.secret}") String secret, @Value("${jwt.token.access-expiration-time}") long accessExpirationTime,
+            @Value("${jwt.token.refresh-expiration-time}") long refreshExpirationTime) {
+        this.accessExpirationTime = accessExpirationTime;
+        this.refreshExpirationTime = refreshExpirationTime;
         byte[] keyBytes = Decoders.BASE64.decode(secret);
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
