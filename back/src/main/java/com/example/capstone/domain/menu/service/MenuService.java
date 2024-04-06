@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.hibernate.cfg.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -24,9 +25,11 @@ import java.util.*;
 @RequiredArgsConstructor
 public class MenuService {
     private final MenuRepository menuRepository;
-    private final String authKey = "";
 
-    @Scheduled(fixedRate= 604800000)
+    @Value("${deepl.api.key}")
+    private String authKey;
+
+//    @Scheduled(fixedRate= 604800000)
     private void crawlingMenu(){
         LocalDateTime startDay = LocalDateTime.now();
 

@@ -17,10 +17,14 @@ public enum ErrorCode {
 
     // JWT Error
     INVALID_JWT_TOKEN(401, "J001", "Invalid JWT Token"),
+    NOT_EXIST_REFRESH_TOKEN(401, "J002", "Not Existing Refresh Token"),
 
     // User Error
     ALREADY_EMAIL_EXIST(400, "U001", "Already email exists"),
-    USER_NOT_FOUND(400, "U002", "User Not Found")
+    USER_NOT_FOUND(400, "U002", "User Not Found"),
+
+    // Database Error
+    REDIS_CONNECTION_FAIL(400, "D001", "Redis Connection Failed")
     ;
 
     private int status;
