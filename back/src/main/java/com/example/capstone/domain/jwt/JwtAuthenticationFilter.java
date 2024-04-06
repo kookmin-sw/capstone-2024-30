@@ -27,6 +27,8 @@ import static com.example.capstone.global.error.exception.ErrorCode.REDIS_CONNEC
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtTokenProvider jwtTokenProvider;
 
+    public static final String EXCEPTION = "exception";
+
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
@@ -39,9 +41,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 Authentication authentication = jwtTokenProvider.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
-        } catch (RedisConnectionFailureException e) {
+        } catch (JwtTokenInvalidException jwtTokenInvalidException){
+            request.setAttribute(EXCEPTION, jwtTokenInvalidException);
+        } catch (RedisConnectionFailureException redisConnectionFailureException){
             SecurityContextHolder.clearContext();
-            throw new BusinessException(REDIS_CONNECTION_FAIL);
+            request.setAttribute(EXCEPTION, redisConnectionFailureException);
         }
 
         filterChain.doFilter(request, response);

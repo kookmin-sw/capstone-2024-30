@@ -7,9 +7,11 @@ import com.example.capstone.global.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.example.capstone.global.error.exception.ErrorCode.INTERNAL_SERVER_ERROR;
 import static com.example.capstone.global.error.exception.ErrorCode.NOT_EXIST_REFRESH_TOKEN;
 
 @Slf4j
@@ -20,13 +22,18 @@ public class AuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisTemplate<String, String> redisTemplate;
 
-    public TokenResponse reissueToken(PrincipalDetails principalDetails, String refreshToken) {
+    public TokenResponse reissueToken(String refreshToken) {
         jwtTokenProvider.validateToken(refreshToken);
 
-        String UUID = jwtTokenProvider.extractUUID(refreshToken);
+        Authentication authentication = jwtTokenProvider.getAuthentication(refreshToken);
+        PrincipalDetails principalDetails;
 
-        String redisRefreshToken = redisTemplate.opsForValue().get(UUID);
-        if (!redisRefreshToken.equals(refreshToken)) {
+        if (authentication.getPrincipal() instanceof PrincipalDetails) {
+            principalDetails = (PrincipalDetails) authentication.getPrincipal();
+        } else throw new BusinessException(INTERNAL_SERVER_ERROR);
+
+        String redisRefreshToken = redisTemplate.opsForValue().get(principalDetails.getUuid());
+        if (redisRefreshToken == null || !redisRefreshToken.equals(refreshToken)) {
             throw new BusinessException(NOT_EXIST_REFRESH_TOKEN);
         }
 

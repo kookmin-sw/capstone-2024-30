@@ -6,6 +6,7 @@ import com.example.capstone.global.error.exception.BusinessException;
 import com.example.capstone.global.error.exception.ErrorCode;
 import com.example.capstone.global.error.exception.InvalidValueException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -60,6 +61,13 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatus()));
     }
 
+    @ExceptionHandler(RedisConnectionFailureException.class)
+    protected ResponseEntity<ErrorResponse> handleRedisConnectionFailureException(final RedisConnectionFailureException e){
+        log.error("handleJwtTokenInvalid", e);
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.REDIS_CONNECTION_FAIL);
+        return new ResponseEntity<>(response, HttpStatus.valueOf(ErrorCode.REDIS_CONNECTION_FAIL.getStatus()));
+    }
+
     @ExceptionHandler(InvalidValueException.class)
     protected ResponseEntity<ErrorResponse> handleInvalidValueException(final InvalidValueException e){
         log.error("handleInvalidValueException", e);
@@ -79,7 +87,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(NoHandlerFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<ErrorResponse> handle404(NoHandlerFoundException e){
+    protected ResponseEntity<ErrorResponse> handle404(NoHandlerFoundException e){
         return ResponseEntity
                 .status(e.getStatusCode())
                 .body(ErrorResponse.builder()

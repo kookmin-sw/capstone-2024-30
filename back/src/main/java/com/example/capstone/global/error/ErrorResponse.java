@@ -3,7 +3,6 @@ package com.example.capstone.global.error;
 import com.example.capstone.global.error.exception.ErrorCode;
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.validation.BindingResult;
 
 @Getter
 @Builder
