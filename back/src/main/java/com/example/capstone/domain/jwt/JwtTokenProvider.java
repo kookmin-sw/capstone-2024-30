@@ -2,12 +2,16 @@ package com.example.capstone.domain.jwt;
 
 import com.example.capstone.domain.jwt.exception.JwtTokenInvalidException;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,22 +22,34 @@ import java.security.Key;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class JwtTokenProvider {
-    private final Key key;
+    private final RedisTemplate<String, String> redisTemplate;
+
+    private Key key;
+
+    @Value("${jwt.secret}")
+    private String secret;
+
+    @Value("${jwt.token.access-expiration-time}")
     private long accessExpirationTime;
 
-    public JwtTokenProvider(@Value("${jwt.secret}") String secret,
-                            @Value("${jwt.token.access-expiration-time}") long accessExpirationTime){
+    @Value("${jwt.token.refresh-expiration-time}")
+    private long refreshExpirationTime;
+
+    @PostConstruct
+    public void init() {
         byte[] keyBytes = Decoders.BASE64.decode(secret);
         this.key = Keys.hmacShaKeyFor(keyBytes);
-        this.accessExpirationTime = accessExpirationTime;
     }
 
-    public String createAccessToken(PrincipalDetails authentication){
+    public String createAccessToken(PrincipalDetails authentication) {
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
@@ -42,10 +58,9 @@ public class JwtTokenProvider {
         Date expireDate = new Date(now.getTime() + accessExpirationTime);
 
 
-
         return Jwts.builder()
                 .claim(JwtClaim.AUTHORITIES.getKey(), authorities)
-                .claim(JwtClaim.UUID.getKey(),authentication.getUuid())
+                .claim(JwtClaim.UUID.getKey(), authentication.getUuid())
                 .claim(JwtClaim.NAME.getKey(), authentication.getName())
                 .claim(JwtClaim.MAJOR.getKey(), authentication.getMajor())
                 .setIssuedAt(now)
@@ -54,12 +69,35 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public String createRefreshToken(Authentication authentication){
-        //TODO : refreshToken 생성하는거 만들기
-        return "";
+    public String createRefreshToken(PrincipalDetails authentication) {
+        String authorities = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+
+        Date now = new Date();
+        Date expireDate = new Date(now.getTime() + refreshExpirationTime);
+
+        String refreshToekn = Jwts.builder()
+                .claim(JwtClaim.AUTHORITIES.getKey(), authorities)
+                .claim(JwtClaim.UUID.getKey(), authentication.getUuid())
+                .claim(JwtClaim.NAME.getKey(), authentication.getName())
+                .claim(JwtClaim.MAJOR.getKey(), authentication.getMajor())
+                .setIssuedAt(now)
+                .setExpiration(expireDate)
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+
+        redisTemplate.opsForValue().set(
+                authentication.getUuid(),
+                refreshToekn,
+                refreshExpirationTime,
+                TimeUnit.MICROSECONDS
+        );
+
+        return refreshToekn;
     }
 
-    public Authentication getAuthentication(String token){
+    public Authentication getAuthentication(String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
@@ -76,7 +114,7 @@ public class JwtTokenProvider {
          */
         String[] list = claims.get(JwtClaim.AUTHORITIES).toString().split(",");
         Collection<GrantedAuthority> authorities = new ArrayList<>();
-        for (String a: list) {
+        for (String a : list) {
             authorities.add(new SimpleGrantedAuthority(a));
         }
 
@@ -85,16 +123,33 @@ public class JwtTokenProvider {
         return new UsernamePasswordAuthenticationToken(principalDetails, "", authorities);
     }
 
-    public boolean validateToken(String token){
-        try{
+    public boolean validateToken(String token) {
+        try {
             Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token);
             return true;
-        } catch(JwtTokenInvalidException e){
+        } catch (JwtException e) {
             throw JwtTokenInvalidException.INSTANCE;
         }
 
+    }
+
+    private Claims parseClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = parseClaims(token);
+        return claimsResolver.apply(claims);
+    }
+
+    public String extractUUID(String token) {
+        return extractClaim(token, claims -> claims.get(JwtClaim.UUID.getKey(), String.class));
     }
 }

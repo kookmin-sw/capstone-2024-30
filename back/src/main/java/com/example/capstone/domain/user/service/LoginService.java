@@ -1,9 +1,9 @@
-package com.example.capstone.domain.auth.service;
+package com.example.capstone.domain.user.service;
 
-import com.example.capstone.domain.auth.dto.SigninRequest;
-import com.example.capstone.domain.auth.dto.SigninResponse;
-import com.example.capstone.domain.auth.dto.SignupRequest;
-import com.example.capstone.domain.auth.exception.AlreadyEmailExistException;
+import com.example.capstone.domain.user.dto.SigninRequest;
+import com.example.capstone.domain.auth.dto.TokenResponse;
+import com.example.capstone.domain.user.dto.SignupRequest;
+import com.example.capstone.domain.user.exception.AlreadyEmailExistException;
 import com.example.capstone.domain.jwt.JwtTokenProvider;
 import com.example.capstone.domain.jwt.PrincipalDetails;
 import com.example.capstone.domain.user.entity.User;
@@ -40,18 +40,21 @@ public class LoginService {
     }
 
     @Transactional
-    public SigninResponse signIn(SigninRequest dto){
+    public TokenResponse signIn(SigninRequest dto){
         String uuid = dto.uuid();
         //TODO : UserNotFoundException 만들고 throw하기
         User user = userRepository.findUserById(uuid)
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
 
-        String accessToken = jwtTokenProvider.createAccessToken(new PrincipalDetails(user.getId(),
-                user.getName(), user.getMajor(), false, Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"))));
+        PrincipalDetails principalDetails = new PrincipalDetails(user.getId(),
+                user.getName(), user.getMajor(), false, Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")));
 
-        return SigninResponse.builder()
+        String accessToken = jwtTokenProvider.createAccessToken(principalDetails);
+        String refreshToken = jwtTokenProvider.createRefreshToken(principalDetails);
+
+        return TokenResponse.builder()
                 .accessToken(accessToken)
-                .refreshToken("")
+                .refreshToken(refreshToken)
                 .build();
     }
 }

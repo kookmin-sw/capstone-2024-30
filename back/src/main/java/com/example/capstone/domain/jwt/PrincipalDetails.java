@@ -8,7 +8,7 @@ import java.util.Collection;
 
 @Getter
 @AllArgsConstructor
-public class PrincipalDetails{
+public class PrincipalDetails {
     private String uuid;
     private String name;
     private String major;
