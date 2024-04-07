@@ -1,8 +1,10 @@
+import 'package:capstone_front/screens/qna_detail/qna_detail_screen.dart';
 import 'package:capstone_front/screens/qna_list_screen/question_card.dart';
 import 'package:capstone_front/screens/qna_list_screen/test_question_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:go_router/go_router.dart';
 
 class QnaListScreen extends StatefulWidget {
   const QnaListScreen({super.key});
@@ -68,12 +70,24 @@ class _QnaListScreenState extends State<QnaListScreen> {
                   ...questionDatas.map(
                     (item) => Column(
                       children: [
-                        QuestionCard(
-                          title: item['title'],
-                          content: item['content'],
-                          name: item['name'],
-                          country: item['country'],
-                          tag: item['tag'],
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => QnaDetailScreen(
+                                  data: item,
+                                ),
+                              ),
+                            );
+                          },
+                          child: QuestionCard(
+                            title: item['title'],
+                            content: item['content'],
+                            name: item['name'],
+                            country: item['country'],
+                            tag: item['tag'],
+                          ),
                         ),
                         const SizedBox(
                           height: 20,
