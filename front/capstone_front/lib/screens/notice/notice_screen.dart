@@ -61,7 +61,17 @@ class _NoticeScreenState extends State<NoticeScreen> {
       'kind': '장학공지',
       'date': '2024-04-03',
     },
-    // 추가 게시글 데이터를 여기에 넣을 수 있습니다.
+  ];
+
+  final List<String> noticeKinds = [
+    '전체공지',
+    '학사공지',
+    '장학공지',
+    '교내채용',
+    '대학입학공지',
+    '대학원입학공지',
+    '행정공지',
+    '특강공지'
   ];
 
   @override
@@ -107,118 +117,132 @@ class _NoticeScreenState extends State<NoticeScreen> {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(0),
-        child: Column(
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                showModalBottomSheet(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20.0),
-                          topRight: Radius.circular(20.0),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18),
+            child: SizedBox(
+              height: 50,
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    width: 1.2,
+                    color: const Color(0xFF8266DF),
+                  ),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: TextButton(
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Container(
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(20.0),
+                              topRight: Radius.circular(20.0),
+                            ),
+                          ),
+                          child: Wrap(
+                            children: <Widget>[
+                              ...noticeKinds.map(
+                                (item) => ListTile(
+                                  onTap: () {
+                                    setState(() {
+                                      selectedItem = item;
+                                    });
+                                    Navigator.of(context).pop();
+                                  },
+                                  title: Center(
+                                    child: Text(
+                                      item,
+                                      style: const TextStyle(fontSize: 20),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        selectedItem,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
-                      child: Wrap(
-                        children: <Widget>[
-                          ListTile(
-                            leading: const Icon(Icons.notifications),
-                            title: const Text('전체공지'),
-                            onTap: () {
-                              Navigator.of(context).pop();
-                              setState(() {
-                                selectedItem = "전체공지";
-                              });
-                            },
-                          ),
-                          ListTile(
-                            leading: const Icon(Icons.message),
-                            title: const Text('장학공지'),
-                            onTap: () {
-                              Navigator.of(context).pop();
-                              setState(() {
-                                selectedItem = "장학공지";
-                              });
-                            },
-                          ),
-                          ListTile(
-                            leading: const Icon(Icons.school),
-                            title: const Text('학사공지'),
-                            onTap: () {
-                              Navigator.of(context).pop();
-                              setState(() {
-                                selectedItem = "학사공지";
-                              });
-                            },
-                          ),
-                        ],
+                      const Icon(Icons.keyboard_arrow_down_rounded)
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Expanded(
+            child: ListView.separated(
+              itemCount: posts.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(
+                    posts[index]['title'],
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 18,
+                    ),
+                  ),
+                  subtitle: Row(
+                    children: [
+                      Text(
+                        posts[index]['kind'],
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Color(0xFF8266DF),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        posts[index]['date'],
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Color(0xFFc8c8c8),
+                        ),
+                      ),
+                    ],
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => NoticeDetailScreen(posts[index]),
                       ),
                     );
                   },
                 );
               },
-              child: Text(selectedItem),
-            ),
-            Expanded(
-              child: ListView.separated(
-                itemCount: posts.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(
-                      posts[index]['title'],
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontSize: 18,
-                      ),
-                    ),
-                    subtitle: Row(
-                      children: [
-                        Text(
-                          posts[index]['kind'],
-                          style: const TextStyle(
-                            fontSize: 16,
-                            color: Color(0xFF8266DF),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          posts[index]['date'],
-                          style: const TextStyle(
-                            fontSize: 16,
-                            color: Color(0xFFc8c8c8),
-                          ),
-                        ),
-                      ],
-                    ),
-                    onTap: () {
-                      // context.push("/notice/detail");
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              NoticeDetailScreen(posts[index]),
-                        ),
-                      );
-                    },
-                  );
-                },
-                separatorBuilder: (context, index) => const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 18),
-                  child: Divider(
-                    color: Color(0xFFc8c8c8),
-                  ),
+              separatorBuilder: (context, index) => const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 18),
+                child: Divider(
+                  color: Color(0xFFc8c8c8),
                 ),
               ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
   }
