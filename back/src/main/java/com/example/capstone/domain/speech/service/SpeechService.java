@@ -2,11 +2,20 @@ package com.example.capstone.domain.speech.service;
 
 import com.microsoft.cognitiveservices.speech.*;
 import com.microsoft.cognitiveservices.speech.audio.AudioConfig;
+import com.github.difflib.DiffUtils;
+import com.github.difflib.patch.AbstractDelta;
+import com.github.difflib.patch.DeltaType;
+import com.github.difflib.patch.Patch;
+import jakarta.json.Json;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.*;
 
@@ -17,7 +26,7 @@ public class SpeechService {
     private String speechLang = "ko-KR";
 
     private Semaphore stopRecognitionSemaphore;
-    public void pronunciation() throws InterruptedException, ExecutionException {
+    public void pronunciation(String compareText) throws InterruptedException, ExecutionException {
         SpeechConfig speechConfig = SpeechConfig.fromSubscription(speechKey, speechRegion);
         AudioConfig audioConfig = AudioConfig.fromWavFileInput("음성 정보.wav");
 
@@ -94,7 +103,7 @@ public class SpeechService {
 
             boolean enableMiscue = true;
             // The reference matches the input wave named YourAudioFile.wav.
-            String referenceText = "북한 중앙방송은 이날 시사논단에서 미국 국무부가 지난 달 말 발표한 인권보고서와 관련해 다른 나라의 인권에 대해 이러쿵 저러쿵 시비질을 하면서 마치 세계 인권재판관이라도 되는 듯이 행세하고 있다 고 비난했다";
+            String referenceText = compareText;
 
             // Create pronunciation assessment config, set grading system, granularity and if enable miscue based on your requirement.
             PronunciationAssessmentConfig pronunciationConfig = new PronunciationAssessmentConfig(referenceText,

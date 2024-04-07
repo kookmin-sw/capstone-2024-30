@@ -16,6 +16,6 @@ public class SpeechController {
 
     @GetMapping("/api/speach/test")
     public void test() throws ExecutionException, InterruptedException {
-        speechService.pronunciation();
+        speechService.pronunciation("안녕하세요.");
     }
 }

@@ -51,6 +51,12 @@ dependencies {
     //Azure
     implementation group: 'com.microsoft.cognitiveservices.speech', name: 'client-sdk', version: "1.36.0", ext: "jar"
 
+    //Jakarta-JSON
+    implementation 'jakarta.json:jakarta.json-api:2.1.2'
+
+    //Diffutils
+    implementation 'io.github.java-diff-utils:java-diff-utils:4.12'
+
     implementation 'org.mapstruct:mapstruct:1.5.5.Final'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
 }
