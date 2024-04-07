@@ -6,6 +6,8 @@ import 'package:capstone_front/screens/login/login_screen.dart';
 import 'package:capstone_front/screens/login/signup_screen.dart';
 import 'package:capstone_front/screens/notice/notice_screen.dart';
 import 'package:capstone_front/screens/notice_detail/notice_detail_screen.dart';
+import 'package:capstone_front/screens/qna_detail/qna_detail_screen.dart';
+import 'package:capstone_front/screens/qna_list_screen/qna_list_screen.dart';
 import 'package:capstone_front/screens/speeking_practice/pronunciation_practice_screen.dart';
 import 'package:capstone_front/screens/speeking_practice/pronunciation_select_sentence_screen.dart';
 import 'package:capstone_front/utils/page_animation.dart';
@@ -122,6 +124,24 @@ final GoRouter router = GoRouter(
       path: '/notice/detail',
       builder: (context, state) => NoticeDetailScreen(
         const {"title": "temp", "date": "temp", "kind": "temp"},
+      ),
+    ),
+    GoRoute(
+      name: 'qnalist',
+      path: '/qnalist',
+      builder: (context, state) => const QnaListScreen(),
+    ),
+    GoRoute(
+      name: 'qnalistdetail',
+      path: '/qnalist/detail',
+      builder: (context, state) => const QnaDetailScreen(
+        data: {
+          'title': 'temp',
+          'content': 'temp',
+          'name': 'temp',
+          'country': 'temp',
+          'tag': 'temp',
+        },
       ),
     ),
   ],
