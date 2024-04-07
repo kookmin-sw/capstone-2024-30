@@ -20,6 +20,7 @@ class _QnaListScreenState extends State<QnaListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         title: TextField(
           controller: _controller,
           onChanged: (text) {

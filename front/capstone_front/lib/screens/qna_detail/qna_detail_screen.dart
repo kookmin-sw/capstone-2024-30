@@ -36,6 +36,7 @@ class _QnaDetailScreenState extends State<QnaDetailScreen>
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.data['tag']),
+        scrolledUnderElevation: 0,
       ),
       body: Container(
         color: const Color(0xFFF4F4F4),
