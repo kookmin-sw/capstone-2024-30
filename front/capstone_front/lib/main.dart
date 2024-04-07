@@ -4,6 +4,8 @@ import 'package:capstone_front/screens/chatbot/chatbot.dart';
 import 'package:capstone_front/screens/home_screen.dart';
 import 'package:capstone_front/screens/login/login_screen.dart';
 import 'package:capstone_front/screens/login/signup_screen.dart';
+import 'package:capstone_front/screens/notice/notice_screen.dart';
+import 'package:capstone_front/screens/notice_detail/notice_detail_screen.dart';
 import 'package:capstone_front/screens/speeking_practice/pronunciation_practice_screen.dart';
 import 'package:capstone_front/screens/speeking_practice/pronunciation_select_sentence_screen.dart';
 import 'package:capstone_front/utils/page_animation.dart';
@@ -109,6 +111,18 @@ final GoRouter router = GoRouter(
       name: 'chatbot',
       path: '/chatbot',
       builder: (context, state) => const ChatbotScreen(),
+    ),
+    GoRoute(
+      name: 'notice',
+      path: '/notice',
+      builder: (context, state) => const NoticeScreen(),
+    ),
+    GoRoute(
+      name: 'noticedetail',
+      path: '/notice/detail',
+      builder: (context, state) => NoticeDetailScreen(
+        const {"title": "temp", "date": "temp", "kind": "temp"},
+      ),
     ),
   ],
 );
