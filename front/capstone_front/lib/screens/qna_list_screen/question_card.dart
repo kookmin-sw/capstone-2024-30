@@ -59,6 +59,7 @@ class QuestionCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 20,
                     color: Theme.of(context).primaryColor,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 Expanded(
