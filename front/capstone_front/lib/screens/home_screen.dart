@@ -115,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     MenuButton(
                       title: tr("mainScreen.notice"),
                       icon: Icons.notifications_rounded,
-                      routeCallbackFun: () => context.push("/login"),
+                      routeCallbackFun: () => context.push("/notice"),
                     ),
                     MenuButton(
                       title: tr("mainScreen.cafeteria"),
