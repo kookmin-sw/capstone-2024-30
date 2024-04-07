@@ -15,7 +15,7 @@ public class SpeechController {
     private final SpeechService speechService;
 
     @GetMapping("/api/speach/test")
-    public void test() throws ExecutionException, InterruptedException, TimeoutException {
-        speechService.test();
+    public void test() throws ExecutionException, InterruptedException {
+        speechService.pronunciation();
     }
 }
