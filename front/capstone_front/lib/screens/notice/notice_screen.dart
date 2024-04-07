@@ -1,4 +1,4 @@
-import 'package:capstone_front/screens/notice_detail/notice_detail.dart';
+import 'package:capstone_front/screens/notice_detail/notice_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
@@ -202,7 +202,8 @@ class _NoticeScreenState extends State<NoticeScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => NoticeDetail(posts[index]),
+                          builder: (context) =>
+                              NoticeDetailScreen(posts[index]),
                         ),
                       );
                     },

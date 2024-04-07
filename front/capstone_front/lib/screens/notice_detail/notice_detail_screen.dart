@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-class NoticeDetail extends StatefulWidget {
+class NoticeDetailScreen extends StatefulWidget {
   Map<String, dynamic> post;
-  NoticeDetail(this.post, {super.key});
+  NoticeDetailScreen(this.post, {super.key});
 
   @override
-  State<NoticeDetail> createState() => _NoticeDetailState();
+  State<NoticeDetailScreen> createState() => _NoticeDetailState();
 }
 
-class _NoticeDetailState extends State<NoticeDetail> {
+class _NoticeDetailState extends State<NoticeDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
