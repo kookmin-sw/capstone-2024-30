@@ -1,5 +1,7 @@
+import 'package:capstone_front/screens/notice_detail/notice_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:go_router/go_router.dart';
 
 class NoticeScreen extends StatefulWidget {
   const NoticeScreen({super.key});
@@ -15,49 +17,49 @@ class _NoticeScreenState extends State<NoticeScreen> {
 
   final List<Map<String, dynamic>> posts = [
     {
-      'title': '게시글 제목 1',
-      'kind': '학사공지',
-      'date': '2024-04-01',
+      'title': '미래혁신단(차세대통신사업단) 직원 모집',
+      'kind': '교내채용',
+      'date': '2024-04-05',
     },
     {
-      'title': '게시글 제목 2',
-      'kind': '장학공지',
-      'date': '2024-04-02',
+      'title': '국민대학교 비전임교원 채용(2024.05.01.자)',
+      'kind': '교내채용',
+      'date': '2024-04-05',
     },
     {
-      'title': '게시글 제목 2',
-      'kind': '장학공지',
-      'date': '2024-04-02',
+      'title': '(진로지원센터) 계약직원 모집',
+      'kind': '교내채용',
+      'date': '2024-04-04',
     },
     {
-      'title': '게시글 제목 2',
-      'kind': '장학공지',
-      'date': '2024-04-02',
+      'title': '(대외협력팀) 계약직원 모집',
+      'kind': '교내채용',
+      'date': '2024-04-04',
     },
     {
-      'title': '게시글 제목 2',
+      'title': '[장학공지] 2024학년도 1학기 남윤철장학금 신청 안내',
       'kind': '장학공지',
-      'date': '2024-04-02',
+      'date': '2024-04-04',
     },
     {
-      'title': '게시글 제목 2',
+      'title': '[장학공지] 2024학년도 1학기 가온누리장학금 신청 안내',
       'kind': '장학공지',
-      'date': '2024-04-02',
+      'date': '2024-04-04',
     },
     {
-      'title': '게시글 제목 2',
+      'title': '[장학공지] 2024학년도 1학기 어울림장학금 신청 안내',
       'kind': '장학공지',
-      'date': '2024-04-02',
+      'date': '2024-04-04',
     },
     {
-      'title': '게시글 제목 2',
+      'title': '[장학공지] 2024학년도 1학기 그린나래장학금 신청 안내',
       'kind': '장학공지',
-      'date': '2024-04-02',
+      'date': '2024-04-04',
     },
     {
-      'title': '게시글 제목 2',
+      'title': '[장학공지] 2024학년도 1학기 메시장학금 신청 안내',
       'kind': '장학공지',
-      'date': '2024-04-02',
+      'date': '2024-04-03',
     },
     // 추가 게시글 데이터를 여기에 넣을 수 있습니다.
   ];
@@ -105,99 +107,117 @@ class _NoticeScreenState extends State<NoticeScreen> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          ElevatedButton(
-            onPressed: () {
-              showModalBottomSheet(
-                context: context,
-                builder: (BuildContext context) {
-                  return Container(
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20.0),
-                        topRight: Radius.circular(20.0),
+      body: Padding(
+        padding: const EdgeInsets.all(0),
+        child: Column(
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20.0),
+                          topRight: Radius.circular(20.0),
+                        ),
+                      ),
+                      child: Wrap(
+                        children: <Widget>[
+                          ListTile(
+                            leading: const Icon(Icons.notifications),
+                            title: const Text('전체공지'),
+                            onTap: () {
+                              Navigator.of(context).pop();
+                              setState(() {
+                                selectedItem = "전체공지";
+                              });
+                            },
+                          ),
+                          ListTile(
+                            leading: const Icon(Icons.message),
+                            title: const Text('장학공지'),
+                            onTap: () {
+                              Navigator.of(context).pop();
+                              setState(() {
+                                selectedItem = "장학공지";
+                              });
+                            },
+                          ),
+                          ListTile(
+                            leading: const Icon(Icons.school),
+                            title: const Text('학사공지'),
+                            onTap: () {
+                              Navigator.of(context).pop();
+                              setState(() {
+                                selectedItem = "학사공지";
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              },
+              child: Text(selectedItem),
+            ),
+            Expanded(
+              child: ListView.separated(
+                itemCount: posts.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(
+                      posts[index]['title'],
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 18,
                       ),
                     ),
-                    child: Wrap(
-                      children: <Widget>[
-                        ListTile(
-                          leading: const Icon(Icons.notifications),
-                          title: const Text('전체공지'),
-                          onTap: () {
-                            Navigator.of(context).pop();
-                            setState(() {
-                              selectedItem = "전체공지";
-                            });
-                          },
+                    subtitle: Row(
+                      children: [
+                        Text(
+                          posts[index]['kind'],
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Color(0xFF8266DF),
+                          ),
                         ),
-                        ListTile(
-                          leading: const Icon(Icons.message),
-                          title: const Text('장학공지'),
-                          onTap: () {
-                            Navigator.of(context).pop();
-                            setState(() {
-                              selectedItem = "장학공지";
-                            });
-                          },
+                        const SizedBox(
+                          width: 10,
                         ),
-                        ListTile(
-                          leading: const Icon(Icons.school),
-                          title: const Text('학사공지'),
-                          onTap: () {
-                            Navigator.of(context).pop();
-                            setState(() {
-                              selectedItem = "학사공지";
-                            });
-                          },
+                        Text(
+                          posts[index]['date'],
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Color(0xFFc8c8c8),
+                          ),
                         ),
                       ],
                     ),
+                    onTap: () {
+                      // context.push("/notice/detail");
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => NoticeDetail(posts[index]),
+                        ),
+                      );
+                    },
                   );
                 },
-              );
-            },
-            child: Text(selectedItem),
-          ),
-          Expanded(
-            child: ListView.separated(
-              itemCount: posts.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(
-                    posts[index]['title'],
-                    style: const TextStyle(
-                      fontSize: 20,
-                    ),
+                separatorBuilder: (context, index) => const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 18),
+                  child: Divider(
+                    color: Color(0xFFc8c8c8),
                   ),
-                  subtitle: Row(
-                    children: [
-                      Text(
-                        posts[index]['kind'],
-                        style: const TextStyle(
-                          fontSize: 16,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Text(
-                        posts[index]['date'],
-                        style: const TextStyle(
-                          fontSize: 16,
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-              separatorBuilder: (context, index) => const Divider(
-                color: Colors.grey, // 여기에서 구분선 색상을 지정할 수 있습니다.
+                ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
