@@ -37,6 +37,7 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
 
     runtimeOnly 'com.h2database:h2'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
@@ -47,6 +48,9 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
     implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
     implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+    //Deepl
+    implementation 'com.deepl.api:deepl-java:1.4.0'
 
     //Azure
     implementation group: 'com.microsoft.cognitiveservices.speech', name: 'client-sdk', version: "1.36.0", ext: "jar"

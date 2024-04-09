@@ -1,12 +1,14 @@
 package com.example.capstone.domain.user.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Table(name = "users")
@@ -45,14 +47,14 @@ public class User {
     @Column(name = "update_at", nullable = false)
     private LocalDateTime updateAt;
 
-    public void updateProfile(String name, String major, String country, String phoneNumber){
+    public void updateProfile(String name, String major, String country, String phoneNumber) {
         this.name = name;
         this.major = major;
         this.country = country;
         this.phoneNumber = phoneNumber;
     }
 
-    public void setId(String id){
+    public void setId(String id) {
         this.id = id;
     }
 }
