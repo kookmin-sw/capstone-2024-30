@@ -28,14 +28,13 @@ public class SpeechService {
     private Semaphore stopRecognitionSemaphore;
     public void pronunciation(String compareText) throws InterruptedException, ExecutionException {
         SpeechConfig speechConfig = SpeechConfig.fromSubscription(speechKey, speechRegion);
-        AudioConfig audioConfig = AudioConfig.fromWavFileInput("음성 정보.wav");
+        AudioConfig audioConfig = AudioConfig.fromWavFileInput("sample.wav");
 
         stopRecognitionSemaphore = new Semaphore(0);
         List<String> recognizedWords = new ArrayList<>();
         List<Word> pronWords = new ArrayList<>();
         List<Word> finalWords = new ArrayList<>();
         List<Double> fluencyScores = new ArrayList<>();
-        List<Double> prosodyScores = new ArrayList<>();
         List<Long> durations = new ArrayList<>();
 
         SpeechRecognizer recognizer = new SpeechRecognizer(speechConfig, speechLang, audioConfig);
@@ -50,30 +49,32 @@ public class SpeechService {
                                     pronResult.getAccuracyScore(), pronResult.getProsodyScore(), pronResult.getPronunciationScore(),
                                     pronResult.getCompletenessScore(), pronResult.getFluencyScore()));
                     fluencyScores.add(pronResult.getFluencyScore());
-                    prosodyScores.add(pronResult.getProsodyScore());
-
                     String jString = e.getResult().getProperties().getProperty(PropertyId.SpeechServiceResponse_JsonResult);
-                    JsonReader jsonReader = Json.createReader(new StringReader(jString));
-                    JsonObject jsonObject = jsonReader.readObject();
-                    jsonReader.close();
+                    try {
+                        JsonReader jsonReader = Json.createReader(new StringReader(jString));
+                        JsonObject jsonObject = jsonReader.readObject();
+                        JsonArray nBestArray = jsonObject.getJsonArray("NBest");
 
-                    JsonArray nBestArray = jsonObject.getJsonArray("NBest");
+                        for (int i = 0; i < nBestArray.size(); i++) {
+                            JsonObject nBestItem = nBestArray.getJsonObject(i);
 
-                    for (int i = 0; i < nBestArray.size(); i++) {
-                        JsonObject nBestItem = nBestArray.getJsonObject(i);
+                            JsonArray wordsArray = nBestItem.getJsonArray("Words");
+                            long durationSum = 0;
 
-                        JsonArray wordsArray = nBestItem.getJsonArray("Words");
-                        long durationSum = 0;
+                            for (int j = 0; j < wordsArray.size(); j++) {
+                                JsonObject wordItem = wordsArray.getJsonObject(j);
+                                recognizedWords.add(wordItem.getString("Word"));
+                                durationSum += wordItem.getJsonNumber("Duration").longValue();
 
-                        for (int j = 0; j < wordsArray.size(); j++) {
-                            JsonObject wordItem = wordsArray.getJsonObject(j);
-                            recognizedWords.add(wordItem.getString("Word"));
-                            durationSum += wordItem.getJsonNumber("Duration").longValue();
-
-                            JsonObject pronAssessment = wordItem.getJsonObject("PronunciationAssessment");
-                            pronWords.add(new Word(wordItem.getString("Word"), pronAssessment.getString("ErrorType"), pronAssessment.getJsonNumber("AccuracyScore").doubleValue()));
+                                JsonObject pronAssessment = wordItem.getJsonObject("PronunciationAssessment");
+                                pronWords.add(new Word(wordItem.getString("Word"), pronAssessment.getString("ErrorType"), pronAssessment.getJsonNumber("AccuracyScore").doubleValue()));
+                            }
+                            durations.add(durationSum);
+                            jsonReader.close();
                         }
-                        durations.add(durationSum);
+                    }
+                    catch (Exception error){
+                        System.out.println(error.getMessage());
                     }
                 }
                 else if (e.getResult().getReason() == ResultReason.NoMatch) {
@@ -102,28 +103,18 @@ public class SpeechService {
             });
 
             boolean enableMiscue = true;
-            // The reference matches the input wave named YourAudioFile.wav.
+            // 발음평가를 위해 참고할 원문
             String referenceText = compareText;
 
-            // Create pronunciation assessment config, set grading system, granularity and if enable miscue based on your requirement.
-            PronunciationAssessmentConfig pronunciationConfig = new PronunciationAssessmentConfig(referenceText,
-                    PronunciationAssessmentGradingSystem.HundredMark, PronunciationAssessmentGranularity.Phoneme, enableMiscue);
+            PronunciationAssessmentConfig pronunciationAssessmentConfig = PronunciationAssessmentConfig.fromJson("{\"referenceText\":\"북한 중앙방송은 이날 시사논단에서 미국 국무부가 지난 달 말 발표한 인권보고서와 관련해 다른 나라의 인권에 대해 이러쿵 저러쿵 시비질을 하면서 마치 세계 인권재판관이라도 되는 듯이 행세하고 있다고 비난했다.\",\"gradingSystem\":\"HundredMark\",\"granularity\":\"Phoneme\",\"phonemeAlphabet\":\"IPA\"}");
+            pronunciationAssessmentConfig.applyTo(recognizer);
 
-            pronunciationConfig.enableProsodyAssessment();
-
-            pronunciationConfig.applyTo(recognizer);
-
-            // Starts continuous recognition. Uses stopContinuousRecognitionAsync() to stop recognition.
             recognizer.startContinuousRecognitionAsync().get();
 
-            // Waits for completion.
             stopRecognitionSemaphore.acquire();
 
             recognizer.stopContinuousRecognitionAsync().get();
 
-            // For continuous pronunciation assessment mode, the service won't return the words with `Insertion` or `Omission`
-            // even if miscue is enabled.
-            // We need to compare with the reference text after received all recognized words to get these error words.
             String[] referenceWords = referenceText.toLowerCase().split(" ");
             for (int j = 0; j < referenceWords.length; j++) {
                 referenceWords[j] = referenceWords[j].replaceAll("^\\p{Punct}+|\\p{Punct}+$","");
@@ -159,7 +150,6 @@ public class SpeechService {
                 finalWords = pronWords;
             }
 
-            //We can calculate whole accuracy by averaging
             double totalAccuracyScore = 0;
             int accuracyCount = 0;
             int validCount = 0;
@@ -175,7 +165,6 @@ public class SpeechService {
             }
             double accuracyScore = totalAccuracyScore / accuracyCount;
 
-            //Re-calculate fluency score
             double fluencyScoreSum = 0;
             long durationSum = 0;
             for (int i = 0; i < durations.size(); i++) {
@@ -184,18 +173,10 @@ public class SpeechService {
             }
             double fluencyScore = fluencyScoreSum / durationSum;
 
-            //Re-calculate prosody score
-            double prosodyScoreSum = 0;
-            for (int i = 0; i < prosodyScores.size(); i++) {
-                prosodyScoreSum += prosodyScores.get(i);
-            }
-            double prosodyScore = prosodyScoreSum / prosodyScores.size();
-
-            // Calculate whole completeness score
             double completenessScore = (double)validCount / referenceWords.length * 100;
             completenessScore = completenessScore <= 100 ? completenessScore : 100;
 
-            System.out.println("Paragraph accuracy score: " + accuracyScore + " prosody score: " + prosodyScore +
+            System.out.println("Paragraph accuracy score: " + accuracyScore +
                     ", completeness score: " +completenessScore +
                     " , fluency score: " + fluencyScore);
             for (Word w : finalWords) {

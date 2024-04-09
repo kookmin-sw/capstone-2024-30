@@ -57,6 +57,9 @@ dependencies {
     //Diffutils
     implementation 'io.github.java-diff-utils:java-diff-utils:4.12'
 
+    //Json-Provider
+    implementation 'org.eclipse.parsson:parsson:1.1.5'
+
     implementation 'org.mapstruct:mapstruct:1.5.5.Final'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
 }
