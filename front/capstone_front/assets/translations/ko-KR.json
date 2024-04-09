@@ -28,5 +28,12 @@
   "chatbotScreen": {
     "chatbot": "챗봇",
     "textfield_hint": "궁금한 내용을 입력해주세요"
+  },
+  "helper": {
+    "helper": "헬퍼",
+    "total": "전체",
+    "need_helper": "헬퍼 구해요",
+    "need_helpee": "헬피 구해요",
+    "start_chat": "채팅하기"
   }
 }

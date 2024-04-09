@@ -1,6 +1,8 @@
 import 'package:capstone_front/firebase_options.dart';
 import 'package:capstone_front/screens/cafeteriaMenu/cafeteriaMenuScreen.dart';
 import 'package:capstone_front/screens/chatbot/chatbot.dart';
+import 'package:capstone_front/screens/helper/helper_screen.dart';
+import 'package:capstone_front/screens/helper/helper_writing_screen.dart';
 import 'package:capstone_front/screens/home_screen.dart';
 import 'package:capstone_front/screens/login/login_screen.dart';
 import 'package:capstone_front/screens/login/signup_screen.dart';
@@ -132,6 +134,18 @@ final GoRouter router = GoRouter(
       builder: (context, state) => const QnaListScreen(),
     ),
     GoRoute(
+      name: 'helper',
+      path: '/helper',
+      builder: (context, state) => const HelperScreen(),
+      routes: [
+        GoRoute(
+          name: 'writing',
+          path: 'writing',
+          builder: (context, state) => const HelperWritingScreen(),
+        ),
+      ],
+    ),
+    GoRoute(
       name: 'qnalistdetail',
       path: '/qnalist/detail',
       builder: (context, state) => const QnaDetailScreen(
@@ -178,22 +192,32 @@ class App extends StatelessWidget {
               fontSize: 50,
               fontWeight: FontWeight.w600,
             ),
-            titleMedium: TextStyle(
+            // 앱바 기본 폰트
+            titleLarge: TextStyle(
               fontFamily: 'pretendard',
               fontSize: 20,
               fontWeight: FontWeight.w600,
             ),
-            bodyLarge: TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.w500,
+            titleMedium: TextStyle(
+              fontFamily: 'pretendard',
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
             ),
-            bodyMedium: TextStyle(
+            bodyLarge: TextStyle(
+              fontFamily: 'pretendard',
               fontSize: 20,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w600,
+            ),
+            // 앱 내의 Text 기본 폰트
+            bodyMedium: TextStyle(
+              fontFamily: 'pretendard',
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
             ),
             bodySmall: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
+              fontFamily: 'pretendard',
+              fontSize: 13,
+              fontWeight: FontWeight.w400,
             )),
       ),
     );
