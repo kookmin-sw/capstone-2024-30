@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:go_router/go_router.dart';
 
 class HelperScreen extends StatefulWidget {
   const HelperScreen({super.key});
@@ -69,7 +70,9 @@ class _HelperScreenState extends State<HelperScreen> {
               right: 0,
               child: IconButton(
                 iconSize: 50,
-                onPressed: () {},
+                onPressed: () {
+                  context.push('/helper/write');
+                },
                 style: IconButton.styleFrom(
                     backgroundColor: Theme.of(context).colorScheme.primary),
                 icon: const Icon(
@@ -114,7 +117,7 @@ class _HelperScreenState extends State<HelperScreen> {
         Container(
           color: Colors.white,
           width: MediaQuery.of(context).size.width - 40,
-          height: 29,
+          height: 40,
           alignment: Alignment.centerLeft,
           child: ListView.builder(
             itemCount: _helperList.length,
@@ -132,17 +135,16 @@ class _HelperScreenState extends State<HelperScreen> {
                     });
                   },
                   child: Container(
-                    height: 29,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 15,
                     ),
                     decoration: BoxDecoration(
                         color: _selectedIndex == index
-                            ? const Color(0xffd6ecfa)
+                            ? const Color(0xb4000000)
                             : Colors.white,
                         borderRadius: BorderRadius.circular(16),
                         border: _selectedIndex == index
-                            ? Border.all(color: Colors.blue)
+                            ? Border.all(color: const Color(0x00000000))
                             : Border.all(
                                 color: const Color(0xffE4E7EB),
                               )),
@@ -150,12 +152,19 @@ class _HelperScreenState extends State<HelperScreen> {
                       alignment: Alignment.center,
                       child: Text(
                         _helperList[index],
-                        style: const TextStyle(
-                          color: Color(0xFF464D57),
-                          fontSize: 16,
-                          fontFamily: 'Pretendard',
-                          fontWeight: FontWeight.w500,
-                        ),
+                        style: _selectedIndex == index
+                            ? const TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontFamily: 'Pretendard',
+                                fontWeight: FontWeight.w600,
+                              )
+                            : const TextStyle(
+                                color: Color(0xFF464D57),
+                                fontSize: 16,
+                                fontFamily: 'Pretendard',
+                                fontWeight: FontWeight.w400,
+                              ),
                       ),
                     ),
                   ),

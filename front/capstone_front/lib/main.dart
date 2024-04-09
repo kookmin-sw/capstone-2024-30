@@ -2,6 +2,7 @@ import 'package:capstone_front/firebase_options.dart';
 import 'package:capstone_front/screens/cafeteriaMenu/cafeteriaMenuScreen.dart';
 import 'package:capstone_front/screens/chatbot/chatbot.dart';
 import 'package:capstone_front/screens/helper/helper_screen.dart';
+import 'package:capstone_front/screens/helper/helper_write_screen.dart';
 import 'package:capstone_front/screens/helper/helper_writing_screen.dart';
 import 'package:capstone_front/screens/home_screen.dart';
 import 'package:capstone_front/screens/login/login_screen.dart';
@@ -79,20 +80,38 @@ final GoRouter router = GoRouter(
       builder: (context, state) => const HomeScreen(),
       routes: [
         GoRoute(
-            name: 'pronunciation',
-            path: 'pronunciation',
-            builder: (context, state) => const PronunciationSentenceScreen(),
-            routes: [
-              GoRoute(
-                  path: 'practice',
-                  pageBuilder: (context, state) {
-                    return buildPageWithSlideRight(
-                      context: context,
-                      state: state,
-                      child: const PronunciationPracticeScreen(),
-                    );
-                  }),
-            ]),
+          name: 'pronunciation',
+          path: 'pronunciation',
+          builder: (context, state) => const PronunciationSentenceScreen(),
+          routes: [
+            GoRoute(
+                path: 'practice',
+                pageBuilder: (context, state) {
+                  return buildPageWithSlideRight(
+                    context: context,
+                    state: state,
+                    child: const PronunciationPracticeScreen(),
+                  );
+                }),
+          ],
+        ),
+        GoRoute(
+          name: 'helper',
+          path: 'helper',
+          builder: (context, state) => const HelperScreen(),
+          routes: [
+            GoRoute(
+              name: 'helperWriting',
+              path: 'writing',
+              builder: (context, state) => const HelperWritingScreen(),
+            ),
+            GoRoute(
+              name: 'helperWrite',
+              path: 'write',
+              builder: (context, state) => const HelperWriteScreen(),
+            ),
+          ],
+        ),
       ],
     ),
     GoRoute(
@@ -132,18 +151,6 @@ final GoRouter router = GoRouter(
       name: 'qnalist',
       path: '/qnalist',
       builder: (context, state) => const QnaListScreen(),
-    ),
-    GoRoute(
-      name: 'helper',
-      path: '/helper',
-      builder: (context, state) => const HelperScreen(),
-      routes: [
-        GoRoute(
-          name: 'writing',
-          path: 'writing',
-          builder: (context, state) => const HelperWritingScreen(),
-        ),
-      ],
     ),
     GoRoute(
       name: 'qnalistdetail',
