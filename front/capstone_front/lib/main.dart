@@ -1,6 +1,7 @@
 import 'package:capstone_front/firebase_options.dart';
 import 'package:capstone_front/screens/cafeteriaMenu/cafeteriaMenuScreen.dart';
 import 'package:capstone_front/screens/chatbot/chatbot.dart';
+import 'package:capstone_front/screens/helper/helper_board_screen.dart';
 import 'package:capstone_front/screens/helper/helper_screen.dart';
 import 'package:capstone_front/screens/helper/helper_write_screen.dart';
 import 'package:capstone_front/screens/helper/helper_writing_screen.dart';
