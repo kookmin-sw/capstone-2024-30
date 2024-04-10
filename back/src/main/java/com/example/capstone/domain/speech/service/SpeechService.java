@@ -11,6 +11,7 @@ import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.StringReader;
@@ -20,8 +21,10 @@ import java.util.List;
 import java.util.concurrent.*;
 
 @Service
+@RequiredArgsConstructor
 public class SpeechService {
-    private String speechKey = "";
+    @Value("${azure.api.key}")
+    private String speechKey;
     private String speechRegion = "koreacentral";
     private String speechLang = "ko-KR";
 
@@ -106,7 +109,7 @@ public class SpeechService {
             // 발음평가를 위해 참고할 원문
             String referenceText = compareText;
 
-            PronunciationAssessmentConfig pronunciationAssessmentConfig = PronunciationAssessmentConfig.fromJson("{\"referenceText\":\"북한 중앙방송은 이날 시사논단에서 미국 국무부가 지난 달 말 발표한 인권보고서와 관련해 다른 나라의 인권에 대해 이러쿵 저러쿵 시비질을 하면서 마치 세계 인권재판관이라도 되는 듯이 행세하고 있다고 비난했다.\",\"gradingSystem\":\"HundredMark\",\"granularity\":\"Phoneme\",\"phonemeAlphabet\":\"IPA\"}");
+            PronunciationAssessmentConfig pronunciationAssessmentConfig = PronunciationAssessmentConfig.fromJson(String.format("{\"referenceText\":\"%s\",\"gradingSystem\":\"HundredMark\",\"granularity\":\"Word\",\"phonemeAlphabet\":\"IPA\"}", referenceText));
             pronunciationAssessmentConfig.applyTo(recognizer);
 
             recognizer.startContinuousRecognitionAsync().get();
