@@ -70,6 +70,7 @@ flutter:
 
   assets:
     - assets/translations/
+    - assets/images/carrot_profile.png
 
   fonts:
     - family: pretendard

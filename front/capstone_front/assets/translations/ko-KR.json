@@ -28,5 +28,19 @@
   "chatbotScreen": {
     "chatbot": "챗봇",
     "textfield_hint": "궁금한 내용을 입력해주세요"
+  },
+  "helper": {
+    "helper": "헬퍼",
+    "total": "전체",
+    "need_helper": "헬퍼 구해요",
+    "need_helpee": "헬피 구해요",
+    "board": "게시판",
+    "chatting": "채팅",
+    "start_chat": "채팅하기",
+    "write": "글 작성",
+    "type": "종류",
+    "title": "제목",
+    "content": "내용",
+    "write_complete": "작성 완료"
   }
 }
