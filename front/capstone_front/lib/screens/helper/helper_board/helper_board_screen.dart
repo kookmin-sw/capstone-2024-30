@@ -1,5 +1,5 @@
-import 'package:capstone_front/screens/helper/helper_writing_card.dart';
-import 'package:capstone_front/screens/helper/helper_writing_json.dart';
+import 'package:capstone_front/screens/helper/helper_board/helper_writing_card.dart';
+import 'package:capstone_front/screens/helper/helper_board/helper_writing_json.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -31,84 +31,78 @@ class _HelperBoardState extends State<HelperBoardScreen> {
           tr('helper.helper'),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(
-          left: 20.0,
-          right: 20.0,
-        ),
-        child: Stack(
-          children: [
-            Column(
-              children: [
-                Container(
-                  height: 5,
-                  color: Colors.white,
-                ),
-                selectWritingType(context),
-                Container(
-                  color: Colors.white,
-                  height: 10,
-                ),
-                // Container(
-                //   height: 1,
-                //   decoration: const BoxDecoration(
-                //     color: Color(0xffd2d7dd),
-                //   ),
-                // ),
-                Expanded(
-                  child: ListView.builder(
-                    itemBuilder: (BuildContext context, int index) {
-                      return HelperWritingCard(
-                        index: index,
-                      );
-                    },
-                    itemCount: helperWriting.length,
-                  ),
-                ),
-              ],
-            ),
-            Positioned(
-              bottom: 20,
-              right: 0,
-              child: IconButton(
-                iconSize: 50,
-                onPressed: () {
-                  context.push('/helper/write');
-                },
-                style: IconButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.primary),
-                icon: const Icon(
-                  Icons.add,
-                  color: Colors.white,
+      body: Stack(
+        children: [
+          Column(
+            children: [
+              Container(
+                height: 5,
+                color: Colors.white,
+              ),
+              selectWritingType(context),
+              Container(
+                color: Colors.white,
+                height: 10,
+              ),
+              // Container(
+              //   height: 1,
+              //   decoration: const BoxDecoration(
+              //     color: Color(0xffd2d7dd),
+              //   ),
+              // ),
+              Expanded(
+                child: ListView.builder(
+                  itemBuilder: (BuildContext context, int index) {
+                    return HelperWritingCard(
+                      index: index,
+                    );
+                  },
+                  itemCount: helperWriting.length,
                 ),
               ),
+            ],
+          ),
+          Positioned(
+            bottom: 20,
+            right: 20,
+            child: IconButton(
+              iconSize: 50,
+              onPressed: () {
+                context.push('/helper/write');
+              },
+              style: IconButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.primary),
+              icon: const Icon(
+                Icons.add,
+                color: Colors.white,
+              ),
             ),
-            // Positioned(
-            //   bottom: 20,
-            //   right: 0,
-            //   child: Container(
-            //     decoration: BoxDecoration(
-            //       shape: BoxShape.circle,
-            //       border: Border.all(
-            //         color: Theme.of(context).colorScheme.primary,
-            //         width: 3,
-            //       ),
-            //     ),
-            //     child: IconButton(
-            //       iconSize: 50,
-            //       onPressed: () {},
-            //       style: IconButton.styleFrom(
-            //         backgroundColor: Colors.white,
-            //       ),
-            //       icon: Icon(
-            //         Icons.add,
-            //         color: Theme.of(context).colorScheme.primary,
-            //       ),
-            //     ),
-            //   ),
-            // ),
-          ],
-        ),
+          ),
+          // Positioned(
+          //   bottom: 20,
+          //   right: 0,
+          //   child: Container(
+          //     decoration: BoxDecoration(
+          //       shape: BoxShape.circle,
+          //       border: Border.all(
+          //         color: Theme.of(context).colorScheme.primary,
+          //         width: 3,
+          //       ),
+          //     ),
+          //     child: IconButton(
+          //       iconSize: 50,
+          //       onPressed: () {},
+          //       style: IconButton.styleFrom(
+          //         backgroundColor: Colors.white,
+          //       ),
+          //       icon: Icon(
+          //         Icons.add,
+          //         color: Theme.of(context).colorScheme.primary,
+          //       ),
+          //     ),
+          //   ),
+          // ),
+        ],
       ),
     );
   }
@@ -126,10 +120,7 @@ class _HelperBoardState extends State<HelperBoardScreen> {
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
               return Padding(
-                padding: EdgeInsets.only(
-                    right: index == _helperList.length - 1
-                        ? 0
-                        : 15), // 마지막 아이템에는 패딩을 적용하지 않음.
+                padding: EdgeInsets.only(left: index == 0 ? 20 : 10),
                 child: GestureDetector(
                   onTap: () {
                     setState(() {

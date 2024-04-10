@@ -1,6 +1,7 @@
-import 'package:capstone_front/screens/helper/helper_board_screen.dart';
-import 'package:capstone_front/screens/helper/helper_chatting_screen.dart';
-import 'package:capstone_front/screens/helper/helper_writing_screen.dart';
+import 'package:capstone_front/screens/helper/helper_board/helper_board_screen.dart';
+import 'package:capstone_front/screens/helper/helper_chatting/helper_chatting_screen.dart';
+import 'package:capstone_front/screens/helper/helper_board/helper_writing_screen.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class HelperScreen extends StatefulWidget {
@@ -28,9 +29,16 @@ class _HelperScreenState extends State<HelperScreen> {
           highlightColor: Colors.transparent,
         ),
         child: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(icon: Icon(Icons.article), label: '게시판'),
-            BottomNavigationBarItem(icon: Icon(Icons.chat), label: '채팅'),
+          backgroundColor: Colors.white,
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.article),
+              label: tr('helper.board'),
+            ),
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.chat),
+              label: tr('helper.chatting'),
+            ),
           ],
           currentIndex: _selectedPageIndex,
           selectedItemColor: Theme.of(context).colorScheme.primary,

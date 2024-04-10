@@ -1,4 +1,4 @@
-import 'package:capstone_front/screens/helper/helper_writing_json.dart';
+import 'package:capstone_front/screens/helper/helper_board/helper_writing_json.dart';
 import 'package:capstone_front/utils/basic_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
