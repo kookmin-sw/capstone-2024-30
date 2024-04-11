@@ -12,6 +12,7 @@ import 'package:capstone_front/screens/notice/notice_screen.dart';
 import 'package:capstone_front/screens/notice_detail/notice_detail_screen.dart';
 import 'package:capstone_front/screens/qna_detail/qna_detail_screen.dart';
 import 'package:capstone_front/screens/qna_list_screen/qna_list_screen.dart';
+import 'package:capstone_front/screens/qna_write.dart/qna_write_screen.dart';
 import 'package:capstone_front/screens/speeking_practice/pronunciation_practice_screen.dart';
 import 'package:capstone_front/screens/speeking_practice/pronunciation_select_sentence_screen.dart';
 import 'package:capstone_front/utils/page_animation.dart';
@@ -165,6 +166,11 @@ final GoRouter router = GoRouter(
           'tag': 'temp',
         },
       ),
+    ),
+    GoRoute(
+      name: 'qnawrite',
+      path: '/qnawrite',
+      builder: (context, state) => const QnaWriteScreen(),
     ),
   ],
 );

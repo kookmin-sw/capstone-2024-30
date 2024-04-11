@@ -60,47 +60,67 @@ class _QnaListScreenState extends State<QnaListScreen> {
           ),
         ],
       ),
-      body: Container(
-        color: const Color(0xFFF8F8F8),
-        child: Expanded(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  ...questionDatas.map(
-                    (item) => Column(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => QnaDetailScreen(
-                                  data: item,
-                                ),
+      body: Stack(
+        children: [
+          Container(
+            color: const Color(0xFFF8F8F8),
+            child: Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    children: [
+                      ...questionDatas.map(
+                        (item) => Column(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => QnaDetailScreen(
+                                      data: item,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: QuestionCard(
+                                title: item['title'],
+                                content: item['content'],
+                                name: item['name'],
+                                country: item['country'],
+                                tag: item['tag'],
                               ),
-                            );
-                          },
-                          child: QuestionCard(
-                            title: item['title'],
-                            content: item['content'],
-                            name: item['name'],
-                            country: item['country'],
-                            tag: item['tag'],
-                          ),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            )
+                          ],
                         ),
-                        const SizedBox(
-                          height: 20,
-                        )
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
           ),
-        ),
+          Positioned(
+            bottom: 20,
+            right: 20,
+            child: IconButton(
+              iconSize: 50,
+              onPressed: () {
+                context.push('/qnawrite');
+              },
+              style: IconButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.primary),
+              icon: const Icon(
+                Icons.add,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
