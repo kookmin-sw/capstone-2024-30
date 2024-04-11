@@ -1,5 +1,5 @@
 import 'package:capstone_front/screens/notice/test_notice_data.dart';
-import 'package:capstone_front/screens/notice_detail/notice_detail_screen.dart';
+import 'package:capstone_front/screens/notice/notice_detail_screen.dart';
 import 'package:flutter/material.dart';
 
 class NoticeScreen extends StatefulWidget {
