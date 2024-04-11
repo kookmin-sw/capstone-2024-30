@@ -1,6 +1,7 @@
 import 'package:capstone_front/firebase_options.dart';
 import 'package:capstone_front/screens/cafeteriaMenu/cafeteriaMenuScreen.dart';
 import 'package:capstone_front/screens/chatbot/chatbot.dart';
+import 'package:capstone_front/screens/faq/faq_screen.dart';
 import 'package:capstone_front/screens/helper/helper_board/helper_board_screen.dart';
 import 'package:capstone_front/screens/helper/helper_screen.dart';
 import 'package:capstone_front/screens/helper/helper_write_screen.dart';
@@ -171,6 +172,11 @@ final GoRouter router = GoRouter(
       name: 'qnawrite',
       path: '/qnawrite',
       builder: (context, state) => const QnaWriteScreen(),
+    ),
+    GoRoute(
+      name: 'faq',
+      path: '/faq',
+      builder: (context, state) => const FaqScreen(),
     ),
   ],
 );
