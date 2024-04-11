@@ -1,14 +1,19 @@
 from langchain_community.document_loaders import PyPDFLoader
 import pickle
-
+import os
 
 class PdfReader:
     def __init__(self) -> None:
         pass
 
-    def read_pdf(filename, path):
+    def read_pdf(filepath, path='./'):
+        if path == './':
+            path = filepath+'/'
 
-        loader = PyPDFLoader(filename)
+        if not os.path.exists(path):
+            os.makedirs(path)
+
+        loader = PyPDFLoader(filepath)
         pages = loader.load()
         for page_no in range(len(pages)):
             doc = pages[page_no]
