@@ -42,5 +42,12 @@
     "title": "제목",
     "content": "내용",
     "write_complete": "작성 완료"
+  },
+  "qna": {
+    "writetitle": "무엇을 물어보고 싶으세요?",
+    "category_1": "학사안내",
+    "category_2": "대학생활",
+    "category_3": "교직원안내",
+    "category_4": "교수자"
   }
 }

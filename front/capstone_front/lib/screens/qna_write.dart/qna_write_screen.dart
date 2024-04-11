@@ -12,10 +12,10 @@ class QnaWriteScreen extends StatefulWidget {
 
 class _HelperWriteScreenState extends State<QnaWriteScreen> {
   final List<String> _helperWriteList = [
-    '학사안내',
-    '대학생활',
-    '교직원안내',
-    '교수자',
+    tr('qna.category_1'),
+    tr('qna.category_2'),
+    tr('qna.category_3'),
+    tr('qna.category_4'),
   ];
   int _selectedIndex = 0;
   final TextEditingController _titleController = TextEditingController();

@@ -2,6 +2,7 @@ import 'package:capstone_front/screens/qna_detail/qna_detail_screen.dart';
 import 'package:capstone_front/screens/qna_list_screen/question_card.dart';
 import 'package:capstone_front/screens/qna_list_screen/test_question_data.dart';
 import 'package:capstone_front/utils/basic_button.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -159,15 +160,15 @@ class _MyCustomBottomSheetState extends State<MyCustomBottomSheet> {
       child: Column(
         mainAxisSize: MainAxisSize.min, // 컨텐츠 크기에 맞춰 조정
         children: <Widget>[
-          const Text(
-            '무엇을 물어보고 싶으세요?',
-            style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.w700),
+          Text(
+            tr('qna.writetitle'),
+            style: const TextStyle(fontSize: 24.0, fontWeight: FontWeight.w700),
           ),
           const SizedBox(
             height: 30,
           ),
           CheckboxListTile(
-            title: const Text('학사안내'),
+            title: Text(tr('qna.category_1')),
             value: productInfo,
             activeColor: Theme.of(context).primaryColor,
             checkColor: Colors.white,
@@ -181,7 +182,7 @@ class _MyCustomBottomSheetState extends State<MyCustomBottomSheet> {
             color: Color(0xFFc9c9c9),
           ),
           CheckboxListTile(
-            title: const Text('대학생활'),
+            title: Text(tr('qna.category_2')),
             value: ingredientInfo,
             activeColor: Theme.of(context).primaryColor,
             checkColor: Colors.white,
@@ -195,7 +196,7 @@ class _MyCustomBottomSheetState extends State<MyCustomBottomSheet> {
             color: Color(0xFFc9c9c9),
           ),
           CheckboxListTile(
-            title: const Text('교직원안내'),
+            title: Text(tr('qna.category_3')),
             value: nutritionAnalysis,
             activeColor: Theme.of(context).primaryColor,
             checkColor: Colors.white,
@@ -209,7 +210,7 @@ class _MyCustomBottomSheetState extends State<MyCustomBottomSheet> {
             color: Color(0xFFc9c9c9),
           ),
           CheckboxListTile(
-            title: const Text('교수자'),
+            title: Text(tr('qna.category_4')),
             value: others,
             activeColor: Theme.of(context).primaryColor,
             checkColor: Colors.white,
