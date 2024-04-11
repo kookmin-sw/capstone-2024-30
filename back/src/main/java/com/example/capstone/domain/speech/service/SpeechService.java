@@ -40,6 +40,8 @@ public class SpeechService {
         List<Double> fluencyScores = new ArrayList<>();
         List<Long> durations = new ArrayList<>();
 
+        StringBuilder responseJson = new StringBuilder("{");
+
         SpeechRecognizer recognizer = new SpeechRecognizer(speechConfig, speechLang, audioConfig);
         {
             recognizer.recognized.addEventListener((s, e) -> {
@@ -51,6 +53,11 @@ public class SpeechService {
                                     "    Accuracy score: %f, Prosody score: %f, Pronunciation score: %f, Completeness score : %f, FluencyScore: %f",
                                     pronResult.getAccuracyScore(), pronResult.getProsodyScore(), pronResult.getPronunciationScore(),
                                     pronResult.getCompletenessScore(), pronResult.getFluencyScore()));
+                    responseJson.append("\"text\": \"").append(e.getResult().getText())
+                            .append("\",\"accuracyScore\": ").append(pronResult.getAccuracyScore())
+                            .append(",\"pronunciationScore\": ").append(pronResult.getPronunciationScore())
+                            .append(",\"completenessScore\": ").append(pronResult.getCompletenessScore())
+                            .append(",\"fluencyScore\": ").append(pronResult.getFluencyScore()).append(",");
                     fluencyScores.add(pronResult.getFluencyScore());
                     String jString = e.getResult().getProperties().getProperty(PropertyId.SpeechServiceResponse_JsonResult);
                     try {
@@ -182,11 +189,21 @@ public class SpeechService {
             System.out.println("Paragraph accuracy score: " + accuracyScore +
                     ", completeness score: " +completenessScore +
                     " , fluency score: " + fluencyScore);
+            responseJson.append("\"paragraphAccuracy\": ").append(accuracyScore)
+                    .append(",\"paragraphCompleteness\": ").append(completenessScore)
+                    .append(",\"paragraphFluency\": ").append(fluencyScore).append(",\"words\": [");
+
             for (Word w : finalWords) {
                 System.out.println(" word: " + w.word + "\taccuracy score: " +
                         w.accuracyScore + "\terror type: " + w.errorType);
+                responseJson.append("\"").append(w.word)
+                        .append("\": {\"accuracy\": ").append(w.accuracyScore)
+                        .append(",\"errorType\": ").append(w.errorType).append("},");
             }
+            responseJson.deleteCharAt(responseJson.length() - 1);
+            responseJson.append("]}");
         }
+        System.out.println(responseJson.toString());
         speechConfig.close();
         audioConfig.close();
         recognizer.close();
