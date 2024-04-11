@@ -1,4 +1,4 @@
-import 'package:capstone_front/screens/faq/test_fqa_data.dart';
+import 'package:capstone_front/screens/faq/test_faq_data.dart';
 import 'package:flutter/material.dart';
 
 class FaqScreen extends StatefulWidget {
