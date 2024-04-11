@@ -1,6 +1,7 @@
 import 'package:capstone_front/screens/qna_detail/qna_detail_screen.dart';
 import 'package:capstone_front/screens/qna_list_screen/question_card.dart';
 import 'package:capstone_front/screens/qna_list_screen/test_question_data.dart';
+import 'package:capstone_front/utils/basic_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -110,7 +111,12 @@ class _QnaListScreenState extends State<QnaListScreen> {
             child: IconButton(
               iconSize: 50,
               onPressed: () {
-                context.push('/qnawrite');
+                showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return const MyCustomBottomSheet();
+                  },
+                );
               },
               style: IconButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.primary),
@@ -119,6 +125,109 @@ class _QnaListScreenState extends State<QnaListScreen> {
                 color: Colors.white,
               ),
             ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class MyCustomBottomSheet extends StatefulWidget {
+  const MyCustomBottomSheet({super.key});
+
+  @override
+  _MyCustomBottomSheetState createState() => _MyCustomBottomSheetState();
+}
+
+class _MyCustomBottomSheetState extends State<MyCustomBottomSheet> {
+  bool productInfo = false;
+  bool ingredientInfo = false;
+  bool nutritionAnalysis = false;
+  bool others = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(20.0),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20.0),
+          topRight: Radius.circular(20.0),
+        ),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min, // 컨텐츠 크기에 맞춰 조정
+        children: <Widget>[
+          const Text(
+            '무엇을 물어보고 싶으세요?',
+            style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.w700),
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+          CheckboxListTile(
+            title: const Text('학사안내'),
+            value: productInfo,
+            activeColor: Theme.of(context).primaryColor,
+            checkColor: Colors.white,
+            onChanged: (bool? value) {
+              setState(() {
+                productInfo = value!;
+              });
+            },
+          ),
+          const Divider(
+            color: Color(0xFFc9c9c9),
+          ),
+          CheckboxListTile(
+            title: const Text('대학생활'),
+            value: ingredientInfo,
+            activeColor: Theme.of(context).primaryColor,
+            checkColor: Colors.white,
+            onChanged: (bool? value) {
+              setState(() {
+                ingredientInfo = value!;
+              });
+            },
+          ),
+          const Divider(
+            color: Color(0xFFc9c9c9),
+          ),
+          CheckboxListTile(
+            title: const Text('교직원안내'),
+            value: nutritionAnalysis,
+            activeColor: Theme.of(context).primaryColor,
+            checkColor: Colors.white,
+            onChanged: (bool? value) {
+              setState(() {
+                nutritionAnalysis = value!;
+              });
+            },
+          ),
+          const Divider(
+            color: Color(0xFFc9c9c9),
+          ),
+          CheckboxListTile(
+            title: const Text('교수자'),
+            value: others,
+            activeColor: Theme.of(context).primaryColor,
+            checkColor: Colors.white,
+            onChanged: (bool? value) {
+              setState(() {
+                others = value!;
+              });
+            },
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+          BasicButton(
+            text: "선택완료",
+            onPressed: () {
+              context.push('/qnawrite');
+              Navigator.of(context).pop();
+            },
           ),
         ],
       ),
