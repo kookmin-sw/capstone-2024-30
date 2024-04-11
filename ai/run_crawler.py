@@ -1,6 +1,8 @@
 from crawler.notice_crawler import NoticeCrawler
 from crawler.ciss_crawler import CissClawer
 from crawler.pdf_reader import PdfReader
+from crawler.sw_crawler import SoftwareCrawler
+
 from dotenv import load_dotenv
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -11,6 +13,11 @@ import sys
 current_directory = os.path.dirname(os.path.realpath(__file__))
 os.chdir(current_directory)
 
+if len(sys.argv) == 1:
+    print('Error! Choose your crawling type!!')
+    print('ex) python run_crawler.py notice')
+    sys.exit(0)
+    
 crawler_type = sys.argv[1]
 print(crawler_type)
 
@@ -39,10 +46,15 @@ elif crawler_type == 'pdf':
         print(' Error! please add your pdf file path!')
         print('ex) python run_crawler.py "YOUR PDF PATH"')
         sys.exit(0)
-        
+
     pdf_path = sys.argv[2]
     pc.read_pdf(pdf_path, path)
 
+elif crawler_type == 'sw':
+    path = './data/SW/'
+    sc = SoftwareCrawler()
+    sc.crawling(path)
+
 else:
-    print('Error! Choose your crawling type!!')
+    print('Error! Choose valid crawling type!!')
     print('ex) python run_crawler.py notice')

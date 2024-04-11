@@ -10,7 +10,7 @@ parent_dir = os.path.dirname(current_dir)
 os.chdir(parent_dir)
 
 # 파일에서 객체를 불러옵니다.
-with open('./data/CISS/non_notice.pkl', 'rb') as f:
+with open('./data/SW/sw_notice.pkl', 'rb') as f:
     loaded_data1 = pickle.load(f, encoding='utf-8')
 
 # 불러온 객체를 출력합니다.
@@ -20,7 +20,7 @@ with open('./data/CISS/non_notice.pkl', 'rb') as f:
 
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=50)
 
-splits1 = text_splitter.split_documents(loaded_data1)[2]
+splits1 = text_splitter.split_documents(loaded_data1)[5]
 print(splits1)
 print('++++++++++++++++++++++++++++')
 #print(splits2)
