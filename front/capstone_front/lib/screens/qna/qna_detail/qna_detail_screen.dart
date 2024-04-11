@@ -1,4 +1,4 @@
-import 'package:capstone_front/screens/qna_detail/test_comment_data.dart';
+import 'package:capstone_front/screens/qna/qna_detail/test_comment_data.dart';
 import 'package:flutter/material.dart';
 
 class QnaDetailScreen extends StatefulWidget {

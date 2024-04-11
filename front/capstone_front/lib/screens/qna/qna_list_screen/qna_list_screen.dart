@@ -1,6 +1,6 @@
-import 'package:capstone_front/screens/qna_detail/qna_detail_screen.dart';
-import 'package:capstone_front/screens/qna_list_screen/question_card.dart';
-import 'package:capstone_front/screens/qna_list_screen/test_question_data.dart';
+import 'package:capstone_front/screens/qna/qna_detail/qna_detail_screen.dart';
+import 'package:capstone_front/screens/qna/qna_list_screen/question_card.dart';
+import 'package:capstone_front/screens/qna/qna_list_screen/test_question_data.dart';
 import 'package:capstone_front/utils/basic_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -112,12 +112,7 @@ class _QnaListScreenState extends State<QnaListScreen> {
             child: IconButton(
               iconSize: 50,
               onPressed: () {
-                showModalBottomSheet(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return const MyCustomBottomSheet();
-                  },
-                );
+                context.push('/qnawrite');
               },
               style: IconButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.primary),
@@ -226,7 +221,6 @@ class _MyCustomBottomSheetState extends State<MyCustomBottomSheet> {
           BasicButton(
             text: "선택완료",
             onPressed: () {
-              context.push('/qnawrite');
               Navigator.of(context).pop();
             },
           ),
