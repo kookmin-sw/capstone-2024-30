@@ -6,11 +6,12 @@ import os
 from tqdm import tqdm
 
 class CissClawer:
-    def __init__(self):
-        self.urls = self.load_urls_from_file()
+    def __init__(self, urls_txt='./crawler/ciss_url.txt'):
+        self.urls = self.load_urls_from_file(urls_txt)
         self.static_urls = self.urls[:29] # 그 외
         self.notice_urls = self.urls[29:] # 공지사항
         self.notice_categories = ['academic', 'visa', 'scholarship', 'event', 'program', 'gks']
+
     def load_urls_from_file(self, file_path='./ciss_url.txt'):
         urls = []
         with open(file_path, 'r') as file:
@@ -34,6 +35,7 @@ class CissClawer:
         metadata_lst = self.extract_page_metadata(urls_lst)
 
         for i, doc in enumerate(tqdm(docs)):
+            doc.page_content = doc.page_content.replace(u"\xa0", u" ")
             doc.metadata['title'] = metadata_lst[i][0]
             if len(metadata_lst[i]) >= 2:
                 doc.metadata['datetime'] = metadata_lst[i][1]
@@ -121,6 +123,6 @@ if __name__ == '__main__':
     # 현재 작업 디렉토리 출력
     current_working_directory = os.getcwd()
     print("Current working directory:", current_working_directory)
-
-    cc = CissClawer()
+    urls_txt = 'url_path'
+    cc = CissClawer(urls_txt)
     cc.crawling()
