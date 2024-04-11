@@ -143,7 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     MenuButton(
                       title: tr("mainScreen.faq"),
                       icon: Icons.question_mark_rounded,
-                      routeCallbackFun: () => context.push("/login"),
+                      routeCallbackFun: () => context.push("/faq"),
                     ),
                     MenuButton(
                       title: tr("mainScreen.community"),
