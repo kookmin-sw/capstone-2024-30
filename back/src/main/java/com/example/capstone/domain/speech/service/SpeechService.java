@@ -1,7 +1,8 @@
 package com.example.capstone.domain.speech.service;
 
+import com.example.capstone.domain.speech.WavStream;
 import com.microsoft.cognitiveservices.speech.*;
-import com.microsoft.cognitiveservices.speech.audio.AudioConfig;
+import com.microsoft.cognitiveservices.speech.audio.*;
 import com.github.difflib.DiffUtils;
 import com.github.difflib.patch.AbstractDelta;
 import com.github.difflib.patch.DeltaType;
@@ -13,7 +14,11 @@ import jakarta.json.JsonReader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,9 +34,14 @@ public class SpeechService {
     private String speechLang = "ko-KR";
 
     private Semaphore stopRecognitionSemaphore;
-    public void pronunciation(String compareText) throws InterruptedException, ExecutionException {
+    public String pronunciation(String compareText, MultipartFile file) throws InterruptedException, ExecutionException, IOException {
         SpeechConfig speechConfig = SpeechConfig.fromSubscription(speechKey, speechRegion);
-        AudioConfig audioConfig = AudioConfig.fromWavFileInput("sample.wav");
+        System.out.println(file);
+
+        WavStream wavStream = new WavStream(file.getInputStream());
+        PullAudioInputStream inputStream = PullAudioInputStream.createPullStream(wavStream, wavStream.getFormat());
+
+        AudioConfig audioConfig = AudioConfig.fromStreamInput( inputStream );
 
         stopRecognitionSemaphore = new Semaphore(0);
         List<String> recognizedWords = new ArrayList<>();
@@ -207,6 +217,7 @@ public class SpeechService {
         speechConfig.close();
         audioConfig.close();
         recognizer.close();
+        return responseJson.toString();
     }
 
     public static class Word {
