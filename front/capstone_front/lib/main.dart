@@ -6,9 +6,10 @@ import 'package:capstone_front/screens/helper/helper_board/helper_board_screen.d
 import 'package:capstone_front/screens/helper/helper_screen.dart';
 import 'package:capstone_front/screens/helper/helper_write_screen.dart';
 import 'package:capstone_front/screens/helper/helper_board/helper_writing_screen.dart';
-import 'package:capstone_front/screens/home_screen.dart';
+import 'package:capstone_front/screens/home/home_screen.dart';
 import 'package:capstone_front/screens/login/login_screen.dart';
 import 'package:capstone_front/screens/login/signup_screen.dart';
+import 'package:capstone_front/screens/main_screen.dart';
 import 'package:capstone_front/screens/notice/notice_screen.dart';
 import 'package:capstone_front/screens/notice/notice_detail_screen.dart';
 import 'package:capstone_front/screens/qna/qna_detail/qna_detail_screen.dart';
@@ -80,7 +81,7 @@ final GoRouter router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => const HomeScreen(),
+      builder: (context, state) => const MainScreen(),
       routes: [
         GoRoute(
           name: 'pronunciation',
