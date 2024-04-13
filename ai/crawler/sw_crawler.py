@@ -80,17 +80,24 @@ class SoftwareCrawler:
 
     def crawling(self, path='./SW/'):
 
-        if not os.path.exists(path):
-            os.makedirs(path)
+        non_notice_path = path + 'SCHOOL_INFO/'
+
+        if not os.path.exists(non_notice_path):
+            os.makedirs(non_notice_path)
 
         docs = self.crawling_content_url(self.static_urls)
-        with open(path+'non_notice'+'.pkl', 'wb') as f:
+        with open(non_notice_path+'non_notice'+'.pkl', 'wb') as f:
             pickle.dump(docs, f)
         
+        notice_path = path + 'NOTICE/'
         notice_categories = self.notice_categories.keys()
+
+        if not os.path.exists(notice_path):
+            os.makedirs(notice_path)
+
         for c in notice_categories:
             docs = self.crawling_content_url(self.notice_url_lst(c), page_type='notice')
-            with open(path+'sw_'+c+'.pkl', 'wb') as f:
+            with open(notice_path+'sw_'+c+'.pkl', 'wb') as f:
                 pickle.dump(docs, f)
 
     def extract_static_metadata(self, urls):

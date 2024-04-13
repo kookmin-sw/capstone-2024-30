@@ -36,27 +36,36 @@ class CissClawer:
 
         for i, doc in enumerate(tqdm(docs)):
             doc.page_content = doc.page_content.replace(u"\xa0", u" ")
-            doc.metadata['title'] = metadata_lst[i][0]
-            if len(metadata_lst[i]) >= 2:
-                doc.metadata['datetime'] = metadata_lst[i][1]
-        
+            try:
+                doc.metadata['title'] = metadata_lst[i][0]
+                if len(metadata_lst[i]) >= 2:
+                    doc.metadata['datetime'] = metadata_lst[i][1]
+            except:
+                print(f'ERROR ! : {urls_lst[i], metadata_lst[i]}')
+            
         return docs
     
 
     def crawling(self, path = './CISS/'):
+        print(f' crawling CISS notice ... ')
+        notice_path = path + 'NOTICE/'
         for i, url in enumerate(self.notice_urls):
             print(f' crawling {self.notice_categories[i]} ... ')
             child_url_lst = self.get_notice_child_urls(url)
 
             docs = self.crawling_content_url(child_url_lst)
-            if not os.path.exists(path):
-                os.makedirs(path)
-            with open(path+self.notice_categories[i]+'.pkl', 'wb') as f:
+            if not os.path.exists(notice_path):
+                os.makedirs(notice_path)
+            with open(notice_path+self.notice_categories[i]+'.pkl', 'wb') as f:
                 pickle.dump(docs, f)
         
-        print(f' crawling non_notice ... ')
+        non_notice_path = path + 'SCHOOL_INFO/'
+        print(f' crawling CISS non_notice ... ')
         docs = self.crawling_content_url(self.static_urls)
-        with open(path+'non_notice'+'.pkl', 'wb') as f:
+
+        if not os.path.exists(non_notice_path):
+            os.makedirs(non_notice_path)
+        with open(non_notice_path+'non_notice'+'.pkl', 'wb') as f:
             pickle.dump(docs, f)
 
     def get_notice_child_urls(self, notice_categori_url):
