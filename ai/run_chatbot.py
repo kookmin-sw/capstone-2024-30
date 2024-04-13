@@ -9,8 +9,13 @@ os.chdir(current_directory)
 
 load_dotenv()
 
-api_key = os.getenv('OPENAI_API_KEY')
-os.environ['OPENAI_API_KEY'] = api_key
+os.environ['OPENAI_API_KEY'] = os.getenv('OPENAI_API_KEY')
+
+# LangSmith 사용시 아래 주석을 해제
+# os.environ['LANGCHAIN_API_KEY'] = os.getenv('LANGCHAIN_API_KEY')
+# os.environ['LANGCHAIN_ENDPOINT'] = "https://api.smith.langchain.com"
+# os.environ["LANGCHAIN_TRACING_V2"] = "true"
+# os.environ["LANGCHAIN_PROJECT"] = "test"
 
 vector_db_path = './FAISS'
 
