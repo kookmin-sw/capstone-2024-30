@@ -29,8 +29,8 @@ public class MenuService {
     @Value("${deepl.api.key}")
     private String authKey;
 
-//    @Scheduled(fixedRate= 604800000)
-    private void crawlingMenu(){
+    @Scheduled(cron = "0 0 10 * * MON")
+    public void crawlingMenu(){
         LocalDateTime startDay = LocalDateTime.now();
 
         for(int i=0; i<7; i++){
