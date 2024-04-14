@@ -5,8 +5,8 @@ services:
     container_name: redis
     hostname: redis
     restart: unless-stopped
-    volumes:
-      - redis_data:/data
+    environment:
+      TZ: "Asia/Seoul"
     ports:
       - 6379:6379
     healthcheck:
@@ -18,14 +18,26 @@ services:
   spring:
     container_name: spring
     restart: always
-    image: capstone/spring
-    build:
-      context: .
-      dockerfile: ./Dockerfile
+    image: capstone30/spring
     env_file:
       - .env
+    environment:
+      TZ : "Asia/Seoul"
     ports:
       - "8080:8080"
     depends_on:
       redis:
         condition: service_healthy
+
+#  nginx:
+#    container_name: nginx
+#    image: capstone30/nginx
+#    restart: unless-stopped
+#    environment:
+#      TZ: "Asia/Seoul"
+#    ports:
+#        - "80:80"
+#    depends_on:
+#      - "redis"
+#      - "spring"
+
