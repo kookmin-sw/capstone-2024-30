@@ -144,10 +144,18 @@ class _NoticeScreenState extends State<NoticeScreen> {
               future: notices,
               builder: ((context, snapshot) {
                 if (snapshot.hasData) {
+                  var filteredNotices = snapshot.data!
+                      .where((notice) =>
+                          selectedItem == '전체공지' || notice.type == selectedItem)
+                      .toList();
+                  if (filteredNotices.isEmpty) {
+                    return const Center(child: Text('항목이 없습니다'));
+                  }
+
                   return ListView.separated(
-                    itemCount: snapshot.data!.length,
+                    itemCount: filteredNotices.length,
                     itemBuilder: (context, index) {
-                      var notice = snapshot.data![index];
+                      var notice = filteredNotices[index];
                       return ListTile(
                         title: Text(
                           notice.title!,
@@ -159,7 +167,7 @@ class _NoticeScreenState extends State<NoticeScreen> {
                         subtitle: Row(
                           children: [
                             Text(
-                              notice.department!,
+                              notice.type!,
                               style: const TextStyle(
                                 fontSize: 16,
                                 color: Color(0xFF8266DF),
