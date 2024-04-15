@@ -1,4 +1,5 @@
 import 'package:capstone_front/firebase_options.dart';
+import 'package:capstone_front/models/notice_model.dart';
 import 'package:capstone_front/screens/cafeteriaMenu/cafeteriaMenuScreen.dart';
 import 'package:capstone_front/screens/chatbot/chatbot.dart';
 import 'package:capstone_front/screens/faq/faq_screen.dart';
@@ -146,10 +147,15 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       name: 'noticedetail',
-      path: '/notice/detail',
-      builder: (context, state) => NoticeDetailScreen(
-        const {"title": "temp", "date": "temp", "kind": "temp"},
-      ),
+      path: '/notice/detail/:id',
+      builder: (context, state) {
+        // 'state.extra'를 통해 전달된 'NoticeModel' 객체를 받아옴
+        final notice = state.extra as NoticeModel?;
+        if (notice == null) {
+          return const NoticeScreen();
+        }
+        return NoticeDetailScreen(notice);
+      },
     ),
     GoRoute(
       name: 'qnalist',

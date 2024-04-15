@@ -1,6 +1,9 @@
+import 'package:capstone_front/models/notice_model.dart';
 import 'package:capstone_front/screens/notice/test_notice_data.dart';
 import 'package:capstone_front/screens/notice/notice_detail_screen.dart';
+import 'package:capstone_front/services/notice_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class NoticeScreen extends StatefulWidget {
   const NoticeScreen({super.key});
@@ -13,6 +16,8 @@ class _NoticeScreenState extends State<NoticeScreen> {
   List<String> items = ['전체공지', '학사공지', '장학공지'];
   String selectedItem = '전체공지';
   final _controller = TextEditingController();
+
+  Future<List<NoticeModel>> notices = NoticeService.getNotices();
 
   @override
   Widget build(BuildContext context) {
@@ -135,54 +140,67 @@ class _NoticeScreenState extends State<NoticeScreen> {
             height: 20,
           ),
           Expanded(
-            child: ListView.separated(
-              itemCount: posts.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(
-                    posts[index]['title'],
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontSize: 18,
+            child: FutureBuilder(
+              future: notices,
+              builder: ((context, snapshot) {
+                if (snapshot.hasData) {
+                  return ListView.separated(
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      var notice = snapshot.data![index];
+                      return ListTile(
+                        title: Text(
+                          notice.title!,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
+                        subtitle: Row(
+                          children: [
+                            Text(
+                              notice.department!,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: Color(0xFF8266DF),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                              child: Text(
+                                notice.createdDate!.substring(0, 10),
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  color: Color(0xFFc8c8c8),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => NoticeDetailScreen(notice),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                    separatorBuilder: (context, index) => const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 18),
+                      child: Divider(
+                        color: Color(0xFFc8c8c8),
+                      ),
                     ),
-                  ),
-                  subtitle: Row(
-                    children: [
-                      Text(
-                        posts[index]['kind'],
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: Color(0xFF8266DF),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        posts[index]['date'],
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: Color(0xFFc8c8c8),
-                        ),
-                      ),
-                    ],
-                  ),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => NoticeDetailScreen(posts[index]),
-                      ),
-                    );
-                  },
-                );
-              },
-              separatorBuilder: (context, index) => const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 18),
-                child: Divider(
-                  color: Color(0xFFc8c8c8),
-                ),
-              ),
+                  );
+                }
+                return const Center(child: CircularProgressIndicator());
+              }),
             ),
           )
         ],
