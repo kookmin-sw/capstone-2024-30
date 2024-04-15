@@ -1,5 +1,6 @@
 import 'package:capstone_front/models/notice_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
 class NoticeDetailScreen extends StatefulWidget {
   NoticeModel notice;
@@ -36,7 +37,7 @@ class _NoticeDetailState extends State<NoticeDetailScreen> {
                     height: 16,
                   ),
                   Text(
-                    widget.notice.author!,
+                    '${widget.notice.author!} (${widget.notice.department!})',
                     style: const TextStyle(
                       color: Color(0xFF646464),
                       fontSize: 16,
@@ -45,7 +46,7 @@ class _NoticeDetailState extends State<NoticeDetailScreen> {
                   Row(
                     children: [
                       Text(
-                        widget.notice.department!,
+                        widget.notice.type!,
                         style: const TextStyle(
                           color: Color(0xFF8266DF),
                           fontSize: 16,
@@ -75,7 +76,8 @@ class _NoticeDetailState extends State<NoticeDetailScreen> {
                   const SizedBox(
                     height: 20,
                   ),
-                  Text(widget.notice.document!),
+                  // Text(widget.notice.document!),
+                  HtmlWidget(widget.notice.document!),
                   Container(
                     decoration: BoxDecoration(
                       border: Border.all(
