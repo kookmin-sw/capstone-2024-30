@@ -13,13 +13,9 @@ public interface UserMapper {
 
     @Mapping(target = "id", source = "uuid")
     @Mapping(target = "role", ignore = true)
-    @Mapping(target = "createDate", ignore = true)
-    @Mapping(target = "updateAt", ignore = true)
     User signupReqeustToUser(SignupRequest request);
 
     @Mapping(target = "id", source = "uuid")
     @Mapping(target = "role", ignore = true)
-    @Mapping(target = "createDate", ignore = true)
-    @Mapping(target = "updateAt", ignore = true)
     User principalDetailsToUser(PrincipalDetails principalDetails);
 }

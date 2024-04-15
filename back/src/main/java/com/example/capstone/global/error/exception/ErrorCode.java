@@ -24,7 +24,10 @@ public enum ErrorCode {
     USER_NOT_FOUND(400, "U002", "User Not Found"),
 
     // Database Error
-    REDIS_CONNECTION_FAIL(400, "D001", "Redis Connection Failed")
+    REDIS_CONNECTION_FAIL(400, "D001", "Redis Connection Failed"),
+
+    // Crawling Error
+    Crawling_FAIL(400, "CR001", "Crawling Failed")
     ;
 
     private int status;

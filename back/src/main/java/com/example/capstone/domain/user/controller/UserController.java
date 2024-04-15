@@ -27,7 +27,8 @@ public class UserController {
 
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<?> signup(@RequestBody @Valid SignupRequest signupRequest) {
+    public ResponseEntity<?> signup(@RequestHeader(name = "HMAC") String hmac,
+                                    @RequestBody @Valid SignupRequest signupRequest) {
         //TODO : HMAC을 통한 검증 로직 추가 필요
         loginService.signUp(signupRequest);
         return ResponseEntity
@@ -36,7 +37,8 @@ public class UserController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<TokenResponse> signin(@RequestBody @Valid SigninRequest signinRequest) {
+    public ResponseEntity<TokenResponse> signin(@RequestHeader(name = "HMAC") String hmac,
+                                                @RequestBody @Valid SigninRequest signinRequest) {
         //TODO : HMAC을 통한 검증 로직 추가 필요
         TokenResponse response = loginService.signIn(signinRequest);
         return ResponseEntity.ok().body(response);

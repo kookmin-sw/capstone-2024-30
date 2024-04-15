@@ -1,5 +1,6 @@
 package com.example.capstone.domain.user.entity;
 
+import com.example.capstone.global.entity.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User {
+public class User extends BaseTimeEntity {
     @Id
     @Column(name = "user_id")
     private String id;
@@ -38,14 +39,6 @@ public class User {
 
     @Builder.Default
     private String role = "ROLE_USER";
-
-    @CreationTimestamp
-    @Column(name = "create_date", nullable = false, updatable = false)
-    private LocalDateTime createDate;
-
-    @UpdateTimestamp
-    @Column(name = "update_at", nullable = false)
-    private LocalDateTime updateAt;
 
     public void updateProfile(String name, String major, String country, String phoneNumber) {
         this.name = name;

@@ -58,7 +58,8 @@ public class LoginService {
         String accessToken = jwtTokenProvider.createAccessToken(principalDetails);
         String refreshToken = jwtTokenProvider.createRefreshToken(principalDetails);
 
-        return TokenResponse.builder()
+        return TokenResponse
+                .builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
