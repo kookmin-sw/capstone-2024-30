@@ -30,7 +30,7 @@ public class AnnouncementController {
     }
 
     @GetMapping("/")
-    @Operation(summary = "공지사항 받아오기", description = "현재 페이지네이션 구현 안됨. 전부다 줌")
+    @Operation(summary = "공지사항 받아오기", description = "현재 페이지네이션 구현 안됨. 전부다 줌!!")
     ResponseEntity<List<Announcement>> getAnnouncementList(){
         List<Announcement> announcements = announcementSearchService.getAnnouncementList();
         return ResponseEntity
