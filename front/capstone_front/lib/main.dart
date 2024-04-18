@@ -22,6 +22,7 @@ import 'package:capstone_front/utils/page_animation.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -61,7 +62,7 @@ void main() async {
   initializeFirebase();
   await setSetting();
   await EasyLocalization.ensureInitialized();
-
+  await dotenv.load(fileName: ".env");
   runApp(EasyLocalization(
     // 지원 언어 리스트
     supportedLocales: supportedLocales,
