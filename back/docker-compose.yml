@@ -29,15 +29,15 @@ services:
       redis:
         condition: service_healthy
 
-#  nginx:
-#    container_name: nginx
-#    image: capstone30/nginx
-#    restart: unless-stopped
-#    environment:
-#      TZ: "Asia/Seoul"
-#    ports:
-#        - "80:80"
-#    depends_on:
-#      - "redis"
-#      - "spring"
+  nginx:
+    container_name: nginx
+    image: capstone30/nginx
+    restart: unless-stopped
+    environment:
+      TZ: "Asia/Seoul"
+    ports:
+        - "80:80"
+    depends_on:
+      - "redis"
+      - "spring"
 
