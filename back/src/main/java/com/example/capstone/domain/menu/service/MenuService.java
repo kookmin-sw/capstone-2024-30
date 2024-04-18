@@ -2,6 +2,7 @@ package com.example.capstone.domain.menu.service;
 
 import com.example.capstone.domain.menu.entity.Menu;
 import com.example.capstone.domain.menu.repository.MenuRepository;
+import com.example.capstone.global.error.exception.BusinessException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.deepl.api.*;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import static com.example.capstone.global.error.exception.ErrorCode.TEST_KEY_NOT_VALID;
+
 @Service
 @RequiredArgsConstructor
 public class MenuService {
@@ -28,6 +31,14 @@ public class MenuService {
 
     @Value("${deepl.api.key}")
     private String authKey;
+
+    @Value("${test.key}")
+    private String testKey;
+
+    public boolean testKeyCheck(String key){
+        if(key.equals(testKey)) return true;
+        else throw new BusinessException(TEST_KEY_NOT_VALID);
+    }
 
     @Scheduled(cron = "0 0 10 * * MON")
     public void crawlingMenu(){

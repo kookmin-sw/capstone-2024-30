@@ -22,9 +22,10 @@ public class MenuController {
         return ResponseEntity.ok(menu);
     }
 
-    @PostMapping("test")
+    @PostMapping("/test")
     @Operation(summary = "학식 파싱", description = "[주의 : 테스트용] 강제로 학생 저장을 시킴 (DB 중복해서 들어가니깐 물어보고 쓰세요!!)")
-    public ResponseEntity<?> testMenu(){
+    public ResponseEntity<?> testMenu(@RequestParam(value = "key") String key){
+        menuService.testKeyCheck(key);
         menuService.crawlingMenu();
         return ResponseEntity.ok("");
     }
