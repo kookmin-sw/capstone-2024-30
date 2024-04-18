@@ -52,6 +52,7 @@ dependencies:
   flutter_screenutil: ^5.9.0
   flutter_widget_from_html: ^0.14.11
   flutter_dotenv: ^5.1.0
+  crypto: ^3.0.3
 
 dev_dependencies:
   flutter_test:

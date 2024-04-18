@@ -352,6 +352,12 @@ class _LoginScreenState extends State<SignupScreen> {
         password: _userInfo['pw']!,
       );
       await credential.user!.sendEmailVerification();
+
+      // TODO 우리 서버에 signup 요청 여기서
+      print('user info');
+      print(credential);
+      print(credential.user);
+      print(credential.user!.uid);
       return 'success';
     } on FirebaseAuthException catch (e) {
       return e.code;
