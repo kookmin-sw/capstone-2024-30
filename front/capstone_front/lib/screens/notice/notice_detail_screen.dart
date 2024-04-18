@@ -1,8 +1,10 @@
+import 'package:capstone_front/models/notice_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
 class NoticeDetailScreen extends StatefulWidget {
-  Map<String, dynamic> post;
-  NoticeDetailScreen(this.post, {super.key});
+  NoticeModel notice;
+  NoticeDetailScreen(this.notice, {super.key});
 
   @override
   State<NoticeDetailScreen> createState() => _NoticeDetailState();
@@ -16,7 +18,7 @@ class _NoticeDetailState extends State<NoticeDetailScreen> {
         backgroundColor: Theme.of(context).primaryColor,
         foregroundColor: Colors.white,
         title: Text(
-          widget.post['kind'],
+          widget.notice.department!,
           style: const TextStyle(
             fontWeight: FontWeight.bold,
           ),
@@ -24,75 +26,78 @@ class _NoticeDetailState extends State<NoticeDetailScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(widget.post['title']),
-                const SizedBox(
-                  height: 16,
-                ),
-                const Text(
-                  "최지훈 (차세대통신사업단)",
-                  style: TextStyle(
-                    color: Color(0xFF646464),
-                    fontSize: 16,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(widget.notice.title!),
+                  const SizedBox(
+                    height: 16,
                   ),
-                ),
-                Row(
-                  children: [
-                    Text(
-                      widget.post['kind'],
-                      style: const TextStyle(
-                        color: Color(0xFF8266DF),
-                        fontSize: 16,
+                  Text(
+                    '${widget.notice.author!} (${widget.notice.department!})',
+                    style: const TextStyle(
+                      color: Color(0xFF646464),
+                      fontSize: 16,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        widget.notice.type!,
+                        style: const TextStyle(
+                          color: Color(0xFF8266DF),
+                          fontSize: 16,
+                        ),
                       ),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      widget.post['date'],
-                      style: const TextStyle(
-                        color: Color(0xFF646464),
-                        fontSize: 16,
+                      const SizedBox(
+                        width: 10,
                       ),
+                      Text(
+                        widget.notice.createdDate!.substring(0, 10),
+                        style: const TextStyle(
+                          color: Color(0xFF646464),
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          width: 0.8, color: const Color(0xFFF3F3F3)),
                     ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    border:
-                        Border.all(width: 0.8, color: const Color(0xFFF3F3F3)),
                   ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                const Text("본문 내용 입니다.\n본문 내용 입니다.\n본문 내용 입니다.\n본문 내용 입니다.\n"),
-                Container(
-                  decoration: BoxDecoration(
-                    border:
-                        Border.all(width: 0.8, color: const Color(0xFFF3F3F3)),
+                  const SizedBox(
+                    height: 20,
                   ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                const Text(
-                  "첨부파일 1개",
-                  style: TextStyle(
-                    color: Color(0xFF646464),
-                    fontSize: 16,
+                  // Text(widget.notice.document!),
+                  HtmlWidget(widget.notice.document!),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          width: 0.8, color: const Color(0xFFF3F3F3)),
+                    ),
                   ),
-                ),
-              ],
-            )
-          ],
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const Text(
+                    "첨부파일 1개",
+                    style: TextStyle(
+                      color: Color(0xFF646464),
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

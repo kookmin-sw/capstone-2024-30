@@ -50,6 +50,8 @@ dependencies:
   audio_session: ^0.1.18
   permission_handler: ^11.3.1
   flutter_screenutil: ^5.9.0
+  flutter_widget_from_html: ^0.14.11
+  flutter_dotenv: ^5.1.0
 
 dev_dependencies:
   flutter_test:
@@ -73,6 +75,8 @@ flutter:
     - assets/translations/
     - assets/images/carrot_profile.png
     - assets/images/koomin.png
+
+    - .env
 
   fonts:
     - family: pretendard

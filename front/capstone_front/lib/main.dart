@@ -1,4 +1,5 @@
 import 'package:capstone_front/firebase_options.dart';
+import 'package:capstone_front/models/notice_model.dart';
 import 'package:capstone_front/screens/cafeteriaMenu/cafeteriaMenuScreen.dart';
 import 'package:capstone_front/screens/chatbot/chatbot.dart';
 import 'package:capstone_front/screens/faq/faq_screen.dart';
@@ -21,6 +22,7 @@ import 'package:capstone_front/utils/page_animation.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -60,7 +62,7 @@ void main() async {
   initializeFirebase();
   await setSetting();
   await EasyLocalization.ensureInitialized();
-
+  await dotenv.load(fileName: ".env");
   runApp(EasyLocalization(
     // 지원 언어 리스트
     supportedLocales: supportedLocales,
@@ -146,10 +148,15 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       name: 'noticedetail',
-      path: '/notice/detail',
-      builder: (context, state) => NoticeDetailScreen(
-        const {"title": "temp", "date": "temp", "kind": "temp"},
-      ),
+      path: '/notice/detail/:id',
+      builder: (context, state) {
+        // 'state.extra'를 통해 전달된 'NoticeModel' 객체를 받아옴
+        final notice = state.extra as NoticeModel?;
+        if (notice == null) {
+          return const NoticeScreen();
+        }
+        return NoticeDetailScreen(notice);
+      },
     ),
     GoRoute(
       name: 'qnalist',
