@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 import 'package:capstone_front/models/notice_model.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class NoticeService {
-  static const String baseUrl =
-      'http://ec2-13-125-0-173.ap-northeast-2.compute.amazonaws.com:8080/api';
+  static String baseUrl = dotenv.get('BASE_URL');
 
   static Future<List<NoticeModel>> getNotices() async {
     List<NoticeModel> noticeInstances = [];
