@@ -1,12 +1,12 @@
 FROM python:3.10
 
-COPY ./ /ai
+COPY . /ai
 WORKDIR /ai
 
-RUN pip install fastapi uvicorn
+RUN pip install fastapi uvicorn python-multipart
 RUN pip install -r requirements.txt
 
 
-EXPOSE 80
+EXPOSE 8080
 
-CMD ["uvicorn", "server:app", "--host", "0.0.0.0", "--port", "80"]
+CMD ["uvicorn", "server:app", "--host", "0.0.0.0", "--port", "8080"]
