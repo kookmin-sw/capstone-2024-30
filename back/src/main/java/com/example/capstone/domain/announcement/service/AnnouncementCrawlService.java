@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -34,6 +35,8 @@ public class AnnouncementCrawlService {
     private String authKey;
 
     private final AnnouncementRepository announcementRepository;
+
+    private final List<String> languages = List.of("KO", "EN-US");
 
     @Async
     @Transactional
@@ -59,9 +62,6 @@ public class AnnouncementCrawlService {
 
             String baseUrl = "https://www.kookmin.ac.kr/";
 
-            Translator translator = new Translator(authKey);
-            List<String> languages = List.of("KO", "EN-US");
-
             for (String link : links) {
                 doc = Jsoup.connect(baseUrl + link).timeout(20000).get();
 
@@ -80,6 +80,8 @@ public class AnnouncementCrawlService {
                 String html = doc.select(".view_inner").outerHtml();
                 boolean flag = false;
 
+                Translator translator = new Translator(authKey);
+
                 for (String language : languages) {
                     String[] basicInfo = {title, department};
 
@@ -93,15 +95,8 @@ public class AnnouncementCrawlService {
 
                     String document = html;
                     if (!language.equals("KO")) {
-                        if (!flag) {
-                            try {
-                                TextTranslationOptions options = new TextTranslationOptions().setTagHandling("html");
-                                document = translator.translateText(html, "KO", language, options).getText();
-                            } catch (DeepLException e) {
-                                flag = true;
-                                log.error("DeepL Too Large Exception");
-                            }
-                        }
+                        document = translateRecursive(html, language, 1, translator);
+                        if(!StringUtils.hasText(document)) document = html;
                     }
 
                     List<AnnouncementFile> files = new ArrayList<>();
@@ -172,9 +167,7 @@ public class AnnouncementCrawlService {
             }
 
             String baseUrl = url.getUrl();
-
             Translator translator = new Translator(authKey);
-            List<String> languages = List.of("KO", "EN-US");
 
             for (String link : links) {
                 doc = Jsoup.connect(baseUrl + link).timeout(20000).get();
@@ -188,8 +181,18 @@ public class AnnouncementCrawlService {
                 String writeDate = spans.get(0).text();
                 String department = "외국인유학생지원센터";
                 String authorPhone = "02-910-5808";
+
+                Elements images = doc.select("img[src]");
+                String prefix = "https://cms.kookmin.ac.kr";
+                for (Element img : images) {
+                    String src = img.attr("abs:src");
+
+                    if (!src.startsWith(prefix)) {
+                        img.attr("src", prefix + src);
+                    }
+                }
+
                 String html = doc.select(".b-content-box").outerHtml();
-                boolean flag = false;
 
                 for (String language : languages) {
                     String[] basicInfo = {title, department};
@@ -204,15 +207,8 @@ public class AnnouncementCrawlService {
 
                     String document = html;
                     if (!language.equals("KO")) {
-                        if (!flag) {
-                            try {
-                                TextTranslationOptions options = new TextTranslationOptions().setTagHandling("html");
-                                document = translator.translateText(html, "KO", language, options).getText();
-                            } catch (DeepLException e) {
-                                flag = true;
-                                log.error("DeepL Too Large Exception");
-                            }
-                        }
+                        document = translateRecursive(html, language, 1, translator);
+                        if(!StringUtils.hasText(document)) document = html;
                     }
 
                     List<AnnouncementFile> files = new ArrayList<>();
@@ -238,5 +234,44 @@ public class AnnouncementCrawlService {
             System.out.println(e);
             throw new BusinessException(Crawling_FAIL);
         }
+    }
+
+    private String translateRecursive(String html, String language, int part, Translator translator){
+        if(part == 5) return "";
+
+        String document = "";
+        try {
+            List<String> list = new ArrayList<>();
+            list.add(html);
+            if(part != 1) list = splitHtml(html, part);
+            for(int i = 0; i<list.size(); i++){
+                TextTranslationOptions options = new TextTranslationOptions().setTagHandling("html");
+                document += translator.translateText(html, "KO", language, options).getText();
+            }
+        } catch (DeepLException | InterruptedException e) {
+            log.error("DeepL Too Large for " + part + " part");
+            translateRecursive(html, language, part+1, translator);
+        }
+        return document;
+    }
+
+    private List<String> splitHtml(String html, int part){
+        List<String> list = new ArrayList<>();
+        int len = html.length() / part;
+        int lastIdx = 0;
+
+        for(int i = 0; i<part-1; i++){
+            int endIdx = findNextPoint(html, lastIdx + len);
+            if(endIdx == -1) break;
+            list.add(html.substring(lastIdx, endIdx));
+            lastIdx = endIdx;
+        }
+
+        return list;
+    }
+
+    private static int findNextPoint(String html, int start) {
+        int nextSplitPoint = html.indexOf('>', start);
+        return nextSplitPoint == -1 ? -1 : nextSplitPoint + 1;
     }
 }
