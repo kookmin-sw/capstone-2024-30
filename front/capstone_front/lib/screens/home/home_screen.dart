@@ -1,3 +1,5 @@
+import 'package:capstone_front/screens/cafeteriaMenu/cafeteriaMenuScreen.dart';
+import 'package:capstone_front/screens/notice/notice_screen.dart';
 import 'package:capstone_front/utils/white_box.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -102,8 +104,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                               fontSize: 24,
                                               fontWeight: FontWeight.w700,
                                             )),
-                                        const Icon(
-                                          Icons.add,
+                                        IconButton(
+                                          icon: const Icon(Icons.add),
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const NoticeScreen(),
+                                              ),
+                                            );
+                                          },
                                         ),
                                       ],
                                     ),
@@ -166,8 +177,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                               fontSize: 24,
                                               fontWeight: FontWeight.w700,
                                             )),
-                                        const Icon(
-                                          Icons.add,
+                                        IconButton(
+                                          icon: const Icon(Icons.add),
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const CafeteriaMenuScreen(),
+                                              ),
+                                            );
+                                          },
                                         ),
                                       ],
                                     ),
