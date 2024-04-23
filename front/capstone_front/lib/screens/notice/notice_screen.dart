@@ -14,7 +14,7 @@ class NoticeScreen extends StatefulWidget {
 }
 
 class _NoticeScreenState extends State<NoticeScreen> {
-  String selectedItem = '전체공지';
+  String selectedItem = 'all';
   final _controller = TextEditingController();
 
   List<NoticeModel> notices = [];
@@ -22,9 +22,10 @@ class _NoticeScreenState extends State<NoticeScreen> {
   var hasNext = true;
   var itemCount = 0;
 
-  void loadNotices(int lastCursot) async {
+  void loadNotices(int lastCursor) async {
     try {
-      NoticesResponse res = await NoticeService.getNotices(lastCursot);
+      NoticesResponse res =
+          await NoticeService.getNotices(lastCursor, selectedItem);
       setState(() {
         hasNext = res.hasNext;
         if (hasNext) {
@@ -124,7 +125,10 @@ class _NoticeScreenState extends State<NoticeScreen> {
                                     onTap: () {
                                       setState(() {
                                         selectedItem = item;
+                                        notices = [];
+                                        itemCount = 0;
                                       });
+                                      loadNotices(0);
                                       Navigator.of(context).pop();
                                     },
                                     title: Center(
