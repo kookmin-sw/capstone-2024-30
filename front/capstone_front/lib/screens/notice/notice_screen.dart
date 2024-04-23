@@ -1,4 +1,5 @@
 import 'package:capstone_front/models/notice_model.dart';
+import 'package:capstone_front/models/notice_response.dart';
 import 'package:capstone_front/screens/notice/test_notice_data.dart';
 import 'package:capstone_front/screens/notice/notice_detail_screen.dart';
 import 'package:capstone_front/services/notice_service.dart';
@@ -17,7 +18,7 @@ class _NoticeScreenState extends State<NoticeScreen> {
   String selectedItem = '전체공지';
   final _controller = TextEditingController();
 
-  Future<List<NoticeModel>> notices = NoticeService.getNotices();
+  Future<NoticesResponse> noticesResponse = NoticeService.getNotices();
 
   @override
   Widget build(BuildContext context) {
@@ -141,10 +142,10 @@ class _NoticeScreenState extends State<NoticeScreen> {
           ),
           Expanded(
             child: FutureBuilder(
-              future: notices,
+              future: noticesResponse,
               builder: ((context, snapshot) {
                 if (snapshot.hasData) {
-                  var filteredNotices = snapshot.data!
+                  var filteredNotices = snapshot.data!.notices
                       .where((notice) =>
                           selectedItem == '전체공지' || notice.type == selectedItem)
                       .toList();
@@ -179,7 +180,7 @@ class _NoticeScreenState extends State<NoticeScreen> {
                             ),
                             Expanded(
                               child: Text(
-                                notice.createdDate!.substring(0, 10),
+                                notice.writtenDate!.substring(0, 10),
                                 style: const TextStyle(
                                   fontSize: 16,
                                   color: Color(0xFFc8c8c8),
