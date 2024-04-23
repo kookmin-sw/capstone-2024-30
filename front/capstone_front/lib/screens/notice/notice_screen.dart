@@ -14,11 +14,36 @@ class NoticeScreen extends StatefulWidget {
 }
 
 class _NoticeScreenState extends State<NoticeScreen> {
-  List<String> items = ['전체공지', '학사공지', '장학공지'];
   String selectedItem = '전체공지';
   final _controller = TextEditingController();
 
-  Future<NoticesResponse> noticesResponse = NoticeService.getNotices();
+  List<NoticeModel> notices = [];
+  var cursor = 0;
+  var hasNext = true;
+  var itemCount = 0;
+
+  void loadNotices(int lastCursot) async {
+    try {
+      NoticesResponse res = await NoticeService.getNotices(lastCursot);
+      setState(() {
+        hasNext = res.hasNext;
+        if (hasNext) {
+          cursor = res.lastCursorId!;
+        }
+        notices.addAll(res.notices);
+        itemCount += res.notices.length;
+      });
+    } catch (e) {
+      print(e);
+      throw Exception('error');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadNotices(cursor);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -141,75 +166,62 @@ class _NoticeScreenState extends State<NoticeScreen> {
             height: 20,
           ),
           Expanded(
-            child: FutureBuilder(
-              future: noticesResponse,
-              builder: ((context, snapshot) {
-                if (snapshot.hasData) {
-                  var filteredNotices = snapshot.data!.notices
-                      .where((notice) =>
-                          selectedItem == '전체공지' || notice.type == selectedItem)
-                      .toList();
-                  if (filteredNotices.isEmpty) {
-                    return const Center(child: Text('항목이 없습니다'));
-                  }
-
-                  return ListView.separated(
-                    itemCount: filteredNotices.length,
-                    itemBuilder: (context, index) {
-                      var notice = filteredNotices[index];
-                      return ListTile(
-                        title: Text(
-                          notice.title!,
+            child: ListView.separated(
+              itemCount: notices.length,
+              itemBuilder: (context, index) {
+                if (index + 1 == itemCount && hasNext) {
+                  loadNotices(cursor);
+                }
+                var notice = notices[index];
+                return ListTile(
+                  title: Text(
+                    notice.title!,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 18,
+                    ),
+                  ),
+                  subtitle: Row(
+                    children: [
+                      Text(
+                        notice.type!,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Color(0xFF8266DF),
                           overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                        child: Text(
+                          notice.writtenDate!.substring(0, 10),
                           style: const TextStyle(
-                            fontSize: 18,
+                            fontSize: 16,
+                            color: Color(0xFFc8c8c8),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        subtitle: Row(
-                          children: [
-                            Text(
-                              notice.type!,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                color: Color(0xFF8266DF),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Expanded(
-                              child: Text(
-                                notice.writtenDate!.substring(0, 10),
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Color(0xFFc8c8c8),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => NoticeDetailScreen(notice),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                    separatorBuilder: (context, index) => const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 18),
-                      child: Divider(
-                        color: Color(0xFFc8c8c8),
                       ),
-                    ),
-                  );
-                }
-                return const Center(child: CircularProgressIndicator());
-              }),
+                    ],
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => NoticeDetailScreen(notice),
+                      ),
+                    );
+                  },
+                );
+              },
+              separatorBuilder: (context, index) => const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 18),
+                child: Divider(
+                  color: Color(0xFFc8c8c8),
+                ),
+              ),
             ),
           )
         ],

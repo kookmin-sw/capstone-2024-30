@@ -8,10 +8,9 @@ import 'package:http/http.dart' as http;
 class NoticeService {
   static String baseUrl = dotenv.get('BASE_URL');
 
-  static Future<NoticesResponse> getNotices() async {
+  static Future<NoticesResponse> getNotices(int cursor) async {
     var type = 'all';
     var language = 'KO';
-    var cursor = 0;
     var query = 'type=$type&language=$language&cursor=$cursor';
     final url = Uri.parse('$baseUrl/announcement?$query');
     final response = await http.get(url);
