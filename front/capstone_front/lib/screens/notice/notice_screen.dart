@@ -5,6 +5,7 @@ import 'package:capstone_front/screens/notice/notice_detail_screen.dart';
 import 'package:capstone_front/services/notice_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class NoticeScreen extends StatefulWidget {
   const NoticeScreen({super.key});
@@ -21,11 +22,12 @@ class _NoticeScreenState extends State<NoticeScreen> {
   var cursor = 0;
   var hasNext = true;
   var itemCount = 0;
+  var language = 'KO';
 
-  void loadNotices(int lastCursor) async {
+  void loadNotices(int lastCursor, String language) async {
     try {
       NoticesResponse res =
-          await NoticeService.getNotices(lastCursor, selectedItem);
+          await NoticeService.getNotices(lastCursor, selectedItem, language);
       setState(() {
         hasNext = res.hasNext;
         if (hasNext) {
@@ -40,10 +42,26 @@ class _NoticeScreenState extends State<NoticeScreen> {
     }
   }
 
+  void initLanguageAndLoadNotices() async {
+    const storage = FlutterSecureStorage();
+    String? storedLanguage = await storage.read(key: 'language');
+    var temp = '';
+    if (storedLanguage == "english") {
+      temp = 'EN-US';
+    } else {
+      temp = 'KO';
+    }
+    setState(() {
+      language = temp;
+    });
+
+    loadNotices(cursor, language);
+  }
+
   @override
   void initState() {
     super.initState();
-    loadNotices(cursor);
+    initLanguageAndLoadNotices();
   }
 
   @override
@@ -128,7 +146,7 @@ class _NoticeScreenState extends State<NoticeScreen> {
                                         notices = [];
                                         itemCount = 0;
                                       });
-                                      loadNotices(0);
+                                      loadNotices(0, language);
                                       Navigator.of(context).pop();
                                     },
                                     title: Center(
@@ -172,13 +190,13 @@ class _NoticeScreenState extends State<NoticeScreen> {
           Expanded(
             child: RefreshIndicator(
               onRefresh: () async {
-                loadNotices(0);
+                loadNotices(0, language);
               },
               child: ListView.separated(
                 itemCount: notices.length,
                 itemBuilder: (context, index) {
                   if (index + 1 == itemCount && hasNext) {
-                    loadNotices(cursor);
+                    loadNotices(cursor, language);
                   }
                   var notice = notices[index];
                   return ListTile(
