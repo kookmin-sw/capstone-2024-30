@@ -1,8 +1,8 @@
-import 'package:capstone_front/screens/helper/helper_board/helper_board_screen.dart';
+import 'package:capstone_front/screens/helper/helper_screen.dart';
 import 'package:capstone_front/screens/home/home_screen.dart';
 import 'package:capstone_front/screens/notice/notice_screen.dart';
 import 'package:capstone_front/screens/qna/qna_list_screen/qna_list_screen.dart';
-import 'package:capstone_front/screens/speeking_practice/pronunciation_select_sentence_screen.dart';
+import 'package:capstone_front/screens/speech_practice/speech_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
@@ -18,8 +18,8 @@ class _MainScreenState extends State<MainScreen> {
     const NoticeScreen(),
     const QnaListScreen(),
     const HomeScreen(),
-    const HelperBoardScreen(),
-    const PronunciationSentenceScreen(),
+    const HelperScreen(),
+    const SpeechScreen(),
   ];
   int selectedPageIndex = 2;
   @override

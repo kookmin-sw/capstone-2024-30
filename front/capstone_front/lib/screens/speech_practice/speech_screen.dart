@@ -1,23 +1,20 @@
-import 'package:capstone_front/screens/helper/helper_board/helper_board_screen.dart';
-import 'package:capstone_front/screens/helper/helper_chatting/helper_chatting_screen.dart';
-import 'package:capstone_front/screens/helper/helper_board/helper_writing_screen.dart';
+import 'package:capstone_front/screens/speech_practice/speech_custom_sentence.dart';
+import 'package:capstone_front/screens/speech_practice/speech_select_sentence_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
-class HelperScreen extends StatefulWidget {
-  const HelperScreen({super.key});
+class SpeechScreen extends StatefulWidget {
+  const SpeechScreen({super.key});
 
   @override
-  State<HelperScreen> createState() => _HelperScreenState();
+  State<SpeechScreen> createState() => _SpeechScreenState();
 }
 
-class _HelperScreenState extends State<HelperScreen> {
+class _SpeechScreenState extends State<SpeechScreen> {
   int _selectedPageIndex = 0;
-  final _helperScreenList = [
-    const HelperBoardScreen(),
-    const HelperChattingScreen(),
+  final _speechScreenList = [
+    const SpeechSentenceScreen(),
+    const SpeechCustomSentenceScreen(),
   ];
   @override
   Widget build(BuildContext context) {
@@ -34,7 +31,7 @@ class _HelperScreenState extends State<HelperScreen> {
                 });
               },
               child: Text(
-                tr('helper.helper'),
+                tr('speech.example_sentence'),
                 style: TextStyle(
                   color: _selectedPageIndex == 0 ? Colors.black : Colors.grey,
                 ),
@@ -48,7 +45,7 @@ class _HelperScreenState extends State<HelperScreen> {
                 });
               },
               child: Text(
-                tr('helper.chatting'),
+                tr('speech.custom_sentence'),
                 style: TextStyle(
                   color: _selectedPageIndex == 1 ? Colors.black : Colors.grey,
                 ),
@@ -58,7 +55,7 @@ class _HelperScreenState extends State<HelperScreen> {
         ),
       ),
       body: SafeArea(
-        child: _helperScreenList.elementAt(_selectedPageIndex),
+        child: _speechScreenList.elementAt(_selectedPageIndex),
       ),
     );
   }
