@@ -170,60 +170,65 @@ class _NoticeScreenState extends State<NoticeScreen> {
             height: 20,
           ),
           Expanded(
-            child: ListView.separated(
-              itemCount: notices.length,
-              itemBuilder: (context, index) {
-                if (index + 1 == itemCount && hasNext) {
-                  loadNotices(cursor);
-                }
-                var notice = notices[index];
-                return ListTile(
-                  title: Text(
-                    notice.title!,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontSize: 18,
+            child: RefreshIndicator(
+              onRefresh: () async {
+                loadNotices(0);
+              },
+              child: ListView.separated(
+                itemCount: notices.length,
+                itemBuilder: (context, index) {
+                  if (index + 1 == itemCount && hasNext) {
+                    loadNotices(cursor);
+                  }
+                  var notice = notices[index];
+                  return ListTile(
+                    title: Text(
+                      notice.title!,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 18,
+                      ),
                     ),
-                  ),
-                  subtitle: Row(
-                    children: [
-                      Text(
-                        notice.type!,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: Color(0xFF8266DF),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                        child: Text(
-                          notice.writtenDate!.substring(0, 10),
+                    subtitle: Row(
+                      children: [
+                        Text(
+                          notice.type!,
                           style: const TextStyle(
                             fontSize: 16,
-                            color: Color(0xFFc8c8c8),
+                            color: Color(0xFF8266DF),
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                      ),
-                    ],
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: Text(
+                            notice.writtenDate!.substring(0, 10),
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Color(0xFFc8c8c8),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => NoticeDetailScreen(notice),
+                        ),
+                      );
+                    },
+                  );
+                },
+                separatorBuilder: (context, index) => const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 18),
+                  child: Divider(
+                    color: Color(0xFFc8c8c8),
                   ),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => NoticeDetailScreen(notice),
-                      ),
-                    );
-                  },
-                );
-              },
-              separatorBuilder: (context, index) => const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 18),
-                child: Divider(
-                  color: Color(0xFFc8c8c8),
                 ),
               ),
             ),
