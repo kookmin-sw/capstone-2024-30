@@ -16,8 +16,9 @@ import 'package:capstone_front/screens/notice/notice_detail_screen.dart';
 import 'package:capstone_front/screens/qna/qna_detail/qna_detail_screen.dart';
 import 'package:capstone_front/screens/qna/qna_list_screen/qna_list_screen.dart';
 import 'package:capstone_front/screens/qna/qna_write/qna_write_screen.dart';
-import 'package:capstone_front/screens/speeking_practice/pronunciation_practice_screen.dart';
-import 'package:capstone_front/screens/speeking_practice/pronunciation_select_sentence_screen.dart';
+import 'package:capstone_front/screens/speech_practice/speech_practice_screen.dart';
+import 'package:capstone_front/screens/speech_practice/speech_screen.dart';
+import 'package:capstone_front/screens/speech_practice/speech_select_sentence_screen.dart';
 import 'package:capstone_front/utils/page_animation.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -86,9 +87,9 @@ final GoRouter router = GoRouter(
       builder: (context, state) => const MainScreen(),
       routes: [
         GoRoute(
-          name: 'pronunciation',
-          path: 'pronunciation',
-          builder: (context, state) => const PronunciationSentenceScreen(),
+          name: 'speech',
+          path: 'speech',
+          builder: (context, state) => const SpeechScreen(),
           routes: [
             GoRoute(
                 path: 'practice',
@@ -96,7 +97,7 @@ final GoRouter router = GoRouter(
                   return buildPageWithSlideRight(
                     context: context,
                     state: state,
-                    child: const PronunciationPracticeScreen(),
+                    child: const SpeechPracticeScreen(),
                   );
                 }),
           ],

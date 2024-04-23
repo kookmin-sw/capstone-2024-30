@@ -25,12 +25,6 @@ class _HelperBoardState extends State<HelperBoardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        scrolledUnderElevation: 0,
-        title: Text(
-          tr('helper.helper'),
-        ),
-      ),
       body: Stack(
         children: [
           Column(

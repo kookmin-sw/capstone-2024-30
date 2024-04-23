@@ -1,4 +1,3 @@
-import 'package:capstone_front/utils/bubble_painter1.dart';
 import 'package:capstone_front/utils/white_box.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -300,6 +299,7 @@ class _HomeScreenState extends State<HomeScreen> {
               onTap: () {
                 context.push('/chatbot');
               },
+              borderRadius: BorderRadius.circular(50),
               child: SizedBox(
                 height: 66,
                 width: 66,

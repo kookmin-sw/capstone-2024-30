@@ -1,14 +1,14 @@
-import 'package:capstone_front/screens/speeking_practice/utils/example_sentences.dart';
+import 'package:capstone_front/screens/speech_practice/utils/example_sentences.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-class PronunciationSentenceCard extends StatefulWidget {
+class SpeechSentenceCard extends StatefulWidget {
   final int index;
   final bool canTap;
   final double verticalPadding;
-  const PronunciationSentenceCard({
+  const SpeechSentenceCard({
     super.key,
     required this.index,
     required this.canTap,
@@ -16,11 +16,10 @@ class PronunciationSentenceCard extends StatefulWidget {
   });
 
   @override
-  State<PronunciationSentenceCard> createState() =>
-      _PronunciationSentenceCardState();
+  State<SpeechSentenceCard> createState() => _SpeechSentenceCardState();
 }
 
-class _PronunciationSentenceCardState extends State<PronunciationSentenceCard> {
+class _SpeechSentenceCardState extends State<SpeechSentenceCard> {
   int get _index => widget.index;
   bool get _canTap => widget.canTap;
   double get _verticalPadding => widget.verticalPadding;
@@ -35,7 +34,7 @@ class _PronunciationSentenceCardState extends State<PronunciationSentenceCard> {
               if (status != PermissionStatus.granted) {
                 permssionNotice(context);
               } else {
-                context.push('/pronunciation/practice', extra: _index);
+                context.push('/speech/practice', extra: _index);
               }
             }
           : null,
