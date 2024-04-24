@@ -6,68 +6,81 @@ import 'package:crypto/crypto.dart';
 
 class AuthService {
   static String baseUrl = dotenv.get('BASE_URL');
-  static final List<int> key = utf8.encode('i dont know the key');
+  static final List<int> key = base64Decode(dotenv.get('HMAC_SECRET'));
 
   static Future<Map<String, dynamic>> signUp(
       Map<String, dynamic> userInfo) async {
+    var hmacSha256 = Hmac(sha256, key);
+    final url = Uri.parse('$baseUrl/user/signup');
+
+    var dummy = {
+      "uuid": "string",
+      "email": "aㅁqazzaamclub4@kookmin.ac.kr",
+      "name": "string",
+      "country": "string",
+      "phoneNumber": "010-8276-8291",
+      "major": "string"
+    };
+
+    // var json = jsonEncode(dummy);
     var json = jsonEncode(userInfo);
     var bytes = utf8.encode(json);
-
-    var hmacSha256 = Hmac(sha256, key);
     var digest = hmacSha256.convert(bytes);
+    var base64EncodedDigest = base64Encode(digest.bytes);
 
-    final url = Uri.parse('$baseUrl/user/signup');
     final response = await http.post(
       url,
-      headers: <String, String>{
+      headers: {
         'Content-Type': 'application/json',
-        'HMAC': digest.toString(),
+        'HMAC': base64EncodedDigest,
       },
-      body: jsonEncode(userInfo),
+      body: json,
     );
 
-    if (response.statusCode == 201) {
-      final String decodedBody = utf8.decode(response.bodyBytes);
-      final Map<String, dynamic> res = jsonDecode(decodedBody);
+    final String decodedBody = utf8.decode(response.bodyBytes);
+    final Map<String, dynamic> res = jsonDecode(decodedBody);
 
-      return res;
-    } else {
+    if (response.statusCode != 201) {
       print('Request failed with status: ${response.statusCode}.');
-      throw Exception('Failed to load notices');
+      print('Request failed with status: ${response.body}');
     }
+
+    return res;
   }
 
   static Future<Map<String, dynamic>> signIn(Map<String, dynamic> info) async {
+    var hmacSha256 = Hmac(sha256, key);
+    final url = Uri.parse('$baseUrl/user/signin');
+
     var json = jsonEncode(info);
     var bytes = utf8.encode(json);
-
-    var hmacSha256 = Hmac(sha256, key);
     var digest = hmacSha256.convert(bytes);
-    final url = Uri.parse('$baseUrl/user/signin');
+    var base64EncodedDigest = base64Encode(digest.bytes);
 
     final response = await http.post(
       url,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'HMAC': digest.toString(),
+        'HMAC': base64EncodedDigest,
       },
-      body: jsonEncode(info),
+      body: json,
     );
 
-    if (response.statusCode == 200) {
-      final String decodedBody = utf8.decode(response.bodyBytes);
-      final Map<String, dynamic> res = jsonDecode(decodedBody);
+    final String decodedBody = utf8.decode(response.bodyBytes);
+    final Map<String, dynamic> res = jsonDecode(decodedBody);
 
-      return res;
-    } else {
+    if (response.statusCode != 200) {
       print('Request failed with status: ${response.statusCode}.');
-      throw Exception('Failed to load notices');
+      print('Request failed with status: ${response.body}');
     }
+
+    return res;
   }
 
   static Future<Map<String, dynamic>> reissue(
       Map<String, dynamic> refreshTokenObj) async {
     final url = Uri.parse('$baseUrl/auth/reissue');
+
     final response = await http.post(
       url,
       headers: <String, String>{
@@ -76,14 +89,13 @@ class AuthService {
       body: jsonEncode(refreshTokenObj),
     );
 
-    if (response.statusCode == 200) {
-      final String decodedBody = utf8.decode(response.bodyBytes);
-      final Map<String, dynamic> res = jsonDecode(decodedBody);
+    final String decodedBody = utf8.decode(response.bodyBytes);
+    final Map<String, dynamic> res = jsonDecode(decodedBody);
 
-      return res;
-    } else {
+    if (response.statusCode != 200) {
       print('Request failed with status: ${response.statusCode}.');
-      throw Exception('Failed to load notices');
     }
+
+    return res;
   }
 }

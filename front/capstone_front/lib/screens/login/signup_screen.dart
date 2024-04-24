@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:capstone_front/screens/login/assets/college_department.dart';
+import 'package:capstone_front/services/auth_service.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -354,10 +355,21 @@ class _LoginScreenState extends State<SignupScreen> {
       await credential.user!.sendEmailVerification();
 
       // TODO 우리 서버에 signup 요청 여기서
-      print('user info');
-      print(credential);
-      print(credential.user);
-      print(credential.user!.uid);
+      // signupInfo 에는 실제 유저에게 입력받은 정보가 들어가야함
+
+      // final Map<String, dynamic> signupInfo = {
+      //   // "uuid": credential.user!.uid,
+      //   "uuid": 'messi',
+      //   "email": 'jihunchoi@kookmin.ac.kr',
+      //   "name": 'jihun',
+      //   "country": 'korea',
+      //   "phoneNumber": '010-8276-8291',
+      //   "major": "sw",
+      // };
+      // var response = AuthService.signUp(signupInfo);
+
+      // response의 결과에 따라 성공, 실패, 이유 띄워야함
+
       return 'success';
     } on FirebaseAuthException catch (e) {
       return e.code;
