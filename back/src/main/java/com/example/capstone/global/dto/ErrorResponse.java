@@ -1,4 +1,4 @@
-package com.example.capstone.global.error;
+package com.example.capstone.global.dto;
 
 import com.example.capstone.global.error.exception.ErrorCode;
 import lombok.Builder;

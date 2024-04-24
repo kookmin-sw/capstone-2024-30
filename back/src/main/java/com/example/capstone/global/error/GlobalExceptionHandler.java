@@ -2,6 +2,7 @@ package com.example.capstone.global.error;
 
 import com.example.capstone.domain.jwt.JwtTokenProvider;
 import com.example.capstone.domain.jwt.exception.JwtTokenInvalidException;
+import com.example.capstone.global.dto.ErrorResponse;
 import com.example.capstone.global.error.exception.BusinessException;
 import com.example.capstone.global.error.exception.ErrorCode;
 import com.example.capstone.global.error.exception.InvalidValueException;
