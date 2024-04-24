@@ -14,12 +14,6 @@ class _HelperChattingScreenState extends State<HelperChattingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        scrolledUnderElevation: 0,
-        title: Text(
-          tr('helper.helper'),
-        ),
-      ),
       body: ListView.builder(
         itemBuilder: (BuildContext context, int index) {
           return HelperChattingCard(

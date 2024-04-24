@@ -1,9 +1,11 @@
 import 'package:capstone_front/models/notice_model.dart';
+import 'package:capstone_front/models/notice_response.dart';
 import 'package:capstone_front/screens/notice/test_notice_data.dart';
 import 'package:capstone_front/screens/notice/notice_detail_screen.dart';
 import 'package:capstone_front/services/notice_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class NoticeScreen extends StatefulWidget {
   const NoticeScreen({super.key});
@@ -13,11 +15,54 @@ class NoticeScreen extends StatefulWidget {
 }
 
 class _NoticeScreenState extends State<NoticeScreen> {
-  List<String> items = ['전체공지', '학사공지', '장학공지'];
-  String selectedItem = '전체공지';
+  String selectedItem = 'all';
   final _controller = TextEditingController();
 
-  Future<List<NoticeModel>> notices = NoticeService.getNotices();
+  List<NoticeModel> notices = [];
+  var cursor = 0;
+  var hasNext = true;
+  var itemCount = 0;
+  var language = 'KO';
+
+  void loadNotices(int lastCursor, String language) async {
+    try {
+      NoticesResponse res =
+          await NoticeService.getNotices(lastCursor, selectedItem, language);
+      setState(() {
+        hasNext = res.hasNext;
+        if (hasNext) {
+          cursor = res.lastCursorId!;
+        }
+        notices.addAll(res.notices);
+        itemCount += res.notices.length;
+      });
+    } catch (e) {
+      print(e);
+      throw Exception('error');
+    }
+  }
+
+  void initLanguageAndLoadNotices() async {
+    const storage = FlutterSecureStorage();
+    String? storedLanguage = await storage.read(key: 'language');
+    var temp = '';
+    if (storedLanguage == "english") {
+      temp = 'EN-US';
+    } else {
+      temp = 'KO';
+    }
+    setState(() {
+      language = temp;
+    });
+
+    loadNotices(cursor, language);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initLanguageAndLoadNotices();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +143,10 @@ class _NoticeScreenState extends State<NoticeScreen> {
                                     onTap: () {
                                       setState(() {
                                         selectedItem = item;
+                                        notices = [];
+                                        itemCount = 0;
                                       });
+                                      loadNotices(0, language);
                                       Navigator.of(context).pop();
                                     },
                                     title: Center(
@@ -140,75 +188,67 @@ class _NoticeScreenState extends State<NoticeScreen> {
             height: 20,
           ),
           Expanded(
-            child: FutureBuilder(
-              future: notices,
-              builder: ((context, snapshot) {
-                if (snapshot.hasData) {
-                  var filteredNotices = snapshot.data!
-                      .where((notice) =>
-                          selectedItem == '전체공지' || notice.type == selectedItem)
-                      .toList();
-                  if (filteredNotices.isEmpty) {
-                    return const Center(child: Text('항목이 없습니다'));
+            child: RefreshIndicator(
+              onRefresh: () async {
+                loadNotices(0, language);
+              },
+              child: ListView.separated(
+                itemCount: notices.length,
+                itemBuilder: (context, index) {
+                  if (index + 1 == itemCount && hasNext) {
+                    loadNotices(cursor, language);
                   }
-
-                  return ListView.separated(
-                    itemCount: filteredNotices.length,
-                    itemBuilder: (context, index) {
-                      var notice = filteredNotices[index];
-                      return ListTile(
-                        title: Text(
-                          notice.title!,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontSize: 18,
-                          ),
-                        ),
-                        subtitle: Row(
-                          children: [
-                            Text(
-                              notice.type!,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                color: Color(0xFF8266DF),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Expanded(
-                              child: Text(
-                                notice.createdDate!.substring(0, 10),
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Color(0xFFc8c8c8),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => NoticeDetailScreen(notice),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                    separatorBuilder: (context, index) => const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 18),
-                      child: Divider(
-                        color: Color(0xFFc8c8c8),
+                  var notice = notices[index];
+                  return ListTile(
+                    title: Text(
+                      notice.title!,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 18,
                       ),
                     ),
+                    subtitle: Row(
+                      children: [
+                        Text(
+                          notice.type!,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Color(0xFF8266DF),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: Text(
+                            notice.writtenDate!.substring(0, 10),
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Color(0xFFc8c8c8),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => NoticeDetailScreen(notice),
+                        ),
+                      );
+                    },
                   );
-                }
-                return const Center(child: CircularProgressIndicator());
-              }),
+                },
+                separatorBuilder: (context, index) => const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 18),
+                  child: Divider(
+                    color: Color(0xFFc8c8c8),
+                  ),
+                ),
+              ),
             ),
           )
         ],

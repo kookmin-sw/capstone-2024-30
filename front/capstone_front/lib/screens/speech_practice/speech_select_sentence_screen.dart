@@ -1,44 +1,29 @@
-import 'package:capstone_front/screens/speeking_practice/pronunciation_sentence_card.dart';
-import 'package:capstone_front/screens/speeking_practice/utils/example_sentences.dart';
-import 'package:capstone_front/screens/speeking_practice/utils/simple_recorder.dart';
+import 'package:capstone_front/screens/speech_practice/speech_sentence_card.dart';
+import 'package:capstone_front/screens/speech_practice/utils/example_sentences.dart';
+import 'package:capstone_front/screens/speech_practice/utils/simple_recorder.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-class PronunciationSentenceScreen extends StatefulWidget {
-  const PronunciationSentenceScreen({super.key});
+class SpeechSentenceScreen extends StatefulWidget {
+  const SpeechSentenceScreen({super.key});
 
   @override
-  State<PronunciationSentenceScreen> createState() =>
-      _PronunciationSentenceScreenState();
+  State<SpeechSentenceScreen> createState() => _SpeechSentenceScreenState();
 }
 
-class _PronunciationSentenceScreenState
-    extends State<PronunciationSentenceScreen> {
+class _SpeechSentenceScreenState extends State<SpeechSentenceScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        iconTheme: const IconThemeData(
-          color: Colors.white,
-        ),
-        backgroundColor: Theme.of(context).primaryColor,
-        title: Text(
-          tr('pronunciationPracticeScreen.pronunciation_practice'),
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+        padding: const EdgeInsets.only(left: 10, right: 10),
         child: ListView.builder(
           itemBuilder: (BuildContext context, int index) {
             return Padding(
               padding: const EdgeInsets.only(bottom: 10),
-              child: PronunciationSentenceCard(
+              child: SpeechSentenceCard(
                 index: index,
                 canTap: true,
                 verticalPadding: 0,
