@@ -1,4 +1,5 @@
 import 'package:capstone_front/models/notice_model.dart';
+import 'package:capstone_front/services/notice_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
@@ -11,6 +12,14 @@ class NoticeDetailScreen extends StatefulWidget {
 }
 
 class _NoticeDetailState extends State<NoticeDetailScreen> {
+  late Future<NoticeModel> detail;
+
+  @override
+  void initState() {
+    super.initState();
+    detail = NoticeService.getNoticeDetailById(widget.notice.id!);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +65,7 @@ class _NoticeDetailState extends State<NoticeDetailScreen> {
                         width: 10,
                       ),
                       Text(
-                        widget.notice.createdDate!.substring(0, 10),
+                        widget.notice.writtenDate!.substring(0, 10),
                         style: const TextStyle(
                           color: Color(0xFF646464),
                           fontSize: 16,
@@ -77,7 +86,15 @@ class _NoticeDetailState extends State<NoticeDetailScreen> {
                     height: 20,
                   ),
                   // Text(widget.notice.document!),
-                  HtmlWidget(widget.notice.document!),
+                  FutureBuilder(
+                    future: detail,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return HtmlWidget(snapshot.data!.document!);
+                      }
+                      return const Center(child: CircularProgressIndicator());
+                    },
+                  ),
                   Container(
                     decoration: BoxDecoration(
                       border: Border.all(
