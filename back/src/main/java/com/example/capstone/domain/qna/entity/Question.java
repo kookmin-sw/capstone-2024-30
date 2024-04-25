@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "questions")
@@ -36,6 +37,12 @@ public class Question {
     @Column(name = "view", nullable = false)
     private Long view;
 
-    @Column(name = "email", nullable = false)
-    private String email;
+    @Column(name = "uuid", nullable = false)
+    private UUID uuid;
+
+    public void update(String title, String context, LocalDateTime updatedDate){
+        this.title = title;
+        this.context = context;
+        this.updatedDate = updatedDate;
+    }
 }
