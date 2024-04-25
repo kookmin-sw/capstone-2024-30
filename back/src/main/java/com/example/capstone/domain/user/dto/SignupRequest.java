@@ -10,11 +10,8 @@ public record SignupRequest(
         @Email String email,
         @NotBlank String name,
         @NotBlank String country,
-        @Pattern(regexp = "[0-9]{10,11}") String phoneNumber,
+        @Pattern(regexp = "^010-\\d{4}-\\d{4}$") String phoneNumber,
         @NotBlank String major
 ) implements HmacRequest {
-    @Override
-    public String toHmacString() {
-        return String.join("|", uuid, email, name, country, phoneNumber, major);
-    }
+
 }

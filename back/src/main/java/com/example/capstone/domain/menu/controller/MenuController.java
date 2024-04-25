@@ -3,6 +3,7 @@ package com.example.capstone.domain.menu.controller;
 import com.example.capstone.domain.menu.service.MenuCrawlingService;
 import com.example.capstone.domain.menu.service.MenuSearchService;
 import com.example.capstone.domain.menu.service.MenuUpdateService;
+import com.example.capstone.global.dto.ApiResult;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.json.JsonArray;
 import lombok.RequiredArgsConstructor;
@@ -21,9 +22,10 @@ public class MenuController {
 
     @ResponseBody
     @GetMapping("/daily")
-    public ResponseEntity<?> getMenuByDate(@RequestParam LocalDate date, @RequestParam String language){
+    public ResponseEntity<ApiResult<JsonArray>> getMenuByDate(@RequestParam LocalDate date, @RequestParam String language){
         JsonArray menu = menuSearchService.findMenuByDate(date, language);
-        return ResponseEntity.ok(menu);
+        return ResponseEntity
+                .ok(new ApiResult<>(menu));
     }
 
     @PostMapping("/test")

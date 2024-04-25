@@ -9,8 +9,5 @@ public record SigninRequest(
         String uuid,
         @Email String email
 ) implements HmacRequest {
-    @Override
-    public String toHmacString() {
-        return String.join("|", uuid, email);
-    }
+
 }

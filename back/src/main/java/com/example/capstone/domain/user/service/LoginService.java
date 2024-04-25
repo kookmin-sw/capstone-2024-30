@@ -15,6 +15,7 @@ import com.example.capstone.global.dto.HmacRequest;
 import com.example.capstone.global.error.exception.BusinessException;
 import com.example.capstone.global.error.exception.EntityNotFoundException;
 import com.example.capstone.global.error.exception.ErrorCode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Request;
 import org.apache.tomcat.util.buf.HexUtils;
@@ -43,17 +44,21 @@ public class LoginService {
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
-    @Value("${HMAC_SECRET}")
+    @Value("${hmac.secret}")
     private String key;
 
-    @Value("${HMAC_ALGORITHM}")
+    @Value("${hmac.algorithm}")
     private String algorithm;
 
     public void verifyHmac(String hmac, HmacRequest request) {
         try{
-            String hashed = calculateHMAC(request.toHmacString());
+            ObjectMapper objectMapper = new ObjectMapper();
+            String hashed = calculateHMAC(objectMapper.writeValueAsString(request));
             byte[] decodedBytes = Base64.getDecoder().decode(hmac);
             String decoded = HexUtils.toHexString(decodedBytes);
+
+            System.out.println("hashed " + hashed);
+            System.out.println("decoded " + decoded);
 
             if(!decoded.equals(hashed)) {
                 throw new BusinessException(HMAC_NOT_VALID);
