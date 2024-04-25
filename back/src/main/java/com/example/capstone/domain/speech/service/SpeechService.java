@@ -13,6 +13,7 @@ import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,7 +35,9 @@ public class SpeechService {
     private String speechLang = "ko-KR";
 
     private Semaphore stopRecognitionSemaphore;
-    public String pronunciation(String compareText, MultipartFile file) throws InterruptedException, ExecutionException, IOException {
+
+    @Async
+    public CompletableFuture<String> pronunciation(String compareText, MultipartFile file) throws InterruptedException, ExecutionException, IOException {
         SpeechConfig speechConfig = SpeechConfig.fromSubscription(speechKey, speechRegion);
         System.out.println(file);
 
@@ -217,7 +220,7 @@ public class SpeechService {
         speechConfig.close();
         audioConfig.close();
         recognizer.close();
-        return responseJson.toString();
+        return CompletableFuture.completedFuture(responseJson.toString());
     }
 
     public static class Word {
