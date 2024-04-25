@@ -57,9 +57,6 @@ public class LoginService {
             byte[] decodedBytes = Base64.getDecoder().decode(hmac);
             String decoded = HexUtils.toHexString(decodedBytes);
 
-            System.out.println("hashed " + hashed);
-            System.out.println("decoded " + decoded);
-
             if(!decoded.equals(hashed)) {
                 throw new BusinessException(HMAC_NOT_VALID);
             }
