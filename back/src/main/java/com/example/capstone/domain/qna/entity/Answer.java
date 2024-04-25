@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "answers")
@@ -33,6 +34,6 @@ public class Answer {
     @Column(name = "updated_date", nullable = false)
     private LocalDateTime updatedDate;
 
-    @Column(name = "email", nullable = false, unique = true)
-    private String email;
+    @Column(name = "uuid", nullable = false, unique = true)
+    private UUID uuid;
 }

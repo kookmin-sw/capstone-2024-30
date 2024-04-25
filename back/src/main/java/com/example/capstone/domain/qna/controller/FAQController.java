@@ -6,11 +6,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/api/answer")
-public class AnswerController {
-    //TODO 댓글 작성하기
-    //TODO 댓글 불러오기
-    //TODO 댓글 수정하기
-    //TODO 댓글 삭제하기
+@RequestMapping("/api/faq")
+public class FAQController {
+    //TODO faq 작성하기
+    //TODO faq 불러오기
+    //TODO faq 목록 불러오기
+    //TODO faq 수정하기
+    //TODO faq 삭제하기
+    //TODO faq 검색하기
 
 }
