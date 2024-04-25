@@ -1,3 +1,4 @@
+import 'package:capstone_front/services/login_service.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +16,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final List<String> _userInfo = ['', ''];
   bool _canLogin = false;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  User? user;
+
   FlutterSecureStorage storage = const FlutterSecureStorage();
 
   @override
@@ -24,7 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          tr('login'),
+          tr('login.login'),
           style: Theme.of(context).textTheme.titleMedium,
         ),
         centerTitle: true,
@@ -54,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Flexible(
                     child: InkWell(
                       onTap: () async {
-                        String result = await _login(
+                        String result = await login(
                             '${_userInfo[0]}@kookmin.ac.kr', _userInfo[1]);
                         switch (result) {
                           case "success":
@@ -84,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Align(
                           alignment: Alignment.center,
                           child: Text(
-                            tr('login'),
+                            tr('login.login'),
                             style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
@@ -101,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Flexible(
                     child: InkWell(
                       onTap: () {
-                        context.push('/login/signup');
+                        context.push('/signup');
                       },
                       child: Ink(
                         height: 50,
@@ -118,7 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Align(
                           alignment: Alignment.center,
                           child: Text(
-                            tr('signup'),
+                            tr('login.signup'),
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
@@ -169,27 +169,6 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     }
     _canLogin = true;
-  }
-
-  Future<String> _login(String email, String pw) async {
-    try {
-      UserCredential credential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: pw);
-
-      user = credential.user;
-      await user!.reload();
-      user = _auth.currentUser;
-
-      if (user!.emailVerified) {
-        user = credential.user;
-        return "success";
-      } else {
-        return "email";
-      }
-    } on FirebaseAuthException catch (e) {
-      print(e.code);
-      return e.code;
-    }
   }
 
   void makeToast(String msg) {

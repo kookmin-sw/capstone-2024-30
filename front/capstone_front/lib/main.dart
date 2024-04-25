@@ -9,13 +9,18 @@ import 'package:capstone_front/screens/helper/helper_write_screen.dart';
 import 'package:capstone_front/screens/helper/helper_board/helper_writing_screen.dart';
 import 'package:capstone_front/screens/home/home_screen.dart';
 import 'package:capstone_front/screens/login/login_screen.dart';
-import 'package:capstone_front/screens/login/signup_screen.dart';
+import 'package:capstone_front/screens/signup/signup_college_screen.dart';
+import 'package:capstone_front/screens/signup/signup_country_screen.dart';
+import 'package:capstone_front/screens/signup/signup_email_screen.dart';
+import 'package:capstone_front/screens/signup/signup_email_auth_screen.dart';
+import 'package:capstone_front/screens/signup/signup_service.dart';
 import 'package:capstone_front/screens/main_screen.dart';
 import 'package:capstone_front/screens/notice/notice_screen.dart';
 import 'package:capstone_front/screens/notice/notice_detail_screen.dart';
 import 'package:capstone_front/screens/qna/qna_detail/qna_detail_screen.dart';
 import 'package:capstone_front/screens/qna/qna_list_screen/qna_list_screen.dart';
 import 'package:capstone_front/screens/qna/qna_write/qna_write_screen.dart';
+import 'package:capstone_front/screens/signup/singup_password_screen.dart';
 import 'package:capstone_front/screens/speech_practice/speech_practice_screen.dart';
 import 'package:capstone_front/screens/speech_practice/speech_screen.dart';
 import 'package:capstone_front/screens/speech_practice/speech_select_sentence_screen.dart';
@@ -129,14 +134,33 @@ final GoRouter router = GoRouter(
       name: 'login',
       path: '/login',
       builder: (context, state) => const LoginScreen(),
-      routes: [
-        GoRoute(
-          name: 'signup',
-          path: 'signup',
-          builder: (context, state) => const SignupScreen(),
-        ),
-      ],
     ),
+    GoRoute(
+        name: 'signup',
+        path: '/signup',
+        builder: (context, state) => const SignupEmailScreen(),
+        routes: [
+          GoRoute(
+            name: 'password',
+            path: 'password',
+            builder: (context, state) => const SignupPasswordScreen(),
+          ),
+          GoRoute(
+            name: 'emailAuth',
+            path: 'emailAuth',
+            builder: (context, state) => const SignupEmailAuthScreen(),
+          ),
+          GoRoute(
+            name: 'college',
+            path: 'college',
+            builder: (context, state) => const SignupCollegeScreen(),
+          ),
+          GoRoute(
+            name: 'country',
+            path: 'country',
+            builder: (context, state) => const SignupCountryScreen(),
+          ),
+        ]),
     GoRoute(
       name: 'chatbot',
       path: '/chatbot',
