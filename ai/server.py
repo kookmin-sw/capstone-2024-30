@@ -13,11 +13,12 @@ import uvicorn
 #     history: list
 #     query: str
 
+app = FastAPI()
+
 @asynccontextmanager
-async def lifespan(app:FastAPI):
+async def lifespan(app: FastAPI):
     global llm
     global vdb
-    print("a")
 
     current_directory = os.path.dirname(os.path.realpath(__file__))
     os.chdir(current_directory)
@@ -35,26 +36,23 @@ async def lifespan(app:FastAPI):
     llm = LLM_RAG()
     llm.set_ragchain(vdb.get_retriever())
 
+    origins = [
+        "http://localhost.tiangolo.com",
+        "https://localhost.tiangolo.com",
+        "http://localhost",
+        "http://0.0.0.0:8000",
+        "http://0.0.0.0:8080"
+    ]
+
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+
     yield
-
-
-app = FastAPI(lifespan=lifespan)
-
-origins = [
-    "http://localhost.tiangolo.com",
-    "https://localhost.tiangolo.com",
-    "http://localhost",
-    "http://0.0.0.0:8000",
-    "http://0.0.0.0:8080"
-]
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 @app.get("/")
 async def initiate():
