@@ -1,5 +1,5 @@
 class ApiSuccessResponse {
-  final String success;
+  final bool success;
   final String message;
   final Map<String, dynamic> response;
 
@@ -8,4 +8,9 @@ class ApiSuccessResponse {
     required this.message,
     required this.response,
   });
+
+  ApiSuccessResponse.fromJson(Map<String, dynamic> json)
+      : success = json['success'] as bool,
+        message = json['message'] as String,
+        response = json['response'];
 }

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:capstone_front/models/api_fail_response.dart';
 import 'package:capstone_front/models/api_success_response.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:crypto/crypto.dart';
 
@@ -39,7 +40,8 @@ class AuthService {
     return true;
   }
 
-  static Future<Map<String, dynamic>> signIn(Map<String, dynamic> info) async {
+  static Future<bool> signIn(Map<String, dynamic> info) async {
+    FlutterSecureStorage storage = const FlutterSecureStorage();
     var hmacSha256 = Hmac(sha256, key);
     final url = Uri.parse('$baseUrl/user/signin');
 
@@ -58,14 +60,28 @@ class AuthService {
     );
 
     final String decodedBody = utf8.decode(response.bodyBytes);
-    final Map<String, dynamic> res = jsonDecode(decodedBody);
-
-    if (response.statusCode != 200) {
-      print('Request failed with status: ${response.statusCode}.');
-      print('Request failed with status: ${response.body}');
+    final Map<String, dynamic> jsonMap = jsonDecode(decodedBody);
+    if (response.statusCode == 200) {
+      final ApiSuccessResponse apiSuccessResponse =
+          ApiSuccessResponse.fromJson(jsonMap);
+      print('apiSuccessResponse');
+      print(apiSuccessResponse);
+      await storage.write(
+        key: 'accessToken',
+        value: apiSuccessResponse.response['accessToken'],
+      );
+      await storage.write(
+        key: 'refreshToken',
+        value: apiSuccessResponse.response['refreshToken'],
+      );
+    } else {
+      final ApiFailResponse apiFailResponse = ApiFailResponse.fromJson(jsonMap);
+      print(response.statusCode);
+      print(apiFailResponse.message);
+      throw Exception("fail to get toekns");
     }
 
-    return res;
+    return true;
   }
 
   static Future<Map<String, dynamic>> reissue(

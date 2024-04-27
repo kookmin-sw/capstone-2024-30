@@ -63,6 +63,7 @@ Future<void> sendEmailAuth(String email, String pw) async {
 }
 
 Future<String> isEmailAuth(String email, String pw) async {
+  FlutterSecureStorage storage = const FlutterSecureStorage();
   try {
     UserCredential credential = await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: pw);
@@ -74,6 +75,7 @@ Future<String> isEmailAuth(String email, String pw) async {
     if (user!.emailVerified) {
       user = credential.user;
       userInfo['uuid'] = user!.uid;
+      await storage.write(key: 'uuid', value: user.uid);
       return "success";
     } else {
       return "email";
