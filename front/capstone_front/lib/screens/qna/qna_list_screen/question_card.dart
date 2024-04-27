@@ -90,24 +90,47 @@ class QuestionCard extends StatelessWidget {
               height: 20,
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  name,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    color: Color(0xff7b7b89),
-                  ),
+                Row(
+                  children: [
+                    Text(
+                      name,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Color(0xff7b7b89),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      country,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Color(0xFFa1a1ad),
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  country,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    color: Color(0xFFa1a1ad),
-                  ),
-                ),
+                const Row(
+                  children: [
+                    Icon(
+                      Icons.insert_comment_rounded,
+                      color: Color(0xFFa1a1ad),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      '5',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Color(0xFFa1a1ad),
+                      ),
+                    ),
+                  ],
+                )
               ],
             )
           ],
