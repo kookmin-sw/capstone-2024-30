@@ -64,8 +64,6 @@ class AuthService {
     if (response.statusCode == 200) {
       final ApiSuccessResponse apiSuccessResponse =
           ApiSuccessResponse.fromJson(jsonMap);
-      print('apiSuccessResponse');
-      print(apiSuccessResponse);
       await storage.write(
         key: 'accessToken',
         value: apiSuccessResponse.response['accessToken'],
@@ -105,8 +103,6 @@ class AuthService {
     if (response.statusCode == 200) {
       final ApiSuccessResponse apiSuccessResponse =
           ApiSuccessResponse.fromJson(jsonMap);
-      print('apiSuccessResponse');
-      print(apiSuccessResponse);
       await storage.write(
         key: 'accessToken',
         value: apiSuccessResponse.response['accessToken'],
@@ -119,7 +115,7 @@ class AuthService {
       final ApiFailResponse apiFailResponse = ApiFailResponse.fromJson(jsonMap);
       print(response.statusCode);
       print(apiFailResponse.message);
-      throw Exception("fail to get toekns");
+      throw Exception("fail to reissue");
     }
   }
 }
