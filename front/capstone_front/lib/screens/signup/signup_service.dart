@@ -35,7 +35,7 @@ Future<String> signup() async {
   Map<String, dynamic> userData = {
     'uuid': userInfo['uuid'],
     'email': "${userInfo['id']}@kookmin.ac.kr",
-    'name': 'messi',
+    'name': userInfo['name'],
     'country': userInfo['country'],
     'phoneNumber': '010-8276-8291',
     'major': userInfo['department'],
@@ -49,12 +49,16 @@ Future<String> signup() async {
 }
 
 Future<String> sendEmailAuth(String email, String pw) async {
+  FlutterSecureStorage storage = const FlutterSecureStorage();
+
   try {
     credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
       email: '${userInfo['id']}@kookmin.ac.kr',
       password: userInfo['pw']!,
     );
 
+    userInfo['uuid'] = credential.user!.uid;
+    await storage.write(key: 'uuid', value: credential.user!.uid);
     await credential.user?.sendEmailVerification();
 
     return "success";

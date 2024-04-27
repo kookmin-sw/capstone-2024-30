@@ -56,15 +56,8 @@ class _SignupPasswordScreenState extends State<SignupPasswordScreen> {
                         await sendEmailAuth(userInfo['id']!, userInfo['pw']!);
                     // 파이어베이스에 계정 생성 완료, 인증 메일 전송 완료
                     if (result == "success") {
-                      print(userInfo['id']);
-                      print(userInfo['pw']);
-                      print(userInfo['name']);
-                      print(userInfo['studentNum']);
-                      print(userInfo['college']);
-                      print(userInfo['department']);
-                      print(userInfo['country']);
-
-                      // Todo: 서버로 회원가입된 내역 전송
+                      // 우리 서버로 회원가입 요청
+                      await signup();
 
                       showDialog(
                         context: context,
