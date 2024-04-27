@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class BubblePainter extends CustomPainter {
   final Color bubbleColor;
 
-  BubblePainter({this.bubbleColor = Colors.yellow});
+  BubblePainter({this.bubbleColor = const Color(0xff6E2FF4)});
 
   @override
   void paint(Canvas canvas, Size size) {

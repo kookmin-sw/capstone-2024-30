@@ -1,5 +1,5 @@
-import 'package:capstone_front/screens/speech_practice/speech_custom_sentence.dart';
-import 'package:capstone_front/screens/speech_practice/speech_select_sentence_screen.dart';
+import 'package:capstone_front/screens/speech_practice/speech_custom_sentence/speech_custom_sentence.dart';
+import 'package:capstone_front/screens/speech_practice/speech_example_sentences/speech_select_sentence_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 

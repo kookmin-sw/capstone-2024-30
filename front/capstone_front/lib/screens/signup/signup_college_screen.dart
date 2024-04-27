@@ -1,6 +1,5 @@
 import 'package:capstone_front/screens/signup/college_department.dart';
 import 'package:capstone_front/screens/signup/signup_service.dart';
-import 'package:capstone_front/screens/signup/signup_util.dart';
 import 'package:capstone_front/utils/basic_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +49,6 @@ class _SignupCollegeScreenState extends State<SignupCollegeScreen> {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            const SizedBox(height: 5),
             Row(
               children: [
                 Expanded(
@@ -88,7 +86,10 @@ class _SignupCollegeScreenState extends State<SignupCollegeScreen> {
                           });
                     },
                     child: Ink(
-                      child: Text(_college),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                        child: Text(_college),
+                      ),
                     ),
                   ),
                 ),
@@ -102,7 +103,6 @@ class _SignupCollegeScreenState extends State<SignupCollegeScreen> {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            const SizedBox(height: 5),
             Row(
               children: [
                 Expanded(
@@ -136,7 +136,10 @@ class _SignupCollegeScreenState extends State<SignupCollegeScreen> {
                           });
                     },
                     child: Ink(
-                      child: Text(_department),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                        child: Text(_department),
+                      ),
                     ),
                   ),
                 ),

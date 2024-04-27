@@ -5,6 +5,8 @@ import 'package:capstone_front/screens/qna/qna_list_screen/qna_list_screen.dart'
 import 'package:capstone_front/screens/speech_practice/speech_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -22,6 +24,8 @@ class _MainScreenState extends State<MainScreen> {
     const SpeechScreen(),
   ];
   int selectedPageIndex = 2;
+  @override
+  DateTime? backButtonPressedTime;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,4 +72,20 @@ class _MainScreenState extends State<MainScreen> {
       ),
     );
   }
+
+  // void _goBack(BuildContext context) async {
+  //   DateTime currentTime = DateTime.now();
+
+  //   if (backButtonPressedTime == null ||
+  //       currentTime.difference(backButtonPressedTime!) >
+  //           const Duration(seconds: 2)) {
+  //     backButtonPressedTime = currentTime;
+  //     Fluttertoast.showToast(
+  //       msg: "뒤로가기 버튼을 한번 더 누르면 종료됩니다.",
+  //       gravity: ToastGravity.BOTTOM,
+  //     );
+  //   } else {
+  //     SystemNavigator.pop();
+  //   }
+  // }
 }

@@ -16,11 +16,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+late UserCredential credential;
+
 Map<String, String> userInfo = {
   'uuid': '',
   'id': '',
   'pw': '',
   'pwRe': '',
+  'name': '',
   'studentNum': '',
   'college': '',
   'department': '',
@@ -45,29 +48,24 @@ Future<String> signup() async {
   throw Exception('there is something problem while signup');
 }
 
-Future<void> sendEmailAuth(String email, String pw) async {
+Future<String> sendEmailAuth(String email, String pw) async {
   try {
-    UserCredential credential =
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+    credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
       email: '${userInfo['id']}@kookmin.ac.kr',
       password: userInfo['pw']!,
     );
-    await credential.user!.sendEmailVerification();
 
-    User? user = credential.user;
-    await user!.reload();
-    user = FirebaseAuth.instance.currentUser;
+    await credential.user?.sendEmailVerification();
+
+    return "success";
   } on FirebaseAuthException catch (e) {
-    print(e.code);
+    return e.code;
   }
 }
 
 Future<String> isEmailAuth(String email, String pw) async {
   FlutterSecureStorage storage = const FlutterSecureStorage();
   try {
-    UserCredential credential = await FirebaseAuth.instance
-        .signInWithEmailAndPassword(email: email, password: pw);
-
     User? user = credential.user;
     await user!.reload();
     user = FirebaseAuth.instance.currentUser;

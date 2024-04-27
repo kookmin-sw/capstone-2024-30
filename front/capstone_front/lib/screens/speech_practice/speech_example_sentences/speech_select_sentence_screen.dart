@@ -1,4 +1,4 @@
-import 'package:capstone_front/screens/speech_practice/speech_sentence_card.dart';
+import 'package:capstone_front/screens/speech_practice/speech_example_sentences/speech_sentence_card.dart';
 import 'package:capstone_front/screens/speech_practice/utils/example_sentences.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +14,7 @@ class _SpeechSentenceScreenState extends State<SpeechSentenceScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 15),
         child: ListView.builder(
           itemBuilder: (BuildContext context, int index) {
             return Padding(

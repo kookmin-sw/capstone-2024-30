@@ -102,24 +102,25 @@ class _SignupCountryScreenState extends State<SignupCountryScreen> {
             const SizedBox(height: 5),
             const Spacer(),
             BasicButton(
-              text: tr('signup.complete_signup'),
+              text: tr('signup.next'),
               onPressed: () async {
                 if (_country != tr('signup.select_country')) {
                   userInfo['country'] = _country;
-                  print(userInfo['id']);
-                  print(userInfo['pw']);
-                  print(userInfo['college']);
-                  print(userInfo['department']);
-                  print(userInfo['country']);
+                  context.push('/signup/email');
+                  // print(userInfo['id']);
+                  // print(userInfo['pw']);
+                  // print(userInfo['college']);
+                  // print(userInfo['department']);
+                  // print(userInfo['country']);
 
-                  String result = await signup();
-                  switch (result) {
-                    case "success":
-                      context.go('/login');
-                      makeToast("회원가입에 성공하였습니다");
-                    default:
-                      makeToast("에러: $result");
-                  }
+                  // String result = await signup();
+                  // switch (result) {
+                  //   case "success":
+                  //     context.go('/login');
+                  //     makeToast("회원가입에 성공하였습니다");
+                  //   default:
+                  //     makeToast("에러: $result");
+                  // }
                 }
               },
             ),
