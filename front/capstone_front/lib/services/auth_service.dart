@@ -84,25 +84,42 @@ class AuthService {
     return true;
   }
 
-  static Future<Map<String, dynamic>> reissue(
-      Map<String, dynamic> refreshTokenObj) async {
+  static void reissue() async {
+    FlutterSecureStorage storage = const FlutterSecureStorage();
+
     final url = Uri.parse('$baseUrl/auth/reissue');
+    final refreshToken = storage.read(key: 'refreshToken');
 
     final response = await http.post(
       url,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(refreshTokenObj),
+      body: jsonEncode({
+        "refreshToekn": refreshToken,
+      }),
     );
 
     final String decodedBody = utf8.decode(response.bodyBytes);
-    final Map<String, dynamic> res = jsonDecode(decodedBody);
-
-    if (response.statusCode != 200) {
-      print('Request failed with status: ${response.statusCode}.');
+    final Map<String, dynamic> jsonMap = jsonDecode(decodedBody);
+    if (response.statusCode == 200) {
+      final ApiSuccessResponse apiSuccessResponse =
+          ApiSuccessResponse.fromJson(jsonMap);
+      print('apiSuccessResponse');
+      print(apiSuccessResponse);
+      await storage.write(
+        key: 'accessToken',
+        value: apiSuccessResponse.response['accessToken'],
+      );
+      await storage.write(
+        key: 'refreshToken',
+        value: apiSuccessResponse.response['refreshToken'],
+      );
+    } else {
+      final ApiFailResponse apiFailResponse = ApiFailResponse.fromJson(jsonMap);
+      print(response.statusCode);
+      print(apiFailResponse.message);
+      throw Exception("fail to get toekns");
     }
-
-    return res;
   }
 }
