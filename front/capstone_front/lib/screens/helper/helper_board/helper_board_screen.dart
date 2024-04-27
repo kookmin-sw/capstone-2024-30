@@ -20,41 +20,36 @@ class _HelperBoardState extends State<HelperBoardScreen> {
     tr('helper.need_helpee'),
   ];
   int _selectedHelperIndex = 0;
-  final int _selectedPageIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          Column(
-            children: [
-              Container(
-                height: 5,
-                color: Colors.white,
-              ),
-              selectWritingType(context),
-              Container(
-                color: Colors.white,
-                height: 10,
-              ),
-              // Container(
-              //   height: 1,
-              //   decoration: const BoxDecoration(
-              //     color: Color(0xffd2d7dd),
-              //   ),
-              // ),
-              Expanded(
-                child: ListView.builder(
-                  itemBuilder: (BuildContext context, int index) {
-                    return HelperWritingCard(
-                      index: index,
-                    );
-                  },
-                  itemCount: helperWriting.length,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            child: Column(
+              children: [
+                selectWritingType(context),
+                Container(
+                  color: Colors.white,
+                  height: 10,
                 ),
-              ),
-            ],
+                Expanded(
+                  child: ListView.builder(
+                    itemBuilder: (BuildContext context, int index) {
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: HelperWritingCard(
+                          index: index,
+                        ),
+                      );
+                    },
+                    itemCount: helperWriting.length,
+                  ),
+                ),
+              ],
+            ),
           ),
           Positioned(
             bottom: 20,
@@ -114,7 +109,7 @@ class _HelperBoardState extends State<HelperBoardScreen> {
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
               return Padding(
-                padding: EdgeInsets.only(left: index == 0 ? 20 : 10),
+                padding: EdgeInsets.only(left: index == 0 ? 0 : 10),
                 child: GestureDetector(
                   onTap: () {
                     setState(() {
@@ -123,18 +118,21 @@ class _HelperBoardState extends State<HelperBoardScreen> {
                   },
                   child: Container(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 15,
+                      horizontal: 10,
                     ),
                     decoration: BoxDecoration(
-                        color: _selectedHelperIndex == index
-                            ? const Color(0xb4000000)
-                            : Colors.white,
-                        borderRadius: BorderRadius.circular(16),
-                        border: _selectedHelperIndex == index
-                            ? Border.all(color: const Color(0x00000000))
-                            : Border.all(
-                                color: const Color(0xffE4E7EB),
-                              )),
+                      color: _selectedHelperIndex == index
+                          ? const Color(0xb4000000)
+                          : Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      border: _selectedHelperIndex == index
+                          ? Border.all(
+                              color: const Color(0x00000000),
+                              width: 1.5,
+                            )
+                          : Border.all(
+                              color: const Color(0xffE4E7EB), width: 1.5),
+                    ),
                     child: Align(
                       alignment: Alignment.center,
                       child: Text(

@@ -16,54 +16,44 @@ class HelperWritingCard extends StatefulWidget {
 class _HelperWritingCardState extends State<HelperWritingCard> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Container(
-            decoration: const BoxDecoration(
-              border: Border(
-                top: BorderSide(
-                  color: Color(0xffd2d7dd),
-                  width: 1,
-                ),
+    return InkWell(
+      onTap: () {
+        context.push('/helper/writing', extra: widget.index);
+      },
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: const Color(0xffd2d7dd),
+            width: 1.5,
+          ),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              helperWriting[widget.index][0],
+              style: Theme.of(context).textTheme.titleMedium,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
+            Text(
+              '${helperWriting[widget.index][1]} | ${helperWriting[widget.index][2]}',
+              style: const TextStyle(
+                fontFamily: 'pretendard',
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: Color(0xff868e96),
               ),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
             ),
-          ),
+          ],
         ),
-        InkWell(
-          onTap: () {
-            context.push('/helper/writing', extra: widget.index);
-          },
-          child: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  helperWriting[widget.index][0],
-                  style: Theme.of(context).textTheme.titleMedium,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                ),
-                Text(
-                  '${helperWriting[widget.index][1]} | ${helperWriting[widget.index][2]}',
-                  style: const TextStyle(
-                    fontFamily: 'pretendard',
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xff868e96),
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }

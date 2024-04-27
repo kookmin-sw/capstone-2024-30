@@ -22,7 +22,7 @@ class _SpeechCustomSentenceScreenState
       },
       child: Scaffold(
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Column(
             children: [
               Container(
@@ -58,7 +58,7 @@ class _SpeechCustomSentenceScreenState
                     context.push('/speech/practice',
                         extra: [_textController.text, '']);
                   }),
-              const SizedBox(height: 20),
+              const SizedBox(height: 15),
             ],
           ),
         ),
