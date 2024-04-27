@@ -32,7 +32,7 @@ class _SpeechScreenState extends State<SpeechPracticeScreen> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: SpeechPracticeCard(
                 sentence1: sentenceList[0],
                 sentence2: sentenceList[1],
