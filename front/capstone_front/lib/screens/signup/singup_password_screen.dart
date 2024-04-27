@@ -47,10 +47,11 @@ class _SignupPasswordScreenState extends State<SignupPasswordScreen> {
             const Spacer(),
             BasicButton(
                 text: tr('signup.next'),
-                onPressed: () {
+                onPressed: () async {
                   // Todo: 비밀번호 조건 적용 필요(6자 이상 등)
                   if (userInfo['pw'] != '' &&
                       userInfo['pw'] == userInfo['pwRe']) {
+                    await sendEmailAuth(userInfo['id']!, userInfo['pw']!);
                     context.push('/signup/emailAuth');
                   }
                 }),

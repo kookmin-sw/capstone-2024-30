@@ -1,4 +1,4 @@
-final List<List<String>> sentences = [
+const List<List<String>> sentences = [
   ['안녕하세요, 오늘 수업 재밌었어요?', 'Hello, was the class interesting today?'],
   ['죄송하지만, 이 자리 비어 있나요?', 'Excuse me, is this seat taken?'],
   ['도서관에서 어떻게 책을 대출하나요?', 'How can I borrow books from the library?'],
