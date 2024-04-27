@@ -34,7 +34,8 @@ class _SpeechSentenceCardState extends State<SpeechSentenceCard> {
               if (status != PermissionStatus.granted) {
                 permssionNotice(context);
               } else {
-                context.push('/speech/practice', extra: _index);
+                context.push('/speech/practice',
+                    extra: [sentences[_index][0], sentences[_index][1]]);
               }
             }
           : null,
@@ -43,7 +44,10 @@ class _SpeechSentenceCardState extends State<SpeechSentenceCard> {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: const Color(0xffd2d7dd), width: 2),
+          border: Border.all(
+            color: const Color(0xffd2d7dd),
+            width: 2,
+          ),
         ),
         child: Padding(
           padding: EdgeInsets.symmetric(
@@ -57,11 +61,13 @@ class _SpeechSentenceCardState extends State<SpeechSentenceCard> {
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w600,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
               Text(
                 sentences[_index][1],
                 style: Theme.of(context).textTheme.bodySmall,
+                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),
