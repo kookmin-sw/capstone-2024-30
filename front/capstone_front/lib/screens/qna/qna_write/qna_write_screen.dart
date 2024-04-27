@@ -1,7 +1,11 @@
+import 'dart:io';
+
+import 'package:capstone_front/screens/signup/signup_service.dart';
 import 'package:capstone_front/utils/basic_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class QnaWriteScreen extends StatefulWidget {
   const QnaWriteScreen({super.key});
@@ -22,6 +26,13 @@ class _HelperWriteScreenState extends State<QnaWriteScreen> {
   final TextEditingController _contentController = TextEditingController();
   final int _minLines = 1;
   final int _maxLines = 3;
+
+  final picker = ImagePicker();
+  XFile? image;
+  List<XFile?> multiImages = [];
+  List<XFile?> images = [];
+  final int _maxPhotos = 4;
+  int _currentPhotos = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -83,6 +94,102 @@ class _HelperWriteScreenState extends State<QnaWriteScreen> {
                         maxLines: 10,
                         isMultiline: true,
                         titleController: _contentController,
+                      ),
+                      const SizedBox(height: 20),
+                      Text(
+                        tr('사진'),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Wrap(
+                          children: [
+                            IconButton(
+                              onPressed: () async {
+                                if (_currentPhotos >= _maxPhotos) {
+                                  makeToast("$_maxPhotos의 사진만 가능합니다");
+                                } else {
+                                  if (_maxPhotos - _currentPhotos < 2) {
+                                    var image = await picker.pickImage(
+                                      source: ImageSource.gallery,
+                                    );
+                                    if (image != null) {
+                                      multiImages = [image];
+                                      setState(() {
+                                        images.addAll(multiImages);
+                                        _currentPhotos += multiImages.length;
+                                      });
+                                    }
+                                  } else {
+                                    multiImages = await picker.pickMultiImage(
+                                      limit: _maxPhotos - _currentPhotos,
+                                    );
+                                    setState(() {
+                                      images.addAll(multiImages);
+                                      _currentPhotos += multiImages.length;
+                                    });
+                                  }
+                                }
+                              },
+                              icon: const Icon(Icons.photo_library_rounded),
+                              iconSize: 50,
+                            ),
+                            ...images.map(
+                              (item) => Row(
+                                children: [
+                                  Stack(
+                                    alignment: Alignment.topRight,
+                                    children: [
+                                      Container(
+                                        height: 150,
+                                        width: 150,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          image: DecorationImage(
+                                            fit: BoxFit.cover,
+                                            image: FileImage(
+                                              File(item!.path),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.black,
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                        ),
+                                        //삭제 버튼
+                                        child: IconButton(
+                                          padding: EdgeInsets.zero,
+                                          constraints: const BoxConstraints(),
+                                          icon: const Icon(Icons.close,
+                                              color: Colors.white, size: 15),
+                                          onPressed: () {
+                                            setState(
+                                              () {
+                                                images.remove(item);
+                                                _currentPhotos -= 1;
+                                              },
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ],
                   ),
