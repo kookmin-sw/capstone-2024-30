@@ -1,47 +1,41 @@
-import 'package:capstone_front/screens/speeking_practice/pronunciation_sentence_card.dart';
-import 'package:capstone_front/screens/speeking_practice/utils/simple_recorder.dart';
+import 'package:capstone_front/screens/speech_practice/speech_practice_card.dart';
+import 'package:capstone_front/screens/speech_practice/utils/example_sentences.dart';
+import 'package:capstone_front/screens/speech_practice/utils/simple_recorder.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
-class PronunciationPracticeScreen extends StatefulWidget {
-  const PronunciationPracticeScreen({super.key});
+class SpeechPracticeScreen extends StatefulWidget {
+  const SpeechPracticeScreen({super.key});
 
   @override
-  State<PronunciationPracticeScreen> createState() =>
-      _PronunciationPracticeScreenState();
+  State<SpeechPracticeScreen> createState() => _SpeechScreenState();
 }
 
-class _PronunciationPracticeScreenState
-    extends State<PronunciationPracticeScreen> {
+class _SpeechScreenState extends State<SpeechPracticeScreen> {
   double translateX = 0.0;
+
   @override
   Widget build(BuildContext context) {
-    final int index = GoRouterState.of(context).extra! as int;
+    final List<String> sentenceList =
+        GoRouterState.of(context).extra! as List<String>;
     return Scaffold(
       appBar: AppBar(
-        iconTheme: const IconThemeData(
-          color: Colors.white,
-        ),
-        backgroundColor: Theme.of(context).primaryColor,
+        scrolledUnderElevation: 0,
+        centerTitle: false,
         title: Text(
-          tr('pronunciationPracticeScreen.pronunciation_practice'),
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
+          tr('speech.speech_practice'),
         ),
       ),
       body: Container(
-        color: Theme.of(context).colorScheme.secondary,
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(10),
-              child: PronunciationSentenceCard(
-                index: index,
-                canTap: false,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: SpeechPracticeCard(
+                sentence1: sentenceList[0],
+                sentence2: sentenceList[1],
                 verticalPadding: 20,
               ),
             ),
@@ -72,7 +66,9 @@ class _PronunciationPracticeScreenState
                     )),
               ),
             ),
-            const SimpleRecorder(),
+            SimpleRecorder(
+              sentence: sentenceList[0],
+            ),
           ],
         ),
       ),

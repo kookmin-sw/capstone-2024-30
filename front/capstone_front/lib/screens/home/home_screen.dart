@@ -1,6 +1,6 @@
 import 'package:capstone_front/screens/cafeteriaMenu/cafeteriaMenuScreen.dart';
 import 'package:capstone_front/screens/notice/notice_screen.dart';
-import 'package:capstone_front/utils/bubble_painter1.dart';
+import 'package:capstone_front/services/login_service.dart';
 import 'package:capstone_front/utils/white_box.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -320,6 +320,7 @@ class _HomeScreenState extends State<HomeScreen> {
               onTap: () {
                 context.push('/chatbot');
               },
+              borderRadius: BorderRadius.circular(50),
               child: SizedBox(
                 height: 66,
                 width: 66,
@@ -373,7 +374,15 @@ class _HomeScreenState extends State<HomeScreen> {
                             restartDialog(context);
                           }),
                     ],
-                  )
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      logout();
+                      await storage.write(key: 'isLogin', value: 'true');
+                      context.go('/login');
+                    },
+                    child: Text(tr("mainScreen.logout")),
+                  ),
                 ],
               ),
             ),
