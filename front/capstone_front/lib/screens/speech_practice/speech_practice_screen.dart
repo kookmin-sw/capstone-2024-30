@@ -1,4 +1,5 @@
 import 'package:capstone_front/screens/speech_practice/speech_sentence_card.dart';
+import 'package:capstone_front/screens/speech_practice/utils/example_sentences.dart';
 import 'package:capstone_front/screens/speech_practice/utils/simple_recorder.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ class SpeechPracticeScreen extends StatefulWidget {
 
 class _SpeechScreenState extends State<SpeechPracticeScreen> {
   double translateX = 0.0;
+
   @override
   Widget build(BuildContext context) {
     final int index = GoRouterState.of(context).extra! as int;
@@ -63,7 +65,9 @@ class _SpeechScreenState extends State<SpeechPracticeScreen> {
                     )),
               ),
             ),
-            const SimpleRecorder(),
+            SimpleRecorder(
+              sentence: sentences[index][0],
+            ),
           ],
         ),
       ),

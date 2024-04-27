@@ -57,11 +57,13 @@ class _SpeechSentenceCardState extends State<SpeechSentenceCard> {
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w600,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
               Text(
                 sentences[_index][1],
                 style: Theme.of(context).textTheme.bodySmall,
+                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),

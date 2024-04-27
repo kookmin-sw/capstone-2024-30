@@ -18,7 +18,9 @@
  */
 
 import 'dart:async';
+import 'dart:io';
 import 'package:audio_session/audio_session.dart';
+import 'package:capstone_front/services/speech_service.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -26,7 +28,9 @@ import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import '../speech_practice_screen.dart';
 
 /*
  * This is an example showing how to record to a Dart Stream.
@@ -39,6 +43,7 @@ import 'package:permission_handler/permission_handler.dart';
  */
 
 ///
+const int tSampleRate = 44000;
 typedef _Fn = void Function();
 
 /* This does not work. on Android we must have the Manifest.permission.CAPTURE_AUDIO_OUTPUT permission.
@@ -57,60 +62,31 @@ const theSource = AudioSource.microphone;
 
 /// Example app.
 class SimpleRecorder extends StatefulWidget {
-  const SimpleRecorder({super.key});
+  final String sentence;
+  const SimpleRecorder({super.key, required this.sentence});
 
   @override
   State<SimpleRecorder> createState() => _SimpleRecorderState();
 }
 
 class _SimpleRecorderState extends State<SimpleRecorder> {
-  Codec _codec = Codec.aacMP4;
-  String _mPath = 'tau_file.mp4';
   FlutterSoundPlayer? _mPlayer = FlutterSoundPlayer();
   FlutterSoundRecorder? _mRecorder = FlutterSoundRecorder();
   bool _mPlayerIsInited = false;
   bool _mRecorderIsInited = false;
+  final bool _mEnableVoiceProcessing = false;
+
   bool _mplaybackReady = false;
+  String? _mPath;
+  StreamSubscription? _mRecordingDataSubscription;
 
-  @override
-  void initState() {
-    _mPlayer!.openPlayer().then((value) {
-      setState(() {
-        _mPlayerIsInited = true;
-      });
-    });
-
-    openTheRecorder().then((value) {
-      setState(() {
-        _mRecorderIsInited = true;
-      });
-    });
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _mPlayer!.closePlayer();
-    _mPlayer = null;
-
-    _mRecorder!.closeRecorder();
-    _mRecorder = null;
-    super.dispose();
-  }
-
-  Future<void> openTheRecorder() async {
-    // if (!kIsWeb) {
-
-    // }
-    await _mRecorder!.openRecorder();
-    if (!await _mRecorder!.isEncoderSupported(_codec) && kIsWeb) {
-      _codec = Codec.opusWebM;
-      _mPath = 'tau_file.webm';
-      if (!await _mRecorder!.isEncoderSupported(_codec) && kIsWeb) {
-        _mRecorderIsInited = true;
-        return;
-      }
+  Future<void> _openRecorder() async {
+    var status = await Permission.microphone.request();
+    if (status != PermissionStatus.granted) {
+      throw RecordingPermissionException('Microphone permission not granted');
     }
+    await _mRecorder!.openRecorder();
+
     final session = await AudioSession.instance;
     await session.configure(AudioSessionConfiguration(
       avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
@@ -130,76 +106,118 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
       androidWillPauseWhenDucked: true,
     ));
 
-    _mRecorderIsInited = true;
-  }
-
-  // ----------------------  Here is the code for recording and playback -------
-
-  void record() {
-    _mRecorder!
-        .startRecorder(
-      toFile: _mPath,
-      codec: _codec,
-      audioSource: theSource,
-    )
-        .then((value) {
-      setState(() {});
+    setState(() {
+      _mRecorderIsInited = true;
     });
   }
 
-  void stopRecorder() async {
-    await _mRecorder!.stopRecorder().then((value) {
+  @override
+  void initState() {
+    super.initState();
+    // Be careful : openAudioSession return a Future.
+    // Do not access your FlutterSoundPlayer or FlutterSoundRecorder before the completion of the Future
+    _mPlayer!.openPlayer().then((value) {
       setState(() {
-        //var url = value;
-        _mplaybackReady = true;
+        _mPlayerIsInited = true;
       });
     });
+    _openRecorder();
   }
 
-  void play() {
-    assert(_mPlayerIsInited &&
-        _mplaybackReady &&
-        _mRecorder!.isStopped &&
-        _mPlayer!.isStopped);
-    _mPlayer!
-        .startPlayer(
-            fromURI: _mPath,
-            //codec: kIsWeb ? Codec.opusWebM : Codec.aacADTS,
-            whenFinished: () {
-              setState(() {});
-            })
-        .then((value) {
-      setState(() {});
+  @override
+  void dispose() {
+    stopPlayer();
+    _mPlayer!.closePlayer();
+    _mPlayer = null;
+
+    stopRecorder();
+    _mRecorder!.closeRecorder();
+    _mRecorder = null;
+    super.dispose();
+  }
+
+  Future<IOSink> createFile() async {
+    var tempDir = await getTemporaryDirectory();
+    _mPath = '${tempDir.path}/flutter_sound_example.wav';
+    var outputFile = File(_mPath!);
+    if (outputFile.existsSync()) {
+      await outputFile.delete();
+    }
+    return outputFile.openWrite();
+  }
+
+  // ----------------------  Here is the code to record to a Stream ------------
+
+  Future<void> record() async {
+    assert(_mRecorderIsInited && _mPlayer!.isStopped);
+    var sink = await createFile();
+    var recordingDataController = StreamController<Food>();
+    _mRecordingDataSubscription =
+        recordingDataController.stream.listen((buffer) {
+      if (buffer is FoodData) {
+        sink.add(buffer.data!);
+      }
     });
+    await _mRecorder!.startRecorder(
+      toStream: recordingDataController.sink,
+      codec: Codec.pcm16,
+      numChannels: 1,
+      sampleRate: tSampleRate,
+      // enableVoiceProcessing: _mEnableVoiceProcessing
+    );
+    setState(() {});
   }
+  // --------------------- (it was very simple, wasn't it ?) -------------------
 
-  void stopPlayer() {
-    _mPlayer!.stopPlayer().then((value) {
-      setState(() {});
-    });
+  Future<void> stopRecorder() async {
+    await _mRecorder!.stopRecorder();
+    if (_mRecordingDataSubscription != null) {
+      await _mRecordingDataSubscription!.cancel();
+      _mRecordingDataSubscription = null;
+    }
+    _mplaybackReady = true;
   }
-
-// ----------------------------- UI --------------------------------------------
 
   _Fn? getRecorderFn() {
     if (!_mRecorderIsInited || !_mPlayer!.isStopped) {
       return null;
     }
-    return _mRecorder!.isStopped ? record : stopRecorder;
+    return _mRecorder!.isStopped
+        ? record
+        : () {
+            stopRecorder().then((value) => setState(() {}));
+          };
+  }
+
+  void play() async {
+    assert(_mPlayerIsInited &&
+        _mplaybackReady &&
+        _mRecorder!.isStopped &&
+        _mPlayer!.isStopped);
+    await _mPlayer!.startPlayer(
+        fromURI: _mPath,
+        sampleRate: tSampleRate,
+        codec: Codec.pcm16,
+        numChannels: 1,
+        whenFinished: () {
+          setState(() {});
+        }); // The readability of Dart is very special :-(
+    setState(() {});
+  }
+
+  Future<void> stopPlayer() async {
+    await _mPlayer!.stopPlayer();
   }
 
   _Fn? getPlaybackFn() {
     if (!_mPlayerIsInited || !_mplaybackReady || !_mRecorder!.isStopped) {
       return null;
     }
-    return _mPlayer!.isStopped ? play : stopPlayer;
-  }
-
-  _Fn? sendRecord() {
-    if (!_mPlayerIsInited || !_mplaybackReady || !_mRecorder!.isStopped) {
-      return null;
-    }
-    return _mPlayer!.isStopped ? null : null;
+    return _mPlayer!.isStopped
+        ? play
+        : () {
+            stopPlayer().then((value) => setState(() {}));
+          };
   }
 
   @override
@@ -236,18 +254,13 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
             Transform.translate(
               offset: const Offset(0, -40),
               child: Container(
-                width: 75,
-                height: 75,
                 decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary,
-                    shape: BoxShape.circle,
-                    border:
-                        Border.all(color: const Color(0xffd2d7dd), width: 1)),
+                  shape: BoxShape.circle,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
                 child: IconButton(
-                  iconSize: 50,
+                  iconSize: 60,
                   onPressed: getRecorderFn(),
-                  // color: Colors.white,
-                  // disabledColor: Colors.gray,
                   icon: _mRecorder!.isRecording
                       ? const Icon(
                           Icons.stop,
@@ -256,7 +269,7 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
                       : Icon(
                           Icons.mic,
                           color: _mPlayer!.isPlaying
-                              ? Colors.red[100]
+                              ? Colors.grey[300]
                               : Colors.white,
                         ),
                 ),
@@ -266,7 +279,11 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
               children: [
                 IconButton(
                     iconSize: 50,
-                    onPressed: getPlaybackFn(),
+                    onPressed: () async {
+                      String result =
+                          await getSpeechResult(_mPath!, widget.sentence);
+                      print(result);
+                    },
                     //color: Colors.white,
                     //disabledColor: Colors.grey,
                     icon: const Icon(Icons.check)),
