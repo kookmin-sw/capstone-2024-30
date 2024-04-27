@@ -1,9 +1,9 @@
-class ApiResponse {
+class ApiSuccessResponse {
   final String success;
-  final String? message;
+  final String message;
   final Map<String, dynamic> response;
 
-  ApiResponse({
+  ApiSuccessResponse({
     required this.success,
     required this.message,
     required this.response,
