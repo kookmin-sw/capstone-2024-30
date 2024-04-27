@@ -1,4 +1,4 @@
-import 'package:capstone_front/screens/speech_practice/speech_sentence_card.dart';
+import 'package:capstone_front/screens/speech_practice/speech_practice_card.dart';
 import 'package:capstone_front/screens/speech_practice/utils/example_sentences.dart';
 import 'package:capstone_front/screens/speech_practice/utils/simple_recorder.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -18,7 +18,8 @@ class _SpeechScreenState extends State<SpeechPracticeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final int index = GoRouterState.of(context).extra! as int;
+    final List<String> sentenceList =
+        GoRouterState.of(context).extra! as List<String>;
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0,
@@ -32,9 +33,9 @@ class _SpeechScreenState extends State<SpeechPracticeScreen> {
           children: [
             Padding(
               padding: const EdgeInsets.all(10),
-              child: SpeechSentenceCard(
-                index: index,
-                canTap: false,
+              child: SpeechPracticeCard(
+                sentence1: sentenceList[0],
+                sentence2: sentenceList[1],
                 verticalPadding: 20,
               ),
             ),
@@ -66,7 +67,7 @@ class _SpeechScreenState extends State<SpeechPracticeScreen> {
               ),
             ),
             SimpleRecorder(
-              sentence: sentences[index][0],
+              sentence: sentenceList[0],
             ),
           ],
         ),
