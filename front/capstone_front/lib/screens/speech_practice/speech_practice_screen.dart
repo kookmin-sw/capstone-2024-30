@@ -1,4 +1,4 @@
-import 'package:capstone_front/screens/speech_practice/speech_practice_card.dart';
+import 'package:capstone_front/screens/speech_practice/speech_custom_sentence/speech_practice_card.dart';
 import 'package:capstone_front/screens/speech_practice/utils/example_sentences.dart';
 import 'package:capstone_front/screens/speech_practice/utils/simple_recorder.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -32,7 +32,7 @@ class _SpeechScreenState extends State<SpeechPracticeScreen> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
               child: SpeechPracticeCard(
                 sentence1: sentenceList[0],
                 sentence2: sentenceList[1],
@@ -51,7 +51,8 @@ class _SpeechScreenState extends State<SpeechPracticeScreen> {
                       borderRadius: BorderRadius.circular(25),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.all(30.0),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 30.0, horizontal: 20),
                       child: Column(
                         children: [
                           dividerWithText(" 정확도 총점 "),

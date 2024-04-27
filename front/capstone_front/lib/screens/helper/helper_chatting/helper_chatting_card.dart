@@ -22,7 +22,14 @@ class _HelperChattingCardState extends State<HelperChattingCard> {
       onTap: () {},
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        padding: const EdgeInsets.symmetric(vertical: 15),
+        decoration: const BoxDecoration(
+            // border: Border(
+            //   bottom: BorderSide(
+            //     color: Color(0xffd2d7dd),
+            //   ),
+            // ),
+            ),
         child: Row(
           children: [
             SizedBox(
@@ -33,7 +40,7 @@ class _HelperChattingCardState extends State<HelperChattingCard> {
                 child: Image.asset('assets/images/carrot_profile.png'),
               ),
             ),
-            const SizedBox(width: 20),
+            const SizedBox(width: 15),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

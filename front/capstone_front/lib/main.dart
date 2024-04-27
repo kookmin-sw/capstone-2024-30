@@ -13,6 +13,7 @@ import 'package:capstone_front/screens/signup/signup_college_screen.dart';
 import 'package:capstone_front/screens/signup/signup_country_screen.dart';
 import 'package:capstone_front/screens/signup/signup_email_screen.dart';
 import 'package:capstone_front/screens/signup/signup_email_auth_screen.dart';
+import 'package:capstone_front/screens/signup/signup_name.dart';
 import 'package:capstone_front/screens/signup/signup_service.dart';
 import 'package:capstone_front/screens/main_screen.dart';
 import 'package:capstone_front/screens/notice/notice_screen.dart';
@@ -23,13 +24,14 @@ import 'package:capstone_front/screens/qna/qna_write/qna_write_screen.dart';
 import 'package:capstone_front/screens/signup/singup_password_screen.dart';
 import 'package:capstone_front/screens/speech_practice/speech_practice_screen.dart';
 import 'package:capstone_front/screens/speech_practice/speech_screen.dart';
-import 'package:capstone_front/screens/speech_practice/speech_select_sentence_screen.dart';
+import 'package:capstone_front/screens/speech_practice/speech_example_sentences/speech_select_sentence_screen.dart';
 import 'package:capstone_front/utils/page_animation.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -138,17 +140,17 @@ final GoRouter router = GoRouter(
     GoRoute(
         name: 'signup',
         path: '/signup',
-        builder: (context, state) => const SignupEmailScreen(),
+        builder: (context, state) => const SignupNameScreen(),
         routes: [
+          GoRoute(
+            name: 'email',
+            path: 'email',
+            builder: (context, state) => const SignupEmailScreen(),
+          ),
           GoRoute(
             name: 'password',
             path: 'password',
             builder: (context, state) => const SignupPasswordScreen(),
-          ),
-          GoRoute(
-            name: 'emailAuth',
-            path: 'emailAuth',
-            builder: (context, state) => const SignupEmailAuthScreen(),
           ),
           GoRoute(
             name: 'college',

@@ -14,10 +14,13 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+late UserCredential credential;
+
 Map<String, String> userInfo = {
   'id': '',
   'pw': '',
   'pwRe': '',
+  'name': '',
   'studentNum': '',
   'college': '',
   'department': '',
@@ -58,34 +61,31 @@ Future<String> signup() async {
   }
 }
 
-Future<void> sendEmailAuth(String email, String pw) async {
+Future<String> sendEmailAuth(String email, String pw) async {
   try {
-    UserCredential credential =
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+    credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
       email: '${userInfo['id']}@kookmin.ac.kr',
       password: userInfo['pw']!,
     );
-    await credential.user!.sendEmailVerification();
 
-    User? user = credential.user;
-    await user!.reload();
-    user = FirebaseAuth.instance.currentUser;
+    await credential.user?.sendEmailVerification();
+
+    return "success";
   } on FirebaseAuthException catch (e) {
-    print(e.code);
+    return e.code;
   }
 }
 
 Future<String> isEmailAuth(String email, String pw) async {
   try {
-    UserCredential credential = await FirebaseAuth.instance
-        .signInWithEmailAndPassword(email: email, password: pw);
+    // UserCredential credential = await FirebaseAuth.instance
+    //     .signInWithEmailAndPassword(email: email, password: pw);
 
-    User? user = credential.user;
-    await user!.reload();
-    user = FirebaseAuth.instance.currentUser;
-
-    if (user!.emailVerified) {
-      user = credential.user;
+    // User? user = credential.user;
+    // await user!.reload();
+    // user = FirebaseAuth.instance.currentUser;
+    if (credential.user!.emailVerified) {
+      // user = credential.user;
       return "success";
     } else {
       return "email";
