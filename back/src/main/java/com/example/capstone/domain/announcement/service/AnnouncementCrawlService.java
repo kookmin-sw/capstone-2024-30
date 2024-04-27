@@ -78,19 +78,19 @@ public class AnnouncementCrawlService {
                 String authorPhone = (phoneElement != null) ? phoneElement.text().replace("☎ ", "") : "No Phone";
                 Elements fileInfo = doc.select("div.board_atc.file > ul > li > a");
                 String html = doc.select(".view_inner").outerHtml();
-                boolean flag = false;
 
                 Translator translator = new Translator(authKey);
 
                 for (String language : languages) {
-                    String[] basicInfo = {title, department};
+                    String translatedTitle = title;
+                    String translatedDepartment = department;
 
                     if (!language.equals("KO")) {
-                        basicInfo = translator.translateText(title + "&" + department, "KO", language)
-                                .getText().split("&");
+                        translatedTitle = translator.translateText(title, "KO", language).getText();
+                        translatedDepartment = translator.translateText(department, "KO", language).getText();
                     }
 
-                    Optional<Announcement> check = announcementRepository.findByTitle(basicInfo[0]);
+                    Optional<Announcement> check = announcementRepository.findByTitle(translatedTitle);
                     if (!check.isEmpty()) continue;
 
                     String document = html;
@@ -117,10 +117,10 @@ public class AnnouncementCrawlService {
 
                     Announcement announcement = Announcement.builder()
                             .type(type)
-                            .title(basicInfo[0])
+                            .title(translatedTitle)
                             .author(author)
                             .authorPhone(authorPhone)
-                            .department(basicInfo[1])
+                            .department(translatedDepartment)
                             .writtenDate(LocalDate.parse(writeDate, formatter))
                             .document(document)
                             .language(language)
@@ -154,7 +154,7 @@ public class AnnouncementCrawlService {
                     String dateStr = dateElements.text();
                     LocalDate noticeDate = LocalDate.parse(dateStr, formatter);
 
-                    if (noticeDate.isAfter(currentDate.minusMonths(5))) {
+                    if (noticeDate.isAfter(currentDate.minusDays(1))) {
                         Elements linkElements = announcement.select("td.b-td-left a");
                         if (!linkElements.isEmpty()) {
                             String href = linkElements.attr("href");
@@ -195,14 +195,15 @@ public class AnnouncementCrawlService {
                 String html = doc.select(".b-content-box").outerHtml();
 
                 for (String language : languages) {
-                    String[] basicInfo = {title, department};
+                    String translatedTitle = title;
+                    String translatedDepartment = department;
 
                     if (!language.equals("KO")) {
-                        basicInfo = translator.translateText(title + "&" + department, "KO", language)
-                                .getText().split("&");
+                        translatedTitle = translator.translateText(title, "KO", language).getText();
+                        translatedDepartment = translator.translateText(department, "KO", language).getText();
                     }
 
-                    Optional<Announcement> check = announcementRepository.findByTitle(basicInfo[0]);
+                    Optional<Announcement> check = announcementRepository.findByTitle(translatedTitle);
                     if (!check.isEmpty()) continue;
 
                     String document = html;
@@ -216,10 +217,10 @@ public class AnnouncementCrawlService {
 
                     Announcement announcement = Announcement.builder()
                             .type(url.getType())
-                            .title(basicInfo[0])
+                            .title(translatedTitle)
                             .author(author)
                             .authorPhone(authorPhone)
-                            .department(basicInfo[1])
+                            .department(translatedDepartment)
                             .writtenDate(LocalDate.parse(writeDate, formatter))
                             .document(document)
                             .language(language)
@@ -237,7 +238,7 @@ public class AnnouncementCrawlService {
     }
 
     private String translateRecursive(String html, String language, int part, Translator translator){
-        if(part == 5) return "";
+        if(part == 11) return "";
 
         String document = "";
         try {
