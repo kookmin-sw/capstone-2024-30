@@ -1,0 +1,32 @@
+# 채팅서버 테스트를 위한 Docker-compose입니다.
+# 실제 배포용은 Spring에 있는 Docker-compose입니다.
+# 해당 docker-compose는 테스트용으로만 사용해주세요.
+
+version: '1.0'
+services:
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq
+    restart: unless-stopped
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      TZ: "Asia/Seoul"
+      RABBITMQ_ERLANG_COOKIE: ${RABBITMQ_ERLANG_COOKIE}
+      RABBITMQ_DEFAULT_USER: ${DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${DEFAULT_PASS}
+
+  ruby:
+    container_name: ruby
+    restart: always
+    image: capstone30/ruby
+    env_file:
+      - .env
+    environment:
+      TZ : "Asia/Seoul"
+    ports:
+      - "3000:3000"
+    depends_on:
+      rabbitmq
+
