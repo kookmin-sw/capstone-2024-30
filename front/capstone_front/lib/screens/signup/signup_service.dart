@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:ui';
 
+import 'package:capstone_front/models/api_success_response.dart';
 import 'package:capstone_front/screens/signup/college_department.dart';
 import 'package:capstone_front/screens/signup/signup_email_screen.dart';
 import 'package:capstone_front/screens/signup/signup_util.dart';
@@ -17,6 +19,7 @@ import 'package:provider/provider.dart';
 late UserCredential credential;
 
 Map<String, String> userInfo = {
+  'uuid': '',
   'id': '',
   'pw': '',
   'pwRe': '',
@@ -29,45 +32,33 @@ Map<String, String> userInfo = {
 int selectedPageIndex = 0;
 
 Future<String> signup() async {
-  try {
-    // UserCredential credential =
-    //     await FirebaseAuth.instance.createUserWithEmailAndPassword(
-    //   email: '${userInfo['id']}@kookmin.ac.kr',
-    //   password: userInfo['pw']!,
-    // );
-    // await credential.user!.sendEmailVerification();
+  Map<String, dynamic> userData = {
+    'uuid': userInfo['uuid'],
+    'email': "${userInfo['id']}@kookmin.ac.kr",
+    'name': userInfo['name'],
+    'country': userInfo['country'],
+    'phoneNumber': '010-8276-8291',
+    'major': userInfo['department'],
+  };
 
-    // TODO 우리 서버에 signup 요청 여기서
-    // signupInfo 에는 실제 유저에게 입력받은 정보가 들어가야함
-
-    // final Map<String, dynamic> signupInfo = {
-    //   // "uuid": credential.user!.uid,
-    //   "uuid": 'messi',
-    //   "email": 'jihunchoi@kookmin.ac.kr',
-    //   "name": 'jihun',
-    //   "country": 'korea',
-    //   "phoneNumber": '010-8276-8291',
-    //   "major": "sw",
-    // };
-    // var response = AuthService.signUp(signupInfo);
-
-    // response의 결과에 따라 성공, 실패, 이유 띄워야함
-
+  var isSucceed = await AuthService.signUp(userData);
+  if (isSucceed) {
     return 'success';
-  } on FirebaseAuthException catch (e) {
-    return e.code;
-  } catch (e) {
-    return e.toString();
   }
+  throw Exception('there is something problem while signup');
 }
 
 Future<String> sendEmailAuth(String email, String pw) async {
+  FlutterSecureStorage storage = const FlutterSecureStorage();
+
   try {
     credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
       email: '${userInfo['id']}@kookmin.ac.kr',
       password: userInfo['pw']!,
     );
 
+    userInfo['uuid'] = credential.user!.uid;
+    await storage.write(key: 'uuid', value: credential.user!.uid);
     await credential.user?.sendEmailVerification();
 
     return "success";
@@ -77,15 +68,16 @@ Future<String> sendEmailAuth(String email, String pw) async {
 }
 
 Future<String> isEmailAuth(String email, String pw) async {
+  FlutterSecureStorage storage = const FlutterSecureStorage();
   try {
-    // UserCredential credential = await FirebaseAuth.instance
-    //     .signInWithEmailAndPassword(email: email, password: pw);
+    User? user = credential.user;
+    await user!.reload();
+    user = FirebaseAuth.instance.currentUser;
 
-    // User? user = credential.user;
-    // await user!.reload();
-    // user = FirebaseAuth.instance.currentUser;
-    if (credential.user!.emailVerified) {
-      // user = credential.user;
+    if (user!.emailVerified) {
+      user = credential.user;
+      userInfo['uuid'] = user!.uid;
+      await storage.write(key: 'uuid', value: user.uid);
       return "success";
     } else {
       return "email";

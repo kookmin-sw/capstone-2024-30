@@ -1,3 +1,4 @@
+import 'package:capstone_front/services/auth_service.dart';
 import 'package:capstone_front/services/login_service.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -58,12 +59,20 @@ class _LoginScreenState extends State<LoginScreen> {
                             '${_userInfo[0]}@kookmin.ac.kr', _userInfo[1]);
                         switch (result) {
                           case "success":
-                            makeToast("로그인에 성공하였습니다");
                             await storage.write(key: 'isLogin', value: 'true');
                             await storage.write(
                                 key: 'userEmail',
                                 value: '${_userInfo[0]}@kookmin.ac.kr');
-                            context.go('/');
+                            var uuid = await storage.read(key: 'uuid');
+                            var isLogined = await AuthService.signIn({
+                              "uuid": uuid,
+                              "email": '${_userInfo[0]}@kookmin.ac.kr',
+                            });
+                            if (isLogined) {
+                              makeToast("로그인에 성공하였습니다");
+                              context.go('/');
+                            }
+
                           case "email":
                             makeToast("이메일이 인증되지 않았습니다");
                           case "invalid-credential":
