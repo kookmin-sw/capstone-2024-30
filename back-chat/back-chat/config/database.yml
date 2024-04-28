@@ -12,16 +12,16 @@
 default: &default
   adapter: mysql2
   encoding: utf8
-  database: <%= ENV['RDS_DB_NAME'] %>
-  username: <%= ENV['RDS_USERNAME'] %>
-  password: <%= ENV['RDS_PASSWORD'] %>
-  host: <%= ENV['RDS_HOSTNAME'] %>
-  port: 3306
+  database: <%= ENV['DB_NAME'] %>
+  username: <%= ENV['MYSQL_USERNAME'] %>
+  password: <%= ENV['MYSQL_PASSWORD'] %>
+  host: <%= ENV['DB_ENDPOINT'] %>
+  port: <%= ENV['DB_PORT'] %>
   pool: 5
 
 development:
   <<: *default
-  database: <%= ENV['RDS_DB_NAME'] %>
+  database: <%= ENV['DB_NAME'] %>
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".

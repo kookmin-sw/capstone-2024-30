@@ -73,8 +73,10 @@ class ChatsController < ApplicationController
 
       if new_messages.any?
         render_success(message: "Polling Successful", data: { messages: new_messages })
+        return
       elsif Time.current >= timeout
         render_fail(message: "Chat room timeout", status: :bad_request)
+        return
       else
         sleep(5)
       end
