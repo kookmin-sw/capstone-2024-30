@@ -5,8 +5,6 @@ WORKDIR /app
 RUN apt-get update
 RUN apt-get install -y build-essential apt-utils libpq-dev default-mysql-client default-libmysqlclient-dev
 
-RUN gem install bundler
-
 COPY Gemfile Gemfile.lock ./
 
 RUN gem install bundler && RAILS_ENV=production bundle install --jobs 20 --retry 5
