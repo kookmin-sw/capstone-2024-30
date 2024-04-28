@@ -24,5 +24,9 @@ public class AnnouncementCallerService {
         announcementCrawlService.crawlInternationlAnnouncement(INTERNATIONAL_EVENT);
         announcementCrawlService.crawlInternationlAnnouncement(INTERNATIONAL_SCHOLARSHIP);
         announcementCrawlService.crawlInternationlAnnouncement(INTERNATIONAL_GKS);
+        announcementCrawlService.crawlSoftwareAnnouncement(SOFTWARE_ACADEMIC);
+        announcementCrawlService.crawlSoftwareAnnouncement(SOFTWARE_JOB);
+        announcementCrawlService.crawlSoftwareAnnouncement(SOFTWARE_EVENT);
+        announcementCrawlService.crawlSoftwareAnnouncement(SOFTWARE_SCHOLARSHIP);
     }
 }
