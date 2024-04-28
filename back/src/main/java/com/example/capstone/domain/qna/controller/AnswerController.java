@@ -45,5 +45,11 @@ public class AnswerController {
         return ResponseEntity.ok(200);
     }
 
+    @PutMapping("/like")
+    public ResponseEntity<?> upLikeCount(@RequestBody Long id) {
+        answerService.upLikeCountById(id);
+        return ResponseEntity.ok(200);
+    }
+
 
 }
