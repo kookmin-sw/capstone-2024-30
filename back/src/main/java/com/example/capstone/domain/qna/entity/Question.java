@@ -1,10 +1,13 @@
 package com.example.capstone.domain.qna.entity;
 
+import com.example.capstone.domain.qna.dto.QuestionResponse;
 import com.example.capstone.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -34,15 +37,14 @@ public class Question {
     @Column(name = "updated_date", nullable = false)
     private LocalDateTime updatedDate;
 
-    @Column(name = "view", nullable = false)
-    private Long view;
+    @Column(name = "tag", nullable = false)
+    private String tag;
+
+    @Column(name = "country", nullable = false)
+    private String country;
 
     @Column(name = "uuid", nullable = false)
     private UUID uuid;
 
-    public void update(String title, String context, LocalDateTime updatedDate){
-        this.title = title;
-        this.context = context;
-        this.updatedDate = updatedDate;
-    }
+
 }
