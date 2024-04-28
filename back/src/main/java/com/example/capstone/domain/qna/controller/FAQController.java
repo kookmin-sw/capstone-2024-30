@@ -48,5 +48,11 @@ public class FAQController {
         return ResponseEntity.ok(Map.of("content", faqResponse, "imgUrl", urlList));
     }
 
+    @PutMapping("/update")
+    public ResponseEntity<?> updateFAQ(@RequestBody FAQPutRequest request) {
+        faqService.updateFAQ(request);
+        return ResponseEntity.ok(200);
+    }
+
 
 }
