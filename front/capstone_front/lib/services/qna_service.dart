@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:capstone_front/models/answer_model.dart';
+import 'package:capstone_front/models/api_fail_response.dart';
+import 'package:capstone_front/models/api_success_response.dart';
 import 'package:capstone_front/models/qna_post_model.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
@@ -47,7 +49,7 @@ class QnaService {
     }
   }
 
-  static Future<bool> createQnaPost(
+  static Future<Map<String, dynamic>> createQnaPost(
       Map<String, dynamic> qnaPost, List<XFile>? images) async {
     final url = Uri.parse('$baseUrl/yet/');
 
@@ -80,10 +82,17 @@ class QnaService {
 
     final Map<String, dynamic> jsonMap = jsonDecode(decodedBody);
     if (response.statusCode == 201) {
-      return true;
+      // TODO 게시글 id 리턴받아서, 게시글 객체 완성한 다음에 리스트에 추가 및 띄워주기
+      ApiSuccessResponse apiSuccessResponse =
+          ApiSuccessResponse.fromJson(jsonMap);
+      Map<String, dynamic> resMap = apiSuccessResponse.response;
+
+      return resMap;
     } else {
+      ApiFailResponse apiFailResponse = ApiFailResponse.fromJson(jsonMap);
       print('Request failed with status: ${response.statusCode}.');
-      return false;
+      print('Request failed with status: ${apiFailResponse.message}.');
+      throw Exception("cant post article");
     }
   }
 

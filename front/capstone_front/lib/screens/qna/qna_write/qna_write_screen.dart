@@ -200,15 +200,17 @@ class _HelperWriteScreenState extends State<QnaWriteScreen> {
             const SizedBox(height: 20),
             BasicButton(
               text: tr('helper.write_complete'),
-              onPressed: () {
-                setState(() {
-                  var articleInfo = {
-                    "title": _titleController.text,
-                    "content": _contentController.text,
-                    "category": "temp",
-                  };
-                  QnaService.createQnaPost(articleInfo, images);
-                });
+              onPressed: () async {
+                var articleInfo = {
+                  "title": _titleController.text,
+                  "content": _contentController.text,
+                  "category": "temp",
+                };
+                Map<String, dynamic> res =
+                    await QnaService.createQnaPost(articleInfo, images);
+
+                Navigator.pop(context);
+                setState(() {});
               },
             )
           ],

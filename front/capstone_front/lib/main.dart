@@ -1,5 +1,6 @@
 import 'package:capstone_front/firebase_options.dart';
 import 'package:capstone_front/models/notice_model.dart';
+import 'package:capstone_front/provider/qna_provider.dart';
 import 'package:capstone_front/screens/cafeteriaMenu/cafeteriaMenuScreen.dart';
 import 'package:capstone_front/screens/chatbot/chatbot.dart';
 import 'package:capstone_front/screens/faq/faq_screen.dart';
@@ -71,19 +72,19 @@ void main() async {
   await setSetting();
   await EasyLocalization.ensureInitialized();
   await dotenv.load(fileName: ".env");
-  runApp(EasyLocalization(
-    // 지원 언어 리스트
-    supportedLocales: supportedLocales,
-    //path: 언어 파일 경로
-    path: 'assets/translations',
-    //fallbackLocale supportedLocales에 설정한 언어가 없는 경우 설정되는 언어
-    fallbackLocale: const Locale('en', 'US'),
 
-    //startLocale을 지정하면 초기 언어가 설정한 언어로 변경됨
-    //만일 이 설정을 하지 않으면 OS 언어를 따라 기본 언어가 설정됨
-    startLocale: Locale(languageSetting[0], languageSetting[1]),
-    child: const App(),
-  ));
+  runApp(
+    EasyLocalization(
+      supportedLocales: supportedLocales,
+      path: 'assets/translations',
+      fallbackLocale: const Locale('en', 'US'),
+      startLocale: Locale(languageSetting[0], languageSetting[1]),
+      child: ChangeNotifierProvider<QnaProvider>(
+        create: (_) => QnaProvider(),
+        child: const App(),
+      ),
+    ),
+  );
 }
 
 final GoRouter router = GoRouter(
