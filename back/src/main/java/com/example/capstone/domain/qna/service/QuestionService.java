@@ -35,6 +35,13 @@ public class QuestionService {
         return quest.toDto();
     }
 
+    @Transactional
+    public void updateQuestion(String userId, QuestionPutRequest request) {
+        LocalDateTime current = LocalDateTime.now();
+        Question quest = questionRepository.findById(request.id()).get();
+        quest.update(request.title(), request.context(), current);
+    }
+
 
 
     //TODO 응답 통일
