@@ -43,7 +43,7 @@ public class SecurityConfig {
                         .requestMatchers("/favicon.ico").permitAll()
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers( "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        .requestMatchers("/api/user").authenticated()
+                        .requestMatchers("/api/user/me").authenticated()
                         .requestMatchers("/api/user/**").permitAll()
                         .requestMatchers("/api/announcement/**").permitAll()
                         .requestMatchers("/api/auth/reissue").permitAll()

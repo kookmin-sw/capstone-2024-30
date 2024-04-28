@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.example.capstone.global.error.exception.ErrorCode.Crawling_FAIL;
+import static com.example.capstone.global.error.exception.ErrorCode.REDIS_CONNECTION_FAIL;
 
 @Slf4j
 @Service
@@ -78,19 +79,19 @@ public class AnnouncementCrawlService {
                 String authorPhone = (phoneElement != null) ? phoneElement.text().replace("☎ ", "") : "No Phone";
                 Elements fileInfo = doc.select("div.board_atc.file > ul > li > a");
                 String html = doc.select(".view_inner").outerHtml();
-                boolean flag = false;
 
                 Translator translator = new Translator(authKey);
 
                 for (String language : languages) {
-                    String[] basicInfo = {title, department};
+                    String translatedTitle = title;
+                    String translatedDepartment = department;
 
                     if (!language.equals("KO")) {
-                        basicInfo = translator.translateText(title + "&" + department, "KO", language)
-                                .getText().split("&");
+                        translatedTitle = translator.translateText(title, "KO", language).getText();
+                        translatedDepartment = translator.translateText(department, "KO", language).getText();
                     }
 
-                    Optional<Announcement> check = announcementRepository.findByTitle(basicInfo[0]);
+                    Optional<Announcement> check = announcementRepository.findByTitle(translatedTitle);
                     if (!check.isEmpty()) continue;
 
                     String document = html;
@@ -117,10 +118,10 @@ public class AnnouncementCrawlService {
 
                     Announcement announcement = Announcement.builder()
                             .type(type)
-                            .title(basicInfo[0])
+                            .title(translatedTitle)
                             .author(author)
                             .authorPhone(authorPhone)
-                            .department(basicInfo[1])
+                            .department(translatedDepartment)
                             .writtenDate(LocalDate.parse(writeDate, formatter))
                             .document(document)
                             .language(language)
@@ -154,7 +155,7 @@ public class AnnouncementCrawlService {
                     String dateStr = dateElements.text();
                     LocalDate noticeDate = LocalDate.parse(dateStr, formatter);
 
-                    if (noticeDate.isAfter(currentDate.minusMonths(5))) {
+                    if (noticeDate.isAfter(currentDate.minusDays(1))) {
                         Elements linkElements = announcement.select("td.b-td-left a");
                         if (!linkElements.isEmpty()) {
                             String href = linkElements.attr("href");
@@ -183,26 +184,25 @@ public class AnnouncementCrawlService {
                 String authorPhone = "02-910-5808";
 
                 Elements images = doc.select("img[src]");
-                String prefix = "https://cms.kookmin.ac.kr";
                 for (Element img : images) {
-                    String src = img.attr("abs:src");
-
-                    if (!src.startsWith(prefix)) {
-                        img.attr("src", prefix + src);
+                    String src = img.attr("src");
+                    if (!src.startsWith("http://") && !src.startsWith("https://")) {
+                        img.attr("src", "https://cms.kookmin.ac.kr" + src);
                     }
                 }
 
                 String html = doc.select(".b-content-box").outerHtml();
 
                 for (String language : languages) {
-                    String[] basicInfo = {title, department};
+                    String translatedTitle = title;
+                    String translatedDepartment = department;
 
                     if (!language.equals("KO")) {
-                        basicInfo = translator.translateText(title + "&" + department, "KO", language)
-                                .getText().split("&");
+                        translatedTitle = translator.translateText(title, "KO", language).getText();
+                        translatedDepartment = translator.translateText(department, "KO", language).getText();
                     }
 
-                    Optional<Announcement> check = announcementRepository.findByTitle(basicInfo[0]);
+                    Optional<Announcement> check = announcementRepository.findByTitle(translatedTitle);
                     if (!check.isEmpty()) continue;
 
                     String document = html;
@@ -216,10 +216,96 @@ public class AnnouncementCrawlService {
 
                     Announcement announcement = Announcement.builder()
                             .type(url.getType())
-                            .title(basicInfo[0])
+                            .title(translatedTitle)
                             .author(author)
                             .authorPhone(authorPhone)
-                            .department(basicInfo[1])
+                            .department(translatedDepartment)
+                            .writtenDate(LocalDate.parse(writeDate, formatter))
+                            .document(document)
+                            .language(language)
+                            .url(baseUrl + link)
+                            .files(files)
+                            .build();
+
+                    announcementRepository.save(announcement);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+            throw new BusinessException(Crawling_FAIL);
+        }
+    }
+
+    @Async
+    @Transactional
+    public void crawlSoftwareAnnouncement(AnnouncementUrl url) {
+        try {
+            Document doc = Jsoup.connect(url.getUrl()).get();
+            Elements announcements = doc.select(".list-tbody > ul");
+            ArrayList<String> links = new ArrayList<>();
+
+            LocalDate currentDate = LocalDate.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy.MM.dd");
+
+            for (Element announcement : announcements) {
+                String dateStr = announcement.select(".date").text();
+                LocalDate noticeDate = LocalDate.parse(dateStr, formatter);
+
+                if (noticeDate.equals(currentDate) || noticeDate.isAfter(currentDate.minusDays(4))) {
+                    String href = announcement.select(".subject > a").attr("href");
+                    links.add(href.substring(1, href.length()));
+                }
+            }
+
+            String baseUrl = url.getUrl();
+            Translator translator = new Translator(authKey);
+
+            for (String link : links) {
+                doc = Jsoup.connect(baseUrl + link).timeout(20000).get();
+
+                String title = doc.select(".view-title").text();
+                String author = doc.select("th:contains(작성자) + td").text();
+                String writeDate = doc.select("th.aricle-subject + td").text();
+                String department = "소프트웨어융합대학";
+                String authorPhone = "02-910-6642";
+
+                Elements images = doc.select("img[src]");
+                for (Element img : images) {
+                    String src = img.attr("src");
+                    if (!src.startsWith("http:") && !src.startsWith("https:")) {
+                        img.attr("src", "https:" + src);
+                    }
+                }
+
+                String html = doc.select("#view-detail-data").outerHtml();
+
+                for (String language : languages) {
+                    String translatedTitle = title;
+                    String translatedDepartment = department;
+
+                    if (!language.equals("KO")) {
+                        translatedTitle = translator.translateText(title, "KO", language).getText();
+                        translatedDepartment = translator.translateText(department, "KO", language).getText();
+                    }
+
+                    Optional<Announcement> check = announcementRepository.findByTitle(translatedTitle);
+                    if (!check.isEmpty()) continue;
+
+                    String document = html;
+                    if (!language.equals("KO")) {
+                        document = translateRecursive(html, language, 1, translator);
+                        if(!StringUtils.hasText(document)) document = html;
+                    }
+
+                    List<AnnouncementFile> files = new ArrayList<>();
+                    formatter = DateTimeFormatter.ofPattern("yy.MM.dd");
+
+                    Announcement announcement = Announcement.builder()
+                            .type(url.getType())
+                            .title(translatedTitle)
+                            .author(author)
+                            .authorPhone(authorPhone)
+                            .department(translatedDepartment)
                             .writtenDate(LocalDate.parse(writeDate, formatter))
                             .document(document)
                             .language(language)
@@ -237,7 +323,7 @@ public class AnnouncementCrawlService {
     }
 
     private String translateRecursive(String html, String language, int part, Translator translator){
-        if(part == 5) return "";
+        if(part == 11) return "";
 
         String document = "";
         try {

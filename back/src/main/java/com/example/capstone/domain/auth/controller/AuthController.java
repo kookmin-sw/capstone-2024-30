@@ -3,6 +3,8 @@ package com.example.capstone.domain.auth.controller;
 import com.example.capstone.domain.auth.dto.ReissueRequest;
 import com.example.capstone.domain.auth.dto.TokenResponse;
 import com.example.capstone.domain.auth.service.AuthService;
+import com.example.capstone.global.dto.ApiResult;
+import com.google.protobuf.Api;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,10 +23,9 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/reissue")
-    public ResponseEntity<TokenResponse> reissue(@RequestBody @Valid ReissueRequest reissueRequest) {
+    public ResponseEntity<ApiResult<TokenResponse>> reissue(@RequestBody @Valid ReissueRequest reissueRequest) {
         TokenResponse tokenResponse = authService.reissueToken(reissueRequest.refreshToekn());
         return ResponseEntity
-                .ok()
-                .body(tokenResponse);
+                .ok(new ApiResult<>("Successfully Reissued", tokenResponse));
     }
 }
