@@ -34,6 +34,13 @@ public class AnswerService {
         return answer.toDTO();
     }
 
+    public Map<String, Object> getAnswerList(Long questionId, Long cursorId, String sortBy) {
+        Pageable page = PageRequest.of(0, 10);
+        if(cursorId == 0) cursorId = null;
+        Map<String, Object> answerList = answerRepository.getAnswerListByPaging(cursorId, page, questionId, sortBy);
+        return answerList;
+    }
+
 
 
     //TODO 응답 통일
