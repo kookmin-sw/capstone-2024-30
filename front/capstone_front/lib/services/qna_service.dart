@@ -131,4 +131,35 @@ class QnaService {
       return false;
     }
   }
+
+  static Future<QnasResponse> searchQnaPosts(String query) async {
+    final url = Uri.parse('$baseUrl/yet/search?q=$query');
+    final response = await http.get(url);
+
+    List<QnaPostModel> qnaPostInstances = [];
+
+    final String decodedBody = utf8.decode(response.bodyBytes);
+    final jsonMap = jsonDecode(decodedBody);
+
+    if (response.statusCode == 200) {
+      final apiSuccessResponse = ApiSuccessResponse.fromJson(jsonMap);
+      final resMap = apiSuccessResponse.response;
+      final posts = resMap['posts'];
+
+      for (var post in posts) {
+        qnaPostInstances.add(QnaPostModel.fromJson(post));
+      }
+
+      var result = QnasResponse(
+        qnas: qnaPostInstances,
+        lastCursorId: jsonMap['lastCursorId'],
+        hasNext: jsonMap['hasNext'],
+      );
+
+      return result;
+    } else {
+      print('Request failed with status: ${response.statusCode}.');
+      throw Exception('Failed to load QnA posts');
+    }
+  }
 }
