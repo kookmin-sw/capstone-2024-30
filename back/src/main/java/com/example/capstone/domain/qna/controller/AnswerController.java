@@ -39,5 +39,11 @@ public class AnswerController {
         return ResponseEntity.ok(200);
     }
 
+    @DeleteMapping("/erase")
+    public ResponseEntity<?> eraseAnswer(@RequestBody Long id) {
+        answerService.eraseAnswer(id);
+        return ResponseEntity.ok(200);
+    }
+
 
 }
