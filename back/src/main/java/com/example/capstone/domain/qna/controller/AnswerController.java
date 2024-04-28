@@ -32,5 +32,12 @@ public class AnswerController {
         return ResponseEntity.ok(answerService.getAnswerList(request.questionId(), request.cursorId(), request.sortBy()));
     }
 
+    @PutMapping("/update")
+    public ResponseEntity<?> updateAnswer(/*@RequestHeader String token,*/ @RequestBody AnswerPutRequest request) {
+        String userId = UUID.randomUUID().toString(); //jwtTokenProvider.extractUUID(token);
+        answerService.updateAnswer(userId, request);
+        return ResponseEntity.ok(200);
+    }
+
 
 }
