@@ -58,7 +58,11 @@ public class AnswerService {
         answer.upLikeCount();
     }
 
-
+    @Transactional
+    public void downLikeCountById(Long id) {
+        Answer answer = answerRepository.findById(id).get();
+        answer.downLikeCount();
+    }
 
     //TODO 응답 통일
 }
