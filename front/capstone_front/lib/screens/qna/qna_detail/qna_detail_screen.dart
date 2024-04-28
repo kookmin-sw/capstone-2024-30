@@ -61,31 +61,37 @@ class _QnaDetailScreenState extends State<QnaDetailScreen>
               ),
               child: Padding(
                 padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.data.title,
-                      style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
+                child: Expanded(
+                  child: Row(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.data.title,
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            widget.data.content,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xFF444444),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                        ],
                       ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      widget.data.content,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xFF444444),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
