@@ -64,6 +64,8 @@ public class QuestionController {
         return ResponseEntity.ok(200);
     }
 
-
-
+    @GetMapping("/list")
+    public ResponseEntity<?> listQuestion(@RequestBody QuestionListRequest request) {
+        return ResponseEntity.ok(questionService.getQuestionList(request));
+    }
 }
