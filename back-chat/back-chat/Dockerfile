@@ -7,12 +7,11 @@ RUN apt-get install -y build-essential apt-utils libpq-dev nodejs default-mysql-
 
 RUN gem install bundler
 
-COPY Gemfile* ./
+COPY Gemfile Gemfile.lock ./
 
-RUN bundle install
+RUN gem install bundler && RAILS_ENV=production bundle install --jobs 20 --retry 5
 
-COPY . /app
+ENV RAILS_ENV=production
 
-EXPOSE 3000
+COPY . ./
 
-ENTRYPOINT ["rails", "server", "-b", "0.0.0.0"]
