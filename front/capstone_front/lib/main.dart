@@ -11,6 +11,7 @@ import 'package:capstone_front/screens/helper/helper_write_screen.dart';
 import 'package:capstone_front/screens/helper/helper_board/helper_writing_screen.dart';
 import 'package:capstone_front/screens/home/home_screen.dart';
 import 'package:capstone_front/screens/login/login_screen.dart';
+import 'package:capstone_front/screens/question/question_screen.dart';
 import 'package:capstone_front/screens/signup/signup_college_screen.dart';
 import 'package:capstone_front/screens/signup/signup_country_screen.dart';
 import 'package:capstone_front/screens/signup/signup_email_screen.dart';
@@ -218,6 +219,11 @@ final GoRouter router = GoRouter(
       name: 'faq',
       path: '/faq',
       builder: (context, state) => const FaqScreen(),
+    ),
+    GoRoute(
+      name: 'question',
+      path: '/question',
+      builder: (context, state) => const QuestionScreen(),
     ),
   ],
 );
