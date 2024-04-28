@@ -154,6 +154,6 @@ public class ImageService {
     }
 
     public void deleteByFAQId(Long faqId) {
-        faqImageRepository.deleteByFaqId(faqId);
+        faqImageRepository.deleteByFAQId(faqId);
     }
 }
