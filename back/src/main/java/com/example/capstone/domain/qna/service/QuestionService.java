@@ -53,6 +53,4 @@ public class QuestionService {
         Map<String, Object> questionList = questionRepository.getQuestionListByPaging(cursorId, page, request.word(), request.tag());
         return questionList;
     }
-
-    //TODO 응답 통일
 }

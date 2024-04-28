@@ -63,6 +63,4 @@ public class AnswerService {
         Answer answer = answerRepository.findById(id).get();
         answer.downLikeCount();
     }
-
-    //TODO 응답 통일
 }

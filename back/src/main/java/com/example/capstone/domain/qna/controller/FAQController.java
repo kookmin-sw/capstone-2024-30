@@ -8,6 +8,7 @@ import com.example.capstone.domain.qna.dto.FAQResponse;
 import com.example.capstone.domain.qna.entity.FAQ;
 import com.example.capstone.domain.qna.service.FAQService;
 import com.example.capstone.domain.qna.service.ImageService;
+import com.example.capstone.global.dto.ApiResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -38,20 +39,23 @@ public class FAQController {
         if(multipartFileList != null) {
             urlList = imageService.upload(multipartFileList, faq.id(), true);
         }
-        return ResponseEntity.ok(Map.of("content", faq, "imgUrl", urlList));
+        return ResponseEntity
+                .ok(new ApiResult<>("Successfully create FAQ", Map.of("content", faq, "imgUrl", urlList)));
     }
 
     @GetMapping("/read")
     public ResponseEntity<?> readFAQ(@RequestBody Long id) {
         FAQResponse faqResponse = faqService.getFAQ(id);
         List<String> urlList = imageService.getUrlListByFAQId(id);
-        return ResponseEntity.ok(Map.of("content", faqResponse, "imgUrl", urlList));
+        return ResponseEntity
+                .ok(new ApiResult<>("Successfully read FAQ", Map.of("content", faqResponse, "imgUrl", urlList)));
     }
 
     @PutMapping("/update")
     public ResponseEntity<?> updateFAQ(@RequestBody FAQPutRequest request) {
         faqService.updateFAQ(request);
-        return ResponseEntity.ok(200);
+        return ResponseEntity
+                .ok(new ApiResult<>("Successfully update FAQ", 200));
     }
 
     @DeleteMapping("/erase")
@@ -62,11 +66,14 @@ public class FAQController {
         }
         faqService.eraseFAQ(id);
         imageService.deleteByFAQId(id);
-        return ResponseEntity.ok(200);
+        return ResponseEntity
+                .ok(new ApiResult<>("Successfully delete FAQ", 200));
     }
 
     @GetMapping("/list")
     public ResponseEntity<?> listFAQ(FAQListRequest request) {
-        return ResponseEntity.ok(faqService.getFAQList(request.cursorId(), request.language(), request.word(), request.tag()));
+        Map<String, Object> response = faqService.getFAQList(request.cursorId(), request.language(), request.word(), request.tag());
+        return ResponseEntity
+                .ok(new ApiResult<>("Successfully create FAQ list", response));
     }
 }

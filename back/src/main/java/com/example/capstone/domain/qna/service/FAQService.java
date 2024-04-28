@@ -48,6 +48,4 @@ public class FAQService {
         Map<String, Object> faqListResponse = faqRepository.getFAQListByPaging(cursorId, page, language, word, tag);
         return faqListResponse;
     }
-
-    //TODO 응답 통일
 }

@@ -8,6 +8,7 @@ import com.example.capstone.domain.qna.dto.QuestionResponse;
 import com.example.capstone.domain.qna.entity.Question;
 import com.example.capstone.domain.qna.service.ImageService;
 import com.example.capstone.domain.qna.service.QuestionService;
+import com.example.capstone.global.dto.ApiResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -36,21 +37,24 @@ public class QuestionController {
         if(imgList != null){
             urlList = imageService.upload(imgList, quest.id(), false);
         }
-        return ResponseEntity.ok(Map.of("content", quest, "imgUrl", urlList));
+        return ResponseEntity
+                .ok(new ApiResult<>("Successfully create question", Map.of("content", quest, "imgUrl", urlList)));
     }
 
     @GetMapping("/read")
     public ResponseEntity<?> readQuestion(@RequestParam Long id) {
         QuestionResponse questionResponse = questionService.getQuestion(id);
         List<String> urlList = imageService.getUrlListByQuestionId(id);
-        return ResponseEntity.ok(Map.of("content", questionResponse, "imgUrl", urlList));
+        return ResponseEntity
+                .ok(new ApiResult<>("Successfully read question", Map.of("content", questionResponse, "imgUrl", urlList)));
     }
 
     @PutMapping("/update")
     public ResponseEntity<?> updateQuestion(/*@RequestHeader String token,*/ @RequestBody QuestionPutRequest request) {
         String userId = UUID.randomUUID().toString();//jwtTokenProvider.extractUUID(token);
         questionService.updateQuestion(userId, request);
-        return ResponseEntity.ok(200);
+        return ResponseEntity
+                .ok(new ApiResult<>("Successfully update question", 200));
     }
 
     @DeleteMapping("/erase")
@@ -61,11 +65,14 @@ public class QuestionController {
         }
         questionService.eraseQuestion(id);
         imageService.deleteByQuestionId(id);
-        return ResponseEntity.ok(200);
+        return ResponseEntity
+                .ok(new ApiResult<>("Successfully delete question", 200));
     }
 
     @GetMapping("/list")
     public ResponseEntity<?> listQuestion(@RequestBody QuestionListRequest request) {
-        return ResponseEntity.ok(questionService.getQuestionList(request));
+        Map<String, Object> response = questionService.getQuestionList(request);
+        return ResponseEntity
+                .ok(new ApiResult<>("Successfully create question list", response));
     }
 }
