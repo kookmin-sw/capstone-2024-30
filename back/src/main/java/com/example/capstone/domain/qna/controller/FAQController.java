@@ -41,5 +41,12 @@ public class FAQController {
         return ResponseEntity.ok(Map.of("content", faq, "imgUrl", urlList));
     }
 
+    @GetMapping("/read")
+    public ResponseEntity<?> readFAQ(@RequestBody Long id) {
+        FAQResponse faqResponse = faqService.getFAQ(id);
+        List<String> urlList = imageService.getUrlListByFAQId(id);
+        return ResponseEntity.ok(Map.of("content", faqResponse, "imgUrl", urlList));
+    }
+
 
 }
