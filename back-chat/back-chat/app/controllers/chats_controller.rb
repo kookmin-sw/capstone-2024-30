@@ -6,7 +6,7 @@ class ChatsController < ApplicationController
     user_id = @decoded[:uuid]
 
     user = User.find_by(user_id: user_id)
-    unless user
+    if user.nil?
       render_fail(message: "User not found", status: :bad_request)
       return
     end
@@ -45,15 +45,16 @@ class ChatsController < ApplicationController
     user1 = User.find_by(user_id: user1_id)
     user2 = User.find_by(user_id: user2_id)
 
-    unless user1 or user2
+    if user1.nil? || user2.nil?
       render_fail(message: "User not found", status: :bad_request)
       return
     end
 
     sorted_ids = [user1_id, user2_id].sort
 
-    chat_room = ChatRoom.find_or_create_by(user1_uuid: sorted_ids[0], user2_uuid: sorted_ids[1])
-    if chat_room.new_record?
+    chat_room = ChatRoom.find_by(user1_uuid: sorted_ids[0], user2_uuid: sorted_ids[1])
+    if chat_room.nil?
+      chat_room = ChatRoom.create(user1_uuid: sorted_ids[0], user2_uuid: sorted_ids[1])
       render_success(message: "Successfully chat room created", data: { chat_room_id: chat_room.id }, status: :created)
     else
       render_fail(message: "Chat room already exists", status: :bad_request)
@@ -65,7 +66,7 @@ class ChatsController < ApplicationController
     chat_room = ChatRoom.where('id = ? AND (user1_uuid = ? OR user2_uuid = ?)',
                                params[:chat_id], user_id, user_id).first
 
-    unless chat_room
+    if chat_room.nil?
       render_fail(message: "Chat room not found", status: :bad_request)
     end
 
@@ -86,9 +87,11 @@ class ChatsController < ApplicationController
 
     if message_contents.empty?
       render_fail(message: "No message to load", status: :bad_request)
+      return
     else
       sorted_contents = message_contents.sort_by { |message| message[:id] }
       render_success(data: { messages: sorted_contents }, message: "Successfully message loaded")
+      return
     end
   end
 
@@ -180,7 +183,7 @@ class ChatsController < ApplicationController
     chat_room = ChatRoom.where('id = ? AND (user1_uuid = ? OR user2_uuid = ?)',
                                params[:chat_id], user_id, user_id).first
 
-    unless chat_room
+    if chat_room.nil?
       render_fail(message: "Chat room not found", status: :bad_request)
     end
 
