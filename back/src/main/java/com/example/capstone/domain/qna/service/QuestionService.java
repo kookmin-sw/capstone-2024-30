@@ -30,6 +30,11 @@ public class QuestionService {
         return quest.toDto();
     }
 
+    public QuestionResponse getQuestion(Long id) {
+        Question quest = questionRepository.findById(id).get();
+        return quest.toDto();
+    }
+
 
 
     //TODO 응답 통일
