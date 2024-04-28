@@ -46,5 +46,12 @@ public class QuestionController {
         return ResponseEntity.ok(Map.of("content", questionResponse, "imgUrl", urlList));
     }
 
+    @PutMapping("/update")
+    public ResponseEntity<?> updateQuestion(/*@RequestHeader String token,*/ @RequestBody QuestionPutRequest request) {
+        String userId = UUID.randomUUID().toString();//jwtTokenProvider.extractUUID(token);
+        questionService.updateQuestion(userId, request);
+        return ResponseEntity.ok(200);
+    }
+
 
 }
