@@ -30,7 +30,15 @@ public enum ErrorCode {
     Crawling_FAIL(400, "CR001", "Crawling Failed"),
 
     // TestKey Error
-    TEST_KEY_NOT_VALID(403, "T001", "Test Key is not valid")
+    TEST_KEY_NOT_VALID(403, "T001", "Test Key is not valid"),
+
+    // S3 Error
+    EMPTY_FILE_EXCEPTION(400, "S001", "File is empty"),
+    IO_EXCEPTION_ON_IMAGE_UPLOAD(400, "S002", "Io exception on image"),
+    NO_FILE_EXTENTION(400, "S003", "Not found file"),
+    INVALID_FILE_EXTENTION(400, "S004", "File is invalid"),
+    PUT_OBJECT_EXCEPTION(400, "S005", "Object can not put"),
+    IO_EXCEPTION_ON_IMAGE_DELETE(400, "S006", "Io exception on image delete")
     ;
 
     private int status;
