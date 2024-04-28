@@ -118,7 +118,7 @@ class _HelperWriteScreenState extends State<QnaWriteScreen> {
                             IconButton(
                               onPressed: () async {
                                 if (_currentPhotos >= _maxPhotos) {
-                                  makeToast("$_maxPhotos의 사진만 가능합니다");
+                                  makeToast("최대 $_maxPhotos개의 사진만 가능합니다");
                                 } else {
                                   if (_maxPhotos - _currentPhotos < 2) {
                                     var image = await picker.pickImage(
@@ -135,10 +135,16 @@ class _HelperWriteScreenState extends State<QnaWriteScreen> {
                                     multiImages = await picker.pickMultiImage(
                                       limit: _maxPhotos - _currentPhotos,
                                     );
-                                    setState(() {
-                                      images.addAll(multiImages);
-                                      _currentPhotos += multiImages.length;
-                                    });
+                                    if (_currentPhotos + multiImages.length >
+                                        4) {
+                                      makeToast(
+                                          "최대 $_maxPhotos개의 사진만 가능합니다. 다시 선택해주세요.");
+                                    } else {
+                                      setState(() {
+                                        images.addAll(multiImages);
+                                        _currentPhotos += multiImages.length;
+                                      });
+                                    }
                                   }
                                 }
                               },
