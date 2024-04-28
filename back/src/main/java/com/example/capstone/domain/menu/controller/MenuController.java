@@ -25,7 +25,7 @@ public class MenuController {
     public ResponseEntity<ApiResult<JsonArray>> getMenuByDate(@RequestParam LocalDate date, @RequestParam String language){
         JsonArray menu = menuSearchService.findMenuByDate(date, language);
         return ResponseEntity
-                .ok(new ApiResult<>(menu));
+                .ok(new ApiResult<>("Successfully load menus", menu));
     }
 
     @PostMapping("/test")

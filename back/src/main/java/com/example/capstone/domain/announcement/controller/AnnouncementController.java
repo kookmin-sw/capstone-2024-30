@@ -67,7 +67,7 @@ public class AnnouncementController {
         }
 
         return ResponseEntity
-                .ok(new ApiResult<>(response));
+                .ok(new ApiResult<>("Successfully load announcement list", response));
     }
 
     @GetMapping("/{announcementId}")
@@ -79,6 +79,6 @@ public class AnnouncementController {
     ResponseEntity<ApiResult<Announcement>> getAnnouncementDetail(@PathVariable(value = "announcementId") long announcementId) {
         Announcement announcement = announcementSearchService.getAnnouncementDetail(announcementId);
         return ResponseEntity
-                .ok(new ApiResult<>(announcement));
+                .ok(new ApiResult<>("Successfully get an announcement detail", announcement));
     }
 }
