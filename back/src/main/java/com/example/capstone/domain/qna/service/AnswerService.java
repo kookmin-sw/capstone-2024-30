@@ -41,6 +41,13 @@ public class AnswerService {
         return answerList;
     }
 
+    @Transactional
+    public void updateAnswer(String userId, AnswerPutRequest request) {
+        LocalDateTime current = LocalDateTime.now();
+        Answer answer = answerRepository.findById(request.id()).get();
+        answer.update(request.context(), current);
+    }
+
 
 
     //TODO 응답 통일
