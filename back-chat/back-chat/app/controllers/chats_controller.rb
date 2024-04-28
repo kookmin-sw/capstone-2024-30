@@ -16,34 +16,71 @@ class ChatsController < ApplicationController
     render_success(data: chat_rooms, message: "Chat rooms retrieved successfully")
   end
 
-  def connect
-    user1_id = params[:user_id]
-    user2_id = @decoded[:uuid]
+  def join
+    user_id = @decoded[:uuid]
+    chat_room = ChatRoom.where('id = ? AND (user1_uuid = ? OR user2_uuid = ?)',
+                               params[:chat_id], user_id, user_id).first
 
-    user1 = User.find_by(user_id: user1_id)
-    user2 = User.find_by(user_id: user2_id)
-
-    unless user1 or user2
-      render_fail(message: "User not found", status: :bad_request)
-      return
+    unless chat_room
+      render_fail(message: "Chat room not found", status: :bad_request)
     end
 
-    sorted_ids = [user1_id, user2_id].sort
+    last_message_id = params[:message_id].to_i
 
-    chat_room = ChatRoom.find_or_create_by(user1_uuid: sorted_ids[0], user2_uuid: sorted_ids[1])
-    if chat_room.new_record?
-      render_success(message: "Successfully chat room created", data: { chat_room_id: chat_room.id }, status: :created)
+    message_contents = ChatMessage
+                         .where('chat_room_id = ? AND id > ? AND user_id != ?',
+                                params[:chat_id], last_message_id, user_id)
+                         .order(timestamp: :desc)
+                         .limit(100)
+                         .map do |message|
+      {
+        content: message.content,
+        timestamp: message.timestamp.strftime("%Y-%m-%d %H:%M")
+      }
+    end
+
+    if message_contents.empty?
+      render_fail(message: "No message to load", status: :bad_request)
     else
-      render_fail(message: "Chat room already exists", status: :bad_request)
+      render_success(data: { messages: message_contents }, message: "Successfully message loaded")
     end
   end
 
+  # Long Polling
   def poll
-    @chat_room = ChatRoom.find_by(params[:chat_room_id])
-    last_message_id = params[:last_message_id].to_i
+    user_id = @decoded[:uuid]
+    chat_room = ChatRoom.where('chat_room_id = ? AND (user1_uuid = ? OR user2_uuid = ?)',
+                               params[:chat_id], user_id, user_id).first
 
-    new message = []
+    unless chat_room
+      render_fail(message: "Chat room not found", status: :bad_request)
+    end
+
+    last_message_id = params[:chat_message_id].to_i
+    timeout = 20.seconds.from_now
+
+    loop do
+      new_messages = ChatMessage
+                       .where('chat_room_id = ? AND id > ? AND user_id != ?', chat_room.id, last_message_id, user_id)
+                       .order(timestamp: :desc)
+                       .limit(100)
+                       .map do |message|
+        {
+          content: message.content,
+          timestamp: message.timestamp.strftime("%Y-%m-%d %H:%M")
+        }
+      end
+
+      if new_messages.any?
+        render_success(message: "Polling Successful", data: { messages: new_messages })
+      elsif Time.current >= timeout
+        render_fail(message: "Chat room timeout", status: :bad_request)
+      else
+        sleep(5)
+      end
+    end
   end
+
 
   def test
     test = @decoded[:uuid]
