@@ -4,7 +4,7 @@ class CreateChatMessage < ActiveRecord::Migration[6.1]
       t.bigint :chat_room_id, null: false, foreign_key: true
       t.string :user_id, null: false, foreign_key: {to_table: :users, primary_key: "user_id"}
       t.text :content, null: false
-      t.datetime :timestamp, null: false, default: -> { 'CURRENT_TIMESTAMP' }
+      t.datetime :timestamp, null: false
     end
 
     add_foreign_key :chat_messages, :chat_rooms, column: :chat_room_id, primary_key: "id"

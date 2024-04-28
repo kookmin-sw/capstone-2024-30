@@ -11,19 +11,27 @@ class ChatsController < ApplicationController
       return
     end
 
-    chat_rooms = ChatRoom.where("user1_uuid = ? OR user2_uuid = ?", user_id, user_id)
-                         .includes(:messages)
-                         .map do |chat_room|
-                          last_message = chat_room.messages.order(timestamp: :desc).first
-                          {
-                            chat_room_id: chat_room.id,
-                            user_id: chat_room.user1_uuid == user_id ? chat_room.user2_uuid : chat_room.user1_uuid,
-                            chat_room_message: last_message&.content,
-                            chat_room_date: last_message&.timestamp&.strftime("%Y-%m-%d %H:%M")
-                          }
-                        end
+    chat_rooms = ChatRoom.where("user1_uuid = ? OR user2_uuid = ?", user_id, user_id).includes(:messages)
 
-    sorted_rooms = chat_rooms.sort_by { |room| room[:chat_room_date] ? DateTime.parse(room[:chat_room_date]) : DateTime.new(0) }.reverse
+    other_user_ids = chat_rooms.map do |room|
+      room.user1_uuid == user_id ? room.user2_uuid : room.user1_uuid
+    end.uniq
+
+    users_info = User.where(user_id: other_user_ids).index_by(&:user_id)
+
+    chat_rooms_data = chat_rooms.map do |chat_room|
+      other_user_id = chat_room.user1_uuid == user_id ? chat_room.user2_uuid : chat_room.user1_uuid
+      last_message = chat_room.messages.order(timestamp: :desc).first
+      {
+        chat_room_id: chat_room.id,
+        user_id: other_user_id,
+        user_name: users_info[other_user_id]&.name,
+        chat_room_message: last_message&.content,
+        chat_room_date: last_message&.timestamp&.strftime("%Y-%m-%d %H:%M")
+      }
+    end
+
+    sorted_rooms = chat_rooms_data.sort_by { |room| room[:chat_room_date] ? DateTime.parse(room[:chat_room_date]) : DateTime.new(0) }.reverse
 
     render_success(data: sorted_rooms, message: "Chat rooms retrieved successfully")
   end
@@ -116,6 +124,26 @@ class ChatsController < ApplicationController
         sleep(5)
       end
     end
+  end
+
+  def sned_message
+    user_id = @decoded[:uuid]
+
+    chat_room = ChatRoom.where('id = ? AND (user1_uuid = ? OR user2_uuid = ?)',
+                               params[:chat_id], user_id, user_id).first
+
+    unless chat_room
+      render_fail(message: "Chat room not found", status: :bad_request)
+    end
+
+    content = params[:content]
+    message = chat_room.messages.create(user_id: user_id, content: content)
+
+    if message.persisted?
+      render_success(data: message, message: "Message sent", status: :created)
+      return
+    end
+    render_fail(message: "Message Send Error", status: :bad_request)
   end
 
   def test
