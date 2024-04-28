@@ -29,11 +29,6 @@ public class ApiResult<T> {
         this.message = message;
     }
 
-    public ApiResult(T response){
-        this.success = true;
-        this.response = response;
-    }
-
     public ApiResult(String message, T response){
         this.success = true;
         this.message = message;
