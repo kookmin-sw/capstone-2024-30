@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:capstone_front/models/qna_post_model.dart';
 import 'package:capstone_front/screens/signup/signup_service.dart';
 import 'package:capstone_front/services/qna_service.dart';
 import 'package:capstone_front/utils/basic_button.dart';
@@ -9,7 +10,12 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class QnaWriteScreen extends StatefulWidget {
-  const QnaWriteScreen({super.key});
+  const QnaWriteScreen({
+    super.key,
+    required this.qnas,
+  });
+
+  final List<QnaPostModel> qnas;
 
   @override
   State<QnaWriteScreen> createState() => _HelperWriteScreenState();
@@ -204,13 +210,28 @@ class _HelperWriteScreenState extends State<QnaWriteScreen> {
                 var articleInfo = {
                   "title": _titleController.text,
                   "content": _contentController.text,
+                  "author": "messi",
                   "category": "temp",
+                  "country": "korea",
                 };
-                Map<String, dynamic> res =
-                    await QnaService.createQnaPost(articleInfo, images);
 
+                // TODO 글쓴 정보들로 글쓰기 post 보내기
+                // id를 리턴받아서 qnas list에 넣기
+                // Map<String, dynamic> res =
+                //     await QnaService.createQnaPost(articleInfo, images);
+                widget.qnas.insert(
+                    0,
+                    QnaPostModel(
+                      id: 1,
+                      title: "qwe",
+                      author: "author",
+                      content: "content",
+                      category: "category",
+                      country: "country",
+                      imagesList: ["qwe", "asd"],
+                      commentAmount: 2,
+                    ));
                 Navigator.pop(context);
-                setState(() {});
               },
             )
           ],

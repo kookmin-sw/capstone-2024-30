@@ -71,7 +71,9 @@ class QnaService {
     var request = http.MultipartRequest('POST', url)
       ..fields['title'] = qnaPost['title']
       ..fields['content'] = qnaPost['content']
-      ..fields['category'] = qnaPost['category'];
+      ..fields['category'] = qnaPost['category']
+      ..fields['author'] = qnaPost['author']
+      ..fields['country'] = qnaPost['country'];
 
     if (images != null) {
       for (var image in images) {

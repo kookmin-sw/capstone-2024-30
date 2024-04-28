@@ -175,8 +175,12 @@ class _QnaListScreenState extends State<QnaListScreen> {
             right: 20,
             child: IconButton(
               iconSize: 50,
-              onPressed: () {
-                context.push('/qnawrite');
+              onPressed: () async {
+                var result = await context.push(
+                  '/qnawrite',
+                  extra: qnas,
+                );
+                setState(() {});
               },
               style: IconButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.primary),

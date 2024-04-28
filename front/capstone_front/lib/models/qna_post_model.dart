@@ -10,6 +10,19 @@ class QnaPostModel {
   List<String> imagesList;
   int commentAmount;
 
+  QnaPostModel({
+    required this.id,
+    required this.title,
+    required this.author,
+    required this.content,
+    required this.category,
+    required this.country,
+    this.datePublished,
+    this.dateUpdated,
+    required this.imagesList,
+    required this.commentAmount,
+  });
+
   QnaPostModel.fromJson(Map<String, dynamic> json)
       : id = json['id'] as int,
         title = json['title'] as String,

@@ -205,10 +205,15 @@ final GoRouter router = GoRouter(
           );
         }),
     GoRoute(
-      name: 'qnawrite',
-      path: '/qnawrite',
-      builder: (context, state) => const QnaWriteScreen(),
-    ),
+        name: 'qnawrite',
+        path: '/qnawrite',
+        builder: (context, state) {
+          final qnas = state.extra as List<QnaPostModel>?;
+          if (qnas == null) {
+            return const QnaListScreen();
+          }
+          return QnaWriteScreen(qnas: qnas);
+        }),
     GoRoute(
       name: 'faq',
       path: '/faq',
