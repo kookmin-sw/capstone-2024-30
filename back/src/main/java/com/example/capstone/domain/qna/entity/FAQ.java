@@ -42,5 +42,14 @@ public class FAQ {
     @Column(name = "language", nullable = false)
     private String language;
 
+    public void update(String title, String question, String answer, LocalDateTime updatedDate) {
+        this.title = title;
+        this.question = question;
+        this.answer = answer;
+        this.updatedDate = updatedDate;
+    }
 
+    public FAQResponse toDTO() {
+        return new FAQResponse(id, title, author, question, answer, createdDate, updatedDate, tag, language);
+    }
 }
