@@ -31,6 +31,13 @@ public class FAQService {
         return faq.toDTO();
     }
 
+    @Transactional
+    public void updateFAQ(FAQPutRequest request) {
+        LocalDateTime current = LocalDateTime.now();
+        FAQ faq = faqRepository.findById(request.id()).get();
+        faq.update(request.title(), request.question(), request.answer(), current);
+    }
+
 
 
     //TODO 응답 통일
