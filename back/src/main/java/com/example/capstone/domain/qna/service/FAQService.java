@@ -26,6 +26,11 @@ public class FAQService {
         return faq.toDTO();
     }
 
+    public FAQResponse getFAQ(Long id) {
+        FAQ faq = faqRepository.findById(id).get();
+        return faq.toDTO();
+    }
+
 
 
     //TODO 응답 통일
