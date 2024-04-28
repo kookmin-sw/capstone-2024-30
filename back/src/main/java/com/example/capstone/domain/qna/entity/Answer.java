@@ -43,5 +43,20 @@ public class Answer {
     @Column(name = "uuid", nullable = false, unique = true)
     private UUID uuid;
 
+    public void update(String context, LocalDateTime updatedDate) {
+        this.context = context;
+        this.updatedDate = updatedDate;
+    }
 
+    public void upLikeCount() {
+        this.likeCount += 1;
+    }
+
+    public void downLikeCount() {
+        this.likeCount -= 1;
+    }
+
+    public AnswerResponse toDTO() {
+        return new AnswerResponse(id, question, author, context, likeCount, createdDate, updatedDate, uuid);
+    }
 }
