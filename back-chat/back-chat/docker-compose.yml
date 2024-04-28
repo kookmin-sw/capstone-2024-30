@@ -4,19 +4,6 @@
 
 version: '1.0'
 services:
-  rabbitmq:
-    image: rabbitmq:3-management-alpine
-    container_name: rabbitmq
-    restart: unless-stopped
-    ports:
-      - 5672:5672
-      - 15672:15672
-    environment:
-      TZ: "Asia/Seoul"
-      RABBITMQ_ERLANG_COOKIE: ${RABBITMQ_ERLANG_COOKIE}
-      RABBITMQ_DEFAULT_USER: ${DEFAULT_USER}
-      RABBITMQ_DEFAULT_PASS: ${DEFAULT_PASS}
-
   ruby:
     container_name: ruby
     restart: always
@@ -27,6 +14,4 @@ services:
       TZ : "Asia/Seoul"
     ports:
       - "3000:3000"
-    depends_on:
-      rabbitmq
 
