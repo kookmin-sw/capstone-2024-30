@@ -157,6 +157,7 @@ class _QnaListScreenState extends State<QnaListScreen> {
                               name: post.author,
                               country: post.country,
                               tag: post.category,
+                              commentAmount: post.commentAmount,
                             ),
                           );
                         },

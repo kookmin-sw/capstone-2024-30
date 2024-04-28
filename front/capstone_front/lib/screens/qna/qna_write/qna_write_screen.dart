@@ -207,31 +207,36 @@ class _HelperWriteScreenState extends State<QnaWriteScreen> {
             BasicButton(
               text: tr('helper.write_complete'),
               onPressed: () async {
-                var articleInfo = {
-                  "title": _titleController.text,
-                  "content": _contentController.text,
-                  "author": "messi",
-                  "category": "temp",
-                  "country": "korea",
-                };
+                if (_titleController.text != "" &&
+                    _contentController.text != "") {
+                  var articleInfo = {
+                    "title": _titleController.text,
+                    "content": _contentController.text,
+                    "author": "messi",
+                    "category": "temp",
+                    "country": "korea",
+                  };
 
-                // TODO 글쓴 정보들로 글쓰기 post 보내기
-                // id를 리턴받아서 qnas list에 넣기
-                // Map<String, dynamic> res =
-                //     await QnaService.createQnaPost(articleInfo, images);
-                widget.qnas.insert(
-                    0,
-                    QnaPostModel(
-                      id: 1,
-                      title: "qwe",
-                      author: "author",
-                      content: "content",
-                      category: "category",
-                      country: "country",
-                      imagesList: ["qwe", "asd"],
-                      commentAmount: 2,
-                    ));
-                Navigator.pop(context);
+                  // TODO 글쓴 정보들로 글쓰기 post 보내기
+                  // id를 리턴받아서 qnas list에 넣기
+                  // Map<String, dynamic> res =
+                  //     await QnaService.createQnaPost(articleInfo, images);
+                  widget.qnas.insert(
+                      0,
+                      QnaPostModel(
+                        id: 1,
+                        title: _titleController.text,
+                        author: "author",
+                        content: _contentController.text,
+                        category: "category",
+                        country: "country",
+                        imagesList: ["qwe", "asd"],
+                        commentAmount: 2,
+                      ));
+                  Navigator.pop(context);
+                } else {
+                  makeToast("내용을 다 채워주세요");
+                }
               },
             )
           ],
