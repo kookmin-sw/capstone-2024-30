@@ -25,22 +25,30 @@ public class AnnouncementSearchService {
     @Value("${test.key}")
     private String testKey;
 
-    public boolean testKeyCheck(String key){
-        if(key.equals(testKey)) return true;
+    public boolean testKeyCheck(String key) {
+        if (key.equals(testKey)) return true;
         else throw new BusinessException(TEST_KEY_NOT_VALID);
     }
 
     public Slice<AnnouncementListResponse> getAnnouncementList(Long cursorId, String type, String language) {
         Pageable pageable = PageRequest.of(0, 10);
-        if(cursorId == 0) cursorId = null;
+        if (cursorId == 0) cursorId = null;
         Slice<AnnouncementListResponse> list = announcementRepository
                 .getFilteredAnnouncementsWithPaging(cursorId, type, language, pageable);
         return list;
     }
 
-    public Announcement getAnnouncementDetail(Long id){
+    public Slice<AnnouncementListResponse> getAnnouncementSearchList(Long cursorId, String type, String language, String keyword) {
+        Pageable pageable = PageRequest.of(0, 10);
+        if (cursorId == 0) cursorId = null;
+        Slice<AnnouncementListResponse> list = announcementRepository
+                .getFilteredSearchAnnouncementsWithPaging(cursorId, type, language, keyword, pageable);
+        return list;
+    }
+
+    public Announcement getAnnouncementDetail(Long id) {
         Announcement announcement = announcementRepository.findById(id)
                 .orElseThrow(() -> new AnnouncementNotFoundException(id));
-        return  announcement;
+        return announcement;
     }
 }

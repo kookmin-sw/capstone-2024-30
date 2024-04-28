@@ -7,4 +7,6 @@ import org.springframework.data.domain.Slice;
 public interface AnnouncementCustomRepository {
     Slice<AnnouncementListResponse> getFilteredAnnouncementsWithPaging(Long cursorId, String type,
                                                                        String language, Pageable pageable);
+    Slice<AnnouncementListResponse> getFilteredSearchAnnouncementsWithPaging(Long cursorId, String type,
+                                                                       String language, String word, Pageable pageable);
 }

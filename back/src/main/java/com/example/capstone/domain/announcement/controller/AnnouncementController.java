@@ -6,6 +6,7 @@ import com.example.capstone.domain.announcement.entity.Announcement;
 import com.example.capstone.domain.announcement.service.AnnouncementCallerService;
 import com.example.capstone.domain.announcement.service.AnnouncementSearchService;
 import com.example.capstone.global.dto.ApiResult;
+import com.example.capstone.global.error.exception.BusinessException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -18,6 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.example.capstone.global.error.exception.ErrorCode.SEARCH_TOO_SHORT;
 
 @Slf4j
 @RestController
@@ -81,4 +84,41 @@ public class AnnouncementController {
         return ResponseEntity
                 .ok(new ApiResult<>(announcement));
     }
+
+    @GetMapping("/search")
+    @Operation(summary = "공지사항 검색기반으로 가져오기", description = "검색한 공지사항을 커서기반으로 받아옵니다")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "정보 받기 성공"),
+            @ApiResponse(responseCode = "400", description = "정보 받기 실패", content = @Content(mediaType = "application/json"))
+    })
+    ResponseEntity<ApiResult<AnnouncementListWrapper>> getAnnouncementSearchList(
+            @Parameter(description = "공지사항 유형입니다. 입력하지 않으면 전체를 받아옵니다.")
+            @RequestParam(defaultValue = "all", value = "type") String type,
+            @Parameter(description = "공지사항 언어입니다. 입력하지 않으면 한국어로 받아옵니다.")
+            @RequestParam(defaultValue = "KO", value = "language") String language,
+            @Parameter(description = "어디까지 로드됐는지 가르키는 커서입니다. 입력하지 않으면 처음부터 10개 받아옵니다.")
+            @RequestParam(defaultValue = "0", value = "cursor") long cursor,
+            @Parameter(description = "공지사항 검색어입니다. 두글자이상 입력해야 합니다. (필수)")
+            @RequestParam(value = "word") String word
+    ) {
+        if (word.length() < 2) throw new BusinessException(SEARCH_TOO_SHORT);
+
+        Slice<AnnouncementListResponse> slice = announcementSearchService.getAnnouncementSearchList(cursor, type, language, word);
+
+        List<AnnouncementListResponse> announcements = slice.getContent();
+        boolean hasNext = slice.hasNext();
+
+
+        AnnouncementListWrapper response = new AnnouncementListWrapper(null, hasNext, announcements);
+
+
+        if (hasNext && !announcements.isEmpty()) {
+            AnnouncementListResponse lastAnnouncement = announcements.get(announcements.size() - 1);
+            response.setLastCursorId(lastAnnouncement.id());
+        }
+
+        return ResponseEntity
+                .ok(new ApiResult<>(response));
+    }
+
 }

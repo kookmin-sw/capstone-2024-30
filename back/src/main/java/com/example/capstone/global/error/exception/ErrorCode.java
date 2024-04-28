@@ -33,7 +33,10 @@ public enum ErrorCode {
     TEST_KEY_NOT_VALID(403, "T001", "Test Key is not valid"),
 
     // HMAC
-    HMAC_NOT_VALID(403, "HM001", "HMAC is not valid")
+    HMAC_NOT_VALID(403, "HM001", "HMAC is not valid"),
+
+    // Search Error
+    SEARCH_TOO_SHORT(400, "S001", "Search key word is too short")
     ;
 
     private int status;

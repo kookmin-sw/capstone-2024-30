@@ -183,12 +183,108 @@ public class AnnouncementCrawlService {
                 String authorPhone = "02-910-5808";
 
                 Elements images = doc.select("img[src]");
-                String prefix = "https://cms.kookmin.ac.kr";
                 for (Element img : images) {
-                    String src = img.attr("abs:src");
+                    String src = img.attr("src");
+                    if (!src.startsWith("http://") && !src.startsWith("https://")) {
+                        img.attr("src", "https://cms.kookmin.ac.kr" + src);
+                    }
+                }
 
-                    if (!src.startsWith(prefix)) {
-                        img.attr("src", prefix + src);
+                String html = doc.select(".b-content-box").outerHtml();
+
+                for (String language : languages) {
+                    String translatedTitle = title;
+                    String translatedDepartment = department;
+
+                    if (!language.equals("KO")) {
+                        translatedTitle = translator.translateText(title, "KO", language).getText();
+                        translatedDepartment = translator.translateText(department, "KO", language).getText();
+                    }
+
+                    Optional<Announcement> check = announcementRepository.findByTitle(translatedTitle);
+                    if (!check.isEmpty()) continue;
+
+                    String document = html;
+                    if (!language.equals("KO")) {
+                        document = translateRecursive(html, language, 1, translator);
+                        if(!StringUtils.hasText(document)) document = html;
+                    }
+
+                    List<AnnouncementFile> files = new ArrayList<>();
+                    formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+                    Announcement announcement = Announcement.builder()
+                            .type(url.getType())
+                            .title(translatedTitle)
+                            .author(author)
+                            .authorPhone(authorPhone)
+                            .department(translatedDepartment)
+                            .writtenDate(LocalDate.parse(writeDate, formatter))
+                            .document(document)
+                            .language(language)
+                            .url(baseUrl + link)
+                            .files(files)
+                            .build();
+
+                    announcementRepository.save(announcement);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+            throw new BusinessException(Crawling_FAIL);
+        }
+    }
+
+    @Async
+    @Transactional
+    public void crawlSoftwareAnnouncement(AnnouncementUrl url) {
+        try {
+            Document doc = Jsoup.connect(url.getUrl()).get();
+            Elements announcements = doc.select("table.board-table tbody tr");
+            ArrayList<String> links = new ArrayList<>();
+
+            LocalDate currentDate = LocalDate.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy.MM.dd");
+
+            for (Element announcement : announcements) {
+                Elements dateElements = announcement.select("span.b-date");
+                if (!dateElements.isEmpty()) {
+                    String dateStr = dateElements.text();
+                    LocalDate noticeDate = LocalDate.parse(dateStr, formatter);
+
+                    if (noticeDate.isAfter(currentDate.minusDays(1))) {
+                        Elements linkElements = announcement.select("td.b-td-left a");
+                        if (!linkElements.isEmpty()) {
+                            String href = linkElements.attr("href");
+                            if (links.contains(href)) continue;
+                            links.add(href);
+                            System.out.println(href);
+                        }
+                    }
+                }
+            }
+
+            String baseUrl = url.getUrl();
+            Translator translator = new Translator(authKey);
+
+            for (String link : links) {
+                doc = Jsoup.connect(baseUrl + link).timeout(20000).get();
+
+                Element element = doc.selectFirst("span.b-title");
+                String title = element != null ? element.text() : "Default Title";
+
+                Elements spans = doc.select("li.b-writer-box > span");
+                String author = spans.get(0).text();
+                spans = doc.select("li.b-date-box > span");
+                String writeDate = spans.get(0).text();
+                String department = "외국인유학생지원센터";
+                String authorPhone = "02-910-5808";
+
+                Elements images = doc.select("img[src]");
+                for (Element img : images) {
+                    String src = img.attr("src");
+                    if (!src.startsWith("http://") && !src.startsWith("https://")) {
+                        img.attr("src", "https://cms.kookmin.ac.kr" + src);
                     }
                 }
 
