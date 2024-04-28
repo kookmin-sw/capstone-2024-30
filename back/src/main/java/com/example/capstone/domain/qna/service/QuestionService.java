@@ -42,6 +42,10 @@ public class QuestionService {
         quest.update(request.title(), request.context(), current);
     }
 
+    public void eraseQuestion(Long id){
+        questionRepository.deleteById(id);
+    }
+
 
 
     //TODO 응답 통일
