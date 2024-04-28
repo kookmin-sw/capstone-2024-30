@@ -65,5 +65,8 @@ public class FAQController {
         return ResponseEntity.ok(200);
     }
 
-
+    @GetMapping("/list")
+    public ResponseEntity<?> listFAQ(FAQListRequest request) {
+        return ResponseEntity.ok(faqService.getFAQList(request.cursorId(), request.language(), request.word(), request.tag()));
+    }
 }
