@@ -54,5 +54,16 @@ public class FAQController {
         return ResponseEntity.ok(200);
     }
 
+    @DeleteMapping("/erase")
+    public ResponseEntity<?> eraseFAQ(@RequestBody Long id) {
+        List<String> urlList = imageService.getUrlListByFAQId(id);
+        for(String url : urlList) {
+            imageService.deleteImageFromS3(url);
+        }
+        faqService.eraseFAQ(id);
+        imageService.deleteByFAQId(id);
+        return ResponseEntity.ok(200);
+    }
+
 
 }
