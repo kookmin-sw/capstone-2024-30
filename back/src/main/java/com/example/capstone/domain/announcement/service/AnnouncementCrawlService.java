@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.example.capstone.global.error.exception.ErrorCode.Crawling_FAIL;
+import static com.example.capstone.global.error.exception.ErrorCode.REDIS_CONNECTION_FAIL;
 
 @Slf4j
 @Service
@@ -240,27 +241,19 @@ public class AnnouncementCrawlService {
     public void crawlSoftwareAnnouncement(AnnouncementUrl url) {
         try {
             Document doc = Jsoup.connect(url.getUrl()).get();
-            Elements announcements = doc.select("table.board-table tbody tr");
+            Elements announcements = doc.select(".list-tbody > ul");
             ArrayList<String> links = new ArrayList<>();
 
             LocalDate currentDate = LocalDate.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy.MM.dd");
 
             for (Element announcement : announcements) {
-                Elements dateElements = announcement.select("span.b-date");
-                if (!dateElements.isEmpty()) {
-                    String dateStr = dateElements.text();
-                    LocalDate noticeDate = LocalDate.parse(dateStr, formatter);
+                String dateStr = announcement.select(".date").text();
+                LocalDate noticeDate = LocalDate.parse(dateStr, formatter);
 
-                    if (noticeDate.isAfter(currentDate.minusDays(1))) {
-                        Elements linkElements = announcement.select("td.b-td-left a");
-                        if (!linkElements.isEmpty()) {
-                            String href = linkElements.attr("href");
-                            if (links.contains(href)) continue;
-                            links.add(href);
-                            System.out.println(href);
-                        }
-                    }
+                if (noticeDate.equals(currentDate) || noticeDate.isAfter(currentDate.minusDays(4))) {
+                    String href = announcement.select(".subject > a").attr("href");
+                    links.add(href.substring(1, href.length()));
                 }
             }
 
@@ -270,25 +263,21 @@ public class AnnouncementCrawlService {
             for (String link : links) {
                 doc = Jsoup.connect(baseUrl + link).timeout(20000).get();
 
-                Element element = doc.selectFirst("span.b-title");
-                String title = element != null ? element.text() : "Default Title";
-
-                Elements spans = doc.select("li.b-writer-box > span");
-                String author = spans.get(0).text();
-                spans = doc.select("li.b-date-box > span");
-                String writeDate = spans.get(0).text();
-                String department = "외국인유학생지원센터";
-                String authorPhone = "02-910-5808";
+                String title = doc.select(".view-title").text();
+                String author = doc.select("th:contains(작성자) + td").text();
+                String writeDate = doc.select("th.aricle-subject + td").text();
+                String department = "소프트웨어융합대학";
+                String authorPhone = "02-910-6642";
 
                 Elements images = doc.select("img[src]");
                 for (Element img : images) {
                     String src = img.attr("src");
-                    if (!src.startsWith("http://") && !src.startsWith("https://")) {
-                        img.attr("src", "https://cms.kookmin.ac.kr" + src);
+                    if (!src.startsWith("http:") && !src.startsWith("https:")) {
+                        img.attr("src", "https:" + src);
                     }
                 }
 
-                String html = doc.select(".b-content-box").outerHtml();
+                String html = doc.select("#view-detail-data").outerHtml();
 
                 for (String language : languages) {
                     String translatedTitle = title;
@@ -309,7 +298,7 @@ public class AnnouncementCrawlService {
                     }
 
                     List<AnnouncementFile> files = new ArrayList<>();
-                    formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                    formatter = DateTimeFormatter.ofPattern("yy.MM.dd");
 
                     Announcement announcement = Announcement.builder()
                             .type(url.getType())

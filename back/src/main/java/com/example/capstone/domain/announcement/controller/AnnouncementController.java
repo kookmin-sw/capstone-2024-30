@@ -2,6 +2,7 @@ package com.example.capstone.domain.announcement.controller;
 
 import com.example.capstone.domain.announcement.dto.AnnouncementListResponse;
 import com.example.capstone.domain.announcement.dto.AnnouncementListWrapper;
+import com.example.capstone.domain.announcement.dto.AnnouncementSearchListRequest;
 import com.example.capstone.domain.announcement.entity.Announcement;
 import com.example.capstone.domain.announcement.service.AnnouncementCallerService;
 import com.example.capstone.domain.announcement.service.AnnouncementSearchService;
@@ -86,7 +87,7 @@ public class AnnouncementController {
     }
 
     @GetMapping("/search")
-    @Operation(summary = "공지사항 검색기반으로 가져오기", description = "검색한 공지사항을 커서기반으로 받아옵니다")
+    @Operation(summary = "공지사항 검색기반으로 가져오기", description = "검색한 공지사항을 커서기반으로 받아옵니다. 2글자 이상으로만 검색됩니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "정보 받기 성공"),
             @ApiResponse(responseCode = "400", description = "정보 받기 실패", content = @Content(mediaType = "application/json"))
@@ -98,12 +99,14 @@ public class AnnouncementController {
             @RequestParam(defaultValue = "KO", value = "language") String language,
             @Parameter(description = "어디까지 로드됐는지 가르키는 커서입니다. 입력하지 않으면 처음부터 10개 받아옵니다.")
             @RequestParam(defaultValue = "0", value = "cursor") long cursor,
-            @Parameter(description = "공지사항 검색어입니다. 두글자이상 입력해야 합니다. (필수)")
-            @RequestParam(value = "word") String word
+            @RequestBody AnnouncementSearchListRequest request
     ) {
-        if (word.length() < 2) throw new BusinessException(SEARCH_TOO_SHORT);
 
-        Slice<AnnouncementListResponse> slice = announcementSearchService.getAnnouncementSearchList(cursor, type, language, word);
+        if (request.word().length() < 2) throw new BusinessException(SEARCH_TOO_SHORT);
+
+
+        Slice<AnnouncementListResponse> slice = announcementSearchService.getAnnouncementSearchList(cursor, type,
+                language, request.word());
 
         List<AnnouncementListResponse> announcements = slice.getContent();
         boolean hasNext = slice.hasNext();
