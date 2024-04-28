@@ -4,6 +4,7 @@ import 'package:capstone_front/models/answer_model.dart';
 import 'package:capstone_front/models/api_fail_response.dart';
 import 'package:capstone_front/models/api_success_response.dart';
 import 'package:capstone_front/models/qna_post_model.dart';
+import 'package:capstone_front/models/qna_response.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
@@ -11,21 +12,35 @@ import 'package:image_picker/image_picker.dart';
 class QnaService {
   static String baseUrl = dotenv.get('BASE_URL');
 
-  static Future<List<QnaPostModel>> getQnaPosts() async {
-    List<QnaPostModel> qnaPostInstances = [];
-    final url = Uri.parse('$baseUrl/yet/');
+  static Future<QnasResponse> getQnaPosts(int cursor, String type) async {
+    var query = 'type=$type&cursor=$cursor';
+    final url = Uri.parse('$baseUrl/yet?$query');
     final response = await http.get(url);
 
+    List<QnaPostModel> qnaPostInstances = [];
+
+    final String decodedBody = utf8.decode(response.bodyBytes);
+    final jsonMap = jsonDecode(decodedBody);
     if (response.statusCode == 200) {
-      final String decodedBody = utf8.decode(response.bodyBytes);
-      final List<dynamic> posts = jsonDecode(decodedBody);
+      final ApiSuccessResponse apiSuccessResponse = jsonDecode(jsonMap);
+      final res = apiSuccessResponse.response;
+      final List<dynamic> posts = res['qnas'];
 
       for (var post in posts) {
         qnaPostInstances.add(QnaPostModel.fromJson(post));
       }
-      return qnaPostInstances;
+
+      var result = QnasResponse(
+        qnas: qnaPostInstances,
+        lastCursorId: res['lastCursorId'],
+        hasNext: res['hasNext'],
+      );
+
+      return result;
     } else {
+      ApiFailResponse apiFailResponse = ApiFailResponse.fromJson(jsonMap);
       print('Request failed with status: ${response.statusCode}.');
+      print('Request failed with status: ${apiFailResponse.message}.');
       throw Exception('Failed to load notices');
     }
   }

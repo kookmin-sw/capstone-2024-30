@@ -3,6 +3,8 @@ class QnaPostModel {
   String title;
   String author;
   String content;
+  String category;
+  String country;
   DateTime? datePublished;
   DateTime? dateUpdated;
   List<String> imagesList;
@@ -13,6 +15,8 @@ class QnaPostModel {
         title = json['title'] as String,
         author = json['author'] as String,
         content = json['content'] as String,
+        category = json['category'] as String,
+        country = json['country'] as String,
         commentAmount = json['commentAmount'] as int,
         datePublished = json['date_published'] == null
             ? null

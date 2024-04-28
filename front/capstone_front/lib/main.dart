@@ -1,5 +1,6 @@
 import 'package:capstone_front/firebase_options.dart';
 import 'package:capstone_front/models/notice_model.dart';
+import 'package:capstone_front/models/qna_post_model.dart';
 import 'package:capstone_front/provider/qna_provider.dart';
 import 'package:capstone_front/screens/cafeteriaMenu/cafeteriaMenuScreen.dart';
 import 'package:capstone_front/screens/chatbot/chatbot.dart';
@@ -192,18 +193,17 @@ final GoRouter router = GoRouter(
       builder: (context, state) => const QnaListScreen(),
     ),
     GoRoute(
-      name: 'qnalistdetail',
-      path: '/qnalist/detail',
-      builder: (context, state) => const QnaDetailScreen(
-        data: {
-          'title': 'temp',
-          'content': 'temp',
-          'name': 'temp',
-          'country': 'temp',
-          'tag': 'temp',
-        },
-      ),
-    ),
+        name: 'qnalistdetail',
+        path: '/qnalist/detail',
+        builder: (context, state) {
+          final qna = state.extra as QnaPostModel?;
+          if (qna == null) {
+            return const QnaListScreen();
+          }
+          return QnaDetailScreen(
+            data: qna,
+          );
+        }),
     GoRoute(
       name: 'qnawrite',
       path: '/qnawrite',

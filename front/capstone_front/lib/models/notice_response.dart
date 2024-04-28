@@ -5,8 +5,9 @@ class NoticesResponse {
   final int? lastCursorId;
   final bool hasNext;
 
-  NoticesResponse(
-      {required this.notices,
-      required this.lastCursorId,
-      required this.hasNext});
+  NoticesResponse({
+    required this.notices,
+    required this.lastCursorId,
+    required this.hasNext,
+  });
 }
