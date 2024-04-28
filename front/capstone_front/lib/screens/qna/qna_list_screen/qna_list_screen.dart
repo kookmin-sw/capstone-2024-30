@@ -1,6 +1,9 @@
+import 'package:capstone_front/models/qna_post_model.dart';
+import 'package:capstone_front/models/qna_response.dart';
 import 'package:capstone_front/screens/qna/qna_detail/qna_detail_screen.dart';
 import 'package:capstone_front/screens/qna/qna_list_screen/question_card.dart';
 import 'package:capstone_front/screens/qna/qna_list_screen/test_question_data.dart';
+import 'package:capstone_front/services/qna_service.dart';
 import 'package:capstone_front/utils/basic_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,8 +18,65 @@ class QnaListScreen extends StatefulWidget {
   State<QnaListScreen> createState() => _QnaListScreenState();
 }
 
+List<Map<String, dynamic>> dummyJsonData() {
+  return List.generate(
+      10,
+      (index) => {
+            'id': index,
+            'title': "Question ${index + 1}",
+            'author': "Author ${index + 1}",
+            'content':
+                "This is the content for question ${index + 1}. Here you can add more details about the question.",
+            'category': "Category ${(index % 5) + 1}",
+            'country': "Country ${(index % 3) + 1}",
+            'date_published': DateTime.now()
+                .subtract(Duration(days: index * 5))
+                .toIso8601String(),
+            'date_updated': DateTime.now()
+                .subtract(Duration(days: index * 3))
+                .toIso8601String(),
+            'imagesList':
+                List.generate(3, (imgIndex) => "image_${index}_$imgIndex.jpg"),
+            'commentAmount': (index * 3) % 5,
+          });
+}
+
+List<QnaPostModel> generateDummyData() {
+  List<Map<String, dynamic>> jsonData = dummyJsonData();
+  return jsonData.map((json) => QnaPostModel.fromJson(json)).toList();
+}
+
 class _QnaListScreenState extends State<QnaListScreen> {
   final _controller = TextEditingController();
+
+  List<QnaPostModel> qnas = [];
+  var cursor = 0;
+  var hasNext = true;
+  var itemCount = 0;
+
+  void loadQnas(int lastCursor) async {
+    try {
+      QnasResponse res = await QnaService.getQnaPosts(lastCursor, 'all');
+      setState(() {
+        hasNext = res.hasNext;
+        if (hasNext) {
+          cursor = res.lastCursorId!;
+        }
+        qnas.addAll(res.qnas);
+        itemCount += res.qnas.length;
+      });
+    } catch (e) {
+      print(e);
+      throw Exception('error');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    qnas = generateDummyData();
+    // loadQnas(cursor);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,41 +127,46 @@ class _QnaListScreenState extends State<QnaListScreen> {
           Container(
             color: const Color(0xFFF8F8F8),
             child: Expanded(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    children: [
-                      ...questionDatas.map(
-                        (item) => Column(
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => QnaDetailScreen(
-                                      data: item,
-                                    ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: ListView.separated(
+                        shrinkWrap: true,
+                        itemCount: qnas.length,
+                        itemBuilder: (context, index) {
+                          if (index + 1 == itemCount && hasNext) {
+                            // loadQnas(cursor);
+                          }
+                          var post = qnas[index];
+                          return InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => QnaDetailScreen(
+                                    data: post,
                                   ),
-                                );
-                              },
-                              child: QuestionCard(
-                                title: item['title'],
-                                content: item['content'],
-                                name: item['name'],
-                                country: item['country'],
-                                tag: item['tag'],
-                              ),
+                                ),
+                              );
+                            },
+                            child: QuestionCard(
+                              title: post.title,
+                              content: post.content,
+                              name: post.author,
+                              country: post.country,
+                              tag: post.category,
+                              commentAmount: post.commentAmount,
                             ),
-                            const SizedBox(
-                              height: 20,
-                            )
-                          ],
+                          );
+                        },
+                        separatorBuilder: (context, index) => const SizedBox(
+                          height: 20,
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -111,8 +176,12 @@ class _QnaListScreenState extends State<QnaListScreen> {
             right: 20,
             child: IconButton(
               iconSize: 50,
-              onPressed: () {
-                context.push('/qnawrite');
+              onPressed: () async {
+                var result = await context.push(
+                  '/qnawrite',
+                  extra: qnas,
+                );
+                setState(() {});
               },
               style: IconButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.primary),

@@ -1,10 +1,21 @@
+import 'dart:io';
+
+import 'package:capstone_front/models/qna_post_model.dart';
+import 'package:capstone_front/screens/signup/signup_service.dart';
+import 'package:capstone_front/services/qna_service.dart';
 import 'package:capstone_front/utils/basic_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class QnaWriteScreen extends StatefulWidget {
-  const QnaWriteScreen({super.key});
+  const QnaWriteScreen({
+    super.key,
+    required this.qnas,
+  });
+
+  final List<QnaPostModel> qnas;
 
   @override
   State<QnaWriteScreen> createState() => _HelperWriteScreenState();
@@ -22,6 +33,13 @@ class _HelperWriteScreenState extends State<QnaWriteScreen> {
   final TextEditingController _contentController = TextEditingController();
   final int _minLines = 1;
   final int _maxLines = 3;
+
+  final picker = ImagePicker();
+  XFile? image;
+  List<XFile> multiImages = [];
+  List<XFile> images = [];
+  final int _maxPhotos = 4;
+  int _currentPhotos = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -84,6 +102,108 @@ class _HelperWriteScreenState extends State<QnaWriteScreen> {
                         isMultiline: true,
                         titleController: _contentController,
                       ),
+                      const SizedBox(height: 20),
+                      Text(
+                        tr('사진'),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Wrap(
+                          children: [
+                            IconButton(
+                              onPressed: () async {
+                                if (_currentPhotos >= _maxPhotos) {
+                                  makeToast("최대 $_maxPhotos개의 사진만 가능합니다");
+                                } else {
+                                  if (_maxPhotos - _currentPhotos < 2) {
+                                    var image = await picker.pickImage(
+                                      source: ImageSource.gallery,
+                                    );
+                                    if (image != null) {
+                                      multiImages = [image];
+                                      setState(() {
+                                        images.addAll(multiImages);
+                                        _currentPhotos += multiImages.length;
+                                      });
+                                    }
+                                  } else {
+                                    multiImages = await picker.pickMultiImage(
+                                      limit: _maxPhotos - _currentPhotos,
+                                    );
+                                    if (_currentPhotos + multiImages.length >
+                                        4) {
+                                      makeToast(
+                                          "최대 $_maxPhotos개의 사진만 가능합니다. 다시 선택해주세요.");
+                                    } else {
+                                      setState(() {
+                                        images.addAll(multiImages);
+                                        _currentPhotos += multiImages.length;
+                                      });
+                                    }
+                                  }
+                                }
+                              },
+                              icon: const Icon(Icons.photo_library_rounded),
+                              iconSize: 50,
+                            ),
+                            ...images.map(
+                              (item) => Row(
+                                children: [
+                                  Stack(
+                                    alignment: Alignment.topRight,
+                                    children: [
+                                      Container(
+                                        height: 150,
+                                        width: 150,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          image: DecorationImage(
+                                            fit: BoxFit.cover,
+                                            image: FileImage(
+                                              File(item.path),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.black,
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                        ),
+                                        //삭제 버튼
+                                        child: IconButton(
+                                          padding: EdgeInsets.zero,
+                                          constraints: const BoxConstraints(),
+                                          icon: const Icon(Icons.close,
+                                              color: Colors.white, size: 15),
+                                          onPressed: () {
+                                            setState(
+                                              () {
+                                                images.remove(item);
+                                                _currentPhotos -= 1;
+                                              },
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -92,13 +212,37 @@ class _HelperWriteScreenState extends State<QnaWriteScreen> {
             const SizedBox(height: 20),
             BasicButton(
               text: tr('helper.write_complete'),
-              onPressed: () {
-                setState(() {
-                  // Todo: 서버로 작성된 내용 전송
-                  print("작성 완료 ㅇㅅㅇ");
-                  print(_titleController.text);
-                  print(_contentController.text);
-                });
+              onPressed: () async {
+                if (_titleController.text != "" &&
+                    _contentController.text != "") {
+                  var articleInfo = {
+                    "title": _titleController.text,
+                    "content": _contentController.text,
+                    "author": "messi",
+                    "category": "temp",
+                    "country": "korea",
+                  };
+
+                  // TODO 글쓴 정보들로 글쓰기 post 보내기
+                  // id를 리턴받아서 qnas list에 넣기
+                  // Map<String, dynamic> res =
+                  //     await QnaService.createQnaPost(articleInfo, images);
+                  widget.qnas.insert(
+                      0,
+                      QnaPostModel(
+                        id: 1,
+                        title: _titleController.text,
+                        author: "author",
+                        content: _contentController.text,
+                        category: "category",
+                        country: "country",
+                        imagesList: ["qwe", "asd"],
+                        commentAmount: 2,
+                      ));
+                  Navigator.pop(context);
+                } else {
+                  makeToast("내용을 다 채워주세요");
+                }
               },
             )
           ],

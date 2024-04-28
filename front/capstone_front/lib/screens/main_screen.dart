@@ -2,6 +2,7 @@ import 'package:capstone_front/screens/helper/helper_screen.dart';
 import 'package:capstone_front/screens/home/home_screen.dart';
 import 'package:capstone_front/screens/notice/notice_screen.dart';
 import 'package:capstone_front/screens/qna/qna_list_screen/qna_list_screen.dart';
+import 'package:capstone_front/screens/question/question_screen.dart';
 import 'package:capstone_front/screens/speech_practice/speech_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   final screenList = [
     const NoticeScreen(),
-    const QnaListScreen(),
+    const QuestionScreen(),
     const HomeScreen(),
     const HelperScreen(),
     const SpeechScreen(),

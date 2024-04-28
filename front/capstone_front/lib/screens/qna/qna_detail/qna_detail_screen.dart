@@ -1,8 +1,9 @@
+import 'package:capstone_front/models/qna_post_model.dart';
 import 'package:capstone_front/screens/qna/qna_detail/test_comment_data.dart';
 import 'package:flutter/material.dart';
 
 class QnaDetailScreen extends StatefulWidget {
-  final Map<String, dynamic> data;
+  final QnaPostModel data;
 
   const QnaDetailScreen({
     super.key,
@@ -35,7 +36,7 @@ class _QnaDetailScreenState extends State<QnaDetailScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.data['tag']),
+        title: Text(widget.data.category),
         scrolledUnderElevation: 0,
       ),
       body: Container(
@@ -60,31 +61,37 @@ class _QnaDetailScreenState extends State<QnaDetailScreen>
               ),
               child: Padding(
                 padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.data['title'],
-                      style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
+                child: Expanded(
+                  child: Row(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.data.title,
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            widget.data.content,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xFF444444),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                        ],
                       ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      widget.data['content'],
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xFF444444),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -113,39 +120,58 @@ class _QnaDetailScreenState extends State<QnaDetailScreen>
                   child: ListView.separated(
                     itemCount: comments.length,
                     itemBuilder: (context, index) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                comments[index]['author'],
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w300,
-                                  color: Color(0xFF444444),
-                                ),
+                              Row(
+                                children: [
+                                  Text(
+                                    comments[index]['author'],
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w300,
+                                      color: Color(0xFF444444),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                                  Text(
+                                    comments[index]['writeTime'],
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w300,
+                                      color: Color(0xFF848484),
+                                    ),
+                                  ),
+                                ],
                               ),
                               Text(
-                                comments[index]['writeTime'],
+                                comments[index]['content'],
                                 style: const TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w300,
-                                  color: Color(0xFF848484),
+                                  fontSize: 18,
                                 ),
                               ),
                             ],
                           ),
-                          const SizedBox(
-                            height: 4,
-                          ),
-                          Text(
-                            comments[index]['content'],
-                            style: const TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
+                          const Column(
+                            children: [
+                              Icon(
+                                Icons.favorite_border_rounded,
+                                color: Color(0xFF848484),
+                                size: 26,
+                              ),
+                              Text(
+                                '0',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          )
                         ],
                       );
                     },

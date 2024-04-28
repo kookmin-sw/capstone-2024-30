@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class QuestionCard extends StatelessWidget {
   final String title, content, name, country, tag;
+  final int commentAmount;
 
   const QuestionCard({
     super.key,
@@ -10,6 +11,7 @@ class QuestionCard extends StatelessWidget {
     required this.name,
     required this.country,
     required this.tag,
+    required this.commentAmount,
   });
 
   @override
@@ -90,24 +92,47 @@ class QuestionCard extends StatelessWidget {
               height: 20,
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  name,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    color: Color(0xff7b7b89),
-                  ),
+                Row(
+                  children: [
+                    Text(
+                      name,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Color(0xff7b7b89),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      country,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Color(0xFFa1a1ad),
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  country,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    color: Color(0xFFa1a1ad),
-                  ),
-                ),
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.insert_comment_rounded,
+                      color: Color(0xFFa1a1ad),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      commentAmount.toString(),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Color(0xFFa1a1ad),
+                      ),
+                    ),
+                  ],
+                )
               ],
             )
           ],

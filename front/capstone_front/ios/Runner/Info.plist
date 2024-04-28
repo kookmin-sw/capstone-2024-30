@@ -47,5 +47,9 @@
 	<true/>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>이 앱은 마이크를 사용해 음성을 녹음합니다.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>카메라를 사용해 촬영합니다.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>포토 앨범을 조회합니다.</string>
 </dict>
 </plist>
