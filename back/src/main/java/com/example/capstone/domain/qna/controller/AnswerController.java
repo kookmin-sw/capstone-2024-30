@@ -27,5 +27,10 @@ public class AnswerController {
         return ResponseEntity.ok(answerService.createAnswer(userId, request));
     }
 
+    @GetMapping("/list")
+    public ResponseEntity<?> listAnswer(@RequestBody AnswerListRequest request) {
+        return ResponseEntity.ok(answerService.getAnswerList(request.questionId(), request.cursorId(), request.sortBy()));
+    }
+
 
 }
