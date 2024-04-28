@@ -1,5 +1,6 @@
 package com.example.capstone.domain.qna.entity;
 
+import com.example.capstone.domain.qna.dto.FAQResponse;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,12 +30,17 @@ public class FAQ {
     @Column(name = "answer", columnDefinition = "LONGTEXT", nullable = false)
     private String answer;
 
-    @Column(name = "view", nullable = false)
-    private Long view;
-
     @Column(name = "created_date", nullable = false)
     private LocalDateTime createdDate;
 
     @Column(name = "updated_date", nullable = false)
     private LocalDateTime updatedDate;
+
+    @Column(name = "tag", nullable = false)
+    private String tag;
+
+    @Column(name = "language", nullable = false)
+    private String language;
+
+
 }
