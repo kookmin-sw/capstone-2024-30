@@ -59,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: Theme.of(context).colorScheme.primary,
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: Transform.translate(
                           offset: const Offset(0, -80),
                           child: Column(
@@ -79,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 20),
+                                    SizedBox(height: 15),
                                     Text("소프트웨어융합대학 소프트웨어학부"),
                                     Text(
                                       "20191557",
@@ -89,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ],
                                 ),
                               ),
-                              const SizedBox(height: 20),
+                              const SizedBox(height: 15),
                               WhiteBox(
                                 content: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -161,7 +161,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                               const SizedBox(
-                                height: 20,
+                                height: 15,
                               ),
                               WhiteBox(
                                 content: Column(
@@ -355,7 +355,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Text(tr('mainScreen.language_setting')),
                   const SizedBox(
-                    height: 20,
+                    height: 15,
                   ),
                   Row(
                     children: [

@@ -48,11 +48,38 @@ class _SignupPasswordScreenState extends State<SignupPasswordScreen> {
             BasicButton(
                 text: tr('signup.next'),
                 onPressed: () async {
-                  // Todo: 비밀번호 조건 적용 필요(6자 이상 등)
-                  if (userInfo['pw'] != '' &&
-                      userInfo['pw'] == userInfo['pwRe']) {
-                    await sendEmailAuth(userInfo['id']!, userInfo['pw']!);
-                    context.push('/signup/emailAuth');
+                  if (userInfo['pw'] != userInfo['pwRe']) {
+                    makeToast(tr('signup.password_not_same'));
+                  } else if (userInfo['pw'] != '') {
+                    // 파이어베이스에 계정 생성을 시도하면서 인증 메일 전송
+                    String result =
+                        await sendEmailAuth(userInfo['id']!, userInfo['pw']!);
+                    // 파이어베이스에 계정 생성 완료, 인증 메일 전송 완료
+                    if (result == "success") {
+                      // 우리 서버로 회원가입 요청
+                      await signup();
+
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          title: Text(tr('signup.auth_email')),
+                          content: Text(tr('signup.detail_auth_email')),
+                          actions: [
+                            ElevatedButton(
+                                onPressed: () => context.go('/login'),
+                                child: Text(tr('signup.ok'))),
+                          ],
+                        ),
+                      );
+                    }
+                    // 파이어베이스에 계정 생성 실패
+                    else {
+                      if (result == "weak-password") {
+                        makeToast(tr('signup.weak_password'));
+                      } else if (result == "email-already-in-use") {
+                        makeToast(tr('signup.duplicated_email'));
+                      }
+                    }
                   }
                 }),
             const SizedBox(height: 20),

@@ -16,8 +16,11 @@ class _HelperChattingScreenState extends State<HelperChattingScreen> {
     return Scaffold(
       body: ListView.builder(
         itemBuilder: (BuildContext context, int index) {
-          return HelperChattingCard(
-            index: index,
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: HelperChattingCard(
+              index: index,
+            ),
           );
         },
         itemCount: helperChatting.length,
