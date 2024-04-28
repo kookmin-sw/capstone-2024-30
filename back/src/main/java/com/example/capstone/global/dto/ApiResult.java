@@ -3,7 +3,6 @@ package com.example.capstone.global.dto;
 import com.example.capstone.global.error.exception.ErrorCode;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.google.protobuf.Api;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

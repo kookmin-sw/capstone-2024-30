@@ -4,7 +4,6 @@ import com.example.capstone.domain.auth.dto.ReissueRequest;
 import com.example.capstone.domain.auth.dto.TokenResponse;
 import com.example.capstone.domain.auth.service.AuthService;
 import com.example.capstone.global.dto.ApiResult;
-import com.google.protobuf.Api;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

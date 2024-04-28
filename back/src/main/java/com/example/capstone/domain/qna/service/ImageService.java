@@ -33,7 +33,7 @@ public class ImageService {
     private final AmazonS3 amazonS3;
 
     @Value("${s3.bucket.name}")
-    private final String bucketName;
+    private String bucketName;
 
     private final QuestionImageRepository questionImageRepository;
 
@@ -111,7 +111,7 @@ public class ImageService {
             PutObjectRequest putObjectRequest =
                     new PutObjectRequest(bucketName, s3FileName, byteArrayInputStream, metadata)
                             .withCannedAcl(CannedAccessControlList.PublicRead);
-            amazonS3.putObject(putObjectRequest); // put image to S3
+            amazonS3.putObject(putObjectRequest);
         } catch (Exception e) {
             throw new BusinessException(ErrorCode.PUT_OBJECT_EXCEPTION);
         } finally {
