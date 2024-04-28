@@ -51,5 +51,9 @@ public class AnswerController {
         return ResponseEntity.ok(200);
     }
 
-
+    @PutMapping("/unlike")
+    public ResponseEntity<?> downLikeCount(@RequestBody Long id) {
+        answerService.downLikeCountById(id);
+        return ResponseEntity.ok(200);
+    }
 }
