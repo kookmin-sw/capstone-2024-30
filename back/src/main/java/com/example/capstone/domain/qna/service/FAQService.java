@@ -38,6 +38,10 @@ public class FAQService {
         faq.update(request.title(), request.question(), request.answer(), current);
     }
 
+    public void eraseFAQ(Long id) {
+        faqRepository.deleteById(id);
+    }
+
 
 
     //TODO 응답 통일
