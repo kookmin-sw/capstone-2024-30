@@ -26,6 +26,7 @@ class ChatsController < ApplicationController
         chat_room_id: chat_room.id,
         user_id: other_user_id,
         user_name: users_info[other_user_id]&.name,
+        last_message_id: last_message&.id,
         chat_room_message: last_message&.content,
         chat_room_date: last_message&.timestamp&.strftime("%Y-%m-%d %H:%M")
       }
@@ -33,7 +34,7 @@ class ChatsController < ApplicationController
 
     sorted_rooms = chat_rooms_data.sort_by { |room| room[:chat_room_date] ? DateTime.parse(room[:chat_room_date]) : DateTime.new(0) }.reverse
 
-    render_success(data: sorted_rooms, message: "Chat rooms retrieved successfully")
+    render_success(data: { rooms: sorted_rooms }, message: "Chat rooms retrieved successfully")
   end
 
   # 유저간 채팅방을 생성해줌
@@ -77,6 +78,7 @@ class ChatsController < ApplicationController
                          .limit(100)
                          .map do |message|
       {
+        id: message.id,
         content: message.content,
         timestamp: message.timestamp.strftime("%Y-%m-%d %H:%M")
       }
@@ -85,7 +87,51 @@ class ChatsController < ApplicationController
     if message_contents.empty?
       render_fail(message: "No message to load", status: :bad_request)
     else
-      render_success(data: { messages: message_contents }, message: "Successfully message loaded")
+      sorted_contents = message_contents.sort_by { |message| message[:id] }
+      render_success(data: { messages: sorted_contents }, message: "Successfully message loaded")
+    end
+  end
+
+  def short_poll
+    user_id = @decoded[:uuid]
+
+    chat_room_list = params.require(:list)
+
+    updated_rooms = []
+    timeout = 20.seconds.from_now
+
+    loop do
+      chat_room_list.each do |room|
+        chat_room_id = room[:id].to_i
+        last_message_id = room[:message_id].to_i
+
+        new_message = ChatMessage
+                         .where('chat_room_id = ? AND id > ? AND user_id != ?', chat_room_id, last_message_id, user_id)
+                         .order(timestamp: :desc)
+                         .limit(1)
+                         .map do |message|
+          {
+            chat_room_id: chat_room_id,
+            last_message_id: message.id,
+            content: message.content,
+            timestamp: message.timestamp.strftime("%Y-%m-%d %H:%M")
+          }
+        end
+
+        updated_rooms.concat(new_message)
+      end
+
+      if updated_rooms.any?
+        sorted_contents = updated_rooms.sort_by { |message| message[:id] }
+        render_success(message: "Polling Successful", data: { messages: sorted_contents })
+        return
+      elsif Time.current >= timeout
+        render_fail(message: "Chat room timeout", status: :bad_request)
+        return
+      else
+        sleep(5)
+      end
+
     end
   end
 
@@ -109,13 +155,15 @@ class ChatsController < ApplicationController
                        .limit(100)
                        .map do |message|
         {
+          id: message.id,
           content: message.content,
           timestamp: message.timestamp.strftime("%Y-%m-%d %H:%M")
         }
       end
 
       if new_messages.any?
-        render_success(message: "Polling Successful", data: { messages: new_messages })
+        sorted_contents = new_messages.sort_by { |message| message[:id] }
+        render_success(message: "Polling Successful", data: { messages: sorted_contents })
         return
       elsif Time.current >= timeout
         render_fail(message: "Chat room timeout", status: :bad_request)
@@ -126,7 +174,7 @@ class ChatsController < ApplicationController
     end
   end
 
-  def sned_message
+  def send_message
     user_id = @decoded[:uuid]
 
     chat_room = ChatRoom.where('id = ? AND (user1_uuid = ? OR user2_uuid = ?)',
