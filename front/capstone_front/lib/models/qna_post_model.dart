@@ -7,6 +7,7 @@ class QnaPostModel {
   DateTime? dateUpdated;
   int view;
   String email;
+  List<String> imagesList;
 
   QnaPostModel.fromJson(Map<String, dynamic> json)
       : id = json['id'] as int,
@@ -20,7 +21,8 @@ class QnaPostModel {
             ? null
             : DateTime.tryParse(json['date_updated'] as String),
         view = json['view'] as int,
-        email = json['email'] as String;
+        email = json['email'] as String,
+        imagesList = json['imagesList'] as List<String>;
 
   Map<String, dynamic> toJson() {
     return {
@@ -32,6 +34,7 @@ class QnaPostModel {
       'date_updated': dateUpdated,
       'view': view,
       'email': email,
+      'imagesList': imagesList,
     };
   }
 }

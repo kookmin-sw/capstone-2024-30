@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:capstone_front/screens/signup/signup_service.dart';
+import 'package:capstone_front/services/qna_service.dart';
 import 'package:capstone_front/utils/basic_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -29,8 +30,8 @@ class _HelperWriteScreenState extends State<QnaWriteScreen> {
 
   final picker = ImagePicker();
   XFile? image;
-  List<XFile?> multiImages = [];
-  List<XFile?> images = [];
+  List<XFile> multiImages = [];
+  List<XFile> images = [];
   final int _maxPhotos = 4;
   int _currentPhotos = 0;
 
@@ -153,7 +154,7 @@ class _HelperWriteScreenState extends State<QnaWriteScreen> {
                                           image: DecorationImage(
                                             fit: BoxFit.cover,
                                             image: FileImage(
-                                              File(item!.path),
+                                              File(item.path),
                                             ),
                                           ),
                                         ),
@@ -201,10 +202,12 @@ class _HelperWriteScreenState extends State<QnaWriteScreen> {
               text: tr('helper.write_complete'),
               onPressed: () {
                 setState(() {
-                  // Todo: 서버로 작성된 내용 전송
-                  print("작성 완료 ㅇㅅㅇ");
-                  print(_titleController.text);
-                  print(_contentController.text);
+                  var articleInfo = {
+                    "title": _titleController.text,
+                    "content": _contentController.text,
+                    "category": "temp",
+                  };
+                  QnaService.createQnaPost(articleInfo, images);
                 });
               },
             )
