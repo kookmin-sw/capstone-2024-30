@@ -48,6 +48,10 @@ public class AnswerService {
         answer.update(request.context(), current);
     }
 
+    public void eraseAnswer(Long id) {
+        answerRepository.deleteById(id);
+    }
+
 
 
     //TODO 응답 통일
