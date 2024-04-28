@@ -6,6 +6,7 @@ public record QuestionPostRequest(
         String title,
         String author,
         String context,
-        String email
+        String tag,
+        String country
 ) {
 }
