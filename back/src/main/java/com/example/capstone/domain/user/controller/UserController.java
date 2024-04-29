@@ -49,7 +49,7 @@ public class UserController {
         loginService.signUp(signupRequest);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(new ApiResult<>("Successfully Signup"));
+                .body(new ApiResult<>("Successfully Signup", ""));
     }
 
     @PostMapping("/signin")
@@ -76,7 +76,7 @@ public class UserController {
     public ResponseEntity<ApiResult<User>> getMyProfile(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         User user = UserMapper.INSTANCE.principalDetailsToUser(principalDetails);
         return ResponseEntity
-                .ok(new ApiResult<>(user));
+                .ok(new ApiResult<>("Successfully gey my info", user));
     }
 
 
@@ -92,7 +92,7 @@ public class UserController {
         String UUID = principalDetails.getUuid();
         User user = userService.updateUser(UUID, userProfileUpdateRequest);
         return ResponseEntity
-                .ok(new ApiResult<>(user));
+                .ok(new ApiResult<>("Successfully modify my info", user));
     }
 
     @GetMapping("/{userId}")
@@ -104,7 +104,7 @@ public class UserController {
     public ResponseEntity<ApiResult<User>> getUserInfo(@PathVariable String userId) {
         User user = userService.getUserInfo(userId);
         return ResponseEntity
-                .ok(new ApiResult<>(user));
+                .ok(new ApiResult<>("Successfully get user info", user));
     }
 
     @GetMapping("/test")

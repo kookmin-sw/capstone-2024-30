@@ -31,6 +31,6 @@ public class SpeechController {
             throws ExecutionException, InterruptedException, IOException {
         CompletableFuture<String> result = speechService.pronunciation(context, file);
         return ResponseEntity
-                .ok(new ApiResult<>(result.get()));
+                .ok(new ApiResult<>("Successfully get speech result", result.get()));
     }
 }
