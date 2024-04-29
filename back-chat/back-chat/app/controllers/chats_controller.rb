@@ -107,9 +107,16 @@ class ChatsController < ApplicationController
 
     content = params[:content]
     message = chat_room.messages.create(user_id: user_id, content: content)
+    response = {
+      id: message.id,
+      content: message.content,
+      timestamp: message.timestamp.strftime("%Y-%m-%d %H:%M")
+    }
+
+    print(response)
 
     if message.persisted?
-      render_success(data: message, message: "Message sent", status: :created)
+      render_success(data: response, message: "Message sent", status: :created)
       return
     end
     render_fail(message: "Message Send Error", status: :bad_request)

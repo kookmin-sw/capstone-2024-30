@@ -22,8 +22,8 @@ class ChatsPollingController < ApplicationController
                         .limit(1)
                         .map do |message|
           {
+            id: message.id,
             chat_room_id: chat_room_id,
-            last_message_id: message.id,
             content: message.content,
             timestamp: message.timestamp.strftime("%Y-%m-%d %H:%M")
           }
