@@ -95,22 +95,6 @@ class _NoticeDetailState extends State<NoticeDetailScreen> {
                       return const Center(child: CircularProgressIndicator());
                     },
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          width: 0.8, color: const Color(0xFFF3F3F3)),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const Text(
-                    "첨부파일 1개",
-                    style: TextStyle(
-                      color: Color(0xFF646464),
-                      fontSize: 16,
-                    ),
-                  ),
                 ],
               )
             ],
