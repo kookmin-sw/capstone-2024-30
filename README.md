@@ -127,7 +127,7 @@ This project aims to develop a comprehensive app service for international stude
 ├── 📂ai 🗂 KuKu 채팅 봇 소스
 
 └── 📕Readme.md
-
+```
 
 ## 7. 사용법
 
