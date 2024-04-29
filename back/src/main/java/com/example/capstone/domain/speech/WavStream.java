@@ -7,16 +7,16 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class WavStream extends PullAudioInputStreamCallback {
-    private final InputStream stream;
-    private AudioStreamFormat format;
+        private final InputStream stream;
+        private AudioStreamFormat format;
 
-    public WavStream(InputStream wavStream) {
-        try {
-            this.stream = parseWavHeader(wavStream);
-        } catch (Exception ex) {
-            throw new IllegalArgumentException(ex.getMessage());
+        public WavStream(InputStream wavStream) {
+            try {
+                this.stream = parseWavHeader(wavStream);
+            } catch (Exception ex) {
+                throw new IllegalArgumentException(ex.getMessage());
+            }
         }
-    }
 
     @Override
     public int read(byte[] dataBuffer) {
