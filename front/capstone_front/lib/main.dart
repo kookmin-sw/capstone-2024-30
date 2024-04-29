@@ -6,6 +6,7 @@ import 'package:capstone_front/screens/cafeteriaMenu/cafeteriaMenuScreen.dart';
 import 'package:capstone_front/screens/chatbot/chatbot.dart';
 import 'package:capstone_front/screens/faq/faq_screen.dart';
 import 'package:capstone_front/screens/helper/helper_board/helper_board_screen.dart';
+import 'package:capstone_front/screens/helper/helper_chatting/helper_chatting_room.dart';
 import 'package:capstone_front/screens/helper/helper_screen.dart';
 import 'package:capstone_front/screens/helper/helper_write_screen.dart';
 import 'package:capstone_front/screens/helper/helper_board/helper_writing_screen.dart';
@@ -224,6 +225,11 @@ final GoRouter router = GoRouter(
       name: 'question',
       path: '/question',
       builder: (context, state) => const QuestionScreen(),
+    ),
+    GoRoute(
+      name: 'chatroom',
+      path: '/chatroom',
+      builder: (context, state) => const HelperChattingRoom(),
     ),
   ],
 );

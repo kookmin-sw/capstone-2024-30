@@ -86,7 +86,7 @@ class _HelperWritingScreenState extends State<HelperWritingScreen> {
             BasicButton(
                 text: tr('helper.start_chat'),
                 onPressed: () {
-                  context.pop();
+                  context.push("/chatroom");
                 })
           ],
         ),
