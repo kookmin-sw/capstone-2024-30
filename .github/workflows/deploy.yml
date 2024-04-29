@@ -46,9 +46,8 @@ jobs:
       - name: Build and push Spring
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: ./back
           push: true
-          file: ./back/Dockerfile
           tags: ${{ secrets.DOCKER_REPO }}/spring:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -56,9 +55,8 @@ jobs:
       - name: Build and push Nginx
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: ./back/nginx
           push: true
-          file: ./back/nginx/Dockerfile
           tags: ${{ secrets.DOCKER_REPO }}/nginx:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -66,9 +64,8 @@ jobs:
       - name: Build and push Ruby on Rails
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: ./back-chat
           push: true
-          file: ./back-chat/Dockerfile
           tags: ${{ secrets.DOCKER_REPO }}/ruby:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
