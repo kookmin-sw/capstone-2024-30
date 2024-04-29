@@ -2,7 +2,8 @@ name: Deploy Server
 
 on:
   push:
-    branches: [ "feature/be/#115-CICD" ]
+    branches:
+      - feautre/be/#115-CICD
 permissions:
   contents: read
 
