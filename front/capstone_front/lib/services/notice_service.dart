@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:capstone_front/models/api_fail_response.dart';
+import 'package:capstone_front/models/api_success_response.dart';
 import 'package:capstone_front/models/notice_model.dart';
 import 'package:capstone_front/models/notice_response.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -16,23 +18,27 @@ class NoticeService {
 
     List<NoticeModel> noticeInstances = [];
 
+    final String decodedBody = utf8.decode(response.bodyBytes);
+    final Map<String, dynamic> jsonMap = jsonDecode(decodedBody);
     if (response.statusCode == 200) {
-      final String decodedBody = utf8.decode(response.bodyBytes);
-      final Map<String, dynamic> jsonData = jsonDecode(decodedBody);
-      final List<dynamic> notices = jsonData['announcements'];
+      var apiSuccessResponse = ApiSuccessResponse.fromJson(jsonMap);
+      var res = apiSuccessResponse.response;
+      var notices = res['announcements'];
 
       for (var notice in notices) {
         noticeInstances.add(NoticeModel.fromJson(notice));
       }
 
-      var res = NoticesResponse(
+      var result = NoticesResponse(
         notices: noticeInstances,
-        lastCursorId: jsonData['lastCursorId'],
-        hasNext: jsonData['hasNext'],
+        lastCursorId: res['lastCursorId'],
+        hasNext: res['hasNext'],
       );
 
-      return res;
+      return result;
     } else {
+      var apiFailResponse = ApiFailResponse.fromJson(jsonMap);
+      print(apiFailResponse.message);
       print('Request failed with status: ${response.statusCode}.');
       throw Exception('Failed to load notices');
     }
@@ -42,13 +48,19 @@ class NoticeService {
     final url = Uri.parse('$baseUrl/announcement/$id');
 
     final response = await http.get(url);
+    final String decodedBody = utf8.decode(response.bodyBytes);
+    final Map<String, dynamic> jsonMap = jsonDecode(decodedBody);
+
     if (response.statusCode == 200) {
-      final String decodedBody = utf8.decode(response.bodyBytes);
-      final Map<String, dynamic> jsonData = jsonDecode(decodedBody);
-      var detail = NoticeModel.fromJson(jsonData);
+      var apiSuccessResponse = ApiSuccessResponse.fromJson(jsonMap);
+      var detail = NoticeModel.fromJson(apiSuccessResponse.response);
+
       return detail;
+    } else {
+      var apiFailResponse = ApiFailResponse.fromJson(jsonMap);
+      print(apiFailResponse.message);
+      print('Request failed with status: ${response.statusCode}.');
+      throw Exception('Failed to load noticeDetail');
     }
-    print('Request failed with status: ${response.statusCode}.');
-    throw Exception('Failed to load noticeDetail');
   }
 }
