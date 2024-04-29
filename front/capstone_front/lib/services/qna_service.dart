@@ -162,4 +162,32 @@ class QnaService {
       throw Exception('Failed to load QnA posts');
     }
   }
+
+  static Future<bool> toggleLike(int commentId) async {
+    final url = Uri.parse('$baseUrl/yet/commentLike');
+
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode({
+        "commentId": commentId,
+      }),
+    );
+
+    final String decodedBody = utf8.decode(response.bodyBytes);
+    final jsonMap = jsonDecode(decodedBody);
+
+    if (response.statusCode == 200) {
+      var apiSuccessResponse = jsonDecode(jsonMap);
+
+      return true;
+    } else {
+      var apiFailResponse = ApiFailResponse.fromJson(jsonMap);
+      print('Request failed with status: ${response.statusCode}.');
+      print('Request failed with status: ${apiFailResponse.message}.');
+      throw Exception('Failed to load notices');
+    }
+  }
 }
