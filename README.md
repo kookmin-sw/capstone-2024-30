@@ -76,10 +76,12 @@ This project aims to develop a comprehensive app service for international stude
 
 ### Frontend
 
-<div style="display: flex; gap: 6px;">
-    <img src="https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white"/>
-    <img src="https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white"/>
-</div>
+|역할|종류|
+|-|-|
+|Framework|<img src="https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white"/>|
+|Database|<img alt="RED" src ="https://img.shields.io/badge/SQLite-003B57.svg?&style=for-the-badge&logo=SQLite&logoColor=white"/>|
+|Programming Language|<img src="https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white"/>|                                  
+<br />
 
 ### 💾 Backend
 
@@ -89,26 +91,36 @@ This project aims to develop a comprehensive app service for international stude
 |Database|<img alt="RED" src ="https://img.shields.io/badge/MySQL-4479A1.svg?&style=for-the-badge&logo=MySQL&logoColor=white"/>|
 |Programming Language|<img alt="RED" src ="https://img.shields.io/badge/JAVA-004027.svg?&style=for-the-badge&logo=Jameson&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/Ruby-CC342D.svg?&style=for-the-badge&logo=Ruby&logoColor=white"/>|
 |API|![REST](https://img.shields.io/badge/Rest-4B3263?style=for-the-badge&logo=rest&logoColor=white)                                     
-|Version Control|![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white) |
+|Test|<img alt="RED" src ="https://img.shields.io/badge/JUnit5-25A162.svg?&style=for-the-badge&logo=JUnit5&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/Test Conatiner-333333.svg?&style=for-the-badge&logo=linuxcontainers&logoColor=white"/>|
 |Deploy|<img alt="RED" src ="https://img.shields.io/badge/Nginx-009639.svg?&style=for-the-badge&logo=nginx&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/Docker-2496ED.svg?&style=for-the-badge&logo=docker&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/Amazon EC2-FF9900.svg?&style=for-the-badge&logo=AmazonEC2&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/Amazon Rds-527FFF.svg?&style=for-the-badge&logo=AmazonRds&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/Amazon S3-569A31.svg?&style=for-the-badge&logo=AmazonS3&logoColor=white"/>|
 |CI/CD|![Gihub Action](https://img.shields.io/badge/GithubAction-181717?style=for-the-badge&logo=githubactions&logoColor={white})|
 <br />
 
-### Tools
+### 📻 AI
 
-<div style="display: flex; gap: 6px;">
-    <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white">
-    <img src="https://img.shields.io/badge/AMAZON AWS-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white"/>
-    <img src="https://img.shields.io/badge/slack-4A154B?style=for-the-badge&logo=slack&logoColor=white">
-    <img src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=Postman&logoColor=white"/>
-    <img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white"/>
-</div>
+|역할|종류|
+|-|-|
+|Programming Language|<img alt="RED" src ="https://img.shields.io/badge/Python-3776AB.svg?&style=for-the-badge&logo=python&logoColor=white"/>|
+|Development|<img alt="RED" src ="https://img.shields.io/badge/OpenAI-412991.svg?&style=for-the-badge&logo=openai&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/Google Colab-F9AB00.svg?&style=for-the-badge&logo=google colab&logoColor=white"/> |
+|Technology|<img alt="RED" src ="https://img.shields.io/badge/FAISS-3B5EE9.svg?&style=for-the-badge&logo=faiss&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/RAG-000000.svg?&style=for-the-badge&logo=rag&logoColor=white"/> |
+|Test|<img src="https://img.shields.io/badge/LangSmith-7EBC6F?style=for-the-badge&logo=langsmith&logoColor=white"/>|
+|Server|<img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white"/>|
+<br />
+
+### 🔨 Tools
+
+|역할|종류|
+|-|-|
+|Version Control|<img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white"> <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white">|
+|Cooperation|<img alt="RED" src ="https://img.shields.io/badge/Notion-000000.svg?&style=for-the-badge&logo=Notion&logoColor=white"/> <img src="https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white"> <img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white"> <img alt="RED" src ="https://img.shields.io/badge/Swagger-85EA2D.svg?&style=for-the-badge&logo=swagger&logoColor=white"/>|
+|Test|<img src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=Postman&logoColor=white"/> <img src="https://img.shields.io/badge/Apache Jmeter-D22128?style=for-the-badge&logo=apachejmeter&logoColor=white"/>|
+<br />
 
 <br>
 
 ## 6. 시스템 구조
 
-### 서비스 아키택처
+### 💻 서비스 아키택처
 
 <br>
 <img src ="https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/9ca1e9f4-7ac4-4930-b89b-72e4a489035d" width = "800">
