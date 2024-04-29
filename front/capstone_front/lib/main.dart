@@ -1,16 +1,40 @@
 import 'package:capstone_front/firebase_options.dart';
+import 'package:capstone_front/models/notice_model.dart';
+import 'package:capstone_front/models/qna_post_model.dart';
+import 'package:capstone_front/provider/qna_provider.dart';
 import 'package:capstone_front/screens/cafeteriaMenu/cafeteriaMenuScreen.dart';
 import 'package:capstone_front/screens/chatbot/chatbot.dart';
-import 'package:capstone_front/screens/home_screen.dart';
+import 'package:capstone_front/screens/faq/faq_screen.dart';
+import 'package:capstone_front/screens/helper/helper_board/helper_board_screen.dart';
+import 'package:capstone_front/screens/helper/helper_screen.dart';
+import 'package:capstone_front/screens/helper/helper_write_screen.dart';
+import 'package:capstone_front/screens/helper/helper_board/helper_writing_screen.dart';
+import 'package:capstone_front/screens/home/home_screen.dart';
 import 'package:capstone_front/screens/login/login_screen.dart';
-import 'package:capstone_front/screens/login/signup_screen.dart';
-import 'package:capstone_front/screens/speeking_practice/pronunciation_practice_screen.dart';
-import 'package:capstone_front/screens/speeking_practice/pronunciation_select_sentence_screen.dart';
+import 'package:capstone_front/screens/question/question_screen.dart';
+import 'package:capstone_front/screens/signup/signup_college_screen.dart';
+import 'package:capstone_front/screens/signup/signup_country_screen.dart';
+import 'package:capstone_front/screens/signup/signup_email_screen.dart';
+import 'package:capstone_front/screens/signup/signup_email_auth_screen.dart';
+import 'package:capstone_front/screens/signup/signup_name.dart';
+import 'package:capstone_front/screens/signup/signup_service.dart';
+import 'package:capstone_front/screens/main_screen.dart';
+import 'package:capstone_front/screens/notice/notice_screen.dart';
+import 'package:capstone_front/screens/notice/notice_detail_screen.dart';
+import 'package:capstone_front/screens/qna/qna_detail/qna_detail_screen.dart';
+import 'package:capstone_front/screens/qna/qna_list_screen/qna_list_screen.dart';
+import 'package:capstone_front/screens/qna/qna_write/qna_write_screen.dart';
+import 'package:capstone_front/screens/signup/singup_password_screen.dart';
+import 'package:capstone_front/screens/speech_practice/speech_practice_screen.dart';
+import 'package:capstone_front/screens/speech_practice/speech_screen.dart';
+import 'package:capstone_front/screens/speech_practice/speech_example_sentences/speech_select_sentence_screen.dart';
 import 'package:capstone_front/utils/page_animation.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -49,20 +73,20 @@ void main() async {
   initializeFirebase();
   await setSetting();
   await EasyLocalization.ensureInitialized();
+  await dotenv.load(fileName: ".env");
 
-  runApp(EasyLocalization(
-    // 지원 언어 리스트
-    supportedLocales: supportedLocales,
-    //path: 언어 파일 경로
-    path: 'assets/translations',
-    //fallbackLocale supportedLocales에 설정한 언어가 없는 경우 설정되는 언어
-    fallbackLocale: const Locale('en', 'US'),
-
-    //startLocale을 지정하면 초기 언어가 설정한 언어로 변경됨
-    //만일 이 설정을 하지 않으면 OS 언어를 따라 기본 언어가 설정됨
-    startLocale: Locale(languageSetting[0], languageSetting[1]),
-    child: const App(),
-  ));
+  runApp(
+    EasyLocalization(
+      supportedLocales: supportedLocales,
+      path: 'assets/translations',
+      fallbackLocale: const Locale('en', 'US'),
+      startLocale: Locale(languageSetting[0], languageSetting[1]),
+      child: ChangeNotifierProvider<QnaProvider>(
+        create: (_) => QnaProvider(),
+        child: const App(),
+      ),
+    ),
+  );
 }
 
 final GoRouter router = GoRouter(
@@ -70,23 +94,41 @@ final GoRouter router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => const HomeScreen(),
+      builder: (context, state) => const MainScreen(),
       routes: [
         GoRoute(
-            name: 'pronunciation',
-            path: 'pronunciation',
-            builder: (context, state) => const PronunciationSentenceScreen(),
-            routes: [
-              GoRoute(
-                  path: 'practice',
-                  pageBuilder: (context, state) {
-                    return buildPageWithSlideRight(
-                      context: context,
-                      state: state,
-                      child: const PronunciationPracticeScreen(),
-                    );
-                  }),
-            ]),
+          name: 'speech',
+          path: 'speech',
+          builder: (context, state) => const SpeechScreen(),
+          routes: [
+            GoRoute(
+                path: 'practice',
+                pageBuilder: (context, state) {
+                  return buildPageWithSlideRight(
+                    context: context,
+                    state: state,
+                    child: const SpeechPracticeScreen(),
+                  );
+                }),
+          ],
+        ),
+        GoRoute(
+          name: 'helper',
+          path: 'helper',
+          builder: (context, state) => const HelperScreen(),
+          routes: [
+            GoRoute(
+              name: 'helperWriting',
+              path: 'writing',
+              builder: (context, state) => const HelperWritingScreen(),
+            ),
+            GoRoute(
+              name: 'helperWrite',
+              path: 'write',
+              builder: (context, state) => const HelperWriteScreen(),
+            ),
+          ],
+        ),
       ],
     ),
     GoRoute(
@@ -97,18 +139,91 @@ final GoRouter router = GoRouter(
       name: 'login',
       path: '/login',
       builder: (context, state) => const LoginScreen(),
-      routes: [
-        GoRoute(
-          name: 'signup',
-          path: 'signup',
-          builder: (context, state) => const SignupScreen(),
-        ),
-      ],
     ),
+    GoRoute(
+        name: 'signup',
+        path: '/signup',
+        builder: (context, state) => const SignupNameScreen(),
+        routes: [
+          GoRoute(
+            name: 'email',
+            path: 'email',
+            builder: (context, state) => const SignupEmailScreen(),
+          ),
+          GoRoute(
+            name: 'password',
+            path: 'password',
+            builder: (context, state) => const SignupPasswordScreen(),
+          ),
+          GoRoute(
+            name: 'college',
+            path: 'college',
+            builder: (context, state) => const SignupCollegeScreen(),
+          ),
+          GoRoute(
+            name: 'country',
+            path: 'country',
+            builder: (context, state) => const SignupCountryScreen(),
+          ),
+        ]),
     GoRoute(
       name: 'chatbot',
       path: '/chatbot',
       builder: (context, state) => const ChatbotScreen(),
+    ),
+    GoRoute(
+      name: 'notice',
+      path: '/notice',
+      builder: (context, state) => const NoticeScreen(),
+    ),
+    GoRoute(
+      name: 'noticedetail',
+      path: '/notice/detail/:id',
+      builder: (context, state) {
+        // 'state.extra'를 통해 전달된 'NoticeModel' 객체를 받아옴
+        final notice = state.extra as NoticeModel?;
+        if (notice == null) {
+          return const NoticeScreen();
+        }
+        return NoticeDetailScreen(notice);
+      },
+    ),
+    GoRoute(
+      name: 'qnalist',
+      path: '/qnalist',
+      builder: (context, state) => const QnaListScreen(),
+    ),
+    GoRoute(
+        name: 'qnalistdetail',
+        path: '/qnalist/detail',
+        builder: (context, state) {
+          final qna = state.extra as QnaPostModel?;
+          if (qna == null) {
+            return const QnaListScreen();
+          }
+          return QnaDetailScreen(
+            data: qna,
+          );
+        }),
+    GoRoute(
+        name: 'qnawrite',
+        path: '/qnawrite',
+        builder: (context, state) {
+          final qnas = state.extra as List<QnaPostModel>?;
+          if (qnas == null) {
+            return const QnaListScreen();
+          }
+          return QnaWriteScreen(qnas: qnas);
+        }),
+    GoRoute(
+      name: 'faq',
+      path: '/faq',
+      builder: (context, state) => const FaqScreen(),
+    ),
+    GoRoute(
+      name: 'question',
+      path: '/question',
+      builder: (context, state) => const QuestionScreen(),
     ),
   ],
 );
@@ -144,22 +259,32 @@ class App extends StatelessWidget {
               fontSize: 50,
               fontWeight: FontWeight.w600,
             ),
-            titleMedium: TextStyle(
+            // 앱바 기본 폰트
+            titleLarge: TextStyle(
               fontFamily: 'pretendard',
               fontSize: 20,
               fontWeight: FontWeight.w600,
             ),
-            bodyLarge: TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.w500,
+            titleMedium: TextStyle(
+              fontFamily: 'pretendard',
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
             ),
-            bodyMedium: TextStyle(
+            bodyLarge: TextStyle(
+              fontFamily: 'pretendard',
               fontSize: 20,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w600,
+            ),
+            // 앱 내의 Text 기본 폰트
+            bodyMedium: TextStyle(
+              fontFamily: 'pretendard',
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
             ),
             bodySmall: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
+              fontFamily: 'pretendard',
+              fontSize: 13,
+              fontWeight: FontWeight.w400,
             )),
       ),
     );
