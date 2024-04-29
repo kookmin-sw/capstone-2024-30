@@ -22,6 +22,10 @@ class _QnaDetailScreenState extends State<QnaDetailScreen>
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _textController = TextEditingController();
 
+  // TODO 좋아요 테러 방지를 위해 이 스크린을 떠날 때, 최초의 데이터와 비교하여 다른점만 서버에 post
+  List<bool> likeList = List.filled(comments.length, false);
+  List<int> likeCount = List.filled(comments.length, 0);
+
   @override
   void initState() {
     super.initState();
@@ -163,16 +167,30 @@ class _QnaDetailScreenState extends State<QnaDetailScreen>
                               ),
                             ],
                           ),
-                          const Column(
+                          Column(
                             children: [
-                              Icon(
-                                Icons.favorite_border_rounded,
-                                color: Color(0xFF848484),
-                                size: 26,
+                              IconButton(
+                                icon: Icon(
+                                  likeList[index]
+                                      ? Icons.favorite_rounded
+                                      : Icons.favorite_border_rounded,
+                                ),
+                                color: const Color(0xFF848484),
+                                iconSize: 26,
+                                onPressed: () {
+                                  setState(() {
+                                    if (likeList[index]) {
+                                      likeCount[index] -= 1;
+                                    } else {
+                                      likeCount[index] += 1;
+                                    }
+                                    likeList[index] = !likeList[index];
+                                  });
+                                },
                               ),
                               Text(
-                                '0',
-                                style: TextStyle(
+                                likeCount[index].toString(),
+                                style: const TextStyle(
                                   fontSize: 12,
                                 ),
                               ),
