@@ -108,8 +108,26 @@ This project aims to develop a comprehensive app service for international stude
 
 ## 6. 시스템 구조
 
+### 서비스 아키택처
+
 <br>
 <img src ="https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/9ca1e9f4-7ac4-4930-b89b-72e4a489035d" width = "800">
+
+### 📂 디렉토리 구조
+
+```
+├── 📂.github
+
+├── 📂front 🗂 프론트 앱 소스 (Flutter)
+
+├── 📂backend 🗂 백엔드 메인 비즈니스 서버 소스(Spring Boot)
+
+├── 📂backend 🗂 백엔드 채팅 서버 소스 (Ruby on Rails)
+
+├── 📂ai 🗂 KuKu 채팅 봇 소스
+
+└── 📕Readme.md
+
 
 ## 7. 사용법
 
@@ -118,10 +136,10 @@ This project aims to develop a comprehensive app service for international stude
 `.env.example`을 바탕으로 `.env`를 작성합니다. 그 다음
 
 ```
-docker-compose up --build -d
+docker-compose up -d
 ```
 
-를 통해 docker compose build를 진행하여 실행하시면 됩니다.
+를 통해 docker compose를 통하여 실행하시면 됩니다. 이미지는 모두 Dockerhub에 업로드 되어 있습니다.
 
 <br>
 
