@@ -113,7 +113,7 @@ class _NoticeScreenState extends State<NoticeScreen> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 18),
             child: SizedBox(
-              height: 50,
+              height: 40,
               child: Container(
                 decoration: BoxDecoration(
                   border: Border.all(
