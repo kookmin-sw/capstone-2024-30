@@ -89,6 +89,19 @@ This project aims to develop a comprehensive app service for international stude
     <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
 </div>
 
+### 🖥 Backend
+
+|역할|종류|
+|-|-|
+|Framework|<img alt="RED" src ="https://img.shields.io/badge/SPRING-6DB33F.svg?&style=for-the-badge&logo=Spring&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/SPRING Boot-6DB33F.svg?&style=for-the-badge&logo=SpringBoot&logoColor=white"/>|
+|Database|<img alt="RED" src ="https://img.shields.io/badge/MariaDB-003545.svg?&style=for-the-badge&logo=MariaDb&logoColor=white"/>|
+|Database Service|<img alt="RED" src ="https://img.shields.io/badge/Amazon Rds-527FFF.svg?&style=for-the-badge&logo=AmazonRds&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/Amazon S3-569A31.svg?&style=for-the-badge&logo=AmazonS3&logoColor=white"/>|
+|Programming Language|<img alt="RED" src ="https://img.shields.io/badge/JAVA-004027.svg?&style=for-the-badge&logo=Jameson&logoColor=white"/>|
+|API|![REST](https://img.shields.io/badge/Rest-4B3263?style=for-the-badge&logo=rest&logoColor=white)                                     
+|Version Control|![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white) ![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white) |
+|CI/CD|![GihubAction](https://img.shields.io/badge/GithubAction-181717?style=for-the-badge&logo={githubactions}&logoColor={white}) ![AmazonS3](https://img.shields.io/badge/AmazonS3-FF9900?style=for-the-badge&logo={AmazonS3}&logoColor={white}) ![CodeDeploy](https://img.shields.io/badge/AmazonCodeDeploy-FF9900?style=for-the-badge&logo={AmazonCodeDeploy}&logoColor={white}) |
+<br />
+
 ### Tools
 
 <div style="display: flex; gap: 6px;">
