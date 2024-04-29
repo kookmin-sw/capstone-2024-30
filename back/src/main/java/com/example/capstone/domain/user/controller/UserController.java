@@ -18,6 +18,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.antlr.v4.runtime.Token;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -104,5 +105,18 @@ public class UserController {
         User user = userService.getUserInfo(userId);
         return ResponseEntity
                 .ok(new ApiResult<>(user));
+    }
+
+    @GetMapping("/test")
+    @Operation(summary = "토큰 내놔", description = "토큰 강제로 내놔.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "정보 받기 성공"),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 유저", content = @Content(mediaType = "application/json")),
+    })
+    public ResponseEntity<ApiResult<TokenResponse>> test(@RequestParam(value = "key") String key, @RequestParam(value = "id") String userId) {
+        loginService.testKeyCheck(key);
+        TokenResponse response = loginService.test(userId);
+        return ResponseEntity
+                .ok(new ApiResult<>("Successfully Sign in", response));
     }
 }

@@ -277,7 +277,7 @@ public class AnnouncementCrawlService {
                     }
                 }
 
-                String html = doc.select("#view-detail-data").outerHtml();
+                String html = doc.select(".board.board-view #view-detail-data").first().outerHtml();
 
                 for (String language : languages) {
                     String translatedTitle = title;
@@ -309,7 +309,7 @@ public class AnnouncementCrawlService {
                             .writtenDate(LocalDate.parse(writeDate, formatter))
                             .document(document)
                             .language(language)
-                            .url(baseUrl + link)
+                            .url(baseUrl.substring(0, baseUrl.length()-1) + link)
                             .files(files)
                             .build();
 
