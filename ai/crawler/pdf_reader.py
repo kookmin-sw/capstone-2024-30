@@ -7,7 +7,7 @@ class PdfReader:
     def __init__(self) -> None:
         pass
 
-    def read_pdf(self, filepath, path='./data'):
+    def read_pdf(self, filepath, path='./data/', name='default'):
 
         filename, _ = os.path.splitext(os.path.basename(filepath))
         path += filename + '/' + 'SCHOOL_INFO/'
@@ -18,9 +18,13 @@ class PdfReader:
         loader = PyPDFLoader(filepath)
         pages = loader.load()
         print('-- start --')
-        for page_no in tqdm(range(len(pages))):
+        total_pdf = []
+        for page_no in tqdm(range(10)):
             doc = pages[page_no]
             doc.page_content = doc.page_content.replace(u"\xa0", u" ")
+            doc.page_content = doc.page_content.replace("·", "")
             if doc.page_content:
-                with open(path+'page'+str(page_no)+'.pkl', 'wb') as f:
-                    pickle.dump(doc, f)
+                total_pdf.append(doc)
+        with open(path+name+'.pkl', 'wb') as f:
+            pickle.dump(total_pdf, f)
+        print(total_pdf)
