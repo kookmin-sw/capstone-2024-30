@@ -1,6 +1,8 @@
 import 'package:capstone_front/models/qna_post_model.dart';
 import 'package:capstone_front/screens/qna/qna_detail/test_comment_data.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class QnaDetailScreen extends StatefulWidget {
   final QnaPostModel data;
@@ -41,65 +43,67 @@ class _QnaDetailScreenState extends State<QnaDetailScreen>
       ),
       body: Container(
         color: const Color(0xFFF4F4F4),
-        child: Column(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(20.0),
-                  bottomRight: Radius.circular(20.0),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
-                    spreadRadius: 2,
-                    blurRadius: 5,
-                    offset: const Offset(0, 3),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(20.0),
+                    bottomRight: Radius.circular(20.0),
                   ),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Expanded(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
                   child: Row(
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            widget.data.title,
-                            style: const TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              widget.data.title,
+                              style: const TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              softWrap: true,
                             ),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Text(
-                            widget.data.content,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xFF444444),
+                            const SizedBox(
+                              height: 20,
                             ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                        ],
+                            Text(
+                              widget.data.content,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xFF444444),
+                              ),
+                              softWrap: true,
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Expanded(
-              child: Container(
+              const SizedBox(
+                height: 20,
+              ),
+              Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: const BorderRadius.only(
@@ -118,6 +122,8 @@ class _QnaDetailScreenState extends State<QnaDetailScreen>
                 child: Padding(
                   padding: const EdgeInsets.all(20),
                   child: ListView.separated(
+                    shrinkWrap: true,
+                    primary: false,
                     itemCount: comments.length,
                     itemBuilder: (context, index) {
                       return Row(
@@ -184,53 +190,53 @@ class _QnaDetailScreenState extends State<QnaDetailScreen>
                   ),
                 ),
               ),
-            ),
-            Container(
-              color: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFF4F4F4),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.only(top: 5.0, left: 10, bottom: 5),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Expanded(
-                          child: TextField(
-                            keyboardType: TextInputType.multiline,
-                            minLines: 1,
-                            maxLines: 3,
-                            controller: _textController,
-                            textInputAction: TextInputAction.newline,
-                            decoration: const InputDecoration.collapsed(
-                              hintText: "댓글을 입력하세요.",
+              Container(
+                color: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF4F4F4),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.only(top: 5.0, left: 10, bottom: 5),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Expanded(
+                            child: TextField(
+                              keyboardType: TextInputType.multiline,
+                              minLines: 1,
+                              maxLines: 3,
+                              controller: _textController,
+                              textInputAction: TextInputAction.newline,
+                              decoration: const InputDecoration.collapsed(
+                                hintText: "댓글을 입력하세요.",
+                              ),
+                              style: Theme.of(context).textTheme.bodySmall,
+                              // onTap: () {
+                              //   if (_scrollController.position ==
+                              //       _scrollController.position.maxScrollExtent) {
+                              //     _scrollController.jumpTo(
+                              //         _scrollController.position.maxScrollExtent);
+                              //   }
+                              // },
                             ),
-                            style: Theme.of(context).textTheme.bodySmall,
-                            // onTap: () {
-                            //   if (_scrollController.position ==
-                            //       _scrollController.position.maxScrollExtent) {
-                            //     _scrollController.jumpTo(
-                            //         _scrollController.position.maxScrollExtent);
-                            //   }
-                            // },
                           ),
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.send),
-                          onPressed: () {},
-                        ),
-                      ],
+                          IconButton(
+                            icon: const Icon(Icons.send),
+                            onPressed: () {},
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
