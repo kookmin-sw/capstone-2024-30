@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Controller
 @RequestMapping("/api/menu")
@@ -22,10 +23,10 @@ public class MenuController {
 
     @ResponseBody
     @GetMapping("/daily")
-    public ResponseEntity<ApiResult<JsonArray>> getMenuByDate(@RequestParam LocalDate date, @RequestParam String language){
-        JsonArray menu = menuSearchService.findMenuByDate(date, language);
+    public ResponseEntity<ApiResult<List<Object>>> getMenuByDate(@RequestParam LocalDate date, @RequestParam String language){
+        List<Object> menu = menuSearchService.findMenuByDate(date, language);
         return ResponseEntity
-                .ok(new ApiResult<>("Successfully load menu list", menu));
+                .ok(new ApiResult<>("Successfully load menus", menu));
     }
 
     @PostMapping("/test")
