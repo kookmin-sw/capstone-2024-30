@@ -62,8 +62,7 @@ class AuthService {
     final String decodedBody = utf8.decode(response.bodyBytes);
     final Map<String, dynamic> jsonMap = jsonDecode(decodedBody);
     if (response.statusCode == 200) {
-      final ApiSuccessResponse apiSuccessResponse =
-          ApiSuccessResponse.fromJson(jsonMap);
+      var apiSuccessResponse = ApiSuccessResponse.fromJson(jsonMap);
       await storage.write(
         key: 'accessToken',
         value: apiSuccessResponse.response['accessToken'],
@@ -73,7 +72,7 @@ class AuthService {
         value: apiSuccessResponse.response['refreshToken'],
       );
     } else {
-      final ApiFailResponse apiFailResponse = ApiFailResponse.fromJson(jsonMap);
+      var apiFailResponse = ApiFailResponse.fromJson(jsonMap);
       print(response.statusCode);
       print(apiFailResponse.message);
       throw Exception("fail to get toekns");
