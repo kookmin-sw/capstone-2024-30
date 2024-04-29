@@ -73,18 +73,18 @@ jobs:
       - name: Copy docker-compose.yaml to EC2
         uses: appleboy/scp-action@master
         with:
-          host: ${{ secrets.HOST }}
+          host: ${{ secrets.AWS_HOST }}
           username: ubuntu
-          key: ${{ secrets.KEY }}
+          key: ${{ secrets.AWS_KEY }}
           source: "/github/workspace/back/docker-compose.yaml"
           target: "/home/ubuntu/capstone"
 
       - name: Copy .env to EC2
         uses: appleboy/scp-action@master
         with:
-          host: ${{ secrets.HOST }}
+          host: ${{ secrets.AWS_HOST }}
           username: ubuntu
-          key: ${{ secrets.KEY }}
+          key: ${{ secrets.AWS_KEY }}
           source: "/github/workspace/.env"
           target: "/home/ubuntu/capstone"
 
