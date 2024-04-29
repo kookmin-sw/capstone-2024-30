@@ -76,7 +76,7 @@ jobs:
           host: ${{ secrets.AWS_HOST }}
           username: ubuntu
           key: ${{ secrets.AWS_KEY }}
-          source: "/github/workspace/back/docker-compose.yaml"
+          source: "/github/workspace/back/docker-compose.yml"
           target: "/home/ubuntu/capstone"
 
       - name: Copy .env to EC2
