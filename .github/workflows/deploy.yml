@@ -38,7 +38,7 @@ jobs:
           echo S3_SECRET_KEY=${{ secrets.S3_SECRET_KEY }} >> .env
 
       - name: Copy docker-compose.yaml to EC2
-        uses: appleboy/scp-action@v0.1.3
+        uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.AWS_HOST }}
           username: ubuntu
@@ -47,7 +47,7 @@ jobs:
           target: "/home/ubuntu/capstone"
 
       - name: Copy .env to EC2
-        uses: appleboy/scp-action@v0.1.3
+        uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.AWS_HOST }}
           username: ubuntu
