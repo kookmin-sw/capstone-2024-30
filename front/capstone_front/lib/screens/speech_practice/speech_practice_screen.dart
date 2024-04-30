@@ -1,5 +1,6 @@
 import 'package:capstone_front/screens/speech_practice/speech_custom_sentence/speech_practice_card.dart';
 import 'package:capstone_front/screens/speech_practice/utils/example_sentences.dart';
+import 'package:capstone_front/screens/speech_practice/utils/recorder_screen.dart';
 import 'package:capstone_front/screens/speech_practice/utils/simple_recorder.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -67,7 +68,7 @@ class _SpeechScreenState extends State<SpeechPracticeScreen> {
                     )),
               ),
             ),
-            SimpleRecorder(
+            RecorderScreen(
               sentence: sentenceList[0],
             ),
           ],
