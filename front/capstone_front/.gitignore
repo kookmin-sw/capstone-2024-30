@@ -147,3 +147,4 @@ app.*.symbols
 **/android/app/google-services.json
 **/ios/firebase_app_id_file.json
 **/firebase.json
+**/ios/Runner/GoogleService-Info.plist
