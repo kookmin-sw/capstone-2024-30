@@ -21,16 +21,12 @@ import 'dart:async';
 import 'dart:io';
 import 'package:audio_session/audio_session.dart';
 import 'package:capstone_front/services/speech_service.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:go_router/go_router.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import '../speech_practice_screen.dart';
 
 /*
  * This is an example showing how to record to a Dart Stream.
@@ -43,7 +39,7 @@ import '../speech_practice_screen.dart';
  */
 
 ///
-const int tSampleRate = 44000;
+const int tSampleRate = 16000;
 typedef _Fn = void Function();
 
 /* This does not work. on Android we must have the Manifest.permission.CAPTURE_AUDIO_OUTPUT permission.
@@ -79,6 +75,8 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
   bool _mplaybackReady = false;
   String? _mPath;
   StreamSubscription? _mRecordingDataSubscription;
+
+  late File _file;
 
   Future<void> _openRecorder() async {
     var status = await Permission.microphone.request();
@@ -137,9 +135,10 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
   }
 
   Future<IOSink> createFile() async {
-    var tempDir = await getTemporaryDirectory();
-    _mPath = '${tempDir.path}/flutter_sound_example.wav';
+    var tempDir = await getApplicationDocumentsDirectory();
+    _mPath = '${tempDir.path}/sample.wav';
     var outputFile = File(_mPath!);
+    _file = File(_mPath!);
     if (outputFile.existsSync()) {
       await outputFile.delete();
     }
@@ -163,7 +162,7 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
       codec: Codec.pcm16,
       numChannels: 1,
       sampleRate: tSampleRate,
-      // enableVoiceProcessing: _mEnableVoiceProcessing
+      audioSource: AudioSource.voice_recognition,
     );
     setState(() {});
   }
