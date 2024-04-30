@@ -121,7 +121,7 @@ public class AnnouncementController {
         }
 
         return ResponseEntity
-                .ok(new ApiResult<>(response));
+                .ok(new ApiResult<>("Successfully search an announcement", response));
     }
 
 }

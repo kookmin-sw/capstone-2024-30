@@ -60,6 +60,9 @@ dependencies {
     //Diffutils
     implementation 'io.github.java-diff-utils:java-diff-utils:4.12'
 
+    //S3
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
     //Json-Provider
     implementation 'org.eclipse.parsson:parsson:1.1.5'
 
