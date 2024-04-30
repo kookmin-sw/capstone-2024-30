@@ -48,7 +48,7 @@ public class UserController {
         loginService.signUp(signupRequest);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(new ApiResult<>("Successfully Signup", "tmp"));
+                .body(new ApiResult<>("Successfully Signup", ""));
     }
 
     @PostMapping("/signin")
@@ -75,7 +75,7 @@ public class UserController {
     public ResponseEntity<ApiResult<User>> getMyProfile(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         User user = UserMapper.INSTANCE.principalDetailsToUser(principalDetails);
         return ResponseEntity
-                .ok(new ApiResult<>("Successfully load my information", user));
+                .ok(new ApiResult<>("Successfully gey my info", user));
     }
 
 
@@ -91,7 +91,7 @@ public class UserController {
         String UUID = principalDetails.getUuid();
         User user = userService.updateUser(UUID, userProfileUpdateRequest);
         return ResponseEntity
-                .ok(new ApiResult<>("Successfully modify my information", user));
+                .ok(new ApiResult<>("Successfully modify my info", user));
     }
 
     @GetMapping("/{userId}")
@@ -103,6 +103,19 @@ public class UserController {
     public ResponseEntity<ApiResult<User>> getUserInfo(@PathVariable String userId) {
         User user = userService.getUserInfo(userId);
         return ResponseEntity
-                .ok(new ApiResult<>("Successfully load user information", user));
+                .ok(new ApiResult<>("Successfully get user info", user));
+    }
+
+    @GetMapping("/test")
+    @Operation(summary = "토큰 내놔", description = "토큰 강제로 내놔.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "정보 받기 성공"),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 유저", content = @Content(mediaType = "application/json")),
+    })
+    public ResponseEntity<ApiResult<TokenResponse>> test(@RequestParam(value = "key") String key, @RequestParam(value = "id") String userId) {
+        loginService.testKeyCheck(key);
+        TokenResponse response = loginService.test(userId);
+        return ResponseEntity
+                .ok(new ApiResult<>("Successfully Sign in", response));
     }
 }

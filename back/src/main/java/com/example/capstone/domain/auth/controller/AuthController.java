@@ -25,6 +25,6 @@ public class AuthController {
     public ResponseEntity<ApiResult<TokenResponse>> reissue(@RequestBody @Valid ReissueRequest reissueRequest) {
         TokenResponse tokenResponse = authService.reissueToken(reissueRequest.refreshToekn());
         return ResponseEntity
-                .ok(new ApiResult<>("Successfully Reissued", tokenResponse));
+                .ok(new ApiResult<>("Successfully get token", tokenResponse));
     }
 }

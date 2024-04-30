@@ -34,8 +34,7 @@ import java.util.Base64;
 import java.util.Collections;
 import java.util.Objects;
 
-import static com.example.capstone.global.error.exception.ErrorCode.HMAC_NOT_VALID;
-import static com.example.capstone.global.error.exception.ErrorCode.USER_NOT_FOUND;
+import static com.example.capstone.global.error.exception.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -109,5 +108,32 @@ public class LoginService {
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
+    }
+
+    @Transactional
+    public TokenResponse test(String id) {
+        User user = userRepository.findUserById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
+
+        PrincipalDetails principalDetails = new PrincipalDetails(user.getId(),
+                user.getName(), user.getEmail(), user.getMajor(), user.getCountry(), user.getPhoneNumber(),
+                false, Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")));
+
+        String accessToken = jwtTokenProvider.createAccessToken(principalDetails);
+        String refreshToken = jwtTokenProvider.createRefreshToken(principalDetails);
+
+        return TokenResponse
+                .builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
+    }
+
+    @Value("${test.key}")
+    private String testKey;
+
+    public boolean testKeyCheck(String key) {
+        if (key.equals(testKey)) return true;
+        else throw new BusinessException(TEST_KEY_NOT_VALID);
     }
 }
