@@ -43,6 +43,7 @@ jobs:
           host: ${{ secrets.AWS_HOST }}
           username: ubuntu
           key: ${{ secrets.AWS_KEY }}
+          fingerprint: ${{ AWS_FINGERPRINT }}
           source: "/github/workspace/back/docker-compose.yml"
           target: "/home/ubuntu/capstone"
 
@@ -52,6 +53,7 @@ jobs:
           host: ${{ secrets.AWS_HOST }}
           username: ubuntu
           key: ${{ secrets.AWS_KEY }}
+          fingerprint: ${{ AWS_FINGERPRINT }}
           source: "/github/workspace/.env"
           target: "/home/ubuntu/capstone"
 
