@@ -37,39 +37,6 @@ jobs:
           echo S3_ACCESS_KEY=${{ secrets.S3_ACCESS_KEY }} >> .env
           echo S3_SECRET_KEY=${{ secrets.S3_SECRET_KEY }} >> .env
 
-      - name: Login to DockerHub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Build and push Spring
-        uses: docker/build-push-action@v2
-        with:
-          context: ./back
-          push: true
-          tags: ${{ secrets.DOCKER_REPO }}/spring:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      - name: Build and push Nginx
-        uses: docker/build-push-action@v2
-        with:
-          context: ./back/nginx
-          push: true
-          tags: ${{ secrets.DOCKER_REPO }}/nginx:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      - name: Build and push Ruby on Rails
-        uses: docker/build-push-action@v2
-        with:
-          context: ./back-chat
-          push: true
-          tags: ${{ secrets.DOCKER_REPO }}/ruby:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
       - name: Copy docker-compose.yaml to EC2
         uses: appleboy/scp-action@master
         with:
