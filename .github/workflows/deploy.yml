@@ -5,6 +5,7 @@ on:
     branches:
       - develop-back
       - main
+      - feautre/be/#115-CICD
 permissions:
   contents: read
 
