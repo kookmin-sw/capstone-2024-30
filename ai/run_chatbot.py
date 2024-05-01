@@ -3,6 +3,7 @@ from vectordb.vector_db import VectorDB
 from dotenv import load_dotenv
 import os
 
+
 # 현재 스크립트가 위치한 디렉토리 경로를 가져옵니다.
 current_directory = os.path.dirname(os.path.realpath(__file__))
 os.chdir(current_directory)
@@ -20,11 +21,15 @@ os.environ['OPENAI_API_KEY'] = os.getenv('OPENAI_API_KEY')
 vector_db_path = './FAISS'
 
 print('=== Initialize ...... ===')
-vdb = VectorDB()
-vdb.load_local(vector_db_path)
+notice_vdb = VectorDB()
+notice_vdb.load_local(vector_db_path + '/NOTICE')
+school_vdb = VectorDB()
+school_vdb.load_local(vector_db_path + '/SCHOOL_INFO')
 
-llm = LLM_RAG()
-llm.set_ragchain(vdb.get_retriever())
+llm = LLM_RAG(trace=True)
+llm.set_retriver(data_type='notice', retriever=notice_vdb.get_retriever())
+llm.set_retriver(data_type='school_info', retriever=school_vdb.get_retriever())
+llm.set_chain()
 
 print("AI: hello! if you want to stop, please enter '0'")
 print()

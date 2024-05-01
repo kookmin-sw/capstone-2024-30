@@ -24,10 +24,16 @@ async def lifespan(app:FastAPI):
     api_key = os.getenv('OPENAI_API_KEY')
     os.environ['OPENAI_API_KEY'] = api_key
     vector_db_path = './FAISS'
-    vdb = VectorDB()
-    vdb.load_local(vector_db_path)
-    llm = LLM_RAG()
-    llm.set_ragchain(vdb.get_retriever())
+    print('=== Initialize ...... ===')
+    notice_vdb = VectorDB()
+    notice_vdb.load_local(vector_db_path + '/NOTICE')
+    school_vdb = VectorDB()
+    school_vdb.load_local(vector_db_path + '/SCHOOL_INFO')
+
+    llm = LLM_RAG(trace=True)
+    llm.set_retriver(data_type='notice', retriever=notice_vdb.get_retriever())
+    llm.set_retriver(data_type='school_info', retriever=school_vdb.get_retriever())
+    llm.set_chain()
     yield
 
 app = FastAPI(lifespan=lifespan)
