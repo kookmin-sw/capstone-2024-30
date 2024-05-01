@@ -21,9 +21,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.*;
 
 @Service
@@ -37,7 +35,7 @@ public class SpeechService {
     private Semaphore stopRecognitionSemaphore;
 
     @Async
-    public CompletableFuture<String> pronunciation(String compareText, MultipartFile file) throws InterruptedException, ExecutionException, IOException {
+    public CompletableFuture<Map<String, Object>> pronunciation(String compareText, MultipartFile file) throws InterruptedException, ExecutionException, IOException {
         SpeechConfig speechConfig = SpeechConfig.fromSubscription(speechKey, speechRegion);
         System.out.println(file);
 
@@ -45,7 +43,6 @@ public class SpeechService {
         PullAudioInputStream inputStream = PullAudioInputStream.createPullStream(wavStream, wavStream.getFormat());
 
         AudioConfig audioConfig = AudioConfig.fromStreamInput( inputStream );
-
         stopRecognitionSemaphore = new Semaphore(0);
         List<String> recognizedWords = new ArrayList<>();
         List<Word> pronWords = new ArrayList<>();
@@ -53,7 +50,7 @@ public class SpeechService {
         List<Double> fluencyScores = new ArrayList<>();
         List<Long> durations = new ArrayList<>();
 
-        StringBuilder responseJson = new StringBuilder("{");
+        Map<String, Object> responseJson = new HashMap<>();
 
         SpeechRecognizer recognizer = new SpeechRecognizer(speechConfig, speechLang, audioConfig);
         {
@@ -66,11 +63,11 @@ public class SpeechService {
                                     "    Accuracy score: %f, Prosody score: %f, Pronunciation score: %f, Completeness score : %f, FluencyScore: %f",
                                     pronResult.getAccuracyScore(), pronResult.getProsodyScore(), pronResult.getPronunciationScore(),
                                     pronResult.getCompletenessScore(), pronResult.getFluencyScore()));
-                    responseJson.append("\"text\": \"").append(e.getResult().getText())
-                            .append("\",\"accuracyScore\": ").append(pronResult.getAccuracyScore())
-                            .append(",\"pronunciationScore\": ").append(pronResult.getPronunciationScore())
-                            .append(",\"completenessScore\": ").append(pronResult.getCompletenessScore())
-                            .append(",\"fluencyScore\": ").append(pronResult.getFluencyScore()).append(",");
+                    responseJson.put("text", e.getResult().getText());
+                    responseJson.put("accuracyScore", pronResult.getAccuracyScore());
+                    responseJson.put("pronunciationScore", pronResult.getPronunciationScore());
+                    responseJson.put("completenessScore", pronResult.getCompletenessScore());
+                    responseJson.put("fluencyScore", pronResult.getFluencyScore());
                     fluencyScores.add(pronResult.getFluencyScore());
                     String jString = e.getResult().getProperties().getProperty(PropertyId.SpeechServiceResponse_JsonResult);
                     try {
@@ -202,25 +199,27 @@ public class SpeechService {
             System.out.println("Paragraph accuracy score: " + accuracyScore +
                     ", completeness score: " +completenessScore +
                     " , fluency score: " + fluencyScore);
-            responseJson.append("\"paragraphAccuracy\": ").append(accuracyScore)
-                    .append(",\"paragraphCompleteness\": ").append(completenessScore)
-                    .append(",\"paragraphFluency\": ").append(fluencyScore).append(",\"words\": [");
+            responseJson.put("paragraphAccuracy", accuracyScore);
+            responseJson.put("paragraphCompleteness", completenessScore);
+            responseJson.put("paragraphFluency", fluencyScore);
+
+            List<Map<String, Object>> subWord = new ArrayList<>();
 
             for (Word w : finalWords) {
                 System.out.println(" word: " + w.word + "\taccuracy score: " +
                         w.accuracyScore + "\terror type: " + w.errorType);
-                responseJson.append("\"").append(w.word)
-                        .append("\": {\"accuracy\": ").append(w.accuracyScore)
-                        .append(",\"errorType\": ").append(w.errorType).append("},");
+                subWord.add(Map.of(
+                        "word", w.word,
+                        "errorType", w.errorType,
+                        "accuracy", w.accuracyScore
+                        ));
             }
-            responseJson.deleteCharAt(responseJson.length() - 1);
-            responseJson.append("]}");
+            responseJson.put("wordList", subWord);
         }
-        System.out.println(responseJson.toString());
         speechConfig.close();
         audioConfig.close();
         recognizer.close();
-        return CompletableFuture.completedFuture(responseJson.toString());
+        return CompletableFuture.completedFuture(responseJson);
     }
 
     public static class Word {
