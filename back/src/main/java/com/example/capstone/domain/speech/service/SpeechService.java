@@ -203,16 +203,18 @@ public class SpeechService {
             responseJson.put("paragraphCompleteness", completenessScore);
             responseJson.put("paragraphFluency", fluencyScore);
 
-            Map<String, Object> subWord = new HashMap<>();
+            List<Map<String, Object>> subWord = new ArrayList<>();
 
             for (Word w : finalWords) {
                 System.out.println(" word: " + w.word + "\taccuracy score: " +
                         w.accuracyScore + "\terror type: " + w.errorType);
-                subWord.put(w.word, Map.of(
-                        "accuracy", w.accuracyScore,
-                        "errorType", w.errorType));
+                subWord.add(Map.of(
+                        "word", w.word,
+                        "errorType", w.errorType,
+                        "accuracy", w.accuracyScore
+                        ));
             }
-            responseJson.put("word", subWord);
+            responseJson.put("wordList", subWord);
         }
         speechConfig.close();
         audioConfig.close();
