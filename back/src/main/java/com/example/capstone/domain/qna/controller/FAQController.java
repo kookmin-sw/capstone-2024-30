@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +35,7 @@ public class FAQController {
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    @PostMapping("/create")
+    @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "FAQ글 생성", description = "request 정보를 기반으로 FAQ글을 생성합니다. imgList 정보를 통해 이미지 파일을 업로드 합니다")
     @ApiResponse(responseCode = "200", description = "request 정보를 기반으로 생성된 FAQ글과 imgList을 통해 업로드된 이미지 파일의 url 정보가 함께 반환됩니다.")
     public ResponseEntity<?> createFAQ( @Parameter(description = "FAQ글 생성을 위한 파라미터입니다. 제목, 작성자, 질문, 답변, 언어, 태그값이 필요합니다.", required = true)

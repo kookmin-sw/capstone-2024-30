@@ -81,7 +81,7 @@ public class AnswerController {
     @Operation(summary = "댓글 추천 해제", description = "해당 id의 댓글을 추천 해제합니다. 현재 추천 댓글 여부를 관리하지 않습니다.")
     @ApiResponse(responseCode = "200", description = "완료시 200을 반환합니다.")
     public ResponseEntity<?> downLikeCount( @Parameter(description = "추천 해제할 댓글의 id가 필요합니다.", required = true)
-                                            @RequestBody Long id) {
+                                            @RequestParam Long id) {
         answerService.downLikeCountById(id);
         return ResponseEntity
                 .ok(new ApiResult<>("Successfully unlike answer", 200));
