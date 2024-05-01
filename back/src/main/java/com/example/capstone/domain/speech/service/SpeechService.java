@@ -37,8 +37,6 @@ public class SpeechService {
     @Async
     public CompletableFuture<Map<String, Object>> pronunciation(String compareText, MultipartFile file) throws InterruptedException, ExecutionException, IOException {
         SpeechConfig speechConfig = SpeechConfig.fromSubscription(speechKey, speechRegion);
-        speechConfig.setProperty(PropertyId.Speech_LogFilename, "/container/path/to/logs/speech_sdk.log");
-        System.out.println(file);
 
         WavStream wavStream = new WavStream(file.getInputStream());
         PullAudioInputStream inputStream = PullAudioInputStream.createPullStream(wavStream, wavStream.getFormat());

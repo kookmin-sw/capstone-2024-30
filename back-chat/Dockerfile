@@ -13,3 +13,4 @@ ENV RAILS_ENV=production
 
 COPY . ./
 
+ENTRYPOINT ["bundle", "exec", "rails", "s", "-p", "3000", "-b", "0.0.0.0"]
