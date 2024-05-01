@@ -83,6 +83,15 @@ jobs:
           source: "/github/workspace/.env"
           target: "/home/ubuntu/capstone"
 
+      - name: Copy docker-compose.yaml to EC2
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.AWS_HOST }}
+          username: ubuntu
+          key: ${{ secrets.AWS_KEY }}
+          source: "/github/workspace/back/docker-compose.yml"
+          target: "/home/ubuntu/capstone"
+
       - name: action-slack
         uses: 8398a7/action-slack@v3
         with:
@@ -98,15 +107,6 @@ jobs:
     needs: build
 
     steps:
-      - name: Copy docker-compose.yaml to EC2
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.AWS_HOST }}
-          username: ubuntu
-          key: ${{ secrets.AWS_KEY }}
-          source: "/github/workspace/back/docker-compose.yml"
-          target: "/home/ubuntu/capstone"
-
       - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@master
         with:
