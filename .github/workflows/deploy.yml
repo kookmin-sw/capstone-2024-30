@@ -5,7 +5,6 @@ on:
     branches:
       - develop-back
       - main
-      - feautre/be/#115-CICD
 permissions:
   contents: read
 
@@ -125,6 +124,16 @@ jobs:
           tags: ${{ secrets.DOCKER_REPO }}/nginx:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: action-slack
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          author_name: PetBuddy Github
+          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always()
 
   build-ruby:
     runs-on: ubuntu-latest
