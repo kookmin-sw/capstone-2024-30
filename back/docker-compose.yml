@@ -28,6 +28,8 @@ services:
     depends_on:
       redis:
         condition: service_healthy
+    volumes:
+      - /path/to/logs:/container/path/to/logs
 
   ruby:
     container_name: ruby
@@ -39,7 +41,6 @@ services:
       TZ: "Asia/Seoul"
     ports:
       - "3000:3000"
-    command: [ "bundle", "exec", "rails", "s", "-p", "3000", "-b", "0.0.0.0" ]
 
   nginx:
     container_name: nginx
@@ -49,6 +50,8 @@ services:
       TZ: "Asia/Seoul"
     ports:
         - "80:80"
+    env_file:
+      - .env
     depends_on:
       - "redis"
       - "spring"
