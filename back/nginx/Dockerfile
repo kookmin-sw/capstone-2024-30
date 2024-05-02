@@ -1,5 +1,3 @@
 FROM nginx
-
-COPY default.conf /etc/nginx/conf.d/default.conf
-
-CMD ["nginx", "-g", "daemon off;"]
+COPY default.conf.template /etc/nginx/conf.d/default.conf.template
+ENTRYPOINT ["/bin/bash", "-c", "envsubst '${SERVER_NAME}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"]

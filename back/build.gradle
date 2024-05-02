@@ -108,8 +108,31 @@ clean {
 }
 // ----------------------------------------------------------------------------------------------------
 
+// --------------------------------- ENV Setting  -----------------------------------------------------
+def static getenv(path = ".env") {
+    def env = [:]
+    def file = new File(path)
+    if (file.exists()) {
+        file.eachLine { line ->
+            def pair = line.split("=", 2)
+            if (pair.length == 2) {
+                def (name, value) = pair
+                env[name.trim()] = value.trim()
+            }
+        }
+    }
+    return env
+}
+
+def envVariables = getenv()
+envVariables.each { name, value ->
+    project.ext[name] = value
+}
+// ----------------------------------------------------------------------------------------------------
+
 tasks.named('test') {
     useJUnitPlatform()
+    environment envVariables
 }
 
 bootJar {
