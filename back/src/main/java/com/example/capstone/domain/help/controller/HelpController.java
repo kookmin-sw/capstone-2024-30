@@ -35,5 +35,16 @@ public class HelpController {
                 .ok(new ApiResult<>("Successfully create help", helpResponse));
     }
 
+    @GetMapping("/read")
+    @Operation(summary = "헬퍼글 불러오기", description = "id를 통해 해당 글을 가져옵니다.")
+    @ApiResponse(responseCode = "200", description = "해당 id의 글을 반환합니다.")
+    public ResponseEntity<ApiResult<HelpResponse>> readHelp(
+            @Parameter(description = "가져올 글의 id 입니다.", required = true)
+            @RequestParam Long id) {
+        HelpResponse helpResponse = helpService.getHelp(id);
+        return ResponseEntity
+                .ok(new ApiResult<>("Successfully read help", helpResponse));
+    }
+
 
 }
