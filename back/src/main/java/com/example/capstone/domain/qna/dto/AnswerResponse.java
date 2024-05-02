@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public record AnswerResponse(
         Long id,
-        Question question,
+        Long questionId,
         String author,
         String context,
         Long likeCount,
