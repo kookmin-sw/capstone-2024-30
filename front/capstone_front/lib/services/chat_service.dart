@@ -150,7 +150,7 @@ class ChatService {
     FlutterSecureStorage storage = const FlutterSecureStorage();
     final accessToken = await storage.read(key: "accessToken");
 
-    final url = Uri.parse('$baseUrl/chat/');
+    final url = Uri.parse('$baseUrl/chat/list');
     final response = await http.get(
       url,
       headers: {
@@ -167,10 +167,10 @@ class ChatService {
       var apiSuccessResponse = ApiSuccessResponse.fromJson(jsonMap);
       final List<dynamic> chatRooms = apiSuccessResponse.response['rooms'];
 
+      print(decodedBody);
       for (var chatRoom in chatRooms) {
         chatRoomInstances.add(ChatRoomModel.fromJson(chatRoom));
       }
-
       return chatRoomInstances;
     } else {
       var apiFailResponse = ApiFailResponse.fromJson(jsonMap);
@@ -185,22 +185,21 @@ class ChatService {
     FlutterSecureStorage storage = const FlutterSecureStorage();
     final accessToken = await storage.read(key: "accessToken");
 
-    final url = Uri.parse('$baseUrl/chat/');
+    final url = Uri.parse('$baseUrl/chat/poll/list');
     final response = await http.post(
       url,
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $accessToken',
       },
-      body: {
-        jsonEncode(myChatRooms),
-      },
+      body: jsonEncode(myChatRooms),
     );
 
     List<ChatModelForChatList> chatForChatListInstances = [];
 
     final String decodedBody = utf8.decode(response.bodyBytes);
     final Map<String, dynamic> jsonMap = jsonDecode(decodedBody);
+    print(decodedBody);
     if (response.statusCode == 200) {
       var apiSuccessResponse = ApiSuccessResponse.fromJson(jsonMap);
       final List<dynamic> chatModelForChatRooms =

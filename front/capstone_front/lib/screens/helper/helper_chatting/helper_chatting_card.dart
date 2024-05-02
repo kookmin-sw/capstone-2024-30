@@ -1,3 +1,5 @@
+import 'package:capstone_front/models/chat_init_model.dart';
+import 'package:capstone_front/models/chat_room_model.dart';
 import 'package:capstone_front/screens/helper/helper_board/helper_writing_json.dart';
 import 'package:capstone_front/screens/helper/helper_chatting/helper_chatting_json.dart';
 import 'package:flutter/material.dart';
@@ -5,10 +7,11 @@ import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
 class HelperChattingCard extends StatefulWidget {
-  final int index;
+  final ChatRoomModel chatRoomModel;
+
   const HelperChattingCard({
     super.key,
-    required this.index,
+    required this.chatRoomModel,
   });
 
   @override
@@ -19,7 +22,13 @@ class _HelperChattingCardState extends State<HelperChattingCard> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        var chatInitModel = ChatInitModel.fromJson({
+          "author": widget.chatRoomModel.userName,
+          "uuid": widget.chatRoomModel.userId,
+        });
+        context.push("/chatroom", extra: chatInitModel);
+      },
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 15),
@@ -48,12 +57,15 @@ class _HelperChattingCardState extends State<HelperChattingCard> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      '${helperChatting[widget.index][1]} ',
+                      widget.chatRoomModel.userName,
                       style: const TextStyle(
                           fontSize: 16, fontWeight: FontWeight.w500),
                     ),
+                    const SizedBox(
+                      width: 10,
+                    ),
                     Text(
-                      '${helperChatting[widget.index][2]} · ${helperChatting[widget.index][3]}',
+                      widget.chatRoomModel.chatRoomDate,
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
@@ -65,7 +77,7 @@ class _HelperChattingCardState extends State<HelperChattingCard> {
                 SizedBox(
                   width: MediaQuery.of(context).size.width - 110,
                   child: Text(
-                    helperChatting[widget.index][0],
+                    widget.chatRoomModel.chatRoomMessage,
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w400,

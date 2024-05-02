@@ -89,6 +89,7 @@ class _HelperChattingRoomState extends State<HelperChattingRoom> {
   Future<List<ChatRoomModel>> loadChatRoomData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> chatRoomData = prefs.getStringList('chatRoomData') ?? [];
+    print(chatRoomData);
     return chatRoomData
         .map((chatRoom) => ChatRoomModel.fromJson(json.decode(chatRoom)))
         .toList();
@@ -135,6 +136,7 @@ class _HelperChattingRoomState extends State<HelperChattingRoom> {
         userId: userId,
         userName: userName,
         lastMessageId: lastMessageId,
+        lastMessagePreviewId: lastMessageId,
         chatRoomMessage: lastMessage,
         chatRoomDate: chatRoomDate,
       );
@@ -167,6 +169,7 @@ class _HelperChattingRoomState extends State<HelperChattingRoom> {
               messages.addAll(newMessages);
               lastMessageId = messages.last.id;
               currentChatRoom.lastMessageId = messages.last.id;
+              currentChatRoom.lastMessagePreviewId = messages.last.id;
               saveChatRoomData(chatRoomList);
               saveChatData(messages, userId);
             });

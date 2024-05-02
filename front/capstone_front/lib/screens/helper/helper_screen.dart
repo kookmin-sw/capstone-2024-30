@@ -1,5 +1,5 @@
 import 'package:capstone_front/screens/helper/helper_board/helper_board_screen.dart';
-import 'package:capstone_front/screens/helper/helper_chatting/helper_chatting_screen.dart';
+import 'package:capstone_front/screens/helper/helper_chatting/helper_chatting_list_screen.dart';
 import 'package:capstone_front/screens/helper/helper_board/helper_detail_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,7 +17,7 @@ class _HelperScreenState extends State<HelperScreen> {
   int _selectedPageIndex = 0;
   final _helperScreenList = [
     const HelperBoardScreen(),
-    const HelperChattingScreen(),
+    const HelperChattingListScreen(),
   ];
   @override
   Widget build(BuildContext context) {

@@ -31,6 +31,6 @@ class ChatModelForChatList extends ChatModel {
   int chatRoomId;
 
   ChatModelForChatList.fromJson(super.json)
-      : chatRoomId = json['chatRoomId'],
+      : chatRoomId = json['chat_room_id'],
         super.fromJson();
 }
