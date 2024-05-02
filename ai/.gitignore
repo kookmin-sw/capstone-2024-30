@@ -5,5 +5,4 @@
 *.pyc
 __pycache__
 data/
-FAISS/
 cap30.pem
