@@ -58,5 +58,16 @@ public class HelpController {
                 .ok(new ApiResult<>("Successfully update help", 200));
     }
 
+    @DeleteMapping("/erase")
+    @Operation(summary = "헬퍼글 삭제", description = "id를 기반으로 해당 글을 삭제합니다.")
+    @ApiResponse(responseCode = "200", description = "완료시 200을 리턴합니다.")
+    public ResponseEntity<ApiResult<Integer>> eraseHelp(
+            @Parameter(description = "삭제할 글의 id 입니다.", required = true)
+            @RequestParam Long id) {
+        helpService.eraseHelp(id);
+        return ResponseEntity
+                .ok(new ApiResult<>("Successfully delete help", 200));
+    }
+
 
 }
