@@ -45,5 +45,14 @@ public class HelpService {
         helpRepository.deleteById(id);
     }
 
+    public HelpSliceResponse getHelpList(HelpListRequest request) {
+        Pageable page = PageRequest.of(0, 20);
+        Long cursorId = request.cursorId();
+        if(cursorId == 0) cursorId = null;
+        HelpSliceResponse helpList = helpRepository.getHelpListByPaging(cursorId, page, request.isDone(), request.isHelper(), request.isMine());
+
+        return helpList;
+    }
+
 
 }
