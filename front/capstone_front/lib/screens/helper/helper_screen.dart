@@ -1,6 +1,6 @@
 import 'package:capstone_front/screens/helper/helper_board/helper_board_screen.dart';
 import 'package:capstone_front/screens/helper/helper_chatting/helper_chatting_screen.dart';
-import 'package:capstone_front/screens/helper/helper_board/helper_writing_screen.dart';
+import 'package:capstone_front/screens/helper/helper_board/helper_detail_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

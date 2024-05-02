@@ -1,4 +1,5 @@
 import 'package:capstone_front/firebase_options.dart';
+import 'package:capstone_front/models/helper_model.dart';
 import 'package:capstone_front/models/notice_model.dart';
 import 'package:capstone_front/models/qna_post_model.dart';
 import 'package:capstone_front/provider/qna_provider.dart';
@@ -8,7 +9,7 @@ import 'package:capstone_front/screens/faq/faq_screen.dart';
 import 'package:capstone_front/screens/helper/helper_board/helper_board_screen.dart';
 import 'package:capstone_front/screens/helper/helper_screen.dart';
 import 'package:capstone_front/screens/helper/helper_write_screen.dart';
-import 'package:capstone_front/screens/helper/helper_board/helper_writing_screen.dart';
+import 'package:capstone_front/screens/helper/helper_board/helper_detail_screen.dart';
 import 'package:capstone_front/screens/home/home_screen.dart';
 import 'package:capstone_front/screens/login/login_screen.dart';
 import 'package:capstone_front/screens/question/question_screen.dart';
@@ -121,7 +122,13 @@ final GoRouter router = GoRouter(
             GoRoute(
               name: 'helperWriting',
               path: 'writing',
-              builder: (context, state) => const HelperWritingScreen(),
+              builder: (context, state) {
+                final helperArticle = state.extra as HelperModel?;
+                if (helperArticle == null) {
+                  return const HelperScreen();
+                }
+                return HelperDetailScreen(helperArticle);
+              },
             ),
             GoRoute(
               name: 'helperWrite',
