@@ -25,8 +25,6 @@ class _HelperChattingRoomState extends State<HelperChattingRoom> {
   FlutterSecureStorage storage = const FlutterSecureStorage();
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _textController = TextEditingController();
-  final List<String> _messages = [];
-  final int _maxLines = 1;
 
   late String userId = widget.chatInitModel.uuid;
   late String userName = widget.chatInitModel.author;
@@ -35,7 +33,6 @@ class _HelperChattingRoomState extends State<HelperChattingRoom> {
   late String lastMessage = "";
   late String chatRoomDate = "";
   late List<ChatModel> messages = [];
-  // late List<ChatRoomModel> chatRooms;
   bool isActive = true;
   late ChatRoomModel currentChatRoom;
   late List<ChatRoomModel> chatRoomList;
@@ -55,7 +52,6 @@ class _HelperChattingRoomState extends State<HelperChattingRoom> {
           duration: const Duration(milliseconds: 100),
           curve: Curves.easeInOut,
         );
-        // TODO setState 안에서 이게 되나?
         saveChatData(messages, userId);
       });
     }
@@ -133,9 +129,6 @@ class _HelperChattingRoomState extends State<HelperChattingRoom> {
       }
     } else {
       var newChatRoomId = await ChatService.connectChat(userId);
-      if (newChatRoomId == -1) {
-        // 이미 나와 상대와의 채팅방이 존재함
-      }
       var newChatRoom = ChatRoomModel(
         chatRoomId: newChatRoomId,
         userId: userId,
