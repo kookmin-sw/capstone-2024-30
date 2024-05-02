@@ -29,5 +29,10 @@ public class HelpService {
         return help.toDTO();
     }
 
+    public HelpResponse getHelp(Long id) {
+        Help help = helpRepository.findById(id).get();
+        return help.toDTO();
+    }
+
 
 }
