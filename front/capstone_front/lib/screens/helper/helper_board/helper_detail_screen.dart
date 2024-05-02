@@ -1,3 +1,5 @@
+import 'package:capstone_front/models/chat_init_model.dart';
+import 'package:capstone_front/models/helper_model.dart';
 import 'package:capstone_front/screens/helper/helper_board/helper_writing_json.dart';
 import 'package:capstone_front/utils/basic_button.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -5,17 +7,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class HelperWritingScreen extends StatefulWidget {
-  const HelperWritingScreen({super.key});
+class HelperDetailScreen extends StatefulWidget {
+  HelperModel helperModel;
+
+  HelperDetailScreen(this.helperModel, {super.key});
 
   @override
-  State<HelperWritingScreen> createState() => _HelperWritingScreenState();
+  State<HelperDetailScreen> createState() => _HelperDetailScreenState();
 }
 
-class _HelperWritingScreenState extends State<HelperWritingScreen> {
+class _HelperDetailScreenState extends State<HelperDetailScreen> {
   @override
   Widget build(BuildContext context) {
-    final int index = GoRouterState.of(context).extra! as int;
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0,
@@ -50,7 +53,7 @@ class _HelperWritingScreenState extends State<HelperWritingScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                helperWriting[index][1],
+                                widget.helperModel.author,
                                 style: const TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.w600),
                               ),
@@ -70,12 +73,15 @@ class _HelperWritingScreenState extends State<HelperWritingScreen> {
                     const Divider(color: Color(0xffe9ecef)),
                     const SizedBox(height: 20),
                     Text(
-                      helperWriting[index][0],
+                      widget.helperModel.title,
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                     const SizedBox(height: 20),
-                    const Text(
-                        "친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ"),
+                    Text(widget.helperModel.author),
+                    const SizedBox(height: 20),
+                    Text(widget.helperModel.uuid),
+                    const SizedBox(height: 20),
+                    Text(widget.helperModel.content),
                   ],
                 ),
               ),
@@ -86,7 +92,11 @@ class _HelperWritingScreenState extends State<HelperWritingScreen> {
             BasicButton(
                 text: tr('helper.start_chat'),
                 onPressed: () {
-                  context.push("/chatroom");
+                  var chatInitModel = ChatInitModel.fromJson({
+                    'author': widget.helperModel.author,
+                    'uuid': widget.helperModel.uuid,
+                  });
+                  context.push("/chatroom", extra: chatInitModel);
                 })
           ],
         ),

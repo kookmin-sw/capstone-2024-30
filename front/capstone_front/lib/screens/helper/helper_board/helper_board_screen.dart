@@ -37,15 +37,15 @@ class _HelperBoardState extends State<HelperBoardScreen> {
                 ),
                 Expanded(
                   child: ListView.builder(
+                    itemCount: helperArticle.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 10),
                         child: HelperWritingCard(
-                          index: index,
+                          helperModel: helperArticle[index],
                         ),
                       );
                     },
-                    itemCount: helperWriting.length,
                   ),
                 ),
               ],

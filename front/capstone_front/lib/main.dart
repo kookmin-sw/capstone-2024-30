@@ -1,4 +1,5 @@
 import 'package:capstone_front/firebase_options.dart';
+import 'package:capstone_front/models/helper_model.dart';
 import 'package:capstone_front/models/notice_model.dart';
 import 'package:capstone_front/models/qna_post_model.dart';
 import 'package:capstone_front/provider/qna_provider.dart';
@@ -9,7 +10,7 @@ import 'package:capstone_front/screens/helper/helper_board/helper_board_screen.d
 import 'package:capstone_front/screens/helper/helper_chatting/helper_chatting_room.dart';
 import 'package:capstone_front/screens/helper/helper_screen.dart';
 import 'package:capstone_front/screens/helper/helper_write_screen.dart';
-import 'package:capstone_front/screens/helper/helper_board/helper_writing_screen.dart';
+import 'package:capstone_front/screens/helper/helper_board/helper_detail_screen.dart';
 import 'package:capstone_front/screens/home/home_screen.dart';
 import 'package:capstone_front/screens/login/login_screen.dart';
 import 'package:capstone_front/screens/question/question_screen.dart';
@@ -29,6 +30,7 @@ import 'package:capstone_front/screens/signup/singup_password_screen.dart';
 import 'package:capstone_front/screens/speech_practice/speech_practice_screen.dart';
 import 'package:capstone_front/screens/speech_practice/speech_screen.dart';
 import 'package:capstone_front/screens/speech_practice/speech_example_sentences/speech_select_sentence_screen.dart';
+import 'package:capstone_front/screens/speech_practice/utils/recorder_screen.dart';
 import 'package:capstone_front/utils/page_animation.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -127,7 +129,13 @@ final GoRouter router = GoRouter(
             GoRoute(
               name: 'helperWriting',
               path: 'writing',
-              builder: (context, state) => const HelperWritingScreen(),
+              builder: (context, state) {
+                final helperArticle = state.extra as HelperModel?;
+                if (helperArticle == null) {
+                  return const HelperScreen();
+                }
+                return HelperDetailScreen(helperArticle);
+              },
             ),
             GoRoute(
               name: 'helperWrite',
