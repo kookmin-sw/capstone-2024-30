@@ -54,13 +54,22 @@
     "custom_sentence": "커스텀",
     "permission_allow_notice": "음성 녹음 권한을 허용해야 발음 연습을 이용할 수 있습니다",
     "hint_custom_example": "연습하고 싶은 문장을 입력해주세요",
+    "guide": "녹음을 진행하고 결과를 확인하세요",
     "record": "버튼을 눌러 녹음 시작",
     "complete": "녹음 완료",
     "pause": "일시 정지",
     "resume": "이어서 진행",
     "my_speech": "나의 발음",
     "re_record": "다시 녹음",
-    "get_result": "결과 확인"
+    "get_result": "결과 확인",
+    "result": " 분석 결과 ",
+    "accuracy": "정확도 점수",
+    "fluency": "유창성 점수",
+    "completeness": "완성도 점수",
+    "result_detail": "상세 분석 결과",
+    "wrong_speech": "잘못된 발음",
+    "omission": "생략",
+    "insertion": "삽입"
   },
   "chatbotScreen": {
     "chatbot": "챗봇",
