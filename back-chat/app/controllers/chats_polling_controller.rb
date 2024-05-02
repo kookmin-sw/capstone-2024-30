@@ -25,6 +25,7 @@ class ChatsPollingController < ApplicationController
             id: message.id,
             chat_room_id: chat_room_id,
             content: message.content,
+            user_id: message.user_id,
             timestamp: message.timestamp.strftime("%Y-%m-%d %H:%M")
           }
         end
