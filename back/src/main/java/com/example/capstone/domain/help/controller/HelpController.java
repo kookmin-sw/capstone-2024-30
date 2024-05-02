@@ -81,5 +81,14 @@ public class HelpController {
                 .ok(new ApiResult<>("Successfully create help list", response));
     }
 
-
+    @PutMapping("/done")
+    @Operation(summary = "헬퍼글 모집 종료", description = "id에 맞는 헬퍼글을 모집 종료합니다.")
+    @ApiResponse(responseCode = "200", description = "완료시 200을 반환합니다.")
+    public ResponseEntity<ApiResult<Integer>> doneHelp(
+            @Parameter(description = "모집 종료할 헬퍼글의 id입니다.", required = true)
+            @RequestParam Long id) {
+        helpService.doneHelp(id);
+        return ResponseEntity
+                .ok(new ApiResult<>("Successfully done help", 200));
+    }
 }
