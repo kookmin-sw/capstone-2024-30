@@ -46,5 +46,17 @@ public class HelpController {
                 .ok(new ApiResult<>("Successfully read help", helpResponse));
     }
 
+    @PutMapping("/update")
+    @Operation(summary = "헬퍼글 수정", description = "request 정보를 기반으로 글을 수정합니다.")
+    @ApiResponse(responseCode = "200", description = "완료시 200을 리턴합니다.")
+    public ResponseEntity<ApiResult<Integer>> updateHelp(/*@RequestHeader String token,*/
+            @Parameter(description = "수정할 헬퍼글의 id와 헬퍼글의 request가 들어갑니다.", required = true)
+            @RequestBody HelpPutRequest request) {
+        String userId = UUID.randomUUID().toString();//jwtTokenProvider.extractUUID(token);
+        helpService.updateHelp(userId, request);
+        return ResponseEntity
+                .ok(new ApiResult<>("Successfully update help", 200));
+    }
+
 
 }
