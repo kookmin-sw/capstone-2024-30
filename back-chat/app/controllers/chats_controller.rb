@@ -81,6 +81,7 @@ class ChatsController < ApplicationController
       {
         id: message.id,
         content: message.content,
+        user_id: message.user_id,
         timestamp: message.timestamp.strftime("%Y-%m-%d %H:%M")
       }
     end
@@ -110,10 +111,9 @@ class ChatsController < ApplicationController
     response = {
       id: message.id,
       content: message.content,
-      timestamp: message.timestamp.strftime("%Y-%m-%d %H:%M")
+      timestamp: message.timestamp.strftime("%Y-%m-%d %H:%M"),
+      user_id: user_id
     }
-
-    print(response)
 
     if message.persisted?
       render_success(data: response, message: "Message sent", status: :created)
