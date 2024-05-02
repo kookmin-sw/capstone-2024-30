@@ -39,7 +39,7 @@ class ChatService {
     }
   }
 
-  static Future<List<ChatModel>> loadNewChats(
+  static Future<List<ChatModel>?> loadNewChats(
       int chatRoomId, int lastMessageId) async {
     FlutterSecureStorage storage = const FlutterSecureStorage();
     final accessToken = await storage.read(key: "accessToken");
@@ -58,6 +58,7 @@ class ChatService {
     List<ChatModel> chatInstances = [];
 
     if (response.statusCode == 200) {
+      print('load new chats');
       var apiSuccessResponse = ApiSuccessResponse.fromJson(jsonMap);
       final List<dynamic> chats = apiSuccessResponse.response['messages'];
 
@@ -66,6 +67,10 @@ class ChatService {
       }
 
       return chatInstances;
+    } else if (response.statusCode == 400) {
+      print('not load new chats');
+      // 새로 로드할 채팅이 없을 때
+      return null;
     } else {
       var apiFailResponse = ApiFailResponse.fromJson(jsonMap);
       print(response.statusCode);

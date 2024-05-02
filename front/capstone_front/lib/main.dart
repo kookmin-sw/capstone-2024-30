@@ -1,4 +1,5 @@
 import 'package:capstone_front/firebase_options.dart';
+import 'package:capstone_front/models/chat_init_model.dart';
 import 'package:capstone_front/models/helper_model.dart';
 import 'package:capstone_front/models/notice_model.dart';
 import 'package:capstone_front/models/qna_post_model.dart';
@@ -66,9 +67,9 @@ Future<void> setSetting() async {
   }
   // storage.write(key: "uuid", value: "GVxxcceRRFNcWS690xLo85I8pV03");
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.remove("chatRoomData");
-  prefs.remove("23EiDZdTsQXL6erpvmztnnekIKE3");
-  prefs.remove("GVxxcceRRFNcWS690xLo85I8pV03");
+  // prefs.remove("chatRoomData");
+  // prefs.remove("a3xezZRpYGdz0SVBDv7vTAYctOj1");
+  // prefs.remove("3YuwArylP5gr6njKBtMcAe9RgJr1");
 }
 
 void initializeFirebase() async {
@@ -243,7 +244,13 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: 'chatroom',
       path: '/chatroom',
-      builder: (context, state) => const HelperChattingRoom(),
+      builder: (context, state) {
+        final chatInitModel = state.extra as ChatInitModel?;
+        if (chatInitModel == null) {
+          return const HelperWriteScreen();
+        }
+        return HelperChattingRoom(chatInitModel);
+      },
     ),
   ],
 );

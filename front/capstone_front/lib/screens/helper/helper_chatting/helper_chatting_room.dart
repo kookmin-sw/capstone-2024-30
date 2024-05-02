@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:capstone_front/models/chat_init_model.dart';
 import 'package:capstone_front/models/chat_model.dart';
 import 'package:capstone_front/models/chat_room_model.dart';
 import 'package:capstone_front/services/chat_service.dart';
@@ -12,7 +13,9 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HelperChattingRoom extends StatefulWidget {
-  const HelperChattingRoom({super.key});
+  final ChatInitModel chatInitModel;
+
+  const HelperChattingRoom(this.chatInitModel, {super.key});
 
   @override
   State<HelperChattingRoom> createState() => _HelperChattingRoomState();
@@ -25,15 +28,17 @@ class _HelperChattingRoomState extends State<HelperChattingRoom> {
   final List<String> _messages = [];
   final int _maxLines = 1;
 
-  String userId = "GVxxcceRRFNcWS690xLo85I8pV03";
-  String userName = "partner";
+  late String userId = widget.chatInitModel.uuid;
+  late String userName = widget.chatInitModel.author;
   late int chatRoomId;
   late int lastMessageId = 0;
   late String lastMessage = "";
   late String chatRoomDate = "";
   late List<ChatModel> messages = [];
-  late List<ChatRoomModel> chatRooms;
+  // late List<ChatRoomModel> chatRooms;
   bool isActive = true;
+  late ChatRoomModel currentChatRoom;
+  late List<ChatRoomModel> chatRoomList;
 
   void _sendMessage() async {
     if (_textController.text.isNotEmpty) {
@@ -94,13 +99,14 @@ class _HelperChattingRoomState extends State<HelperChattingRoom> {
 
   // 초기 채팅방을 설정함
   Future<void> initializeChat() async {
-    var chatRoomList = await loadChatRoomData();
+    chatRoomList = await loadChatRoomData();
 
     var flag = false;
     for (var chatRoom in chatRoomList) {
       // uuid로 이 사람과의 채팅이 처음인지 아닌지 판단
       print(chatRoom.userId);
       print(1);
+      print(userId);
       if (chatRoom.userId == userId) {
         flag = true;
         var chatHistory = await loadChatData(userId);
@@ -110,6 +116,7 @@ class _HelperChattingRoomState extends State<HelperChattingRoom> {
           lastMessage = chatRoom.chatRoomMessage;
           chatRoomDate = chatRoom.chatRoomDate;
           messages = chatHistory;
+          currentChatRoom = chatRoom;
         });
         break;
       }
@@ -117,7 +124,13 @@ class _HelperChattingRoomState extends State<HelperChattingRoom> {
 
     if (flag) {
       var newChats = await ChatService.loadNewChats(chatRoomId, lastMessageId);
-      messages.addAll(newChats);
+      if (newChats != null) {
+        messages.addAll(newChats);
+        lastMessageId = newChats.last.id;
+        currentChatRoom.lastMessageId = newChats.last.id;
+        saveChatRoomData(chatRoomList);
+        setState(() {});
+      }
     } else {
       var newChatRoomId = await ChatService.connectChat(userId);
       if (newChatRoomId == -1) {
@@ -139,6 +152,7 @@ class _HelperChattingRoomState extends State<HelperChattingRoom> {
         chatRoomDate = "";
         messages = [];
         chatRoomList.add(newChatRoom);
+        currentChatRoom = newChatRoom;
         saveChatRoomData(chatRoomList);
       });
     }
@@ -158,6 +172,9 @@ class _HelperChattingRoomState extends State<HelperChattingRoom> {
             setState(() {
               messages.addAll(newMessages);
               lastMessageId = messages.last.id;
+              currentChatRoom.lastMessageId = messages.last.id;
+              saveChatRoomData(chatRoomList);
+              saveChatData(messages, userId);
             });
           }
 
@@ -220,7 +237,11 @@ class _HelperChattingRoomState extends State<HelperChattingRoom> {
                           // bottom: MediaQuery.of(context).viewInsets.bottom,
                         ),
                         child: Container(
-                          alignment: Alignment.centerRight,
+                          alignment:
+                              messages[messages.length - 1 - index].userId ==
+                                      userId
+                                  ? Alignment.centerLeft
+                                  : Alignment.centerRight,
                           child: CustomPaint(
                             painter: BubblePainter(),
                             child: Padding(
