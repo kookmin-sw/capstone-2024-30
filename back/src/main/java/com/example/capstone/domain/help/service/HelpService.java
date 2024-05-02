@@ -54,5 +54,9 @@ public class HelpService {
         return helpList;
     }
 
-
+    @Transactional
+    public void doneHelp(Long id) {
+        Help help = helpRepository.findById(id).get();
+        help.done();
+    }
 }
