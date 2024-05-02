@@ -1,4 +1,4 @@
-version: '3.0'
+version: '3'
 services:
   redis:
     image: redis:7.2.0-alpine
@@ -61,7 +61,7 @@ services:
       - "ruby"
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
 
-  cerbot:
+  certbot:
     image: certbot/certbot
     restart: unless-stopped
     volumes:
