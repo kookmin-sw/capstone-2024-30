@@ -16,13 +16,21 @@ This project aims to develop a comprehensive app service for international stude
 
 <br>
 
-## 3. 소개 영상
+## 3. 프로젝트 기능
+
+### 기능 1
+
+### 기능 2
+
+<br>
+
+## 4. 소개 영상
 
 프로젝트 소개하는 영상을 추가하세요
 
 <br>
 
-## 4. 팀원 소개
+## 5. 팀원 소개
 
 <table>
     <tr align="center">
@@ -72,7 +80,7 @@ This project aims to develop a comprehensive app service for international stude
 
 <br>
 
-## 5. 기술스택
+## 6. 기술스택
 
 ### Frontend
 
@@ -120,7 +128,7 @@ This project aims to develop a comprehensive app service for international stude
 
 <br>
 
-## 6. 시스템 구조
+## 7. 시스템 구조
 
 ### 💻 서비스 아키택처
 
@@ -145,7 +153,7 @@ This project aims to develop a comprehensive app service for international stude
 └── 📕Readme.md
 ```
 
-## 7. 사용법
+## 8. 사용법
 
 ### Backend
 
@@ -216,6 +224,6 @@ flutter run
 
 ![image](https://github.com/kookmin-sw/capstone-2024-30/assets/54922676/d7b5cd40-43b7-4cca-8be8-6fff257ed303)
 
-## 8. 기타
+## 9. 기타
 
 <br>
