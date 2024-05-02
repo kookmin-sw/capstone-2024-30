@@ -41,5 +41,9 @@ public class HelpService {
         help.update(request.title(), request.context(), current);
     }
 
+    public void eraseHelp(Long id){
+        helpRepository.deleteById(id);
+    }
+
 
 }
