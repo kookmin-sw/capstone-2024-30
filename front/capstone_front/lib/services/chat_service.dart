@@ -13,7 +13,7 @@ class ChatService {
 
   static Future<int> connectChat(String userId) async {
     FlutterSecureStorage storage = const FlutterSecureStorage();
-    final accessToken = storage.read(key: "accessToken");
+    final accessToken = await storage.read(key: "accessToken");
 
     final url = Uri.parse('$baseUrl/chat/connect/$userId');
     final response = await http.post(
@@ -26,7 +26,8 @@ class ChatService {
 
     final String decodedBody = utf8.decode(response.bodyBytes);
     final Map<String, dynamic> jsonMap = jsonDecode(decodedBody);
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      // 201은 새로 생성된 경우, 200은 이미 존재했으나, 본인이 채팅리스트 화면에 가지 않아, 최신화가 되지 않은 상태라 모르는 경우
       var apiSuccessResponse = ApiSuccessResponse.fromJson(jsonMap);
 
       return apiSuccessResponse.response['chat_room_id'];
@@ -41,7 +42,7 @@ class ChatService {
   static Future<List<ChatModel>> loadNewChats(
       int chatRoomId, int lastMessageId) async {
     FlutterSecureStorage storage = const FlutterSecureStorage();
-    final accessToken = storage.read(key: "accessToken");
+    final accessToken = await storage.read(key: "accessToken");
 
     final url = Uri.parse('$baseUrl/chat/join/$chatRoomId/$lastMessageId');
     final response = await http.get(
@@ -69,14 +70,14 @@ class ChatService {
       var apiFailResponse = ApiFailResponse.fromJson(jsonMap);
       print(response.statusCode);
       print(apiFailResponse.message);
-      throw Exception("fail to connect chatroom");
+      throw Exception("fail to load newChats");
     }
   }
 
   static Future<List<ChatModel>> pollingChat(
       int chatRoomId, int lastMessageId) async {
     FlutterSecureStorage storage = const FlutterSecureStorage();
-    final accessToken = storage.read(key: "accessToken");
+    final accessToken = await storage.read(key: "accessToken");
 
     final url = Uri.parse('$baseUrl/chat/poll/$chatRoomId/$lastMessageId');
     final response = await http.post(
@@ -101,16 +102,17 @@ class ChatService {
 
       return chatInstances;
     } else {
+      print('여기');
       var apiFailResponse = ApiFailResponse.fromJson(jsonMap);
       print(response.statusCode);
       print(apiFailResponse.message);
-      throw Exception("fail to connect chatroom");
+      throw Exception("fail to poilling chats");
     }
   }
 
   static Future<ChatModel> sendChat(int chatRoomId, String content) async {
     FlutterSecureStorage storage = const FlutterSecureStorage();
-    final accessToken = storage.read(key: "accessToken");
+    final accessToken = await storage.read(key: "accessToken");
 
     final url = Uri.parse('$baseUrl/chat/$chatRoomId');
     final response = await http.post(
@@ -119,14 +121,14 @@ class ChatService {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $accessToken',
       },
-      body: {
+      body: jsonEncode({
         "content": content,
-      },
+      }),
     );
 
     final String decodedBody = utf8.decode(response.bodyBytes);
     final Map<String, dynamic> jsonMap = jsonDecode(decodedBody);
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
       var apiSuccessResponse = ApiSuccessResponse.fromJson(jsonMap);
       var chatModel = ChatModel.fromJson(apiSuccessResponse.response);
 
@@ -135,13 +137,13 @@ class ChatService {
       var apiFailResponse = ApiFailResponse.fromJson(jsonMap);
       print(response.statusCode);
       print(apiFailResponse.message);
-      throw Exception("fail to connect chatroom");
+      throw Exception("fail to send chats");
     }
   }
 
   static Future<List<ChatRoomModel>> loadChatRooms() async {
     FlutterSecureStorage storage = const FlutterSecureStorage();
-    final accessToken = storage.read(key: "accessToken");
+    final accessToken = await storage.read(key: "accessToken");
 
     final url = Uri.parse('$baseUrl/chat/');
     final response = await http.get(
@@ -169,14 +171,14 @@ class ChatService {
       var apiFailResponse = ApiFailResponse.fromJson(jsonMap);
       print(response.statusCode);
       print(apiFailResponse.message);
-      throw Exception("fail to connect chatroom");
+      throw Exception("fail to load chatRooms");
     }
   }
 
   static Future<List<ChatModelForChatList>> pollingChatList(
       Map<String, dynamic> myChatRooms) async {
     FlutterSecureStorage storage = const FlutterSecureStorage();
-    final accessToken = storage.read(key: "accessToken");
+    final accessToken = await storage.read(key: "accessToken");
 
     final url = Uri.parse('$baseUrl/chat/');
     final response = await http.post(
@@ -208,7 +210,7 @@ class ChatService {
       var apiFailResponse = ApiFailResponse.fromJson(jsonMap);
       print(response.statusCode);
       print(apiFailResponse.message);
-      throw Exception("fail to connect chatroom");
+      throw Exception("fail to polling chatList");
     }
   }
 }

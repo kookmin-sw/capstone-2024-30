@@ -40,7 +40,7 @@ dependencies:
   firebase_core: ^2.27.1
   firebase_auth: ^4.17.9
   provider: ^6.1.2
-  shared_preferences: ^2.2.2
+  shared_preferences: ^2.2.3
   logger: 1.4.0
   fluttertoast: ^8.2.4
   easy_localization: ^3.0.5

@@ -38,6 +38,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // 앱에서 지원하는 언어 리스트 변수
 final supportedLocales = [const Locale('en', 'US'), const Locale('ko', 'KR')];
@@ -61,6 +62,11 @@ Future<void> setSetting() async {
   if (str == 'true') {
     _isLogin = true;
   }
+  // storage.write(key: "uuid", value: "GVxxcceRRFNcWS690xLo85I8pV03");
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.remove("chatRoomData");
+  prefs.remove("23EiDZdTsQXL6erpvmztnnekIKE3");
+  prefs.remove("GVxxcceRRFNcWS690xLo85I8pV03");
 }
 
 void initializeFirebase() async {
