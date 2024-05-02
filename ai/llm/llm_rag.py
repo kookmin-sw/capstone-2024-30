@@ -11,7 +11,7 @@ class LLM_RAG:
     def __init__(self, trace = False):
         self.result = ''
         self.question = ''
-        self.llm = ChatOpenAI(model_name="gpt-4-turbo", temperature=0)
+        self.llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
         self.tavily = TavilyClient(os.getenv('TAVILY_API_KEY'))
         self.rag_prompt = hub.pull("rlm/rag-prompt")
         self.casual_prompt = casual_prompt()
