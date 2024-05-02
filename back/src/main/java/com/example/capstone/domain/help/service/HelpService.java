@@ -34,5 +34,12 @@ public class HelpService {
         return help.toDTO();
     }
 
+    @Transactional
+    public void updateHelp(String userId, HelpPutRequest request) {
+        LocalDateTime current = LocalDateTime.now();
+        Help help = helpRepository.findById(request.id()).get();
+        help.update(request.title(), request.context(), current);
+    }
+
 
 }
