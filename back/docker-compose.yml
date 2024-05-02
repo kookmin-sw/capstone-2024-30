@@ -1,4 +1,8 @@
 version: '3'
+networks:
+  backend_network:
+  ssl_network:
+
 services:
   redis:
     image: redis:7.2.0-alpine
@@ -14,6 +18,8 @@ services:
       interval: 5s
       timeout: 3s
       retries: 10
+    networks:
+      - backend_network
 
   spring:
     container_name: spring
@@ -30,6 +36,8 @@ services:
         condition: service_healthy
     volumes:
       - /path/to/logs:/container/path/to/logs
+    networks:
+      - backend_network
 
   ruby:
     container_name: ruby
@@ -41,6 +49,8 @@ services:
       TZ: "Asia/Seoul"
     ports:
       - "3000:3000"
+    networks:
+      - backend_network
 
   nginx:
     container_name: nginx
@@ -49,7 +59,8 @@ services:
     environment:
       TZ: "Asia/Seoul"
     ports:
-        - "80:80"
+      - "80:80"
+      - "443:443"
     env_file:
       - .env
     volumes:
@@ -60,6 +71,9 @@ services:
       - "spring"
       - "ruby"
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+    networks:
+      - backend_network
+      - ssl_network
 
   certbot:
     image: certbot/certbot
@@ -68,3 +82,5 @@ services:
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    networks:
+      - ssl_network
