@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y tzdata ca-certificates
 COPY . /workspace/app
 WORKDIR /workspace/app
 RUN chmod +x ./gradlew
-RUN --mount=type=cache,target=/root/.gradle ./gradlew clean build
+RUN --mount=type=cache,target=/root/.gradle ./gradlew clean bootJar
 RUN mkdir -p build/dependency && (cd build/dependency; jar -xf ../libs/*-SNAPSHOT.jar)
 
 FROM eclipse-temurin:17-jdk
