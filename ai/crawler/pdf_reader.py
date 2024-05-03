@@ -1,17 +1,30 @@
 from langchain_community.document_loaders import PyPDFLoader
 import pickle
-
+import os
+from tqdm import tqdm
 
 class PdfReader:
     def __init__(self) -> None:
         pass
 
-    def read_pdf(filename, path):
+    def read_pdf(self, filepath, path='./data/', name='default'):
 
-        loader = PyPDFLoader(filename)
+        filename, _ = os.path.splitext(os.path.basename(filepath))
+        path += filename + '/' + 'SCHOOL_INFO/'
+
+        if not os.path.exists(path):
+            os.makedirs(path)
+        print(f'-- Load pdf file {filename} --')
+        loader = PyPDFLoader(filepath)
         pages = loader.load()
-        for page_no in range(len(pages)):
+        print('-- start --')
+        total_pdf = []
+        for page_no in tqdm(range(10)):
             doc = pages[page_no]
             doc.page_content = doc.page_content.replace(u"\xa0", u" ")
-            with open(path+str(page_no)+'.pkl', 'wb') as f:
-                pickle.dump(doc, f)
+            doc.page_content = doc.page_content.replace("·", "")
+            if doc.page_content:
+                total_pdf.append(doc)
+        with open(path+name+'.pkl', 'wb') as f:
+            pickle.dump(total_pdf, f)
+        print(total_pdf)
