@@ -81,6 +81,7 @@ class ChatsController < ApplicationController
       {
         id: message.id,
         content: message.content,
+        user_id: message.user_id,
         timestamp: message.timestamp.strftime("%Y-%m-%d %H:%M")
       }
     end
@@ -110,23 +111,14 @@ class ChatsController < ApplicationController
     response = {
       id: message.id,
       content: message.content,
-      timestamp: message.timestamp.strftime("%Y-%m-%d %H:%M")
+      timestamp: message.timestamp.strftime("%Y-%m-%d %H:%M"),
+      user_id: user_id
     }
-
-    print(response)
 
     if message.persisted?
       render_success(data: response, message: "Message sent", status: :created)
       return
     end
     render_fail(message: "Message Send Error", status: :bad_request)
-  end
-
-  def test
-    test = @decoded[:uuid]
-
-    test = User.find_by(user_id: "rqwerwerwer")
-
-    render_success(data:test, message: "Hello World")
   end
 end

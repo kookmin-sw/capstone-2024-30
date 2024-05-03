@@ -44,6 +44,7 @@ public class UserController {
             @RequestHeader(name = "HMAC") String hmac,
             @Parameter(description = "HMAC은 해당 Request의 Value들을 |로 구분자로 넣어서 만든 내용으로 만들면 됩니다.", required = true)
             @RequestBody @Valid SignupRequest signupRequest) {
+        log.debug("SignupRequest: {}", signupRequest);
         loginService.verifyHmac(hmac, signupRequest);
         loginService.signUp(signupRequest);
         return ResponseEntity
@@ -60,6 +61,7 @@ public class UserController {
     })
     public ResponseEntity<ApiResult<TokenResponse>> signin(@RequestHeader(name = "HMAC") String hmac,
                                                 @RequestBody @Valid SigninRequest signinRequest) {
+        log.debug("SigninRequest: {}", signinRequest);
         loginService.verifyHmac(hmac, signinRequest);
         TokenResponse response = loginService.signIn(signinRequest);
         return ResponseEntity

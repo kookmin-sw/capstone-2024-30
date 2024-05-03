@@ -9,7 +9,7 @@ class ChatsPollingController < ApplicationController
     chat_room_list = params.require(:list)
 
     updated_rooms = []
-    timeout = 20.seconds.from_now
+    timeout = 10.seconds.from_now
 
     loop do
       chat_room_list.each do |room|
@@ -17,6 +17,7 @@ class ChatsPollingController < ApplicationController
         last_message_id = room[:message_id].to_i
 
         new_message = ChatMessage
+                        .includes(:user)
                         .where('chat_room_id = ? AND id > ? AND user_id != ?', chat_room_id, last_message_id, user_id)
                         .order(timestamp: :desc)
                         .limit(1)
@@ -25,6 +26,8 @@ class ChatsPollingController < ApplicationController
             id: message.id,
             chat_room_id: chat_room_id,
             content: message.content,
+            user_id: message.user_id,
+            user_name: message.user.name,
             timestamp: message.timestamp.strftime("%Y-%m-%d %H:%M")
           }
         end
@@ -40,7 +43,7 @@ class ChatsPollingController < ApplicationController
         render_fail(message: "Chat room timeout", status: :bad_request)
         return
       else
-        sleep(5)
+        sleep(2)
       end
 
     end
@@ -55,7 +58,7 @@ class ChatsPollingController < ApplicationController
     end
 
     last_message_id = params[:message_id].to_i
-    timeout = 20.seconds.from_now
+    timeout = 10.seconds.from_now
 
     loop do
       new_messages = ChatMessage
@@ -66,6 +69,7 @@ class ChatsPollingController < ApplicationController
         {
           id: message.id,
           content: message.content,
+          user_id: message.user_id,
           timestamp: message.timestamp.strftime("%Y-%m-%d %H:%M")
         }
       end
@@ -78,7 +82,7 @@ class ChatsPollingController < ApplicationController
         render_fail(message: "Chat room timeout", status: :bad_request)
         return
       else
-        sleep(5)
+        sleep(2)
       end
     end
   end
