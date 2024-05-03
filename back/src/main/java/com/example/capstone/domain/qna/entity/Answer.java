@@ -57,6 +57,6 @@ public class Answer {
     }
 
     public AnswerResponse toDTO() {
-        return new AnswerResponse(id, question, author, context, likeCount, createdDate, updatedDate, uuid);
+        return new AnswerResponse(id, question.getId(), author, context, likeCount, createdDate, updatedDate, uuid);
     }
 }

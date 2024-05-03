@@ -1,6 +1,7 @@
 package com.example.capstone.domain.qna.repository;
 
 import com.example.capstone.domain.qna.dto.FAQListResponse;
+import com.example.capstone.domain.qna.dto.FAQSliceResponse;
 import com.example.capstone.domain.qna.dto.QuestionListResponse;
 import com.example.capstone.domain.qna.entity.QFAQ;
 import com.querydsl.core.types.Projections;
@@ -21,7 +22,7 @@ public class FAQRepositoryImpl implements FAQListRepository {
     private final QFAQ faq = QFAQ.fAQ;
 
     @Override
-    public Map<String, Object> getFAQListByPaging(Long cursorId, Pageable page, String language, String word, String tag) {
+    public FAQSliceResponse getFAQListByPaging(Long cursorId, Pageable page, String language, String word, String tag) {
         List<FAQListResponse> faqList = jpaQueryFactory
                 .select(
                         Projections.constructor(
@@ -43,8 +44,13 @@ public class FAQRepositoryImpl implements FAQListRepository {
             hasNext = true;
         }
 
-        Map<String, Object> result = Map.of("list", faqList, "pageable", page, "hasNext", hasNext);
-        return result;
+        Long lastCursorId = null;
+
+        if(hasNext && faqList.size() != 0) {
+            lastCursorId = faqList.get(faqList.size() - 1).id();
+        }
+
+        return new FAQSliceResponse(lastCursorId, hasNext, faqList);
     }
 
     private BooleanExpression cursorId(Long cursorId) {

@@ -182,7 +182,7 @@ public class SpeechService {
                     validCount += 1;
                 }
             }
-            double accuracyScore = totalAccuracyScore / accuracyCount;
+            double accuracyScore = Double.isNaN( totalAccuracyScore / accuracyCount) ? 0.0 : totalAccuracyScore / accuracyCount;
 
             double fluencyScoreSum = 0;
             long durationSum = 0;
@@ -190,9 +190,9 @@ public class SpeechService {
                 fluencyScoreSum += fluencyScores.get(i)*durations.get(i);
                 durationSum += durations.get(i);
             }
-            double fluencyScore = fluencyScoreSum / durationSum;
+            double fluencyScore = Double.isNaN( fluencyScoreSum / durationSum) ? 0.0 : fluencyScoreSum / durationSum;
 
-            double completenessScore = (double)validCount / referenceWords.length * 100;
+            double completenessScore = Double.isNaN( (double)validCount / referenceWords.length * 100) ? 0.0 : (double)validCount / referenceWords.length * 100;
             completenessScore = completenessScore <= 100 ? completenessScore : 100;
 
             System.out.println("Paragraph accuracy score: " + accuracyScore +

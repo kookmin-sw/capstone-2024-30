@@ -1,47 +1,48 @@
-package com.example.capstone.domain.qna.entity;
+package com.example.capstone.domain.help.entity;
 
-import com.example.capstone.domain.qna.dto.QuestionResponse;
-import com.example.capstone.domain.user.entity.User;
+import com.example.capstone.domain.help.dto.HelpResponse;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "questions")
+@Table(name = "helps")
 @Getter
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Question {
+public class Help {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "is_done", nullable = false)
+    private boolean isDone;
+
+    @Column(name = "is_helper", nullable = false)
+    private boolean isHelper;
+
     @Column(name = "title", nullable = false)
     private String title;
+
+    @Column(name = "context", columnDefinition = "LONGTEXT", nullable = false)
+    private String context;
 
     @Column(name = "author", nullable = false)
     private String author;
 
-    @Column(name = "context", columnDefinition = "LONGTEXT", nullable = false)
-    private String context;
+    @Column(name = "country", nullable = false)
+    private String country;
 
     @Column(name = "created_date", nullable = false)
     private LocalDateTime createdDate;
 
     @Column(name = "updated_date", nullable = false)
     private LocalDateTime updatedDate;
-
-    @Column(name = "tag", nullable = false)
-    private String tag;
-
-    @Column(name = "country", nullable = false)
-    private String country;
 
     @Column(name = "uuid", nullable = false)
     private UUID uuid;
@@ -52,7 +53,11 @@ public class Question {
         this.updatedDate = updatedDate;
     }
 
-    public QuestionResponse toDTO() {
-        return new QuestionResponse(id, title, author, context, createdDate, updatedDate, tag, country, uuid);
+    public void done() {
+        isDone = true;
+    }
+
+    public HelpResponse toDTO() {
+        return new HelpResponse(id, isDone, isHelper, title, context, author, country, createdDate, updatedDate,uuid);
     }
 }

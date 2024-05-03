@@ -1,9 +1,6 @@
 package com.example.capstone.domain.qna.service;
 
-import com.example.capstone.domain.qna.dto.AnswerListResponse;
-import com.example.capstone.domain.qna.dto.AnswerPostRequest;
-import com.example.capstone.domain.qna.dto.AnswerPutRequest;
-import com.example.capstone.domain.qna.dto.AnswerResponse;
+import com.example.capstone.domain.qna.dto.*;
 import com.example.capstone.domain.qna.entity.Answer;
 import com.example.capstone.domain.qna.entity.Question;
 import com.example.capstone.domain.qna.repository.AnswerRepository;
@@ -34,10 +31,11 @@ public class AnswerService {
         return answer.toDTO();
     }
 
-    public Map<String, Object> getAnswerList(Long questionId, Long cursorId, String sortBy) {
+    public AnswerSliceResponse getAnswerList(Long questionId, Long cursorId, String sortBy) {
         Pageable page = PageRequest.of(0, 10);
         if(cursorId == 0) cursorId = null;
-        Map<String, Object> answerList = answerRepository.getAnswerListByPaging(cursorId, page, questionId, sortBy);
+        AnswerSliceResponse answerList = answerRepository.getAnswerListByPaging(cursorId, page, questionId, sortBy);
+
         return answerList;
     }
 
