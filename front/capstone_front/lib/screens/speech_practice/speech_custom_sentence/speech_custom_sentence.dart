@@ -38,7 +38,7 @@ class _SpeechCustomSentenceScreenState
                 child: TextField(
                   keyboardType: TextInputType.multiline,
                   minLines: 2,
-                  maxLines: 2,
+                  maxLines: 5,
                   maxLength: 40,
                   controller: _textController,
                   textInputAction: TextInputAction.newline,
