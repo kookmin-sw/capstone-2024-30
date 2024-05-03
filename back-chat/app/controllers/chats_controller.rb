@@ -121,12 +121,4 @@ class ChatsController < ApplicationController
     end
     render_fail(message: "Message Send Error", status: :bad_request)
   end
-
-  def test
-    test = @decoded[:uuid]
-
-    test = User.find_by(user_id: "rqwerwerwer")
-
-    render_success(data:test, message: "Hello World")
-  end
 end

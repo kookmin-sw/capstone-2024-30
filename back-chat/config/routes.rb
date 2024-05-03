@@ -6,5 +6,4 @@ Rails.application.routes.draw do
   post 'api/chat/poll/list' => 'chats_polling#short_poll'
   post 'api/chat/poll/:chat_id/:message_id' => 'chats_polling#detail_poll'
   post 'api/chat/:chat_id' => 'chats#send_message'
-  get 'api/chat/test' => 'chats#test'
 end
