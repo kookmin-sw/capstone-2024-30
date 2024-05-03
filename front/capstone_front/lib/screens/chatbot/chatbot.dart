@@ -1,3 +1,4 @@
+import 'package:capstone_front/utils/bubble_painter1.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
@@ -36,16 +37,9 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        iconTheme: const IconThemeData(
-          color: Colors.white,
-        ),
-        backgroundColor: Theme.of(context).primaryColor,
+        scrolledUnderElevation: 0,
         title: Text(
           tr('chatbotScreen.chatbot'),
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
         ),
       ),
       body: Column(
@@ -76,8 +70,10 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                             painter: BubblePainter(),
                             child: Padding(
                               padding: const EdgeInsets.all(10.0),
-                              child:
-                                  Text(_messages[_messages.length - 1 - index]),
+                              child: Text(
+                                _messages[_messages.length - 1 - index],
+                                style: const TextStyle(color: Colors.white),
+                              ),
                             ),
                           ),
                         ),
@@ -86,12 +82,12 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
               ),
             ),
           ),
-          const Divider(
-            height: 0.0,
-            color: Colors.white,
-          ),
+          // const Divider(
+          //   height: 0.0,
+          //   color: Colors.white,
+          // ),
           Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             child: Container(
               decoration: BoxDecoration(
                 color: const Color(0xFFDFE7EE),
@@ -134,39 +130,5 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
         ],
       ),
     );
-  }
-}
-
-class BubblePainter extends CustomPainter {
-  final Color bubbleColor;
-
-  BubblePainter({this.bubbleColor = Colors.yellow});
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    var paint = Paint()..color = bubbleColor;
-    var path = Path();
-
-    // 말풍선 본체
-    path.addRRect(
-      RRect.fromRectAndCorners(
-        Rect.fromLTWH(0, 0, size.width, size.height),
-        topLeft: const Radius.circular(16),
-        topRight: const Radius.circular(16),
-        bottomLeft: const Radius.circular(16),
-        bottomRight: const Radius.circular(16),
-      ),
-    );
-    // 말풍선 꼬리
-    path.moveTo(size.width - 10, 10);
-    path.lineTo(size.width + 10, 10);
-    path.lineTo(size.width, 20);
-
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
   }
 }

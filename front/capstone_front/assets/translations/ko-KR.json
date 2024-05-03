@@ -1,16 +1,41 @@
 {
   "test": "이것은 테스트 입니다",
   "_comment": "로그인 및 회원가입 페이지",
-  "login": "로그인",
-  "kmu_email": "국민대 이메일",
-  "password": "비밀번호",
-  "signup": "회원가입",
-  "password_re": "비밀번호 재입력",
-  "country": "국가",
-  "college": "단과대학",
-  "department": "학부ㆍ학과",
-  "student_number": "학번",
+
+  "login": {
+    "login": "로그인",
+    "kmu_email": "국민대 이메일",
+    "password": "비밀번호",
+    "signup": "회원가입"
+  },
+  "signup": {
+    "next": "다음",
+    "kmu_email": "국민대 이메일",
+    "password": "비밀번호",
+    "password_re": "비밀번호 재입력",
+    "weak_password": "비밀번호는 6자리 이상이어야 합니다",
+    "duplicated_email": "이미 사용된 아이디입니다",
+    "password_not_same": "비밀번호가 일치하지 않습니다",
+    "country": "국가",
+    "college": "단과대학",
+    "department": "학부ㆍ학과",
+    "name": "이름",
+    "student_number": "학번",
+    "enter_name": "이름, 학번을 입력해주세요",
+    "enter_kmuemail": "국민대 이메일을 입력해주세요",
+    "enter_password": "비밀번호를 입력해주세요",
+    "enter_college_department": "단과대학 및 학과를 입력해주세요",
+    "enter_college": "단과대학을 골라주세요",
+    "enter_department": "학부ㆍ학과를 골라주세요",
+    "enter_country": "국가를 입력해주세요",
+    "select_country": "국가를 골라주세요",
+    "auth_email": "인증 메일이 발송되었습니다",
+    "detail_auth_email": "메일 내 인증 링크를 통해 인증을 완료해주세요\n메일이 보이지 않는다면 스펨메일함을 확인해주세요",
+    "complete_signup": "회원가입 완료",
+    "ok": "확인"
+  },
   "mainScreen": {
+    "home": "홈",
     "notice": "공지사항",
     "cafeteria": "학식정보",
     "school_info": "학교정보",
@@ -19,14 +44,56 @@
     "community": "커뮤니티",
     "guide": "가이드",
     "helper": "헬퍼",
-    "pronunciation_practice": "발음 연습"
-  },
-  "pronunciationPracticeScreen": {
     "pronunciation_practice": "발음 연습",
-    "permission_allow_notice": "음성 녹음 권한을 허용해야 발음 연습을 이용할 수 있습니다"
+    "language_setting": "언어 설정",
+    "logout": "로그아웃"
+  },
+  "speech": {
+    "speech_practice": "발음 연습",
+    "example_sentence": "예문",
+    "custom_sentence": "커스텀",
+    "permission_allow_notice": "음성 녹음 권한을 허용해야 발음 연습을 이용할 수 있습니다",
+    "hint_custom_example": "연습하고 싶은 문장을 입력해주세요",
+    "guide": "녹음을 진행하고 결과를 확인하세요",
+    "record": "버튼을 눌러 녹음 시작",
+    "complete": "녹음 완료",
+    "pause": "일시 정지",
+    "resume": "이어서 진행",
+    "my_speech": "나의 발음",
+    "re_record": "다시 녹음",
+    "get_result": "결과 확인",
+    "result": " 분석 결과 ",
+    "accuracy": "정확도 점수",
+    "fluency": "유창성 점수",
+    "completeness": "완성도 점수",
+    "result_detail": "상세 분석 결과",
+    "wrong_speech": "잘못된 발음",
+    "omission": "생략",
+    "insertion": "삽입"
   },
   "chatbotScreen": {
     "chatbot": "챗봇",
     "textfield_hint": "궁금한 내용을 입력해주세요"
+  },
+  "helper": {
+    "helper": "헬퍼",
+    "total": "전체",
+    "need_helper": "헬퍼 구해요",
+    "need_helpee": "헬피 구해요",
+    "board": "게시판",
+    "chatting": "채팅",
+    "start_chat": "채팅하기",
+    "write": "글 작성",
+    "type": "종류",
+    "title": "제목",
+    "content": "내용",
+    "write_complete": "작성 완료"
+  },
+  "qna": {
+    "writetitle": "무엇을 물어보고 싶으세요?",
+    "category_1": "학사안내",
+    "category_2": "대학생활",
+    "category_3": "교직원안내",
+    "category_4": "교수자"
   }
 }

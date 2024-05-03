@@ -42,10 +42,10 @@ public class FAQService {
         faqRepository.deleteById(id);
     }
 
-    public Map<String, Object> getFAQList(Long cursorId, String language, String word, String tag) {
+    public FAQSliceResponse getFAQList(Long cursorId, String language, String word, String tag) {
         Pageable page = PageRequest.of(0, 20);
         if(cursorId == 0) cursorId = null;
-        Map<String, Object> faqListResponse = faqRepository.getFAQListByPaging(cursorId, page, language, word, tag);
+        FAQSliceResponse faqListResponse = faqRepository.getFAQListByPaging(cursorId, page, language, word, tag);
         return faqListResponse;
     }
 }

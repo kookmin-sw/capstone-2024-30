@@ -1,9 +1,9 @@
 package com.example.capstone.domain.qna.repository;
 
 import com.example.capstone.domain.qna.dto.QuestionListResponse;
+import com.example.capstone.domain.qna.dto.QuestionSliceResponse;
 import com.example.capstone.domain.qna.entity.QAnswer;
 import com.example.capstone.domain.qna.entity.QQuestion;
-import com.example.capstone.domain.qna.entity.Question;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -24,7 +24,7 @@ public class QuestionRepositoryImpl implements QuestionListRepository {
     private final QAnswer answer = QAnswer.answer;
 
     @Override
-    public Map<String, Object> getQuestionListByPaging(Long cursorId, Pageable page, String word, String tag) {
+    public QuestionSliceResponse getQuestionListByPaging(Long cursorId, Pageable page, String word, String tag) {
         List<QuestionListResponse> questionList = jpaQueryFactory
                 .select(
                         Projections.constructor(
@@ -58,8 +58,13 @@ public class QuestionRepositoryImpl implements QuestionListRepository {
             hasNext = true;
         }
 
-        Map<String, Object> response = Map.of("list", questionList, "answerCount", answerCount, "pageable", page, "hasNext", hasNext);
-        return response;
+        Long lastCursorId = null;
+
+        if(hasNext && questionList.size() != 0) {
+            lastCursorId = questionList.get(questionList.size() - 1).id();
+        }
+
+        return new QuestionSliceResponse(lastCursorId, hasNext, questionList, answerCount);
     }
 
     private BooleanExpression cursorId(Long cursorId) {

@@ -1,6 +1,7 @@
 package com.example.capstone.domain.qna.repository;
 
 import com.example.capstone.domain.qna.dto.AnswerListResponse;
+import com.example.capstone.domain.qna.dto.AnswerSliceResponse;
 import com.example.capstone.domain.qna.dto.QuestionListResponse;
 import com.example.capstone.domain.qna.entity.QAnswer;
 import com.example.capstone.domain.qna.entity.QQuestion;
@@ -27,7 +28,7 @@ public class AnswerRepositoryImpl implements AnswerListRepository {
     private final QQuestion question = QQuestion.question;
 
     @Override
-    public Map<String, Object> getAnswerListByPaging(Long cursorId, Pageable page, Long questionId, String sortBy) {
+    public AnswerSliceResponse getAnswerListByPaging(Long cursorId, Pageable page, Long questionId, String sortBy) {
         OrderSpecifier[] orderSpecifiers = createOrderSpecifier(sortBy);
 
         List<AnswerListResponse> answerList = jpaQueryFactory
@@ -51,8 +52,14 @@ public class AnswerRepositoryImpl implements AnswerListRepository {
             answerList.remove(page.getPageSize());
             hasNext = true;
         }
-        Map<String, Object> result = Map.of("list", answerList, "pageable", page, "hasNext", hasNext);
-        return result;
+
+        Long lastCursorId = null;
+
+        if(hasNext && answerList.size() != 0) {
+            lastCursorId = answerList.get(answerList.size() - 1).id();
+        }
+
+        return new AnswerSliceResponse(lastCursorId, hasNext, answerList);
     }
 
     private OrderSpecifier[] createOrderSpecifier(String sortBy) {

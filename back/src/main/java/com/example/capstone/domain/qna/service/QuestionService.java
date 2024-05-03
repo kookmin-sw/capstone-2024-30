@@ -27,12 +27,12 @@ public class QuestionService {
                 .author(request.author()).createdDate(current).updatedDate(current).tag(request.tag())
                 .country(request.country()).uuid(UUID.fromString(userId)).build());
 
-        return quest.toDto();
+        return quest.toDTO();
     }
 
     public QuestionResponse getQuestion(Long id) {
         Question quest = questionRepository.findById(id).get();
-        return quest.toDto();
+        return quest.toDTO();
     }
 
     @Transactional
@@ -46,11 +46,12 @@ public class QuestionService {
         questionRepository.deleteById(id);
     }
 
-    public Map<String, Object> getQuestionList(QuestionListRequest request) {
+    public QuestionSliceResponse getQuestionList(QuestionListRequest request) {
         Pageable page = PageRequest.of(0, 20);
         Long cursorId = request.cursorId();
         if(cursorId == 0) cursorId = null;
-        Map<String, Object> questionList = questionRepository.getQuestionListByPaging(cursorId, page, request.word(), request.tag());
+        QuestionSliceResponse questionList = questionRepository.getQuestionListByPaging(cursorId, page, request.word(), request.tag());
+
         return questionList;
     }
 }

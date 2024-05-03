@@ -46,13 +46,13 @@ public class Question {
     @Column(name = "uuid", nullable = false)
     private UUID uuid;
 
-    public void update(String title, String context, LocalDateTime updatedDate){
+    public void update(String title, String context, LocalDateTime updatedDate) {
         this.title = title;
         this.context = context;
         this.updatedDate = updatedDate;
     }
 
-    public QuestionResponse toDto() {
+    public QuestionResponse toDTO() {
         return new QuestionResponse(id, title, author, context, createdDate, updatedDate, tag, country, uuid);
     }
 }
