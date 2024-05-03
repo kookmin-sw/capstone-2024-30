@@ -26,15 +26,20 @@ class ChatsController < ApplicationController
         chat_room_id: chat_room.id,
         user_id: other_user_id,
         user_name: users_info[other_user_id]&.name,
-        last_message_id: last_message&.id,
-        chat_room_message: last_message&.content,
-        chat_room_date: last_message&.timestamp&.strftime("%Y-%m-%d %H:%M")
+        last_message_id: last_message ? last_message.id : 0,
+        chat_room_message: last_message ? last_message.content : "",
+        chat_room_date: last_message ? last_message.timestamp.strftime("%Y-%m-%d %H:%M") : "2000-06-04 00:00"
       }
     end
 
     sorted_rooms = chat_rooms_data.sort_by { |room| room[:chat_room_date] ? DateTime.parse(room[:chat_room_date]) : DateTime.new(0) }.reverse
+    max = chat_rooms.maximum(:id)
 
-    render_success(data: { rooms: sorted_rooms }, message: "Chat rooms retrieved successfully")
+    if max.nil?
+      max = 0
+    end
+
+    render_success(data: { rooms: sorted_rooms, max:max }, message: "Chat rooms retrieved successfully")
   end
 
   # 유저간 채팅방을 생성해줌

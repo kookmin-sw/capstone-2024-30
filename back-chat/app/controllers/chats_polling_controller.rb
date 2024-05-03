@@ -3,7 +3,47 @@ class ChatsPollingController < ApplicationController
 
   before_action :authorize_request
 
-  def short_poll
+  def room_poll
+    user_id = @decoded[:uuid]
+    last_room_id = params[:room_id].to_i
+
+    timeout = 10.seconds.from_now
+
+    loop do
+      new_rooms = ChatRoom
+                    .where("id > ? AND (user1_uuid = ? OR user2_uuid = ?)", last_room_id, user_id, user_id)
+
+      print new_rooms.ids
+
+      new_rooms_data = new_rooms.map do |chat_room|
+        other_user_id = chat_room.user1_uuid == user_id ? chat_room.user2_uuid : chat_room.user1_uuid
+        last_message = chat_room.messages.order(timestamp: :desc).first
+
+        {
+          chat_room_id: chat_room.id,
+          user_id: other_user_id,
+          user_name: User.find_by(user_id: other_user_id)&.name,
+          last_message_id: last_message ? last_message.id : 0,
+          chat_room_message: last_message ? last_message.content : "",
+          chat_room_date: last_message ? last_message.timestamp.strftime("%Y-%m-%d %H:%M") : "2000-06-04 00:00"
+        }
+      end
+
+      if new_rooms_data.any?
+        sorted_contents = new_rooms_data.sort_by { |message| message[:id] }
+        render_success(message: "Polling Successful", data: { rooms: sorted_contents })
+        return
+      elsif Time.current >= timeout
+        render_fail(message: "Chat room timeout", status: :bad_request)
+        return
+      else
+        sleep(2)
+      end
+
+    end
+  end
+
+  def message_poll
     user_id = @decoded[:uuid]
 
     chat_room_list = params.require(:list)
@@ -40,7 +80,7 @@ class ChatsPollingController < ApplicationController
         render_success(message: "Polling Successful", data: { messages: sorted_contents })
         return
       elsif Time.current >= timeout
-        render_fail(message: "Chat room timeout", status: :bad_request)
+        render_fail(message: "Chat Message List timeout", status: :bad_request)
         return
       else
         sleep(2)
