@@ -73,7 +73,8 @@
   },
   "chatbotScreen": {
     "chatbot": "챗봇",
-    "textfield_hint": "궁금한 내용을 입력해주세요"
+    "textfield_hint": "궁금한 내용을 입력해주세요",
+    "loading": "답변을 생성중입니다..."
   },
   "helper": {
     "helper": "헬퍼",
