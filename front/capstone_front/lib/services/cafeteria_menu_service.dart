@@ -172,8 +172,8 @@ Future<CafeteriaMenuModel> getCafeteriaMenu(
   };
 
   if (response.statusCode == 200) {
-    // return CafeteriaMenuModel.fromJson(json['response'], date);
-    return CafeteriaMenuModel.fromJson(jsonExample['response'], date);
+    return CafeteriaMenuModel.fromJson(json['response'], date);
+    // return CafeteriaMenuModel.fromJson(jsonExample['response'], date);
   } else {
     var apiFailResponse = ApiFailResponse.fromJson(json);
     print('Request failed with status: ${response.statusCode}.');
