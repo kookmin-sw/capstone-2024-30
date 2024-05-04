@@ -63,7 +63,7 @@ async def query(query: Query):
     return {'code': '200',
             'message': 'success',
             'response': {
-                'answer': llm.query(query.query)
+                'answer': llm.query(query.query, 'ko')
             }}
 
 @app.post("/input")
