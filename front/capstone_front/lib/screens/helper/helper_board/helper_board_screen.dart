@@ -71,37 +71,29 @@ class _HelperBoardState extends State<HelperBoardScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          Container(
-            color: const Color(0xFFF8F8F8),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
-              child: Column(
-                children: [
-                  selectWritingType(context),
-                  Container(
-                    color: const Color(0xFFF8F8F8),
-                    height: 10,
-                  ),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: helperArticlePreviews.length,
-                      itemBuilder: (context, index) {
-                        if (index + 1 == itemCount && hasNext) {
-                          loadHelperAtricles();
-                        }
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 10),
-                          child: HelperWritingCard(
-                            helperArticlePreviewModel:
-                                helperArticlePreviews[index],
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: selectWritingType(context),
               ),
-            ),
+              const SizedBox(
+                height: 10,
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: helperArticlePreviews.length,
+                  itemBuilder: (context, index) {
+                    if (index + 1 == itemCount && hasNext) {
+                      loadHelperAtricles();
+                    }
+                    return HelperWritingCard(
+                      helperArticlePreviewModel: helperArticlePreviews[index],
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
           Positioned(
             bottom: 20,
