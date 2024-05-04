@@ -4,6 +4,8 @@ import 'package:capstone_front/models/answer_model.dart';
 import 'package:capstone_front/models/api_fail_response.dart';
 import 'package:capstone_front/models/api_success_response.dart';
 import 'package:capstone_front/models/helper_article_model.dart';
+import 'package:capstone_front/models/helper_article_preview_model.dart';
+import 'package:capstone_front/models/helper_article_response.dart';
 import 'package:capstone_front/models/qna_post_model.dart';
 import 'package:capstone_front/models/qna_response.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -13,26 +15,33 @@ import 'package:image_picker/image_picker.dart';
 class HelperService {
   static String baseUrl = dotenv.get('BASE_URL');
 
-  static Future<QnasResponse> getQnaPosts(int cursor, String type) async {
-    var query = 'type=$type&cursor=$cursor';
-    final url = Uri.parse('$baseUrl/yet?$query');
+  static Future<HelperArticleResponse> getHelperAtricles(
+      int cursor, bool isHelper, bool isDone, String? uuid) async {
+    var query = 'cursorId=$cursor&isDone=$isDone&isHelper=$isHelper&isMine=';
+    if (uuid != null) {
+      var query =
+          'cursorId=$cursor&isDone=$isDone&isHelper=$isHelper&isMine=$uuid';
+    }
+    final url = Uri.parse('$baseUrl/help/list?$query');
+    print(url);
     final response = await http.get(url);
 
-    List<QnaPostModel> qnaPostInstances = [];
+    List<HelperArticlePreviewModel> helperArticlePreviewInstances = [];
 
     final String decodedBody = utf8.decode(response.bodyBytes);
     final jsonMap = jsonDecode(decodedBody);
     if (response.statusCode == 200) {
       final ApiSuccessResponse apiSuccessResponse = jsonDecode(jsonMap);
       final res = apiSuccessResponse.response;
-      final List<dynamic> posts = res['qnas'];
+      final List<dynamic> posts = res['helpList'];
 
       for (var post in posts) {
-        qnaPostInstances.add(QnaPostModel.fromJson(post));
+        helperArticlePreviewInstances
+            .add(HelperArticlePreviewModel.fromJson(post));
       }
 
-      var result = QnasResponse(
-        qnas: qnaPostInstances,
+      var result = HelperArticleResponse(
+        articles: helperArticlePreviewInstances,
         lastCursorId: res['lastCursorId'],
         hasNext: res['hasNext'],
       );
@@ -46,22 +55,24 @@ class HelperService {
     }
   }
 
-  static Future<List<AnswerModel>> getAnswersByQuestionId(int qnaPostId) async {
+  static Future<HelperArticleModel> getDetailById(int atricleId) async {
     List<AnswerModel> answerInstances = [];
-    final url = Uri.parse('$baseUrl/yet/$qnaPostId');
+    final url = Uri.parse('$baseUrl/helper/$atricleId');
+
     final response = await http.get(url);
+    final String decodedBody = utf8.decode(response.bodyBytes);
+    final Map<String, dynamic> jsonMap = jsonDecode(decodedBody);
 
     if (response.statusCode == 200) {
-      final String decodedBody = utf8.decode(response.bodyBytes);
-      final List<dynamic> answers = jsonDecode(decodedBody);
+      var apiSuccessResponse = ApiSuccessResponse.fromJson(jsonMap);
+      var detail = HelperArticleModel.fromJson(apiSuccessResponse.response);
 
-      for (var answer in answers) {
-        answerInstances.add(AnswerModel.fromJson(answer));
-      }
-      return answerInstances;
+      return detail;
     } else {
+      var apiFailResponse = ApiFailResponse.fromJson(jsonMap);
+      print(apiFailResponse.message);
       print('Request failed with status: ${response.statusCode}.');
-      throw Exception('Failed to load notices');
+      throw Exception('Failed to load noticeDetail');
     }
   }
 

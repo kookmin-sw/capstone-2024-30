@@ -1,10 +1,13 @@
+import 'package:capstone_front/models/helper_article_preview_model.dart';
 import 'package:capstone_front/screens/helper/helper_board/helper_writing_card.dart';
 import 'package:capstone_front/screens/helper/helper_board/helper_writing_json.dart';
 import 'package:capstone_front/screens/helper/helper_write_screen.dart';
+import 'package:capstone_front/services/helper_service.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 
 class HelperBoardScreen extends StatefulWidget {
@@ -15,12 +18,50 @@ class HelperBoardScreen extends StatefulWidget {
 }
 
 class _HelperBoardState extends State<HelperBoardScreen> {
+  FlutterSecureStorage storage = const FlutterSecureStorage();
+  late List<HelperArticlePreviewModel> helperArticlePreviews = [];
+  int cursor = 0;
+  bool isHelper = true;
+  bool isDone = false;
+  bool hasNext = false;
+  String? uuid = "";
+  var itemCount = 0;
+  int _selectedHelperIndex = 0;
+  bool searchMyArticles = false;
+
   final List<String> _helperList = [
-    tr('helper.total'),
     tr('helper.need_helper'),
     tr('helper.need_helpee'),
   ];
-  int _selectedHelperIndex = 0;
+
+  void loadHelperAtricles() async {
+    uuid = null;
+    if (searchMyArticles) {
+      uuid = await storage.read(key: "uuid");
+    }
+    var res =
+        await HelperService.getHelperAtricles(cursor, isHelper, isDone, uuid);
+    helperArticlePreviews.addAll(res.articles);
+    cursor = res.lastCursorId;
+    hasNext = res.hasNext;
+    itemCount += res.articles.length;
+    setState(() {});
+  }
+
+  void initStateForChangeType() {
+    setState(() {
+      cursor = 0;
+      isDone = false;
+      hasNext = false;
+      itemCount = 0;
+    });
+  }
+
+  @override
+  void initState() {
+    loadHelperAtricles();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,15 +79,19 @@ class _HelperBoardState extends State<HelperBoardScreen> {
                 ),
                 Expanded(
                   child: ListView.builder(
-                    itemBuilder: (BuildContext context, int index) {
+                    itemCount: helperArticlePreviews.length,
+                    itemBuilder: (context, index) {
+                      if (index + 1 == itemCount && hasNext) {
+                        loadHelperAtricles();
+                      }
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 10),
                         child: HelperWritingCard(
-                          index: index,
+                          helperArticlePreviewModel:
+                              helperArticlePreviews[index],
                         ),
                       );
                     },
-                    itemCount: helperWriting.length,
                   ),
                 ),
               ],
@@ -64,7 +109,16 @@ class _HelperBoardState extends State<HelperBoardScreen> {
                     builder: (context) => const HelperWriteScreen(),
                   ),
                 );
-                // TODO
+                helperArticlePreviews.add(HelperArticlePreviewModel.fromJson({
+                  "id": articleObj.id,
+                  "isDone": articleObj.isDone,
+                  "isHelper": articleObj.isHelper,
+                  "title": articleObj.title,
+                  "author": articleObj.author,
+                  "country": articleObj.country,
+                  "createdDate": articleObj.createdDate,
+                }));
+                setState(() {});
               },
               style: IconButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.primary),
@@ -121,7 +175,10 @@ class _HelperBoardState extends State<HelperBoardScreen> {
                   onTap: () {
                     setState(() {
                       _selectedHelperIndex = index;
+                      isHelper = _selectedHelperIndex == 0 ? true : false;
                     });
+                    initStateForChangeType();
+                    loadHelperAtricles();
                   },
                   child: Container(
                     padding: const EdgeInsets.symmetric(

@@ -1,4 +1,7 @@
+import 'package:capstone_front/models/helper_article_model.dart';
+import 'package:capstone_front/models/helper_article_preview_model.dart';
 import 'package:capstone_front/screens/helper/helper_board/helper_writing_json.dart';
+import 'package:capstone_front/services/helper_service.dart';
 import 'package:capstone_front/utils/basic_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,16 +9,33 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class HelperWritingScreen extends StatefulWidget {
-  const HelperWritingScreen({super.key});
+  final HelperArticlePreviewModel helperArticlePreviewModel;
+
+  const HelperWritingScreen(
+    this.helperArticlePreviewModel, {
+    super.key,
+  });
 
   @override
   State<HelperWritingScreen> createState() => _HelperWritingScreenState();
 }
 
 class _HelperWritingScreenState extends State<HelperWritingScreen> {
+  late HelperArticleModel helperArticleModel;
+
+  void loadDetail() async {
+    helperArticleModel =
+        await HelperService.getDetailById(widget.helperArticlePreviewModel.id);
+  }
+
+  @override
+  void initState() {
+    loadDetail();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final int index = GoRouterState.of(context).extra! as int;
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0,
@@ -50,13 +70,13 @@ class _HelperWritingScreenState extends State<HelperWritingScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                helperWriting[index][1],
+                                helperArticleModel.country,
                                 style: const TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.w600),
                               ),
-                              const Text(
-                                '소프트웨어학부 | 19학번',
-                                style: TextStyle(
+                              Text(
+                                helperArticleModel.author,
+                                style: const TextStyle(
                                     fontFamily: 'pretendard',
                                     fontSize: 14,
                                     fontWeight: FontWeight.w400,
@@ -70,12 +90,11 @@ class _HelperWritingScreenState extends State<HelperWritingScreen> {
                     const Divider(color: Color(0xffe9ecef)),
                     const SizedBox(height: 20),
                     Text(
-                      helperWriting[index][0],
+                      helperArticleModel.title,
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                     const SizedBox(height: 20),
-                    const Text(
-                        "친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ\n친구가 없어요 ㅠㅠ"),
+                    Text(helperArticleModel.context),
                   ],
                 ),
               ),

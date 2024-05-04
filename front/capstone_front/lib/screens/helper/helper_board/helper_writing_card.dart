@@ -1,12 +1,13 @@
+import 'package:capstone_front/models/helper_article_preview_model.dart';
 import 'package:capstone_front/screens/helper/helper_board/helper_writing_json.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class HelperWritingCard extends StatefulWidget {
-  final int index;
+  final HelperArticlePreviewModel helperArticlePreviewModel;
   const HelperWritingCard({
     super.key,
-    required this.index,
+    required this.helperArticlePreviewModel,
   });
 
   @override
@@ -18,7 +19,8 @@ class _HelperWritingCardState extends State<HelperWritingCard> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        context.push('/helper/writing', extra: widget.index);
+        context.push('/helper/writing',
+            extra: widget.helperArticlePreviewModel);
       },
       child: Container(
         width: double.infinity,
@@ -35,13 +37,13 @@ class _HelperWritingCardState extends State<HelperWritingCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              helperWriting[widget.index][0],
+              widget.helperArticlePreviewModel.title,
               style: Theme.of(context).textTheme.titleMedium,
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
             ),
             Text(
-              '${helperWriting[widget.index][1]} | ${helperWriting[widget.index][2]}',
+              '${widget.helperArticlePreviewModel.author} | ${widget.helperArticlePreviewModel.createdDate}',
               style: const TextStyle(
                 fontFamily: 'pretendard',
                 fontSize: 14,
