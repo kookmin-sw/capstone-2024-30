@@ -46,7 +46,8 @@
     "helper": "헬퍼",
     "pronunciation_practice": "발음 연습",
     "language_setting": "언어 설정",
-    "logout": "로그아웃"
+    "logout": "로그아웃",
+    "no_data": "데이터가 없습니다"
   },
   "cafeteria": {
     "no_data": "미운영중입니다"

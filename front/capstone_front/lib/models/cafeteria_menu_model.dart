@@ -13,7 +13,34 @@ class CafeteriaMenuModel {
   void addFunc(
       var data, List<List<String>> targetList, String type, String addName) {
     if (data != null && data[type] != null) {
-      targetList.add([addName, data[type]["메뉴"], data[type]["가격"]]);
+      String tmpMenu = data[type]["메뉴"];
+      // menu
+      tmpMenu = tmpMenu.replaceAll('\r\n', ' ');
+      // ※가 2번 나오면 줄바꿈
+      int tmp1 = 0;
+      // []가 2번 이상 나오면 줄바꿈
+      int tmp2 = 0;
+      for (int i = 0; i < tmpMenu.length; i++) {
+        if (tmpMenu[i] == '※') {
+          tmp1 += 1;
+          if (tmp1 == 1) {
+            tmpMenu =
+                '${tmpMenu.substring(0, i + 1)} ${tmpMenu.substring(i + 1)}';
+          }
+        } else if (tmpMenu[i] == '[') {
+          tmp2 += 1;
+          if (tmp2 >= 2) {
+            tmpMenu = '${tmpMenu.substring(0, i)}\n${tmpMenu.substring(i)}';
+            i += 2;
+          }
+        }
+        if (tmp1 == 2) {
+          tmp1 = 0;
+          tmpMenu =
+              '${tmpMenu.substring(0, i + 1)}\n${tmpMenu.substring(i + 2)}';
+        }
+      }
+      targetList.add([addName, tmpMenu, data[type]["가격"]]);
     }
   }
 
@@ -24,7 +51,7 @@ class CafeteriaMenuModel {
       addFunc(data, tmpList, "1코너<br>SNACK2", "1코너 SNACK2");
       addFunc(data, tmpList, "2코너<BR>NOODLE", "2코너 NOODLE");
       addFunc(data, tmpList, "3코너<br>CUTLET", "3코너 CUTLET");
-      addFunc(data, tmpList, "4코너<br>ROCE.Oven", "4코너 RICE.Oven");
+      addFunc(data, tmpList, "4코너<br>RICE.Oven", "4코너 RICE.Oven");
       addFunc(data, tmpList, "5코너<br>GUKBAP.Chef", "5코너 GUKBAP.Chef");
     } else if (cafeteriaIndex == 1) {
       addFunc(data, tmpList, "착한아침", "착한아침");

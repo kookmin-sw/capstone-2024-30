@@ -1,5 +1,6 @@
 import 'package:capstone_front/firebase_options.dart';
 import 'package:capstone_front/models/cafeteria_menu_model.dart';
+import 'package:capstone_front/models/helper_article_preview_model.dart';
 import 'package:capstone_front/models/notice_model.dart';
 import 'package:capstone_front/models/qna_post_model.dart';
 import 'package:capstone_front/provider/qna_provider.dart';
@@ -132,7 +133,13 @@ final GoRouter router = GoRouter(
             GoRoute(
               name: 'helperWriting',
               path: 'writing',
-              builder: (context, state) => const HelperWritingScreen(),
+              builder: (context, state) {
+                final notice = state.extra as HelperArticlePreviewModel?;
+                if (notice == null) {
+                  return const HelperScreen();
+                }
+                return HelperWritingScreen(notice);
+              },
             ),
             GoRoute(
               name: 'helperWrite',

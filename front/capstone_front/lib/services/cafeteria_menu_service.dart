@@ -22,7 +22,7 @@ Future<CafeteriaMenuModel> getCafeteriaMenu(
     "response": [
       {
         "한울식당(법학관 지하1층)": {
-          "2024-05-04": {
+          "2024-05-05": {
             "5코너<br>GUKBAP.Chef": {
               "가격": "0",
               "메뉴": "[중식]\r\n부대찌개\r\n￦5000\r\n[석식]\r\n얼큰국밥\r\n￦6000"
@@ -43,7 +43,7 @@ Future<CafeteriaMenuModel> getCafeteriaMenu(
       },
       {
         "학생식당(복지관 1층)": {
-          "2024-05-04": {
+          "2024-05-05": {
             "착한아침": {
               "가격": "3500",
               "메뉴": "북어미역국\r\n기장밥/계란후라이\r\n돼지고기장조림\r\n고들빼기무침\r\n"
@@ -82,7 +82,7 @@ Future<CafeteriaMenuModel> getCafeteriaMenu(
       },
       {
         "교직원식당(복지관 1층)": {
-          "2024-05-04": {
+          "2024-05-05": {
             "키친1": {
               "가격": "7700",
               "메뉴":
@@ -106,7 +106,7 @@ Future<CafeteriaMenuModel> getCafeteriaMenu(
       },
       {
         "청향 한식당(법학관 5층)": {
-          "2024-05-04": {
+          "2024-05-05": {
             "메뉴1": {"가격": "10000", "메뉴": "차돌육개장"},
             "메뉴3": {"가격": "16000", "메뉴": "들기름메밀막국수와 수육정식"},
             "메뉴2": {"가격": "14000", "메뉴": "숯불주꾸미비빔밥&미니된장찌개정식"},
@@ -116,7 +116,7 @@ Future<CafeteriaMenuModel> getCafeteriaMenu(
       },
       {
         "청향 양식당(법학관 5층)": {
-          "2024-05-04": {
+          "2024-05-05": {
             "STEAK": {
               "가격": "0",
               "메뉴": "채끝스테이크\r\n37,000원\r\n안심스테이크\r\n43,000원"
@@ -135,7 +135,7 @@ Future<CafeteriaMenuModel> getCafeteriaMenu(
       },
       {
         "생활관식당 일반식(생활관 A동 1층)": {
-          "2024-05-04": {
+          "2024-05-05": {
             "중식": {
               "가격": "7700",
               "메뉴":
@@ -146,7 +146,7 @@ Future<CafeteriaMenuModel> getCafeteriaMenu(
       },
       {
         "생활관식당 정기식(생활관 A동 1층)": {
-          "2024-05-04": {
+          "2024-05-05": {
             "석식": {
               "가격": "0",
               "메뉴":
@@ -157,7 +157,7 @@ Future<CafeteriaMenuModel> getCafeteriaMenu(
       },
       {
         "K-Bob<sup>+</sup>": {
-          "2024-05-04": {
+          "2024-05-05": {
             "사전주문안내": {"가격": "0", "메뉴": "*회의 및 행사용 도시락의 경우 3일전 주문 필수"},
             "오늘의도시락": {"가격": "0", "메뉴": "※운영시간\r\n11시~17시\r\n\r\n※주말 및 공휴일 휴점"},
             "간편도시락": {
@@ -170,14 +170,14 @@ Future<CafeteriaMenuModel> getCafeteriaMenu(
       }
     ]
   };
-  // return CafeteriaMenuModel.fromJson(jsonExample['response'], date);
+
   if (response.statusCode == 200) {
-    return CafeteriaMenuModel.fromJson(json['response'], date);
-    // return CafeteriaMenuModel.fromJson(jsonExample['response'], date);
+    // return CafeteriaMenuModel.fromJson(json['response'], date);
+    return CafeteriaMenuModel.fromJson(jsonExample['response'], date);
   } else {
     var apiFailResponse = ApiFailResponse.fromJson(json);
     print('Request failed with status: ${response.statusCode}.');
     print(apiFailResponse.message);
-    throw Exception('Failed to load notices');
+    throw Exception('Failed to load cafeteria menu');
   }
 }
