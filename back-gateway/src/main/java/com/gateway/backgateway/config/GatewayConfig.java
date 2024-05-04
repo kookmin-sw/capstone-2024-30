@@ -23,13 +23,13 @@ public class GatewayConfig {
                         .uri(chatbotUrl))
                 .route("chat", r -> r.path("/api/chat/**")
                         .filters(f->f.filter(authFilter.apply(config -> {config.setRequiredRole("role_user");})))
-                        .uri("http://localhost:3000"))
+                        .uri("http://ruby:3000"))
                 .route("business", r -> r.path("/api/user/signin", "/api/user/test", "/api/user/signup",
                                 "/api/announcement", "api/menu", "/api/speech", "/api/auth")
                         .uri("http://spring:8080"))
                 .route("business", r -> r.path("/api/**")
                         .filters(f->f.filter(authFilter.apply(config -> {config.setRequiredRole("role_user");})))
-                        .uri("http://localhost:8080"))
+                        .uri("http://spring:8080"))
                 .build();
     }
 }

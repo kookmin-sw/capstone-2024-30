@@ -44,7 +44,7 @@ class ChatsController < ApplicationController
 
   # 유저간 채팅방을 생성해줌
   def connect
-    user1_id = params
+    user1_id = params[:user_id]
     user2_id = @decoded
 
     user1 = User.find_by(user_id: user1_id)
