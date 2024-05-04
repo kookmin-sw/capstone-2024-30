@@ -18,12 +18,12 @@ public class GatewayConfig {
     public RouteLocator gatewayRoutes(RouteLocatorBuilder builder,
                                       AuthorizationHeaderFilter authFilter) {
         return builder.routes()
-                .route("chatbot",r -> r.path("/api/chatbot")
+                .route("chatbot",r -> r.path("/api/chatbot/**")
                         .filters(f->f.filter(authFilter.apply(config -> {config.setRequiredRole("role_user");})))
                         .uri(chatbotUrl))
-                .route("chat", r -> r.path("/api/chat")
+                .route("chat", r -> r.path("/api/chat/**")
                         .filters(f->f.filter(authFilter.apply(config -> {config.setRequiredRole("role_user");})))
-                        .uri("http://ruby:3000"))
+                        .uri("http://localhost:3000"))
                 .route("business", r -> r.path("/api/user/signin", "/api/user/test", "/api/user/signup",
                                 "/api/announcement", "api/menu", "/api/speech", "/api/auth")
                         .uri("http://spring:8080"))
