@@ -113,13 +113,13 @@ class LLM_RAG:
         
     def score_route(self, info):
         if "good" in info["score"].lower():
-            self.result = self.deepl.translate_text(self.result, target_lang=self.result_lang)
+            self.result = self.deepl.translate_text(self.result, target_lang=self.result_lang).text
             return self.result
         else:
             print('-- google search --')
             content = self.tavily.qna_search(query='국민대학교 ' + self.ko_query)
-            self.result = "답을 찾을 수 없어서 구글에 검색했습니다.\n\n" + content
-            self.result = self.deepl.translate_text(self.result, target_lang=self.result_lang)
+            self.result = "I couldn't find the answer, so I searched on Google.\n\n" + content
+            self.result = self.deepl.translate_text(self.result, target_lang=self.result_lang).text
 
     def format_docs(self, docs):
     # 검색한 문서 결과를 하나의 문단으로 합쳐줍니다.
@@ -127,7 +127,7 @@ class LLM_RAG:
     
     def query(self, question, result_lang):
         self.question = question
-        self.ko_query = self.deepl.translate_text(self.question, target_lang='ko')
+        self.ko_query = self.deepl.translate_text(self.question, target_lang='ko').text
         self.result_lang = result_lang
         self.qna_route_chain.invoke(question)
         return self.result
