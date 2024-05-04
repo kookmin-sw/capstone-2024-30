@@ -127,7 +127,7 @@ class LLM_RAG:
     
     def query(self, question, result_lang):
         self.question = question
-        self.ko_query = self.deepl.translate_text(self.result, target_lang='ko')
+        self.ko_query = self.deepl.translate_text(self.question, target_lang='ko')
         self.result_lang = result_lang
         self.qna_route_chain.invoke(question)
         return self.result
