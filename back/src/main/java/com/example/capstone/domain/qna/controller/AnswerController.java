@@ -35,7 +35,7 @@ public class AnswerController {
                 .ok(new ApiResult<>("Successfully create answer",answer));
     }
 
-    @GetMapping("/list")
+    @PostMapping("/list")
     @Operation(summary = "댓글 리스트 생성", description = "request 정보를 기반으로 댓글의 리스트를 생성합니다.")
     @ApiResponse(responseCode = "200", description = "request 정보를 기반으로 생성된 댓글의 리스트가 반환됩니다.")
     public ResponseEntity<ApiResult<AnswerSliceResponse>> listAnswer(@Parameter(description = "댓글 리스트 생성을 위한 파라미터 값입니다. 질문글의 id, cursorId, 댓글 정렬 기준( date / like )이 필요합니다.", required = true)

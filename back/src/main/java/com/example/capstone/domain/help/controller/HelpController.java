@@ -69,7 +69,7 @@ public class HelpController {
                 .ok(new ApiResult<>("Successfully delete help", 200));
     }
 
-    @GetMapping("/list")
+    @PostMapping("/list")
     @Operation(summary = "헬퍼글 미리보기 리스트 생성", description = "request 정보를 기반으로 페이지네이션이 적용된 헬퍼글 리스트를 반환합니다.")
     @ApiResponse(responseCode = "200", description = "request 조건에 맞는 헬퍼글 리스트를 반환합니다.")
     public ResponseEntity<ApiResult<HelpSliceResponse>> listHelp(

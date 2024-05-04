@@ -63,7 +63,7 @@ public class QuestionController {
     @Operation(summary = "질문글 수정", description = "request 정보를 기반으로 질문글을 수정합니다.")
     @ApiResponse(responseCode = "200", description = "완료시 200을 리턴합니다.")
     public ResponseEntity<ApiResult<Integer>> updateQuestion(/*@RequestHeader String token,*/
-                                            @Parameter(description = "수정할 질문글의 id와 질문글의 content가 들어갑니다.", required = true)
+                                            @Parameter(description = "수정할 질문글의 id와 질문글의 request가 들어갑니다.", required = true)
                                             @RequestBody QuestionPutRequest request) {
         String userId = UUID.randomUUID().toString();//jwtTokenProvider.extractUUID(token);
         questionService.updateQuestion(userId, request);
@@ -87,7 +87,7 @@ public class QuestionController {
                 .ok(new ApiResult<>("Successfully delete question", 200));
     }
 
-    @GetMapping("/list")
+    @PostMapping("/list")
     @Operation(summary = "질문글 미리보기 리스트 생성", description = "request 정보를 기반으로 페이지네이션이 적용된 질문글 리스트를 반환합니다.")
     @ApiResponse(responseCode = "200", description = "request 조건에 맞는 질문글 리스트를 반환합니다.")
     public ResponseEntity<ApiResult<QuestionSliceResponse>> listQuestion(
