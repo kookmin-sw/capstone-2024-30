@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart' as ap;
 import 'package:audioplayers/audioplayers.dart';
+import 'package:capstone_front/models/speech_model.dart';
+import 'package:capstone_front/screens/speech_practice/speech_practice_screen.dart';
 import 'package:capstone_front/services/speech_service.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
@@ -16,6 +18,7 @@ class AudioPlayer extends StatefulWidget {
   final VoidCallback onDelete;
   final String path;
   final String sentence;
+  final VoidCallback onBtnPressed;
 
   const AudioPlayer({
     super.key,
@@ -23,6 +26,7 @@ class AudioPlayer extends StatefulWidget {
     required this.onDelete,
     required this.path,
     required this.sentence,
+    required this.onBtnPressed,
   });
 
   @override
@@ -106,10 +110,13 @@ class AudioPlayerState extends State<AudioPlayer> {
                     Icons.check,
                     size: _deleteBtnSize,
                   ),
-                  onPressed: () async {
-                    String result =
-                        await getSpeechResult(widget.path, widget.sentence);
-                    print(result);
+                  onPressed: () {
+                    // print(widget.path);
+                    // speechModel =
+                    //     await getSpeechResult(widget.path, widget.sentence);
+                    print("123123123132231123123123123132132");
+                    widget.onBtnPressed();
+                    print("!@#@#!@#!@#!@#!@#!#@!#@!@#!@#!#@");
                   },
                 ),
                 Text(tr('speech.get_result')),

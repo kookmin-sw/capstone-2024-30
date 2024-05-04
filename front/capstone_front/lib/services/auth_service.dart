@@ -73,9 +73,9 @@ class AuthService {
         value: apiSuccessResponse.response['refreshToken'],
       );
     } else {
+      print(jsonMap);
       final ApiFailResponse apiFailResponse = ApiFailResponse.fromJson(jsonMap);
-      print(response.statusCode);
-      print(apiFailResponse.message);
+      print(apiFailResponse);
       throw Exception("fail to get toekns");
     }
 

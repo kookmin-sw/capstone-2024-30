@@ -1,3 +1,4 @@
+import 'package:capstone_front/screens/speech_practice/speech_practice_screen.dart';
 import 'package:capstone_front/screens/speech_practice/utils/audio_player.dart';
 import 'package:capstone_front/screens/speech_practice/utils/audio_recorder.dart';
 import 'package:capstone_front/services/speech_service.dart';
@@ -5,7 +6,13 @@ import 'package:flutter/material.dart';
 
 class RecorderScreen extends StatefulWidget {
   final String sentence;
-  const RecorderScreen({super.key, required this.sentence});
+  final VoidCallback onBtnPressed;
+
+  const RecorderScreen({
+    super.key,
+    required this.sentence,
+    required this.onBtnPressed,
+  });
 
   @override
   State<RecorderScreen> createState() => _RecorderScreenState();
@@ -20,8 +27,7 @@ class _RecorderScreenState extends State<RecorderScreen> {
     return Container(
       height: 100,
       width: double.infinity,
-      decoration: const BoxDecoration(
-          border: Border(top: BorderSide(color: Colors.black, width: 2))),
+      decoration: const BoxDecoration(),
       child: showPlayer
           ? Padding(
               padding: const EdgeInsets.only(left: 40, right: 40, top: 10),
@@ -32,6 +38,7 @@ class _RecorderScreenState extends State<RecorderScreen> {
                 },
                 path: audioPath!,
                 sentence: widget.sentence,
+                onBtnPressed: widget.onBtnPressed,
               ),
             )
           : Recorder(
@@ -39,6 +46,7 @@ class _RecorderScreenState extends State<RecorderScreen> {
                 print('Recorded file path: $path');
                 setState(() {
                   audioPath = path;
+                  filePath = path;
                   showPlayer = true;
                 });
               },
