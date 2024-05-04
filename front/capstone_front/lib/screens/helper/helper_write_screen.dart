@@ -1,7 +1,9 @@
+import 'package:capstone_front/services/helper_service.dart';
 import 'package:capstone_front/utils/basic_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class HelperWriteScreen extends StatefulWidget {
   const HelperWriteScreen({super.key});
@@ -90,12 +92,19 @@ class _HelperWriteScreenState extends State<HelperWriteScreen> {
             const SizedBox(height: 20),
             BasicButton(
               text: tr('helper.write_complete'),
-              onPressed: () {
+              onPressed: () async {
                 setState(() {
-                  // Todo: 서버로 작성된 내용 전송
-                  print("작성 완료 ㅇㅅㅇ");
-                  print(_titleController.text);
-                  print(_contentController.text);
+                  if (_titleController.text != "" &&
+                      _contentController.text != "") {
+                    var result = HelperService.createHelperPost({
+                      "title": _titleController.text,
+                      "author": "지훈초이",
+                      "country": "korea",
+                      "context": _contentController.text,
+                      "isHelper": _selectedIndex
+                    });
+                    Navigator.pop(context, result);
+                  }
                 });
               },
             )

@@ -18,10 +18,9 @@ def access_all_folders_and_files(vdb, source_directory_path, dest_directory_path
         # os.walk()를 사용하여 모든 폴더와 파일에 접근
     for root, dirs, files in os.walk(source_directory_path):
         print(f" --- current path --- : {root}")
-
-        # 폴더 내의 모든 파일에 접근
         for file in tqdm.tqdm(files):
             if file.endswith(extension_name):
-                vdb.add_content(root+'/'+file, dest_directory_path)
+                base_name = '/' + os.path.basename(root)
+                vdb.add_content(root+'/'+file, dest_directory_path + base_name)
 
 access_all_folders_and_files(vdb, data_dir_path, FAISS_path, '.pkl')
