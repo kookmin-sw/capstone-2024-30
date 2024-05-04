@@ -34,7 +34,7 @@ class _HelperBoardState extends State<HelperBoardScreen> {
     tr('helper.need_helpee'),
   ];
 
-  void loadHelperAtricles() async {
+  Future<void> loadHelperAtricles() async {
     uuid = null;
     if (searchMyArticles) {
       uuid = await storage.read(key: "uuid");
@@ -48,7 +48,7 @@ class _HelperBoardState extends State<HelperBoardScreen> {
     setState(() {});
   }
 
-  void initStateForChangeType() {
+  Future<void> initStateForChangeType() async {
     setState(() {
       cursor = 0;
       isDone = false;
@@ -172,13 +172,13 @@ class _HelperBoardState extends State<HelperBoardScreen> {
               return Padding(
                 padding: EdgeInsets.only(left: index == 0 ? 0 : 10),
                 child: GestureDetector(
-                  onTap: () {
+                  onTap: () async {
                     setState(() {
                       _selectedHelperIndex = index;
                       isHelper = _selectedHelperIndex == 0 ? true : false;
                     });
-                    initStateForChangeType();
-                    loadHelperAtricles();
+                    await initStateForChangeType();
+                    await loadHelperAtricles();
                   },
                   child: Container(
                     padding: const EdgeInsets.symmetric(

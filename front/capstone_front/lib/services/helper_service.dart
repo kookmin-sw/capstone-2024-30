@@ -9,6 +9,7 @@ import 'package:capstone_front/models/helper_article_response.dart';
 import 'package:capstone_front/models/qna_post_model.dart';
 import 'package:capstone_front/models/qna_response.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 
@@ -17,21 +18,35 @@ class HelperService {
 
   static Future<HelperArticleResponse> getHelperAtricles(
       int cursor, bool isHelper, bool isDone, String? uuid) async {
-    var query = 'cursorId=$cursor&isDone=$isDone&isHelper=$isHelper&isMine=';
-    if (uuid != null) {
-      var query =
-          'cursorId=$cursor&isDone=$isDone&isHelper=$isHelper&isMine=$uuid';
-    }
-    final url = Uri.parse('$baseUrl/help/list?$query');
-    print(url);
-    final response = await http.get(url);
+    FlutterSecureStorage storage = const FlutterSecureStorage();
+    final url = Uri.parse('$baseUrl/help/list');
+    final accessToken = await storage.read(key: "accessToken");
+
+    var requestInfo = {
+      "cursorId": cursor,
+      "isDone": isDone,
+      "isHelper": isHelper,
+      "isMine": uuid
+    };
+
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      },
+      body: jsonEncode(
+        requestInfo,
+      ),
+    );
 
     List<HelperArticlePreviewModel> helperArticlePreviewInstances = [];
 
     final String decodedBody = utf8.decode(response.bodyBytes);
     final jsonMap = jsonDecode(decodedBody);
     if (response.statusCode == 200) {
-      final ApiSuccessResponse apiSuccessResponse = jsonDecode(jsonMap);
+      final ApiSuccessResponse apiSuccessResponse =
+          ApiSuccessResponse.fromJson(jsonMap);
       final res = apiSuccessResponse.response;
       final List<dynamic> posts = res['helpList'];
 
