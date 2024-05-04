@@ -85,7 +85,7 @@ public class FAQController {
                 .ok(new ApiResult<>("Successfully delete FAQ", 200));
     }
 
-    @GetMapping("/list")
+    @PostMapping("/list")
     @Operation(summary = "FAQ글의 미리보기 리스트 생성", description = "FAQ글 리스트를 생성하여 반환합니다.")
     @ApiResponse(responseCode = "200", description = "FAQ글의 미리보기 리스트가 반환됩니다.")
     public ResponseEntity<ApiResult<FAQSliceResponse>> listFAQ(   @Parameter(description = "FAQ글 리스트를 생성하기 위한 파라미터입니다. cursorId, 언어, 검색어, 태그값이 필요합니다.", required = true)
