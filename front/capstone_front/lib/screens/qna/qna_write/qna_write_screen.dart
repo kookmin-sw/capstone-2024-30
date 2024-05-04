@@ -233,6 +233,15 @@ class _HelperWriteScreenState extends State<QnaWriteScreen> {
                         imagesList: ["qwe", "asd"],
                         commentAmount: 2,
                       ));
+
+                  var qnaPost = {
+                    "title": _titleController.text,
+                    "author": "author",
+                    "context": _contentController.text,
+                    "tag": "tagggg",
+                    "country": "qwe",
+                  };
+                  QnaService.createQnaPost(qnaPost, images);
                   Navigator.pop(context);
                 } else {
                   makeToast("내용을 다 채워주세요");

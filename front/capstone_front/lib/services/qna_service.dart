@@ -8,6 +8,7 @@ import 'package:capstone_front/models/qna_response.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class QnaService {
   static String baseUrl = dotenv.get('BASE_URL');
@@ -66,21 +67,18 @@ class QnaService {
 
   static Future<Map<String, dynamic>> createQnaPost(
       Map<String, dynamic> qnaPost, List<XFile>? images) async {
-    final url = Uri.parse('$baseUrl/yet/');
+    // final url = Uri.parse('https://postman-echo.com/post');
+    final url = Uri.parse('$baseUrl/question/create');
 
-    var request = http.MultipartRequest('POST', url)
-      ..fields['title'] = qnaPost['title']
-      ..fields['content'] = qnaPost['content']
-      ..fields['category'] = qnaPost['category']
-      ..fields['author'] = qnaPost['author']
-      ..fields['country'] = qnaPost['country'];
+    var request = http.MultipartRequest('POST', url);
+    request.fields['request'] = jsonEncode(qnaPost);
 
     if (images != null) {
       for (var image in images) {
         if (image.path.isNotEmpty) {
           print(image.path);
           var multipartFile = await http.MultipartFile.fromPath(
-            'images',
+            'imgList',
             image.path,
           );
           request.files.add(multipartFile);
@@ -88,14 +86,17 @@ class QnaService {
       }
     }
 
-    request.headers.addAll({
-      'Content-Type': 'multipart/form-data',
-    });
+    // request.headers.addAll({
+    //   'Content-Type': 'multipart/form-data',
+    // });
 
     var response = await request.send();
 
     final bytes = await response.stream.toBytes();
     final String decodedBody = utf8.decode(bytes);
+    logToFile(decodedBody);
+
+    print(decodedBody);
 
     final Map<String, dynamic> jsonMap = jsonDecode(decodedBody);
     if (response.statusCode == 201) {
@@ -111,6 +112,11 @@ class QnaService {
       print('Request failed with status: ${apiFailResponse.message}.');
       throw Exception("cant post article");
     }
+  }
+
+  static void logToFile(String data) async {
+    final file = File('./logfile.txt'); // 적절한 파일 경로 설정
+    await file.writeAsString(data, mode: FileMode.append);
   }
 
   static Future<bool> createAnswer(AnswerModel answer) async {
