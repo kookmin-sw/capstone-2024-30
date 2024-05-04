@@ -1,14 +1,12 @@
 package com.example.capstone.domain.user.controller;
 
 import com.example.capstone.domain.auth.dto.TokenResponse;
-import com.example.capstone.domain.jwt.PrincipalDetails;
 import com.example.capstone.domain.user.dto.SigninRequest;
 import com.example.capstone.domain.user.dto.SignupRequest;
 import com.example.capstone.domain.user.dto.UserProfileUpdateRequest;
 import com.example.capstone.domain.user.entity.User;
 import com.example.capstone.domain.user.service.LoginService;
 import com.example.capstone.domain.user.service.UserService;
-import com.example.capstone.domain.user.util.UserMapper;
 import com.example.capstone.global.dto.ApiResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -20,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
