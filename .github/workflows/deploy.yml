@@ -225,6 +225,7 @@ jobs:
             sudo docker pull ${{ secrets.DOCKER_REPO }}/spring:test
             sudo docker pull ${{ secrets.DOCKER_REPO }}/nginx:test
             sudo docker pull ${{ secrets.DOCKER_REPO }}/ruby:test
+            sudo docker pull ${{ secrets.DOCKER_REPO }}/spring-gateway:test
   
             sudo docker compose -f capstone/docker-compose.yml up -d
             sudo docker image prune -f
