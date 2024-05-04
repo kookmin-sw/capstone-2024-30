@@ -5,7 +5,7 @@
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://capstone-spring-mysql.c3cyseycs3gd.ap-northeast-2.rds.amazonaws.com:3306/capstone</jdbc-url>
+      <jdbc-url>jdbc:mysql://capstone30-mysql.c3cyseycs3gd.ap-northeast-2.rds.amazonaws.com:3306/capstone</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

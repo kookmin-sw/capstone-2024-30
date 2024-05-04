@@ -4,7 +4,7 @@ class ChatsPollingController < ApplicationController
   before_action :authorize_request
 
   def room_poll
-    user_id = @decoded[:uuid]
+    user_id = @decoded
     last_room_id = params[:room_id].to_i
 
     timeout = 10.seconds.from_now
@@ -44,7 +44,7 @@ class ChatsPollingController < ApplicationController
   end
 
   def message_poll
-    user_id = @decoded[:uuid]
+    user_id = @decoded
 
     chat_room_list = params.require(:list)
 
@@ -89,7 +89,7 @@ class ChatsPollingController < ApplicationController
     end
   end
   def detail_poll
-    user_id = @decoded[:uuid]
+    user_id = @decoded
     chat_room = ChatRoom.where('id = ? AND (user1_uuid = ? OR user2_uuid = ?)',
                                params[:chat_id], user_id, user_id).first
 
