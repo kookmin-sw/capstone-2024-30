@@ -21,10 +21,23 @@ services:
     networks:
       - backend_network
 
+  spring_gateway:
+    container_name: spring_gateway
+    restart: always
+    image: capstone30/spring-gateway:test
+    env_file:
+      - .env
+    environment:
+      TZ: "Asia/Seoul"
+    ports:
+      - "8081:8081"
+    networks:
+      - backend_network
+
   spring:
     container_name: spring
     restart: always
-    image: capstone30/spring
+    image: capstone30/spring:test
     env_file:
       - .env
     environment:
@@ -42,7 +55,7 @@ services:
   ruby:
     container_name: ruby
     restart: always
-    image: capstone30/ruby
+    image: capstone30/ruby:test
     env_file:
       - .env
     environment:
@@ -54,7 +67,7 @@ services:
 
   nginx:
     container_name: nginx
-    image: capstone30/nginx
+    image: capstone30/nginx:test
     restart: unless-stopped
     environment:
       TZ: "Asia/Seoul"

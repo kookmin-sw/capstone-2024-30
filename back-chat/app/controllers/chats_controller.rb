@@ -3,7 +3,7 @@
 class ChatsController < ApplicationController
   before_action :authorize_request
   def list
-    user_id = @decoded[:uuid]
+    user_id = @decoded
 
     user = User.find_by(user_id: user_id)
     if user.nil?
@@ -45,7 +45,7 @@ class ChatsController < ApplicationController
   # 유저간 채팅방을 생성해줌
   def connect
     user1_id = params[:user_id]
-    user2_id = @decoded[:uuid]
+    user2_id = @decoded
 
     user1 = User.find_by(user_id: user1_id)
     user2 = User.find_by(user_id: user2_id)
@@ -67,7 +67,7 @@ class ChatsController < ApplicationController
   end
 
   def join
-    user_id = @decoded[:uuid]
+    user_id = @decoded
     chat_room = ChatRoom.where('id = ? AND (user1_uuid = ? OR user2_uuid = ?)',
                                params[:chat_id], user_id, user_id).first
 
@@ -102,7 +102,7 @@ class ChatsController < ApplicationController
   end
 
   def send_message
-    user_id = @decoded[:uuid]
+    user_id = @decoded
 
     chat_room = ChatRoom.where('id = ? AND (user1_uuid = ? OR user2_uuid = ?)',
                                params[:chat_id], user_id, user_id).first
