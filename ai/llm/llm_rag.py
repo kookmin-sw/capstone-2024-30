@@ -4,8 +4,8 @@ from langchain_core.runnables import RunnablePassthrough, RunnableLambda
 from langchain_openai import ChatOpenAI
 from tavily import TavilyClient
 from llm.prompt import casual_prompt, is_qna_prompt, combine_result_prompt, score_prompt
-from llm.deepl import DeepL
 from langchain.retrievers.multi_query import MultiQueryRetriever
+import deepl
 import os
 
 class LLM_RAG:
@@ -19,8 +19,7 @@ class LLM_RAG:
         self.is_qna_prompt = is_qna_prompt()
         self.combine_result_prompt = combine_result_prompt()
         self.score_prompt = score_prompt()
-        self.translate_prompt = translate_prompt()
-        self.deepl = DeepL()
+        self.deepl = deepl.Translator(os.getenv("DEEPL_API_KEY"))
         self.result_lang = None
         self.notice_retriever = None
         self.school_retriever = None
@@ -100,7 +99,7 @@ class LLM_RAG:
 
     def qna_route(self, info):
         if "question" in info["topic"].lower():
-            ko_query = self.deepl.translate(self.question, 'ko')
+            ko_query = self.deepl.translate_text(self.question, target_lang='KO')
             self.result = self.rag_combine_chain.invoke(ko_query)
             score = self.score_chain.invoke({"question" : ko_query, "answer": self.result})
             self.score_invoke_chain.invoke({"score" : score, "question": ko_query})
@@ -114,14 +113,13 @@ class LLM_RAG:
         
     def score_route(self, info):
         if "good" in info["score"].lower():
-            result = self.deepl.translate(self.result, self.result_lang)
+            self.result = self.deepl.translate_text(self.result, target_lang=self.result_lang)
             return self.result
         else:
             print('-- google search --')
             content = self.tavily.qna_search(query='국민대학교 ' + self.question)
             self.result = "답을 찾을 수 없어서 구글에 검색했습니다.\n\n" + content
-            result = self.deepl.translate(self.result, self.result_lang)
-            return result
+            self.result = self.deepl.translate_text(self.result, target_lang=self.result_lang)
 
     def format_docs(self, docs):
     # 검색한 문서 결과를 하나의 문단으로 합쳐줍니다.

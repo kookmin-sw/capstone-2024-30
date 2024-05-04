@@ -11,6 +11,7 @@ os.chdir(current_directory)
 load_dotenv()
 
 os.environ['OPENAI_API_KEY'] = os.getenv('OPENAI_API_KEY')
+os.environ['DEEPL_API_KEY'] = os.getenv('DEEPL_API_KEY')
 
 # LangSmith 사용시 아래 주석을 해제
 # os.environ['LANGCHAIN_API_KEY'] = os.getenv('LANGCHAIN_API_KEY')
@@ -40,5 +41,5 @@ while True:
     if q == str(0):
         break
     print('AI : ', end='')
-    print(llm.query(q, 'ko'))
+    print(llm.query(q, 'EN-US'))
     print()
