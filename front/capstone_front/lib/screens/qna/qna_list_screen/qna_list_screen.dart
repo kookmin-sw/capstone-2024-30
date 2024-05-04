@@ -130,6 +130,10 @@ class _QnaListScreenState extends State<QnaListScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Column(
                 children: [
+                  Container(
+                    color: const Color(0xFFF8F8F8),
+                    height: 15,
+                  ),
                   Expanded(
                     child: ListView.separated(
                       shrinkWrap: true,
