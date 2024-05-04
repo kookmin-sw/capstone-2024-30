@@ -2,9 +2,7 @@ package com.gateway.backgateway.config;
 
 import com.gateway.backgateway.filter.AuthorizationHeaderFilter;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.gateway.route.Route;
 import org.springframework.cloud.gateway.route.RouteLocator;
-import org.springframework.cloud.gateway.route.builder.Buildable;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +23,7 @@ public class GatewayConfig {
                         .filters(f->f.filter(authFilter.apply(config -> {config.setRequiredRole("role_user");})))
                         .uri("http://ruby:3000"))
                 .route("business", r -> r.path("/api/user/signin", "/api/user/test", "/api/user/signup",
-                                "/api/announcement", "api/menu", "/api/speech", "/api/auth")
+                                "/api/announcement", "api/menu", "/api/speech", "/api/auth", "/api/swagger-ui/index.html")
                         .uri("http://spring:8080"))
                 .route("business", r -> r.path("/api/**")
                         .filters(f->f.filter(authFilter.apply(config -> {config.setRequiredRole("role_user");})))
