@@ -142,24 +142,4 @@ public class JwtTokenProvider {
         }
 
     }
-
-    /**
-     * 좀만 고민해보고 폐기 예정
-     */
-    private Claims parseClaims(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-    }
-
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = parseClaims(token);
-        return claimsResolver.apply(claims);
-    }
-
-    public String extractUUID(String token) {
-        return extractClaim(token, claims -> claims.get(JwtClaim.UUID.getKey(), String.class));
-    }
 }

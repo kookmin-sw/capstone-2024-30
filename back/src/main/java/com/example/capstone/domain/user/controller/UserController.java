@@ -74,8 +74,8 @@ public class UserController {
             @ApiResponse(responseCode = "401", description = "유효하지 않은 토큰", content = @Content(mediaType = "application/json"))
     })
     @GetMapping("/me")
-    public ResponseEntity<ApiResult<User>> getMyProfile(@AuthenticationPrincipal PrincipalDetails principalDetails) {
-        User user = UserMapper.INSTANCE.principalDetailsToUser(principalDetails);
+    public ResponseEntity<ApiResult<User>> getMyProfile(@RequestHeader("X-User-ID") String userId) {
+        User user = userService.getUserInfo(userId);
         return ResponseEntity
                 .ok(new ApiResult<>("Successfully gey my info", user));
     }
@@ -88,10 +88,9 @@ public class UserController {
             @ApiResponse(responseCode = "401", description = "유효하지 않은 토큰", content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "403", description = "권한 없음", content = @Content(mediaType = "application/json"))
     })
-    public ResponseEntity<ApiResult<User>> updateProfile(@AuthenticationPrincipal PrincipalDetails principalDetails,
+    public ResponseEntity<ApiResult<User>> updateProfile(@RequestHeader("X-User-ID") String userId,
                                               @RequestBody @Valid final UserProfileUpdateRequest userProfileUpdateRequest) {
-        String UUID = principalDetails.getUuid();
-        User user = userService.updateUser(UUID, userProfileUpdateRequest);
+        User user = userService.updateUser(userId, userProfileUpdateRequest);
         return ResponseEntity
                 .ok(new ApiResult<>("Successfully modify my info", user));
     }
