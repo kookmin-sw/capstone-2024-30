@@ -56,7 +56,7 @@ class _QnaListScreenState extends State<QnaListScreen> {
 
   void loadQnas(int lastCursor) async {
     try {
-      QnasResponse res = await QnaService.getQnaPosts(lastCursor, 'all');
+      QnasResponse res = await QnaService.getQnaPosts(lastCursor, '', '');
       setState(() {
         hasNext = res.hasNext;
         if (hasNext) {
