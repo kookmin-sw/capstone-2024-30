@@ -48,6 +48,9 @@
     "language_setting": "언어 설정",
     "logout": "로그아웃"
   },
+  "cafeteria": {
+    "no_data": "미운영중입니다"
+  },
   "speech": {
     "speech_practice": "발음 연습",
     "example_sentence": "예문",
