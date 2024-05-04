@@ -19,8 +19,8 @@ class HelperService {
   static Future<HelperArticleResponse> getHelperAtricles(
       int cursor, bool isHelper, bool isDone, String? uuid) async {
     FlutterSecureStorage storage = const FlutterSecureStorage();
-    final url = Uri.parse('$baseUrl/help/list');
     final accessToken = await storage.read(key: "accessToken");
+    final url = Uri.parse('$baseUrl/help/list');
 
     var requestInfo = {
       "cursorId": cursor,
@@ -71,10 +71,17 @@ class HelperService {
   }
 
   static Future<HelperArticleModel> getDetailById(int atricleId) async {
+    FlutterSecureStorage storage = const FlutterSecureStorage();
+    final accessToken = await storage.read(key: "accessToken");
     List<AnswerModel> answerInstances = [];
-    final url = Uri.parse('$baseUrl/helper/$atricleId');
+    final url = Uri.parse('$baseUrl/help/read?id=$atricleId');
 
-    final response = await http.get(url);
+    final response = await http.get(
+      url,
+      headers: {
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
     final String decodedBody = utf8.decode(response.bodyBytes);
     final Map<String, dynamic> jsonMap = jsonDecode(decodedBody);
 
@@ -93,11 +100,14 @@ class HelperService {
 
   static Future<HelperArticleModel> createHelperPost(
       Map<String, dynamic> helperPost) async {
+    FlutterSecureStorage storage = const FlutterSecureStorage();
+    final accessToken = await storage.read(key: "accessToken");
     final url = Uri.parse('$baseUrl/help/create');
     final response = await http.post(
       url,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
       },
       body: jsonEncode(helperPost),
     );
@@ -118,6 +128,8 @@ class HelperService {
       throw ('fail to post article');
     }
   }
+
+  // @@@@@ 이하 QnA 복붙 @@@@@
 
   static Future<bool> createAnswer(AnswerModel answer) async {
     final url = Uri.parse('$baseUrl/yet/');

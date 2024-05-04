@@ -21,11 +21,15 @@ class HelperWritingScreen extends StatefulWidget {
 }
 
 class _HelperWritingScreenState extends State<HelperWritingScreen> {
-  late HelperArticleModel helperArticleModel;
+  HelperArticleModel? helperArticleModel;
+  bool isLoading = true;
 
   void loadDetail() async {
     helperArticleModel =
         await HelperService.getDetailById(widget.helperArticlePreviewModel.id);
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -37,79 +41,81 @@ class _HelperWritingScreenState extends State<HelperWritingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        scrolledUnderElevation: 0,
-        title: Text(
-          tr('helper.helper'),
+        appBar: AppBar(
+          scrolledUnderElevation: 0,
+          title: Text(
+            tr('helper.helper'),
+          ),
         ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20),
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20),
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(25),
-                              child: Image.asset(
-                                  'assets/images/carrot_profile.png'),
+        body: Padding(
+          padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20),
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: 50,
+                              height: 50,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(25),
+                                child: Image.asset(
+                                    'assets/images/carrot_profile.png'),
+                              ),
                             ),
-                          ),
-                          const SizedBox(width: 20),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                helperArticleModel.country,
-                                style: const TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w600),
-                              ),
-                              Text(
-                                helperArticleModel.author,
-                                style: const TextStyle(
-                                    fontFamily: 'pretendard',
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                    color: Color(0xff868e96)),
-                              ),
-                            ],
-                          ),
-                        ],
+                            const SizedBox(width: 20),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  widget.helperArticlePreviewModel.author,
+                                  style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                Text(
+                                  widget.helperArticlePreviewModel.country,
+                                  style: const TextStyle(
+                                      fontFamily: 'pretendard',
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      color: Color(0xff868e96)),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    const Divider(color: Color(0xffe9ecef)),
-                    const SizedBox(height: 20),
-                    Text(
-                      helperArticleModel.title,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                    const SizedBox(height: 20),
-                    Text(helperArticleModel.context),
-                  ],
+                      const Divider(color: Color(0xffe9ecef)),
+                      const SizedBox(height: 20),
+                      Text(
+                        widget.helperArticlePreviewModel.title,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                      const SizedBox(height: 20),
+                      isLoading
+                          ? const CircularProgressIndicator()
+                          : Text(helperArticleModel!.context),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            BasicButton(
-                text: tr('helper.start_chat'),
-                onPressed: () {
-                  context.pop();
-                })
-          ],
-        ),
-      ),
-    );
+              const SizedBox(
+                height: 20,
+              ),
+              BasicButton(
+                  text: tr('helper.start_chat'),
+                  onPressed: () {
+                    context.pop();
+                  })
+            ],
+          ),
+        ));
   }
 }

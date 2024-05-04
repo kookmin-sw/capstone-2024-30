@@ -21,7 +21,7 @@ class _HelperBoardState extends State<HelperBoardScreen> {
   FlutterSecureStorage storage = const FlutterSecureStorage();
   late List<HelperArticlePreviewModel> helperArticlePreviews = [];
   int cursor = 0;
-  bool isHelper = true;
+  bool isHelper = false;
   bool isDone = false;
   bool hasNext = false;
   String? uuid = "";
@@ -42,8 +42,10 @@ class _HelperBoardState extends State<HelperBoardScreen> {
     var res =
         await HelperService.getHelperAtricles(cursor, isHelper, isDone, uuid);
     helperArticlePreviews.addAll(res.articles);
-    cursor = res.lastCursorId;
     hasNext = res.hasNext;
+    if (res.hasNext) {
+      cursor = res.lastCursorId!;
+    }
     itemCount += res.articles.length;
     setState(() {});
   }
@@ -54,6 +56,7 @@ class _HelperBoardState extends State<HelperBoardScreen> {
       isDone = false;
       hasNext = false;
       itemCount = 0;
+      helperArticlePreviews = [];
     });
   }
 
@@ -109,16 +112,20 @@ class _HelperBoardState extends State<HelperBoardScreen> {
                     builder: (context) => const HelperWriteScreen(),
                   ),
                 );
-                helperArticlePreviews.add(HelperArticlePreviewModel.fromJson({
-                  "id": articleObj.id,
-                  "isDone": articleObj.isDone,
-                  "isHelper": articleObj.isHelper,
-                  "title": articleObj.title,
-                  "author": articleObj.author,
-                  "country": articleObj.country,
-                  "createdDate": articleObj.createdDate,
-                }));
-                setState(() {});
+                if (articleObj != null) {
+                  helperArticlePreviews.insert(
+                      0,
+                      HelperArticlePreviewModel.fromJson({
+                        "id": articleObj.id,
+                        "isDone": articleObj.isDone,
+                        "isHelper": articleObj.isHelper,
+                        "title": articleObj.title,
+                        "author": articleObj.author,
+                        "country": articleObj.country,
+                        "createdDate": articleObj.createdDate,
+                      }));
+                  setState(() {});
+                }
               },
               style: IconButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.primary),
@@ -175,7 +182,7 @@ class _HelperBoardState extends State<HelperBoardScreen> {
                   onTap: () async {
                     setState(() {
                       _selectedHelperIndex = index;
-                      isHelper = _selectedHelperIndex == 0 ? true : false;
+                      isHelper = _selectedHelperIndex == 0 ? false : true;
                     });
                     await initStateForChangeType();
                     await loadHelperAtricles();
