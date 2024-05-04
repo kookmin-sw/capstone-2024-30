@@ -13,10 +13,19 @@ import 'dart:io';
 class QnaService {
   static String baseUrl = dotenv.get('BASE_URL');
 
-  static Future<QnasResponse> getQnaPosts(int cursor, String type) async {
-    var query = 'type=$type&cursor=$cursor';
-    final url = Uri.parse('$baseUrl/yet?$query');
-    final response = await http.get(url);
+  static Future<QnasResponse> getQnaPosts(
+      int cursor, String? tag, String? word) async {
+    final url = Uri.parse('$baseUrl/question/list');
+    var requestInfo = {
+      "cursor": cursor,
+      "tag": tag,
+      "word": word,
+    };
+
+    final response = await http.post(
+      url,
+      body: jsonEncode(requestInfo),
+    );
 
     List<QnaPostModel> qnaPostInstances = [];
 
