@@ -1,5 +1,6 @@
 import 'package:capstone_front/screens/helper/helper_board/helper_writing_card.dart';
 import 'package:capstone_front/screens/helper/helper_board/helper_writing_json.dart';
+import 'package:capstone_front/screens/helper/helper_write_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -56,8 +57,14 @@ class _HelperBoardState extends State<HelperBoardScreen> {
             right: 20,
             child: IconButton(
               iconSize: 50,
-              onPressed: () {
-                context.push('/helper/write');
+              onPressed: () async {
+                var articleObj = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const HelperWriteScreen(),
+                  ),
+                );
+                // TODO
               },
               style: IconButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.primary),
