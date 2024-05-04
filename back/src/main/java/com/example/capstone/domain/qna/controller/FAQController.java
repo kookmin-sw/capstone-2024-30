@@ -51,7 +51,7 @@ public class FAQController {
 
     @GetMapping("/read")
     @Operation(summary = "FAQ글 읽기", description = "FAQ글을 읽어 반환합니다.")
-    @ApiResponse(responseCode = "200", description = "FAQ글의 내용이 담긴 content와 첨부이미지 주소가 담긴 imgUrl이 반환됩니다.")
+    @ApiResponse(responseCode = "200", description = "FAQ글의 내용이 담긴 faqResponse와 첨부이미지 주소가 담긴 imgUrl이 반환됩니다.")
     public ResponseEntity<ApiResult<FAQEntireResponse>> readFAQ(   @Parameter(description = "읽을 FAQ글의 id가 필요합니다.", required = true)
                                         @RequestParam Long id) {
         FAQResponse faqResponse = faqService.getFAQ(id);

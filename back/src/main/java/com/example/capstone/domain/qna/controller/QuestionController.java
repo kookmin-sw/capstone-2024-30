@@ -63,7 +63,7 @@ public class QuestionController {
     @Operation(summary = "질문글 수정", description = "request 정보를 기반으로 질문글을 수정합니다.")
     @ApiResponse(responseCode = "200", description = "완료시 200을 리턴합니다.")
     public ResponseEntity<ApiResult<Integer>> updateQuestion(/*@RequestHeader String token,*/
-                                            @Parameter(description = "수정할 질문글의 id와 질문글의 content가 들어갑니다.", required = true)
+                                            @Parameter(description = "수정할 질문글의 id와 질문글의 request가 들어갑니다.", required = true)
                                             @RequestBody QuestionPutRequest request) {
         String userId = UUID.randomUUID().toString();//jwtTokenProvider.extractUUID(token);
         questionService.updateQuestion(userId, request);
