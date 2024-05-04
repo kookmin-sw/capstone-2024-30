@@ -40,5 +40,5 @@ while True:
     if q == str(0):
         break
     print('AI : ', end='')
-    print(llm.query(q))
+    print(llm.query(q, 'ko'))
     print()
