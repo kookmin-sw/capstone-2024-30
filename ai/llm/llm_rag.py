@@ -20,6 +20,7 @@ class LLM_RAG:
         self.combine_result_prompt = combine_result_prompt()
         self.score_prompt = score_prompt()
         self.deepl = deepl.Translator(os.getenv("DEEPL_API_KEY"))
+        self.ko_query = None
         self.result_lang = None
         self.notice_retriever = None
         self.school_retriever = None
@@ -99,10 +100,9 @@ class LLM_RAG:
 
     def qna_route(self, info):
         if "question" in info["topic"].lower():
-            ko_query = self.deepl.translate_text(self.question, target_lang='KO')
-            self.result = self.rag_combine_chain.invoke(ko_query)
-            score = self.score_chain.invoke({"question" : ko_query, "answer": self.result})
-            self.score_invoke_chain.invoke({"score" : score, "question": ko_query})
+            self.result = self.rag_combine_chain.invoke(self.ko_query)
+            score = self.score_chain.invoke({"question" : self.ko_query, "answer": self.result})
+            self.score_invoke_chain.invoke({"score" : score, "question": self.ko_query})
         
         elif "casual" in info["topic"].lower():
             self.result =  self.casual_answer_chain.invoke(self.question)
@@ -117,7 +117,7 @@ class LLM_RAG:
             return self.result
         else:
             print('-- google search --')
-            content = self.tavily.qna_search(query='국민대학교 ' + self.question)
+            content = self.tavily.qna_search(query='국민대학교 ' + self.ko_query)
             self.result = "답을 찾을 수 없어서 구글에 검색했습니다.\n\n" + content
             self.result = self.deepl.translate_text(self.result, target_lang=self.result_lang)
 
@@ -127,6 +127,7 @@ class LLM_RAG:
     
     def query(self, question, result_lang):
         self.question = question
+        self.ko_query = self.deepl.translate_text(self.result, target_lang='ko')
         self.result_lang = result_lang
         self.qna_route_chain.invoke(question)
         return self.result
