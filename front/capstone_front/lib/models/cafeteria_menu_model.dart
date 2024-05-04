@@ -101,7 +101,5 @@ class CafeteriaMenuModel {
         cafeteriaMenus.add([]);
       }
     }
-    print(cafeteriaMenus.length);
-    print(cafeteriaMenus[6]);
   }
 }

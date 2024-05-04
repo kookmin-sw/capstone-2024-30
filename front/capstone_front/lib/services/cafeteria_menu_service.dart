@@ -1,10 +1,7 @@
 import 'dart:convert';
 
 import 'package:capstone_front/models/api_fail_response.dart';
-import 'package:capstone_front/models/api_success_response.dart';
 import 'package:capstone_front/models/cafeteria_menu_model.dart';
-import 'package:capstone_front/models/notice_model.dart';
-import 'package:capstone_front/models/notice_response.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
