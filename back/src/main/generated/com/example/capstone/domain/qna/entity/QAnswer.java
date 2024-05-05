@@ -36,7 +36,7 @@ public class QAnswer extends EntityPathBase<Answer> {
 
     public final DateTimePath<java.time.LocalDateTime> updatedDate = createDateTime("updatedDate", java.time.LocalDateTime.class);
 
-    public final ComparablePath<java.util.UUID> uuid = createComparable("uuid", java.util.UUID.class);
+    public final StringPath uuid = createString("uuid");
 
     public QAnswer(String variable) {
         this(Answer.class, forVariable(variable), INITS);
