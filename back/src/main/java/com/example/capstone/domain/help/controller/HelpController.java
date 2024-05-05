@@ -25,10 +25,9 @@ public class HelpController {
     @PostMapping(value = "/create")
     @Operation(summary = "헬퍼글 생성", description = "request 정보를 기반으로 헬퍼글을 생성합니다.")
     @ApiResponse(responseCode = "200", description = "request 정보를 기반으로 생성된 헬퍼글을 반환됩니다.")
-    public ResponseEntity<ApiResult<HelpResponse>> createHelp(
+    public ResponseEntity<ApiResult<HelpResponse>> createHelp(@RequestHeader("X-User-ID") String userId,
                                             @Parameter(description = "헬퍼 모집글의 구성 요소 입니다. 제목, 작성자, 본문, 국가 정보가 들어가야 합니다.", required = true)
                                             @RequestBody HelpPostRequest request) {
-        String userId = UUID.randomUUID().toString();//jwtTokenProvider.extractUUID(token);
         HelpResponse helpResponse = helpService.createHelp(userId, request);
 
         return ResponseEntity
