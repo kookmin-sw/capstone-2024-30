@@ -62,8 +62,8 @@ class _QnaDetailScreenState extends State<QnaDetailScreen>
     setState(() {
       answerList.addAll(res.answers);
       itemCount += res.answers.length;
-      likeList = List.filled(itemCount * 2, false);
-      likeCount = List.filled(itemCount * 2, 0);
+      likeList = List.filled(100, false);
+      likeCount = List.filled(100, 0);
     });
   }
 
@@ -217,39 +217,42 @@ class _QnaDetailScreenState extends State<QnaDetailScreen>
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    answerList[index].author,
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w300,
-                                      color: Color(0xFF444444),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      answerList[index].author,
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w300,
+                                        color: Color(0xFF444444),
+                                      ),
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    width: 20,
-                                  ),
-                                  Text(
-                                    answerList[index].createdDate,
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w300,
-                                      color: Color(0xFF848484),
+                                    const SizedBox(
+                                      width: 20,
                                     ),
-                                  ),
-                                ],
-                              ),
-                              Text(
-                                answerList[index].content,
-                                style: const TextStyle(
-                                  fontSize: 18,
+                                    Text(
+                                      answerList[index].createdDate,
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w300,
+                                        color: Color(0xFF848484),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            ],
+                                Text(
+                                  answerList[index].content,
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                  ),
+                                  softWrap: true,
+                                ),
+                              ],
+                            ),
                           ),
                           Column(
                             children: [
@@ -331,11 +334,9 @@ class _QnaDetailScreenState extends State<QnaDetailScreen>
                                   "author": "jihun",
                                   "context": _textController.text,
                                 };
-                                print('send req');
                                 var asnwerModel =
                                     await QnaService.createAnswer(commentObj);
                                 answerList.add(asnwerModel);
-                                print('got a res');
                                 setState(() {});
                               }
                             },
