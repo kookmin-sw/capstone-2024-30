@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:capstone_front/models/answer_model.dart';
+import 'package:capstone_front/models/answer_response.dart';
 import 'package:capstone_front/models/api_fail_response.dart';
 import 'package:capstone_front/models/api_success_response.dart';
 import 'package:capstone_front/models/qna_post_model.dart';
@@ -94,21 +95,47 @@ class QnaService {
     }
   }
 
-  static Future<List<AnswerModel>> getAnswersByQuestionId(int qnaPostId) async {
+  static Future<AnswerResponse> getAnswersByQuestionId(
+      Map<String, dynamic> obj) async {
+    FlutterSecureStorage storage = const FlutterSecureStorage();
+    final accessToken = await storage.read(key: "accessToken");
     List<AnswerModel> answerInstances = [];
-    final url = Uri.parse('$baseUrl/yet/$qnaPostId');
-    final response = await http.get(url);
+    final url = Uri.parse('$baseUrl/answer/list');
+
+    print(obj);
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      },
+      body: jsonEncode(obj),
+    );
+
+    final String decodedBody = utf8.decode(response.bodyBytes);
+    final jsonMap = jsonDecode(decodedBody);
+    print(jsonMap);
 
     if (response.statusCode == 200) {
-      final String decodedBody = utf8.decode(response.bodyBytes);
-      final List<dynamic> answers = jsonDecode(decodedBody);
-
+      final ApiSuccessResponse apiSuccessResponse =
+          ApiSuccessResponse.fromJson(jsonMap);
+      final res = apiSuccessResponse.response;
+      final List<dynamic> answers = res['answerList'];
       for (var answer in answers) {
         answerInstances.add(AnswerModel.fromJson(answer));
       }
-      return answerInstances;
+
+      var result = AnswerResponse(
+        answers: answerInstances,
+        lastCursorId: res['lastCursorId'],
+        hasNext: res['hasNext'],
+      );
+
+      return result;
     } else {
+      var apiFailResponse = ApiFailResponse.fromJson(jsonMap);
       print('Request failed with status: ${response.statusCode}.');
+      print('Request failed with status: ${apiFailResponse.message}.');
       throw Exception('Failed to load notices');
     }
   }
@@ -159,22 +186,32 @@ class QnaService {
     await file.writeAsString(data, mode: FileMode.append);
   }
 
-  static Future<bool> createAnswer(AnswerModel answer) async {
-    final url = Uri.parse('$baseUrl/yet/');
+  static Future<AnswerModel> createAnswer(Map<String, dynamic> answer) async {
+    FlutterSecureStorage storage = const FlutterSecureStorage();
+    final accessToken = await storage.read(key: "accessToken");
+    final url = Uri.parse('$baseUrl/answer/create');
     final response = await http.post(
       url,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
       },
-      body: jsonEncode(answer.toJson()),
+      body: jsonEncode(answer),
     );
 
-    if (response.statusCode == 201) {
-      // post 요청 성공시
-      return true;
+    final String decodedBody = utf8.decode(response.bodyBytes);
+    final jsonMap = jsonDecode(decodedBody);
+
+    if (response.statusCode == 200) {
+      final ApiSuccessResponse apiSuccessResponse =
+          ApiSuccessResponse.fromJson(jsonMap);
+      final res = apiSuccessResponse.response;
+      var answerModel = AnswerModel.fromJson(res);
+
+      return answerModel;
     } else {
       print('Request failed with status: ${response.statusCode}.');
-      return false;
+      throw Exception('Failed to load notices');
     }
   }
 

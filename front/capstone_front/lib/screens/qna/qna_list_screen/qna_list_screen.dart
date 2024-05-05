@@ -110,7 +110,7 @@ class _QnaListScreenState extends State<QnaListScreen> {
                       itemCount: qnas.length,
                       itemBuilder: (context, index) {
                         if (index + 1 == itemCount && hasNext) {
-                          // loadQnas(cursor);
+                          loadQnas(cursor, tag, word);
                         }
                         var post = qnas[index];
                         return InkWell(

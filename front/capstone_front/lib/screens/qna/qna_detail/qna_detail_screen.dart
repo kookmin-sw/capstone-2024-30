@@ -1,3 +1,4 @@
+import 'package:capstone_front/models/answer_model.dart';
 import 'package:capstone_front/models/qna_post_model.dart';
 import 'package:capstone_front/screens/qna/qna_detail/test_comment_data.dart';
 import 'package:capstone_front/services/qna_service.dart';
@@ -23,26 +24,54 @@ class _QnaDetailScreenState extends State<QnaDetailScreen>
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _textController = TextEditingController();
 
-  bool isLoading = true;
+  bool isLoadingPost = true;
+  bool isLoadingAnswer = true;
   late QnaPostDetailModel qnaPostDetailModel;
+  List<AnswerModel> answerList = [];
 
   // TODO 좋아요 테러 방지를 위해 이 스크린을 떠날 때, 최초의 데이터와 비교하여 다른점만 서버에 post
-  List<bool> likeList = List.filled(comments.length, false);
-  List<int> likeCount = List.filled(comments.length, 0);
+  List<bool> likeList = [];
+  List<int> likeCount = [];
+
+  int cursor = 0;
+  bool hasNext = true;
+  int itemCount = 0;
+  String sortBy = "date";
 
   Future<void> loadQnaPostDetail(int id) async {
     qnaPostDetailModel = await QnaService.getQnaPostDetailById(id);
     setState(() {
-      isLoading = false;
+      isLoadingPost = false;
+    });
+  }
+
+  Future<void> loadQnaAnswers() async {
+    var answerReqObj = {
+      "questionId": widget.postModel.id,
+      "cursorId": cursor,
+      "sortBy": sortBy,
+    };
+    var res = await QnaService.getAnswersByQuestionId(answerReqObj);
+    hasNext = res.hasNext;
+    if (res.hasNext) {
+      setState(() {
+        cursor = res.lastCursorId!;
+      });
+    }
+    print(res.answers);
+    setState(() {
+      answerList.addAll(res.answers);
+      itemCount += res.answers.length;
+      likeList = List.filled(itemCount * 2, false);
+      likeCount = List.filled(itemCount * 2, 0);
     });
   }
 
   @override
   void initState() {
     _controller = AnimationController(vsync: this);
-    print(1);
     loadQnaPostDetail(widget.postModel.id);
-    print(2);
+    loadQnaAnswers();
     super.initState();
   }
 
@@ -111,7 +140,8 @@ class _QnaDetailScreenState extends State<QnaDetailScreen>
                             const SizedBox(
                               height: 10,
                             ),
-                            !isLoading && qnaPostDetailModel.imgUrl.isNotEmpty
+                            !isLoadingPost &&
+                                    qnaPostDetailModel.imgUrl.isNotEmpty
                                 ? SizedBox(
                                     height: 200,
                                     child: ListView.separated(
@@ -179,8 +209,11 @@ class _QnaDetailScreenState extends State<QnaDetailScreen>
                   child: ListView.separated(
                     shrinkWrap: true,
                     primary: false,
-                    itemCount: comments.length,
+                    itemCount: answerList.length,
                     itemBuilder: (context, index) {
+                      if (index + 1 == itemCount && hasNext) {
+                        loadQnaAnswers();
+                      }
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -190,7 +223,7 @@ class _QnaDetailScreenState extends State<QnaDetailScreen>
                               Row(
                                 children: [
                                   Text(
-                                    comments[index]['author'],
+                                    answerList[index].author,
                                     style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w300,
@@ -201,7 +234,7 @@ class _QnaDetailScreenState extends State<QnaDetailScreen>
                                     width: 20,
                                   ),
                                   Text(
-                                    comments[index]['writeTime'],
+                                    answerList[index].createdDate,
                                     style: const TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w300,
@@ -211,7 +244,7 @@ class _QnaDetailScreenState extends State<QnaDetailScreen>
                                 ],
                               ),
                               Text(
-                                comments[index]['content'],
+                                answerList[index].content,
                                 style: const TextStyle(
                                   fontSize: 18,
                                 ),
@@ -240,7 +273,7 @@ class _QnaDetailScreenState extends State<QnaDetailScreen>
                                 },
                               ),
                               Text(
-                                likeCount[index].toString(),
+                                answerList[index].likeCount.toString(),
                                 style: const TextStyle(
                                   fontSize: 12,
                                 ),
@@ -285,18 +318,27 @@ class _QnaDetailScreenState extends State<QnaDetailScreen>
                                 hintText: "댓글을 입력하세요.",
                               ),
                               style: Theme.of(context).textTheme.bodySmall,
-                              // onTap: () {
-                              //   if (_scrollController.position ==
-                              //       _scrollController.position.maxScrollExtent) {
-                              //     _scrollController.jumpTo(
-                              //         _scrollController.position.maxScrollExtent);
-                              //   }
-                              // },
+                              onTap: () {},
                             ),
                           ),
                           IconButton(
                             icon: const Icon(Icons.send),
-                            onPressed: () {},
+                            onPressed: () async {
+                              print('click');
+                              if (_textController.text != "") {
+                                var commentObj = {
+                                  "questionId": widget.postModel.id,
+                                  "author": "jihun",
+                                  "context": _textController.text,
+                                };
+                                print('send req');
+                                var asnwerModel =
+                                    await QnaService.createAnswer(commentObj);
+                                answerList.add(asnwerModel);
+                                print('got a res');
+                                setState(() {});
+                              }
+                            },
                           ),
                         ],
                       ),
