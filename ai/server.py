@@ -11,6 +11,7 @@ import uvicorn
 
 class Query(BaseModel):
     query: str
+    target_lang: str
 
 @asynccontextmanager
 async def lifespan(app:FastAPI):
@@ -63,7 +64,7 @@ async def query(query: Query):
     return {'success': 'True',
             'message': 'success',
             'response': {
-                'answer': llm.query(query.query, 'ko')
+                'answer': llm.query(query.query, query.target_lang)
             }}
 
 
