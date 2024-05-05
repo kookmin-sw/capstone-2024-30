@@ -34,9 +34,10 @@ jobs:
           echo REDIS_PORT=${{ secrets.REDIS_PORT }} >> .env
           echo S3_ACCESS_KEY=${{ secrets.S3_ACCESS_KEY }} >> .env
           echo S3_SECRET_KEY=${{ secrets.S3_SECRET_KEY }} >> .env
-          echo S3_SECRET_KEY=${{ secrets.SECRET_KEY_BASE }} >> .env
-          echo S3_SECRET_KEY=${{ secrets.SERVER_NAME }} >> .env
+          echo SECRET_KEY_BASE=${{ secrets.SECRET_KEY_BASE }} >> .env
+          echo SEVER_NAME=${{ secrets.SERVER_NAME }} >> .env
           echo SERVER_URL=${{ secrets.SERVER_URL }} >> .env
+          echo CHATBOT_URL=${{ secrets.CHATBOT_URL }} >> .env
 
       - name: Copy .env to EC2
         uses: appleboy/scp-action@master
@@ -60,7 +61,7 @@ jobs:
         uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
-          author_name: PetBuddy Github
+          author_name: 외국민
           fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -96,7 +97,7 @@ jobs:
         uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
-          author_name: PetBuddy Github
+          author_name: 외국민
           fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -132,7 +133,7 @@ jobs:
         uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
-          author_name: PetBuddy Github
+          author_name: 외국민
           fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -168,7 +169,7 @@ jobs:
         uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
-          author_name: PetBuddy Github
+          author_name: 외국민
           fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -210,7 +211,7 @@ jobs:
         uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
-          author_name: PetBuddy Github
+          author_name: 외국민
           fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -244,7 +245,7 @@ jobs:
         uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
-          author_name: PetBuddy Github
+          author_name: 외국민
           fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
