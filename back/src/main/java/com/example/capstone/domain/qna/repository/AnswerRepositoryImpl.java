@@ -38,8 +38,7 @@ public class AnswerRepositoryImpl implements AnswerListRepository {
                         answer.likeCount ,answer.createdDate)
                 )
                 .from(answer)
-                .leftJoin(answer.question, question)
-                .fetchJoin()
+                .innerJoin(answer.question, question)
                 .where(cursorId(cursorId),
                         questionEq(questionId))
                 .orderBy(orderSpecifiers)
