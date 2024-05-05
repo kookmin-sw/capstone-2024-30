@@ -26,7 +26,7 @@ services:
   spring_gateway:
     container_name: spring_gateway
     restart: always
-    image: capstone30/spring-gateway:test
+    image: capstone30/spring-gateway
     env_file:
       - .env
     environment:
@@ -39,7 +39,7 @@ services:
   spring:
     container_name: spring
     restart: always
-    image: capstone30/spring:test
+    image: capstone30/spring
     env_file:
       - .env
     environment:
@@ -57,7 +57,7 @@ services:
   ruby:
     container_name: ruby
     restart: always
-    image: capstone30/ruby:test
+    image: capstone30/ruby
     env_file:
       - .env
     environment:
@@ -69,7 +69,7 @@ services:
 
   nginx:
     container_name: nginx
-    image: capstone30/nginx:test
+    image: capstone30/nginx
     restart: unless-stopped
     environment:
       TZ: "Asia/Seoul"
