@@ -39,12 +39,19 @@ class _HelperChattingListScreenState extends State<HelperChattingListScreen> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> chatRoomData =
         chatRooms.map((chatRoom) => json.encode(chatRoom.toJson())).toList();
+    print('room data before save');
+    print(chatRoomData);
+    print('room data before save');
     await prefs.setStringList('chatRoomData', chatRoomData);
   }
 
   Future<void> startPolling(Map<String, dynamic> roomInfo) async {
     try {
       while (isActive) {
+        print('polling1');
+        print(chatRoomList);
+        print('polling2');
+        // loadChatRooms();
         try {
           var currentNewChatsInfos =
               await ChatService.pollingChatList(roomInfo);
@@ -56,6 +63,7 @@ class _HelperChattingListScreenState extends State<HelperChattingListScreen> {
                 chatRoom.lastMessagePreviewId = newChatInfo.id;
                 chatRoom.chatRoomMessage = newChatInfo.content;
                 chatRoom.chatRoomDate = newChatInfo.timestamp;
+                break;
               }
             }
 
@@ -65,7 +73,7 @@ class _HelperChattingListScreenState extends State<HelperChattingListScreen> {
                 chatRoomId: newChatInfo.chatRoomId,
                 userId: newChatInfo.userId,
                 userName: newChatInfo.userId,
-                lastMessageId: newChatInfo.id,
+                lastMessageId: 0,
                 lastMessagePreviewId: newChatInfo.id,
                 chatRoomMessage: newChatInfo.content,
                 chatRoomDate: newChatInfo.timestamp,
@@ -90,6 +98,7 @@ class _HelperChattingListScreenState extends State<HelperChattingListScreen> {
 
   @override
   void initState() {
+    print('i am init');
     loadChatRooms().then((_) {
       startPolling({
         "list": currentChatRoomInfos,

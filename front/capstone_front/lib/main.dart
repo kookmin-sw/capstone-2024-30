@@ -65,11 +65,12 @@ Future<void> setSetting() async {
   if (str == 'true') {
     _isLogin = true;
   }
-  // storage.write(key: "uuid", value: "GVxxcceRRFNcWS690xLo85I8pV03");
+  // storage.write(key: "uuid", value: "D8WsXf9Ncncn2lvjjGSvwKUOrEl2");
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   // prefs.remove("chatRoomData");
   // prefs.remove("a3xezZRpYGdz0SVBDv7vTAYctOj1");
   // prefs.remove("3YuwArylP5gr6njKBtMcAe9RgJr1");
+  // prefs.remove("D8WsXf9Ncncn2lvjjGSvwKUOrEl2");
 }
 
 void initializeFirebase() async {

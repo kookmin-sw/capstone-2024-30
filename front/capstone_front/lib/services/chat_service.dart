@@ -132,6 +132,8 @@ class ChatService {
     );
 
     final String decodedBody = utf8.decode(response.bodyBytes);
+    print('sendChat');
+    print(decodedBody);
     final Map<String, dynamic> jsonMap = jsonDecode(decodedBody);
     if (response.statusCode == 201) {
       var apiSuccessResponse = ApiSuccessResponse.fromJson(jsonMap);
@@ -167,7 +169,7 @@ class ChatService {
       var apiSuccessResponse = ApiSuccessResponse.fromJson(jsonMap);
       final List<dynamic> chatRooms = apiSuccessResponse.response['rooms'];
 
-      print(decodedBody);
+      // print(decodedBody);
       for (var chatRoom in chatRooms) {
         chatRoomInstances.add(ChatRoomModel.fromJson(chatRoom));
       }
@@ -199,7 +201,9 @@ class ChatService {
 
     final String decodedBody = utf8.decode(response.bodyBytes);
     final Map<String, dynamic> jsonMap = jsonDecode(decodedBody);
-    print(decodedBody);
+    // print('@@@@');
+    // print(decodedBody);
+    // print('@@@@');
     if (response.statusCode == 200) {
       var apiSuccessResponse = ApiSuccessResponse.fromJson(jsonMap);
       final List<dynamic> chatModelForChatRooms =

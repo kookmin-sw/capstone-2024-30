@@ -54,6 +54,11 @@ class _HelperChattingRoomState extends State<HelperChattingRoom> {
           curve: Curves.easeInOut,
         );
         saveChatData(messages, userId);
+
+        currentChatRoom.lastMessageId = newChat.id;
+        currentChatRoom.lastMessagePreviewId = newChat.id;
+        saveChatRoomData(chatRoomList);
+        setState(() {});
       });
     }
   }
@@ -89,7 +94,9 @@ class _HelperChattingRoomState extends State<HelperChattingRoom> {
   Future<List<ChatRoomModel>> loadChatRoomData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> chatRoomData = prefs.getStringList('chatRoomData') ?? [];
+    print('chatRoomData in room');
     print(chatRoomData);
+    print('chatRoomData in room');
     return chatRoomData
         .map((chatRoom) => ChatRoomModel.fromJson(json.decode(chatRoom)))
         .toList();
@@ -106,6 +113,8 @@ class _HelperChattingRoomState extends State<HelperChattingRoom> {
       print(1);
       print(userId);
       if (chatRoom.userId == userId) {
+        print('found chjat Room');
+        print(chatRoom.lastMessageId);
         flag = true;
         var chatHistory = await loadChatData(userId);
         setState(() {
@@ -121,12 +130,18 @@ class _HelperChattingRoomState extends State<HelperChattingRoom> {
     }
 
     if (flag) {
+      print(lastMessageId);
+      print(lastMessageId);
+      print(lastMessageId);
+      print(lastMessageId);
+      print(lastMessageId);
       var newChats = await ChatService.loadNewChats(chatRoomId, lastMessageId);
       if (newChats != null) {
         messages.addAll(newChats);
         lastMessageId = newChats.last.id;
         currentChatRoom.lastMessageId = newChats.last.id;
         saveChatRoomData(chatRoomList);
+        saveChatData(messages, userId);
         setState(() {});
       }
     } else {

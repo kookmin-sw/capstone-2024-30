@@ -22,7 +22,7 @@ class ChatRoomModel {
         userId = json['user_id'],
         userName = json['user_name'],
         lastMessageId = json['last_message_id'] ?? 0,
-        lastMessagePreviewId = json['last_message_id'] ?? 0,
+        lastMessagePreviewId = json['last_message_preview_id'] ?? 0,
         chatRoomMessage = json['chat_room_message'] ?? "",
         chatRoomDate = json['chat_room_date'] ?? "";
 
