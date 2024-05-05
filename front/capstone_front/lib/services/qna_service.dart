@@ -6,6 +6,7 @@ import 'package:capstone_front/models/api_success_response.dart';
 import 'package:capstone_front/models/qna_post_model.dart';
 import 'package:capstone_front/models/qna_response.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -15,15 +16,22 @@ class QnaService {
 
   static Future<QnasResponse> getQnaPosts(
       int cursor, String? tag, String? word) async {
+    FlutterSecureStorage storage = const FlutterSecureStorage();
+    final accessToken = await storage.read(key: "accessToken");
     final url = Uri.parse('$baseUrl/question/list');
+
     var requestInfo = {
-      "cursor": cursor,
+      "cursorId": cursor,
       "tag": tag,
       "word": word,
     };
 
     final response = await http.post(
       url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      },
       body: jsonEncode(requestInfo),
     );
 
@@ -31,10 +39,12 @@ class QnaService {
 
     final String decodedBody = utf8.decode(response.bodyBytes);
     final jsonMap = jsonDecode(decodedBody);
+
     if (response.statusCode == 200) {
-      final ApiSuccessResponse apiSuccessResponse = jsonDecode(jsonMap);
+      final ApiSuccessResponse apiSuccessResponse =
+          ApiSuccessResponse.fromJson(jsonMap);
       final res = apiSuccessResponse.response;
-      final List<dynamic> posts = res['qnas'];
+      final List<dynamic> posts = res['questionList'];
 
       for (var post in posts) {
         qnaPostInstances.add(QnaPostModel.fromJson(post));
@@ -51,6 +61,35 @@ class QnaService {
       ApiFailResponse apiFailResponse = ApiFailResponse.fromJson(jsonMap);
       print('Request failed with status: ${response.statusCode}.');
       print('Request failed with status: ${apiFailResponse.message}.');
+      throw Exception('Failed to load notices');
+    }
+  }
+
+  static Future<QnaPostDetailModel> getQnaPostDetailById(int id) async {
+    FlutterSecureStorage storage = const FlutterSecureStorage();
+    final accessToken = await storage.read(key: "accessToken");
+    final url = Uri.parse('$baseUrl/question/read?id=$id');
+
+    final response = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
+
+    final String decodedBody = utf8.decode(response.bodyBytes);
+    final jsonMap = jsonDecode(decodedBody);
+
+    if (response.statusCode == 200) {
+      final ApiSuccessResponse apiSuccessResponse =
+          ApiSuccessResponse.fromJson(jsonMap);
+      final res = apiSuccessResponse.response;
+      var qnaPostDetailModel = QnaPostDetailModel.fromJson(res);
+
+      return qnaPostDetailModel;
+    } else {
+      print('Request failed with status: ${response.statusCode}.');
       throw Exception('Failed to load notices');
     }
   }
@@ -85,7 +124,6 @@ class QnaService {
     if (images != null) {
       for (var image in images) {
         if (image.path.isNotEmpty) {
-          print(image.path);
           var multipartFile = await http.MultipartFile.fromPath(
             'imgList',
             image.path,
@@ -95,17 +133,10 @@ class QnaService {
       }
     }
 
-    // request.headers.addAll({
-    //   'Content-Type': 'multipart/form-data',
-    // });
-
     var response = await request.send();
 
     final bytes = await response.stream.toBytes();
     final String decodedBody = utf8.decode(bytes);
-    logToFile(decodedBody);
-
-    print(decodedBody);
 
     final Map<String, dynamic> jsonMap = jsonDecode(decodedBody);
     if (response.statusCode == 201) {
