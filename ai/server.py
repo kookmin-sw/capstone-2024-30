@@ -63,7 +63,7 @@ async def query(query: Query):
     return {'success': 'True',
             'message': 'success',
             'response': {
-                'answer': llm.query(query.query)
+                'answer': llm.query(query.query, 'ko')
             }}
 
 
