@@ -102,7 +102,6 @@ class QnaService {
     List<AnswerModel> answerInstances = [];
     final url = Uri.parse('$baseUrl/answer/list');
 
-    print(obj);
     final response = await http.post(
       url,
       headers: {
@@ -114,7 +113,6 @@ class QnaService {
 
     final String decodedBody = utf8.decode(response.bodyBytes);
     final jsonMap = jsonDecode(decodedBody);
-    print(jsonMap);
 
     if (response.statusCode == 200) {
       final ApiSuccessResponse apiSuccessResponse =

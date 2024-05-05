@@ -58,7 +58,7 @@ class _QnaDetailScreenState extends State<QnaDetailScreen>
         cursor = res.lastCursorId!;
       });
     }
-    print(res.answers);
+
     setState(() {
       answerList.addAll(res.answers);
       itemCount += res.answers.length;
