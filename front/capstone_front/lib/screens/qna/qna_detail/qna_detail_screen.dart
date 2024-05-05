@@ -96,6 +96,7 @@ class _QnaDetailScreenState extends State<QnaDetailScreen>
         child: Container(
           color: const Color(0xFFF4F4F4),
           child: SingleChildScrollView(
+            controller: _scrollController,
             child: Column(
               children: [
                 Container(
@@ -343,10 +344,17 @@ class _QnaDetailScreenState extends State<QnaDetailScreen>
                           "author": "jihun",
                           "context": _textController.text,
                         };
+                        _textController.text = "";
                         var asnwerModel =
                             await QnaService.createAnswer(commentObj);
                         answerList.add(asnwerModel);
-                        setState(() {});
+                        setState(() {
+                          _scrollController.animateTo(
+                            _scrollController.position.maxScrollExtent + 100,
+                            duration: const Duration(milliseconds: 100),
+                            curve: Curves.easeInOut,
+                          );
+                        });
                       }
                     },
                   ),
