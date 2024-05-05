@@ -1,15 +1,16 @@
 import 'package:capstone_front/models/qna_post_model.dart';
 import 'package:capstone_front/screens/qna/qna_detail/test_comment_data.dart';
+import 'package:capstone_front/services/qna_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class QnaDetailScreen extends StatefulWidget {
-  final QnaPostModel data;
+  final QnaPostModel postModel;
 
   const QnaDetailScreen({
     super.key,
-    required this.data,
+    required this.postModel,
   });
 
   @override
@@ -22,14 +23,27 @@ class _QnaDetailScreenState extends State<QnaDetailScreen>
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _textController = TextEditingController();
 
+  bool isLoading = true;
+  late QnaPostDetailModel qnaPostDetailModel;
+
   // TODO 좋아요 테러 방지를 위해 이 스크린을 떠날 때, 최초의 데이터와 비교하여 다른점만 서버에 post
   List<bool> likeList = List.filled(comments.length, false);
   List<int> likeCount = List.filled(comments.length, 0);
 
+  Future<void> loadQnaPostDetail(int id) async {
+    qnaPostDetailModel = await QnaService.getQnaPostDetailById(id);
+    setState(() {
+      isLoading = false;
+    });
+  }
+
   @override
   void initState() {
-    super.initState();
     _controller = AnimationController(vsync: this);
+    print(1);
+    loadQnaPostDetail(widget.postModel.id);
+    print(2);
+    super.initState();
   }
 
   @override
@@ -42,7 +56,7 @@ class _QnaDetailScreenState extends State<QnaDetailScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.data.category),
+        title: Text(widget.postModel.category),
         scrolledUnderElevation: 0,
       ),
       body: Container(
@@ -75,7 +89,7 @@ class _QnaDetailScreenState extends State<QnaDetailScreen>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              widget.data.title,
+                              widget.postModel.title,
                               style: const TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
@@ -86,7 +100,7 @@ class _QnaDetailScreenState extends State<QnaDetailScreen>
                               height: 20,
                             ),
                             Text(
-                              widget.data.content,
+                              widget.postModel.content,
                               style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w400,
@@ -97,6 +111,43 @@ class _QnaDetailScreenState extends State<QnaDetailScreen>
                             const SizedBox(
                               height: 10,
                             ),
+                            !isLoading && qnaPostDetailModel.imgUrl.isNotEmpty
+                                ? SizedBox(
+                                    height: 200,
+                                    child: ListView.separated(
+                                      scrollDirection: Axis.horizontal,
+                                      itemBuilder: (context, index) {
+                                        return Container(
+                                          height: 150,
+                                          width: 150,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            image: DecorationImage(
+                                              fit: BoxFit.cover,
+                                              image: NetworkImage(
+                                                qnaPostDetailModel
+                                                    .imgUrl[index],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      separatorBuilder: (context, index) =>
+                                          const SizedBox(
+                                        width: 20,
+                                      ),
+                                      itemCount:
+                                          qnaPostDetailModel.imgUrl.length,
+                                    ),
+                                  )
+                                : const SizedBox(),
+                            // Image.network(
+                            //   "https://capstone-30-backend.s3.ap-northeast-2.amazonaws.com/ac031c03-aimage.png",
+                            //   width: 200,
+                            //   height: 200,
+                            //   fit: BoxFit.fill,
+                            // ),
                           ],
                         ),
                       ),

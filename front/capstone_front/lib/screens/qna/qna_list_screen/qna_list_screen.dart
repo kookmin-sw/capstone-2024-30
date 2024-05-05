@@ -18,45 +18,19 @@ class QnaListScreen extends StatefulWidget {
   State<QnaListScreen> createState() => _QnaListScreenState();
 }
 
-List<Map<String, dynamic>> dummyJsonData() {
-  return List.generate(
-      10,
-      (index) => {
-            'id': index,
-            'title': "Question ${index + 1}",
-            'author': "Author ${index + 1}",
-            'content':
-                "This is the content for question ${index + 1}. Here you can add more details about the question.",
-            'category': "Category ${(index % 5) + 1}",
-            'country': "Country ${(index % 3) + 1}",
-            'date_published': DateTime.now()
-                .subtract(Duration(days: index * 5))
-                .toIso8601String(),
-            'date_updated': DateTime.now()
-                .subtract(Duration(days: index * 3))
-                .toIso8601String(),
-            'imagesList':
-                List.generate(3, (imgIndex) => "image_${index}_$imgIndex.jpg"),
-            'commentAmount': (index * 3) % 5,
-          });
-}
-
-List<QnaPostModel> generateDummyData() {
-  List<Map<String, dynamic>> jsonData = dummyJsonData();
-  return jsonData.map((json) => QnaPostModel.fromJson(json)).toList();
-}
-
 class _QnaListScreenState extends State<QnaListScreen> {
   final _controller = TextEditingController();
 
   List<QnaPostModel> qnas = [];
-  var cursor = 0;
-  var hasNext = true;
-  var itemCount = 0;
+  int cursor = 0;
+  bool hasNext = true;
+  int itemCount = 0;
+  String? word;
+  String? tag;
 
-  void loadQnas(int lastCursor) async {
+  void loadQnas(int lastCursor, String? tag, String? word) async {
     try {
-      QnasResponse res = await QnaService.getQnaPosts(lastCursor, '', '');
+      QnasResponse res = await QnaService.getQnaPosts(lastCursor, tag, word);
       setState(() {
         hasNext = res.hasNext;
         if (hasNext) {
@@ -74,8 +48,8 @@ class _QnaListScreenState extends State<QnaListScreen> {
   @override
   void initState() {
     super.initState();
-    qnas = generateDummyData();
-    // loadQnas(cursor);
+    // qnas = generateDummyData();
+    loadQnas(cursor, tag, word);
   }
 
   @override
@@ -145,7 +119,7 @@ class _QnaListScreenState extends State<QnaListScreen> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => QnaDetailScreen(
-                                  data: post,
+                                  postModel: post,
                                 ),
                               ),
                             );
@@ -156,7 +130,7 @@ class _QnaListScreenState extends State<QnaListScreen> {
                             name: post.author,
                             country: post.country,
                             tag: post.category,
-                            commentAmount: post.commentAmount,
+                            answerCount: post.answerCount,
                           ),
                         );
                       },

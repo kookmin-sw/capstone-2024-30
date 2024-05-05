@@ -230,8 +230,8 @@ class _HelperWriteScreenState extends State<QnaWriteScreen> {
                         content: _contentController.text,
                         category: "category",
                         country: "country",
-                        imagesList: ["qwe", "asd"],
-                        commentAmount: 2,
+                        answerCount: 2,
+                        createdDate: "2024-05-04",
                       ));
 
                   var qnaPost = {
