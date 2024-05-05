@@ -13,9 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-import java.util.UUID;
-
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/api/answer")
@@ -47,10 +44,9 @@ public class AnswerController {
     @PutMapping("/update")
     @Operation(summary = "댓글 수정", description = "request 정보를 기반으로 댓글을 수정합니다.")
     @ApiResponse(responseCode = "200", description = "완료시 200을 반환됩니다.")
-    public ResponseEntity<ApiResult<Integer>> updateAnswer(/*@RequestHeader String token,*/
+    public ResponseEntity<ApiResult<Integer>> updateAnswer(@RequestHeader("X-User-ID") String userId,
                                             @Parameter(description = "댓글 수정을 위한 파라미터입니다. 댓글 id, 질문글 id, 작성자, 댓글 내용이 필요합니다.", required = true)
                                             @RequestBody AnswerPutRequest request) {
-        String userId = UUID.randomUUID().toString(); //jwtTokenProvider.extractUUID(token);
         answerService.updateAnswer(userId, request);
         return ResponseEntity
                 .ok(new ApiResult<>("Successfully update answer", 200));
@@ -69,9 +65,10 @@ public class AnswerController {
     @PutMapping("/like")
     @Operation(summary = "댓글 추천", description = "해당 id의 댓글을 추천합니다. 현재 추천 댓글 여부를 관리하지 않습니다.")
     @ApiResponse(responseCode = "200", description = "완료시 200을 반환합니다.")
-    public ResponseEntity<ApiResult<Integer>> upLikeCount(   @Parameter(description = "추천할 댓글의 id가 필요합니다.", required = true)
+    public ResponseEntity<ApiResult<Integer>> upLikeCount(@RequestHeader("X-User-ID") String userId,
+                                            @Parameter(description = "추천할 댓글의 id가 필요합니다.", required = true)
                                             @RequestParam Long id) {
-        answerService.upLikeCountById(id);
+        answerService.upLikeCountById(userId, id);
         return ResponseEntity
                 .ok(new ApiResult<>("Successfully like answer", 200));
     }
@@ -79,9 +76,10 @@ public class AnswerController {
     @PutMapping("/unlike")
     @Operation(summary = "댓글 추천 해제", description = "해당 id의 댓글을 추천 해제합니다. 현재 추천 댓글 여부를 관리하지 않습니다.")
     @ApiResponse(responseCode = "200", description = "완료시 200을 반환합니다.")
-    public ResponseEntity<ApiResult<Integer>> downLikeCount( @Parameter(description = "추천 해제할 댓글의 id가 필요합니다.", required = true)
+    public ResponseEntity<ApiResult<Integer>> downLikeCount(@RequestHeader("X-User-ID") String userId,
+                                            @Parameter(description = "추천 해제할 댓글의 id가 필요합니다.", required = true)
                                             @RequestParam Long id) {
-        answerService.downLikeCountById(id);
+        answerService.downLikeCountById(userId, id);
         return ResponseEntity
                 .ok(new ApiResult<>("Successfully unlike answer", 200));
     }

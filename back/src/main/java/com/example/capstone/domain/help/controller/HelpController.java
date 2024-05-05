@@ -12,8 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
-
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/api/help")
@@ -48,10 +46,9 @@ public class HelpController {
     @PutMapping("/update")
     @Operation(summary = "헬퍼글 수정", description = "request 정보를 기반으로 글을 수정합니다.")
     @ApiResponse(responseCode = "200", description = "완료시 200을 리턴합니다.")
-    public ResponseEntity<ApiResult<Integer>> updateHelp(/*@RequestHeader String token,*/
+    public ResponseEntity<ApiResult<Integer>> updateHelp(@RequestHeader("X-User-ID") String userId,
             @Parameter(description = "수정할 헬퍼글의 id와 헬퍼글의 request가 들어갑니다.", required = true)
             @RequestBody HelpPutRequest request) {
-        String userId = UUID.randomUUID().toString();//jwtTokenProvider.extractUUID(token);
         helpService.updateHelp(userId, request);
         return ResponseEntity
                 .ok(new ApiResult<>("Successfully update help", 200));
@@ -83,10 +80,10 @@ public class HelpController {
     @PutMapping("/done")
     @Operation(summary = "헬퍼글 모집 종료", description = "id에 맞는 헬퍼글을 모집 종료합니다.")
     @ApiResponse(responseCode = "200", description = "완료시 200을 반환합니다.")
-    public ResponseEntity<ApiResult<Integer>> doneHelp(
+    public ResponseEntity<ApiResult<Integer>> doneHelp(@RequestHeader("X-User-ID") String userId,
             @Parameter(description = "모집 종료할 헬퍼글의 id입니다.", required = true)
             @RequestParam Long id) {
-        helpService.doneHelp(id);
+        helpService.doneHelp(userId, id);
         return ResponseEntity
                 .ok(new ApiResult<>("Successfully done help", 200));
     }
