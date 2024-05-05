@@ -1,0 +1,17 @@
+# 채팅서버 테스트를 위한 Docker-compose입니다.
+# 실제 배포용은 Spring에 있는 Docker-compose입니다.
+# 해당 docker-compose는 테스트용으로만 사용해주세요.
+
+version: '1.0'
+services:
+  ruby:
+    container_name: ruby
+    restart: always
+    image: capstone30/ruby
+    env_file:
+      - .env
+    environment:
+      TZ : "Asia/Seoul"
+    ports:
+      - "3000:3000"
+

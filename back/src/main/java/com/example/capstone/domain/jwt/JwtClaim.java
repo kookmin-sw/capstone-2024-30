@@ -8,6 +8,9 @@ import lombok.RequiredArgsConstructor;
 public enum JwtClaim {
     UUID("uuid"),
     NAME("name"),
+    EMAIL("email"),
+    COUNTRY("country"),
+    PHONENUMBER("phoneNumber"),
     MAJOR("major"),
     AUTHORITIES("authorities");
 

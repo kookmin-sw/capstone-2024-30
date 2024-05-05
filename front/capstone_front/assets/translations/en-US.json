@@ -11,6 +11,7 @@
   "department": "Department",
   "student_number": "Student Number",
   "mainScreen": {
+    "home": "Home",
     "notice": "Notices",
     "cafeteria": "CafeteriaMenu",
     "school_info": "School Info",
@@ -21,8 +22,8 @@
     "helper": "Helper",
     "pronunciation_practice": "Pronunciation"
   },
-  "pronunciationPracticeScreen": {
-    "pronunciation_practice": "Pronunciation Practice",
+  "speechPracticeScreen": {
+    "speech_practice": "Pronunciation Practice",
     "permission_allow_notice": "You must allow voice recording permission to use pronunciation practice"
   },
   "chatbotScreen": {
