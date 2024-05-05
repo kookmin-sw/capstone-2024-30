@@ -16,7 +16,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
   final TextEditingController _textController = TextEditingController();
   final List<List<String>> _messages = [];
   final int _maxLines = 1;
-  bool _isLoading = true;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -34,14 +34,14 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
         _messages.add([question, 'user']);
         _textController.clear();
         _messages.add([tr("chatbotScreen.loading"), 'chatbot']);
-        _isLoading = false;
+        _isLoading = true;
       });
 
       String chatbotAnswer = await getChatbotAnswer(question);
 
       setState(() {
-        _isLoading = true;
         _messages[_messages.length - 1][0] = chatbotAnswer;
+        _isLoading = false;
 
         // 텍스트 입력 시 방금 입력된 텍스트가 보일 수 있도록 이동
         _scrollController.animateTo(
@@ -156,9 +156,12 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                       ),
                     ),
                     IconButton(
-                      icon: const Icon(Icons.send),
-                      onPressed: _sendMessage,
-                    ),
+                        icon: const Icon(Icons.send),
+                        onPressed: () {
+                          if (!_isLoading) {
+                            _sendMessage();
+                          }
+                        }),
                   ],
                 ),
               ),
