@@ -14,7 +14,8 @@ class AnswerModel {
         author = json['author'] as String,
         content = json['context'] as String,
         likeCount = json['likeCount'] as int,
-        createdDate = json['createdDate'] as String,
+        createdDate =
+            json['createdDate'].substring(5, 16).replaceAll('T', ' ') as String,
         updatedDate = json['updatedDate'] ?? "",
         uuid = json['uuid'] ?? "";
 }

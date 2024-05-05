@@ -237,7 +237,7 @@ class _QnaDetailScreenState extends State<QnaDetailScreen>
                                         ),
                                       ),
                                       const SizedBox(
-                                        width: 20,
+                                        width: 14,
                                       ),
                                       Text(
                                         answerList[index].createdDate,
