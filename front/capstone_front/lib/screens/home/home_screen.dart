@@ -1,3 +1,4 @@
+import 'package:capstone_front/main.dart';
 import 'package:capstone_front/screens/cafeteriaMenu/cafeteriaMenuScreen.dart';
 import 'package:capstone_front/screens/notice/notice_screen.dart';
 import 'package:capstone_front/services/login_service.dart';
@@ -195,41 +196,29 @@ class _HomeScreenState extends State<HomeScreen> {
                                     const SizedBox(
                                       height: 10,
                                     ),
-                                    const Text(
-                                      "김치찌개",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const Text(
-                                      "밥",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const Text(
-                                      "짜장면",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const Text(
-                                      "얼큰국밥",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const Text(
-                                      "고치돈",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
+                                    menus.cafeteriaMenus.isEmpty ||
+                                            menus.cafeteriaMenus[0].isEmpty
+                                        ? Center(
+                                            child:
+                                                Text(tr('mainScreen.no_data')))
+                                        : Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: menus.cafeteriaMenus[0]
+                                                .map((data) {
+                                              return Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(data[0]),
+                                                  Text(data[1]),
+                                                  if (data[2] != "0")
+                                                    Text('₩${data[2]}'),
+                                                  const Text(""),
+                                                ],
+                                              );
+                                            }).toList(),
+                                          ),
                                   ],
                                 ),
                               ),
