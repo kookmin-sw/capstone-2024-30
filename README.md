@@ -133,7 +133,7 @@ This project aims to develop a comprehensive app service for international stude
 ### 💻 서비스 아키택처
 
 <br>
-<img src ="https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/9ca1e9f4-7ac4-4930-b89b-72e4a489035d" width = "800">
+<img src = "https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/824e72af-b435-4c15-ad24-663df94ccdc2" width=800>
 
 ### 📂 디렉토리 구조
 
