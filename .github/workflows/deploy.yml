@@ -5,7 +5,7 @@ on:
     branches:
       - develop-back
       - main
-      - feature/be/#134-ApiGateway
+      - feautre/be/#134-ApiGateway
 permissions:
   contents: read
 
