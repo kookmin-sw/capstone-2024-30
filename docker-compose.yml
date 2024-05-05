@@ -1,0 +1,101 @@
+## Production Deploy Version
+
+version: '3'
+networks:
+  backend_network:
+  ssl_network:
+
+services:
+  redis:
+    image: redis:7.2.0-alpine
+    container_name: redis
+    hostname: redis
+    restart: unless-stopped
+    environment:
+      TZ: "Asia/Seoul"
+    ports:
+      - 6379:6379
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    networks:
+      - backend_network
+
+  spring_gateway:
+    container_name: spring_gateway
+    restart: always
+    image: capstone30/spring-gateway
+    env_file:
+      - .env
+    environment:
+      TZ: "Asia/Seoul"
+    ports:
+      - "8081:8081"
+    networks:
+      - backend_network
+
+  spring:
+    container_name: spring
+    restart: always
+    image: capstone30/spring
+    env_file:
+      - .env
+    environment:
+      TZ : "Asia/Seoul"
+    ports:
+      - "8080:8080"
+    depends_on:
+      redis:
+        condition: service_healthy
+    volumes:
+      - /path/to/logs:/container/path/to/logs
+    networks:
+      - backend_network
+
+  ruby:
+    container_name: ruby
+    restart: always
+    image: capstone30/ruby
+    env_file:
+      - .env
+    environment:
+      TZ: "Asia/Seoul"
+    ports:
+      - "3000:3000"
+    networks:
+      - backend_network
+
+  nginx:
+    container_name: nginx
+    image: capstone30/nginx
+    restart: unless-stopped
+    environment:
+      TZ: "Asia/Seoul"
+    ports:
+      - "80:80"
+      - "443:443"
+    env_file:
+      - .env
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    depends_on:
+      - "redis"
+      - "spring"
+      - "ruby"
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+    networks:
+      - backend_network
+      - ssl_network
+
+  certbot:
+    image: certbot/certbot
+    restart: unless-stopped
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    networks:
+      - ssl_network

@@ -20,6 +20,7 @@ jobs:
         run: |
           echo DB_ENDPOINT=${{ secrets.DB_ENDPOINT }} >> .env
           echo DB_NAME=${{ secrets.DB_NAME }} >> .env
+          echo DB_PORT=${{ secrets.DB_PORT }} >> .env
           echo MYSQL_USERNAME=${{ secrets.MYSQL_USERNAME }} >> .env
           echo MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }} >> .env
           echo JWT_SECRET=${{ secrets.JWT_SECRET }} >> .env
@@ -34,9 +35,10 @@ jobs:
           echo REDIS_PORT=${{ secrets.REDIS_PORT }} >> .env
           echo S3_ACCESS_KEY=${{ secrets.S3_ACCESS_KEY }} >> .env
           echo S3_SECRET_KEY=${{ secrets.S3_SECRET_KEY }} >> .env
-          echo S3_SECRET_KEY=${{ secrets.SECRET_KEY_BASE }} >> .env
-          echo S3_SECRET_KEY=${{ secrets.SERVER_NAME }} >> .env
+          echo SECRET_KEY_BASE=${{ secrets.SECRET_KEY_BASE }} >> .env
+          echo SERVER_NAME=${{ secrets.SERVER_NAME }} >> .env
           echo SERVER_URL=${{ secrets.SERVER_URL }} >> .env
+          echo CHATBOT_URL=${{ secrets.CHATBOT_URL }} >> .env
 
       - name: Copy .env to EC2
         uses: appleboy/scp-action@master
@@ -44,8 +46,8 @@ jobs:
           host: ${{ secrets.AWS_HOST }}
           username: ubuntu
           key: ${{ secrets.AWS_KEY }}
-          source: "/github/workspace/.env"
-          target: "/home/ubuntu/capstone"
+          source: "./.env"
+          target: "capstone"
 
       - name: Copy docker-compose.yaml to EC2
         uses: appleboy/scp-action@master
@@ -53,14 +55,14 @@ jobs:
           host: ${{ secrets.AWS_HOST }}
           username: ubuntu
           key: ${{ secrets.AWS_KEY }}
-          source: "/github/workspace/back/docker-compose.yml"
-          target: "/home/ubuntu/capstone"
+          source: "./docker-compose.yml"
+          target: "capstone"
 
       - name: action-slack
         uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
-          author_name: PetBuddy Github
+          author_name: 외국민
           fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -68,6 +70,7 @@ jobs:
 
   build-spring:
     runs-on: ubuntu-latest
+    needs: setup-env
 
     steps:
       - name: Checkout
@@ -87,7 +90,7 @@ jobs:
         with:
           context: ./back
           push: true
-          tags: ${{ secrets.DOCKER_REPO }}/spring:test
+          tags: ${{ secrets.DOCKER_REPO }}/spring:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -95,7 +98,7 @@ jobs:
         uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
-          author_name: PetBuddy Github
+          author_name: 외국민
           fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -103,6 +106,7 @@ jobs:
 
   build-nginx:
     runs-on: ubuntu-latest
+    needs: setup-env
 
     steps:
       - name: Checkout
@@ -122,7 +126,7 @@ jobs:
         with:
           context: ./back/nginx
           push: true
-          tags: ${{ secrets.DOCKER_REPO }}/nginx:test
+          tags: ${{ secrets.DOCKER_REPO }}/nginx:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -130,7 +134,7 @@ jobs:
         uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
-          author_name: PetBuddy Github
+          author_name: 외국민
           fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -138,6 +142,7 @@ jobs:
 
   build-ruby:
     runs-on: ubuntu-latest
+    needs: setup-env
 
     steps:
       - name: Checkout
@@ -157,7 +162,7 @@ jobs:
         with:
           context: ./back-chat
           push: true
-          tags: ${{ secrets.DOCKER_REPO }}/ruby:test
+          tags: ${{ secrets.DOCKER_REPO }}/ruby:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -165,7 +170,7 @@ jobs:
         uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
-          author_name: PetBuddy Github
+          author_name: 외국민
           fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -173,6 +178,7 @@ jobs:
 
   build-gateway:
     runs-on: ubuntu-latest
+    needs: setup-env
 
     steps:
       - name: Checkout
@@ -187,12 +193,18 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
       - name: Build and push Spring
         uses: docker/build-push-action@v5
         with:
           context: ./back-gateway
           push: true
-          tags: ${{ secrets.DOCKER_REPO }}/spring-gateway:test
+          tags: ${{ secrets.DOCKER_REPO }}/spring-gateway:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -200,7 +212,7 @@ jobs:
         uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
-          author_name: PetBuddy Github
+          author_name: 외국민
           fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -222,11 +234,11 @@ jobs:
               sudo docker rm -f $(sudo docker ps -qa)
             fi
             
-            sudo docker pull ${{ secrets.DOCKER_REPO }}/spring:test
-            sudo docker pull ${{ secrets.DOCKER_REPO }}/nginx:test
-            sudo docker pull ${{ secrets.DOCKER_REPO }}/ruby:test
-            sudo docker pull ${{ secrets.DOCKER_REPO }}/spring-gateway:test
-  
+            sudo docker pull ${{ secrets.DOCKER_REPO }}/spring:latest
+            sudo docker pull ${{ secrets.DOCKER_REPO }}/nginx:latest
+            sudo docker pull ${{ secrets.DOCKER_REPO }}/ruby:latest
+            sudo docker pull ${{ secrets.DOCKER_REPO }}/spring-gateway:latest
+            
             sudo docker compose -f capstone/docker-compose.yml up -d
             sudo docker image prune -f
 
@@ -234,7 +246,7 @@ jobs:
         uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
-          author_name: PetBuddy Github
+          author_name: 외국민
           fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

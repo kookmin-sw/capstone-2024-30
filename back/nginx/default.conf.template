@@ -1,9 +1,5 @@
-upstream spring_backend {
-    server spring:8080;
-}
-
-upstream ruby_backend {
-    server ruby:3000;
+upstream spring_gateway {
+    server spring_gateway:8081;
 }
 
 server {
@@ -35,17 +31,8 @@ server {
     include /etc/letsencrypt/options-ssl-nginx.conf;
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 
-     location /api {
-        proxy_pass http://spring_backend;
-        proxy_set_header Host $host;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-Host $server_name;
-        proxy_set_header X-Forwarded-Proto $scheme;
-     }
-
-     location /api/chat {
-        proxy_pass http://ruby_backend;
+     location / {
+        proxy_pass http://spring_gateway;
         proxy_set_header Host $host;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Real-IP $remote_addr;

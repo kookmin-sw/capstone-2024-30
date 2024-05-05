@@ -26,10 +26,9 @@ public class AnswerController {
     @PostMapping("/create")
     @Operation(summary = "댓글 생성", description = "request 정보를 기반으로 댓글을 생성합니다.")
     @ApiResponse(responseCode = "200", description = "생성된 댓글을 반환합니다.")
-    public ResponseEntity<ApiResult<AnswerResponse>> createAnswer(/*@RequestHeader String token,*/
+    public ResponseEntity<ApiResult<AnswerResponse>> createAnswer(@RequestHeader("X-User-ID") String userId,
                                             @Parameter(description = "댓글의 구성요소 입니다. 질문글의 id, 작성자, 댓글내용이 필요합니다.", required = true)
                                             @RequestBody AnswerPostRequest request) {
-        String userId = UUID.randomUUID().toString(); //jwtTokenProvider.extractUUID(token);
         AnswerResponse answer = answerService.createAnswer(userId, request);
         return ResponseEntity
                 .ok(new ApiResult<>("Successfully create answer",answer));
