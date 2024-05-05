@@ -64,6 +64,7 @@ class AuthService {
     if (response.statusCode == 200) {
       final ApiSuccessResponse apiSuccessResponse =
           ApiSuccessResponse.fromJson(jsonMap);
+      print(apiSuccessResponse.response['accessToken']);
       await storage.write(
         key: 'accessToken',
         value: apiSuccessResponse.response['accessToken'],
