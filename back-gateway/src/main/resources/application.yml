@@ -8,4 +8,4 @@ jwt:
 
 server:
   port: 8081
-  chatbot-url: http://ruby:3000
+  chatbot-url: ${CHATBOT_URL}
