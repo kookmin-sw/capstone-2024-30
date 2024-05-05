@@ -2,6 +2,7 @@ package com.gateway.backgateway.config;
 
 import com.gateway.backgateway.filter.AuthorizationHeaderFilter;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.gateway.filter.ratelimit.RedisRateLimiter;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
@@ -32,5 +33,10 @@ public class GatewayConfig {
                         .filters(f->f.filter(authFilter.apply(config -> {config.setRequiredRole("role_user");})))
                         .uri("http://spring:8080"))
                 .build();
+    }
+
+    @Bean
+    public RedisRateLimiter redisRateLimiter() {
+        return new RedisRateLimiter(10, 20, 3);
     }
 }
