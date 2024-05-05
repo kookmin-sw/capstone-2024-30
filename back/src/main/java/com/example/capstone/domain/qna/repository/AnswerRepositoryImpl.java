@@ -35,7 +35,7 @@ public class AnswerRepositoryImpl implements AnswerListRepository {
                 .select(
                         Projections.constructor(AnswerListResponse.class, answer.id, answer.question.id,
                         answer.author, answer.context,
-                        answer.likeCount ,answer.createdDate)
+                        answer.likeCount ,answer.createdDate, answer.updatedDate, answer.uuid)
                 )
                 .from(answer)
                 .innerJoin(answer.question, question)
