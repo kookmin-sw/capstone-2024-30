@@ -90,12 +90,14 @@ class _QnaDetailScreenState extends State<QnaDetailScreen>
       ),
       body: RefreshIndicator(
         onRefresh: () async {
-          loadQnaPostDetail(widget.postModel.id);
-          loadQnaAnswers();
+          answerList = [];
+          await loadQnaPostDetail(widget.postModel.id);
+          await loadQnaAnswers();
         },
         child: Container(
           color: const Color(0xFFF4F4F4),
           child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
             controller: _scrollController,
             child: Column(
               children: [
@@ -344,16 +346,21 @@ class _QnaDetailScreenState extends State<QnaDetailScreen>
                           "author": "jihun",
                           "context": _textController.text,
                         };
-                        _textController.text = "";
+                        _textController.clear();
                         var asnwerModel =
                             await QnaService.createAnswer(commentObj);
-                        answerList.add(asnwerModel);
                         setState(() {
-                          _scrollController.animateTo(
-                            _scrollController.position.maxScrollExtent + 100,
-                            duration: const Duration(milliseconds: 100),
-                            curve: Curves.easeInOut,
-                          );
+                          answerList.add(asnwerModel);
+                        });
+
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          if (_scrollController.hasClients) {
+                            _scrollController.animateTo(
+                              _scrollController.position.maxScrollExtent,
+                              duration: const Duration(milliseconds: 200),
+                              curve: Curves.easeInOut,
+                            );
+                          }
                         });
                       }
                     },

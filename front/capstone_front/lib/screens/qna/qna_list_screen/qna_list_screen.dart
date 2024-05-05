@@ -28,7 +28,7 @@ class _QnaListScreenState extends State<QnaListScreen> {
   String? word;
   String? tag;
 
-  void loadQnas(int lastCursor, String? tag, String? word) async {
+  Future<void> loadQnas(int lastCursor, String? tag, String? word) async {
     try {
       QnasResponse res = await QnaService.getQnaPosts(lastCursor, tag, word);
       setState(() {
@@ -48,7 +48,6 @@ class _QnaListScreenState extends State<QnaListScreen> {
   @override
   void initState() {
     super.initState();
-    // qnas = generateDummyData();
     loadQnas(cursor, tag, word);
   }
 
@@ -72,7 +71,6 @@ class _QnaListScreenState extends State<QnaListScreen> {
                 ? IconButton(
                     onPressed: () {
                       _controller.clear();
-                      setState(() {});
                     },
                     icon: const Icon(
                       Icons.cancel,
@@ -98,52 +96,63 @@ class _QnaListScreenState extends State<QnaListScreen> {
       ),
       body: Stack(
         children: [
-          Container(
-            color: const Color(0xFFF8F8F8),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Column(
-                children: [
-                  Container(
-                    color: const Color(0xFFF8F8F8),
-                    height: 15,
-                  ),
-                  Expanded(
-                    child: ListView.separated(
-                      shrinkWrap: true,
-                      itemCount: qnas.length,
-                      itemBuilder: (context, index) {
-                        if (index + 1 == itemCount && hasNext) {
-                          loadQnas(cursor, tag, word);
-                        }
-                        var post = qnas[index];
-                        return InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => QnaDetailScreen(
-                                  postModel: post,
+          RefreshIndicator(
+            onRefresh: () async {
+              setState(() {
+                cursor = 0;
+                hasNext = true;
+                itemCount = 0;
+              });
+              qnas = [];
+              await loadQnas(cursor, tag, word);
+            },
+            child: Container(
+              color: const Color(0xFFF8F8F8),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Column(
+                  children: [
+                    Container(
+                      color: const Color(0xFFF8F8F8),
+                      height: 15,
+                    ),
+                    Expanded(
+                      child: ListView.separated(
+                        shrinkWrap: true,
+                        itemCount: qnas.length,
+                        itemBuilder: (context, index) {
+                          if (index + 1 == itemCount && hasNext) {
+                            loadQnas(cursor, tag, word);
+                          }
+                          var post = qnas[index];
+                          return InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => QnaDetailScreen(
+                                    postModel: post,
+                                  ),
                                 ),
-                              ),
-                            );
-                          },
-                          child: QuestionCard(
-                            title: post.title,
-                            content: post.content,
-                            name: post.author,
-                            country: post.country,
-                            tag: post.category,
-                            answerCount: post.answerCount,
-                          ),
-                        );
-                      },
-                      separatorBuilder: (context, index) => const SizedBox(
-                        height: 20,
+                              );
+                            },
+                            child: QuestionCard(
+                              title: post.title,
+                              content: post.content,
+                              name: post.author,
+                              country: post.country,
+                              tag: post.category,
+                              answerCount: post.answerCount,
+                            ),
+                          );
+                        },
+                        separatorBuilder: (context, index) => const SizedBox(
+                          height: 20,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
