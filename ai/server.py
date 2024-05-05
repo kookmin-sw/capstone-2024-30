@@ -52,18 +52,14 @@ app.add_middleware(
 async def initiate():
     return "안녕하세요! 국민대학교 전용 챗봇 KUKU입니다. 국민대학교에 대한 건 모든 질문해주세요!"
 
-@app.post("/query")
+@app.post("/api/chatbot")
 async def query(query: Query):
-    return {'code': '200',
+    return {'success': 'True',
             'message': 'success',
             'response': {
                 'answer': llm.query(query.query)
             }}
 
-@app.post("/input")
-async def input(data: UploadFile):
-    vdb.add_content(data.file)
-    return 
 
 
 if __name__ == "__main__":
