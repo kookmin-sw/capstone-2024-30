@@ -230,9 +230,18 @@ class _HelperWriteScreenState extends State<QnaWriteScreen> {
                         content: _contentController.text,
                         category: "category",
                         country: "country",
-                        imagesList: ["qwe", "asd"],
-                        commentAmount: 2,
+                        answerCount: 2,
+                        createdDate: "2024-05-04",
                       ));
+
+                  var qnaPost = {
+                    "title": _titleController.text,
+                    "author": "author",
+                    "context": _contentController.text,
+                    "tag": "tagggg",
+                    "country": "qwe",
+                  };
+                  QnaService.createQnaPost(qnaPost, images);
                   Navigator.pop(context);
                 } else {
                   makeToast("내용을 다 채워주세요");

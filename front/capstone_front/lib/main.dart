@@ -221,7 +221,7 @@ final GoRouter router = GoRouter(
             return const QnaListScreen();
           }
           return QnaDetailScreen(
-            data: qna,
+            postModel: qna,
           );
         }),
     GoRoute(

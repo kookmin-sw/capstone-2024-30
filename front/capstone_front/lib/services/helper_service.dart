@@ -131,25 +131,6 @@ class HelperService {
 
   // @@@@@ 이하 QnA 복붙 @@@@@
 
-  static Future<bool> createAnswer(AnswerModel answer) async {
-    final url = Uri.parse('$baseUrl/yet/');
-    final response = await http.post(
-      url,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(answer.toJson()),
-    );
-
-    if (response.statusCode == 201) {
-      // post 요청 성공시
-      return true;
-    } else {
-      print('Request failed with status: ${response.statusCode}.');
-      return false;
-    }
-  }
-
   static Future<QnasResponse> searchQnaPosts(String query) async {
     final url = Uri.parse('$baseUrl/yet/search?q=$query');
     final response = await http.get(url);
