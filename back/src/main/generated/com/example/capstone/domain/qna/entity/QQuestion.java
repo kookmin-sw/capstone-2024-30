@@ -35,7 +35,7 @@ public class QQuestion extends EntityPathBase<Question> {
 
     public final DateTimePath<java.time.LocalDateTime> updatedDate = createDateTime("updatedDate", java.time.LocalDateTime.class);
 
-    public final ComparablePath<java.util.UUID> uuid = createComparable("uuid", java.util.UUID.class);
+    public final StringPath uuid = createString("uuid");
 
     public QQuestion(String variable) {
         super(Question.class, forVariable(variable));
