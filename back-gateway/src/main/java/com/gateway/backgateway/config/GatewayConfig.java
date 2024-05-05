@@ -16,6 +16,8 @@ public class GatewayConfig {
     public RouteLocator gatewayRoutes(RouteLocatorBuilder builder,
                                       AuthorizationHeaderFilter authFilter) {
         return builder.routes()
+                .route("chatbot",r -> r.path("/docs", "/openapi.json")
+                        .uri(chatbotUrl))
                 .route("chatbot",r -> r.path("/api/chatbot/**")
                         .filters(f->f.filter(authFilter.apply(config -> {config.setRequiredRole("role_user");})))
                         .uri(chatbotUrl))
