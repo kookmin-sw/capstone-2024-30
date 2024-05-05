@@ -56,6 +56,7 @@ class _HelperChattingListScreenState extends State<HelperChattingListScreen> {
           var currentNewChatsInfos =
               await ChatService.pollingChatList(roomInfo);
           for (var newChatInfo in currentNewChatsInfos) {
+            print(newChatInfo.content);
             var flag = true; // 새로운 채팅방인지 아닌지 확인
             for (var chatRoom in chatRoomList) {
               if (newChatInfo.chatRoomId == chatRoom.chatRoomId) {
@@ -84,6 +85,7 @@ class _HelperChattingListScreenState extends State<HelperChattingListScreen> {
           setState(() {
             saveChatRoomData(chatRoomList);
           });
+          setState(() {});
 
           await Future.delayed(const Duration(seconds: 3));
         } catch (e) {
@@ -98,7 +100,6 @@ class _HelperChattingListScreenState extends State<HelperChattingListScreen> {
 
   @override
   void initState() {
-    print('i am init');
     loadChatRooms().then((_) {
       startPolling({
         "list": currentChatRoomInfos,

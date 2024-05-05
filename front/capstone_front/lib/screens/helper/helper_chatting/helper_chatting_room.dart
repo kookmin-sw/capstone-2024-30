@@ -5,8 +5,9 @@ import 'package:capstone_front/models/chat_init_model.dart';
 import 'package:capstone_front/models/chat_model.dart';
 import 'package:capstone_front/models/chat_room_model.dart';
 import 'package:capstone_front/services/chat_service.dart';
-import 'package:capstone_front/utils/bubble_painter1.dart';
 import 'package:capstone_front/utils/bubble_painter2.dart';
+import 'package:capstone_front/utils/bubble_painter_left.dart';
+import 'package:capstone_front/utils/bubble_painter_right.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -258,8 +259,8 @@ class _HelperChattingRoomState extends State<HelperChattingRoom> {
                             painter:
                                 messages[messages.length - 1 - index].userId ==
                                         userId
-                                    ? BubblePainter2()
-                                    : BubblePainter(),
+                                    ? BubblePainterLeft()
+                                    : BubblePainterRight(),
                             child: Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: Text(

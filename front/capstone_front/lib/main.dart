@@ -1,6 +1,8 @@
 import 'package:capstone_front/firebase_options.dart';
 import 'package:capstone_front/models/chat_init_model.dart';
 import 'package:capstone_front/models/helper_model.dart';
+import 'package:capstone_front/models/cafeteria_menu_model.dart';
+import 'package:capstone_front/models/helper_article_preview_model.dart';
 import 'package:capstone_front/models/notice_model.dart';
 import 'package:capstone_front/models/qna_post_model.dart';
 import 'package:capstone_front/provider/qna_provider.dart';
@@ -32,6 +34,7 @@ import 'package:capstone_front/screens/speech_practice/speech_practice_screen.da
 import 'package:capstone_front/screens/speech_practice/speech_screen.dart';
 import 'package:capstone_front/screens/speech_practice/speech_example_sentences/speech_select_sentence_screen.dart';
 import 'package:capstone_front/screens/speech_practice/utils/recorder_screen.dart';
+import 'package:capstone_front/services/cafeteria_menu_service.dart';
 import 'package:capstone_front/utils/page_animation.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -52,6 +55,9 @@ List<String> languageSetting = ['ko', 'KR'];
 // 로그인 되어있었는지 여부
 bool _isLogin = false;
 
+// 학식 메뉴
+late CafeteriaMenuModel menus;
+
 // 언어를 설정해주고 로그인 정보를 불러오는 함수
 Future<void> setSetting() async {
   const storage = FlutterSecureStorage();
@@ -68,9 +74,8 @@ Future<void> setSetting() async {
   // storage.write(key: "uuid", value: "D8WsXf9Ncncn2lvjjGSvwKUOrEl2");
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   // prefs.remove("chatRoomData");
-  // prefs.remove("a3xezZRpYGdz0SVBDv7vTAYctOj1");
+  // prefs.remove("XWu4UVpXJnh4Q0pdP88DA90k2wf1");
   // prefs.remove("3YuwArylP5gr6njKBtMcAe9RgJr1");
-  // prefs.remove("D8WsXf9Ncncn2lvjjGSvwKUOrEl2");
 }
 
 void initializeFirebase() async {
@@ -79,12 +84,18 @@ void initializeFirebase() async {
   );
 }
 
+Future<void> getMenus() async {
+  menus =
+      await getCafeteriaMenu(DateTime.now().toString().substring(0, 10), 'KO');
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   initializeFirebase();
   await setSetting();
   await EasyLocalization.ensureInitialized();
   await dotenv.load(fileName: ".env");
+  await getMenus();
 
   runApp(
     EasyLocalization(
@@ -132,11 +143,11 @@ final GoRouter router = GoRouter(
               name: 'helperWriting',
               path: 'writing',
               builder: (context, state) {
-                final helperArticle = state.extra as HelperModel?;
-                if (helperArticle == null) {
+                final notice = state.extra as HelperArticlePreviewModel?;
+                if (notice == null) {
                   return const HelperScreen();
                 }
-                return HelperDetailScreen(helperArticle);
+                return HelperDetailScreen(notice);
               },
             ),
             GoRoute(
@@ -219,7 +230,7 @@ final GoRouter router = GoRouter(
             return const QnaListScreen();
           }
           return QnaDetailScreen(
-            data: qna,
+            postModel: qna,
           );
         }),
     GoRoute(

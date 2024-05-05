@@ -1,4 +1,6 @@
-import 'package:capstone_front/utils/bubble_painter1.dart';
+import 'package:capstone_front/services/chatbot_service.dart';
+import 'package:capstone_front/utils/bubble_painter_right.dart';
+import 'package:capstone_front/utils/bubble_painter_left.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
@@ -12,15 +14,34 @@ class ChatbotScreen extends StatefulWidget {
 class _ChatbotScreenState extends State<ChatbotScreen> {
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _textController = TextEditingController();
-  final List<String> _messages = [];
+  final List<List<String>> _messages = [];
   final int _maxLines = 1;
+  bool _isLoading = false;
 
-  void _sendMessage() {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _messages.add([tr("chatbotScreen.init"), 'chatbot']);
+  }
+
+  void _sendMessage() async {
+    FocusScope.of(context).unfocus();
     if (_textController.text.isNotEmpty) {
+      String question = _textController.text;
       setState(() {
         // Todo: _textController.text를 서버로 보내고 답변 받아오기
-        _messages.insert(_messages.length, _textController.text);
+        _messages.add([question, 'user']);
         _textController.clear();
+        _messages.add([tr("chatbotScreen.loading"), 'chatbot']);
+        _isLoading = true;
+      });
+
+      String chatbotAnswer = await getChatbotAnswer(question);
+
+      setState(() {
+        _messages[_messages.length - 1][0] = chatbotAnswer;
+        _isLoading = false;
 
         // 텍스트 입력 시 방금 입력된 텍스트가 보일 수 있도록 이동
         _scrollController.animateTo(
@@ -58,26 +79,42 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                     itemCount: _messages.length,
                     itemBuilder: (context, index) {
                       return Padding(
-                        padding: const EdgeInsets.only(
-                          top: 10.0,
-                          left: 20,
-                          right: 20,
-                          // bottom: MediaQuery.of(context).viewInsets.bottom,
-                        ),
-                        child: Container(
-                          alignment: Alignment.centerRight,
-                          child: CustomPaint(
-                            painter: BubblePainter(),
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Text(
-                                _messages[_messages.length - 1 - index],
-                                style: const TextStyle(color: Colors.white),
-                              ),
-                            ),
+                          padding: const EdgeInsets.only(
+                            top: 10.0,
+                            left: 20,
+                            right: 20,
+                            // bottom: MediaQuery.of(context).viewInsets.bottom,
                           ),
-                        ),
-                      );
+                          child: _messages[_messages.length - 1 - index][1] ==
+                                  "user"
+                              ? Container(
+                                  alignment: Alignment.centerRight,
+                                  child: CustomPaint(
+                                    painter: BubblePainterRight(),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Text(
+                                        _messages[_messages.length - 1 - index]
+                                            [0],
+                                        style: const TextStyle(
+                                            color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: CustomPaint(
+                                    painter: BubblePainterLeft(),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Text(
+                                        _messages[_messages.length - 1 - index]
+                                            [0],
+                                      ),
+                                    ),
+                                  ),
+                                ));
                     }),
               ),
             ),
@@ -108,7 +145,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                         decoration: InputDecoration.collapsed(
                           hintText: tr('chatbotScreen.textfield_hint'),
                         ),
-                        style: Theme.of(context).textTheme.bodySmall,
+                        style: Theme.of(context).textTheme.bodyMedium,
                         // onTap: () {
                         //   if (_scrollController.position ==
                         //       _scrollController.position.maxScrollExtent) {
@@ -119,9 +156,12 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                       ),
                     ),
                     IconButton(
-                      icon: const Icon(Icons.send),
-                      onPressed: _sendMessage,
-                    ),
+                        icon: const Icon(Icons.send),
+                        onPressed: () {
+                          if (!_isLoading) {
+                            _sendMessage();
+                          }
+                        }),
                   ],
                 ),
               ),

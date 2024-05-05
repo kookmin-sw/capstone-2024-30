@@ -25,7 +25,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-web-services'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     //lombok
     compileOnly 'org.projectlombok:lombok'
@@ -36,7 +35,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     testImplementation 'org.springframework.security:spring-security-test'
 
-    runtimeOnly 'com.h2database:h2'
+    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.27'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
@@ -48,10 +48,93 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
     implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
+    //Deepl
+    implementation 'com.deepl.api:deepl-java:1.4.0'
+
+    //Azure
+    implementation group: 'com.microsoft.cognitiveservices.speech', name: 'client-sdk', version: "1.36.0", ext: "jar"
+
+    //Jakarta-JSON
+    implementation 'jakarta.json:jakarta.json-api:2.1.2'
+
+    //Diffutils
+    implementation 'io.github.java-diff-utils:java-diff-utils:4.12'
+
+    //S3
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
+    //Json-Provider
+    implementation 'org.eclipse.parsson:parsson:1.1.5'
+
+    //Mapper 관련
     implementation 'org.mapstruct:mapstruct:1.5.5.Final'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+
+    //크롤링 관련
+    implementation 'org.jsoup:jsoup:1.15.3'
+
+    //테스트 관련
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation "org.junit.jupiter:junit-jupiter:5.8.1"
+    testImplementation "org.testcontainers:testcontainers:1.19.7"
+    testImplementation "org.testcontainers:junit-jupiter:1.19.7"
+    testImplementation "org.testcontainers:mysql:1.19.7"
+
+    //QueryDSL
+    implementation "com.querydsl:querydsl-core"
+    implementation "com.querydsl:querydsl-collections"
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+    annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
+
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    // java.lang.NoClassDefFoundError (javax.annotation.Generated) 에러 대응 코드
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+    // java.lang.NoClassDefFoundError (javax.annotation.Entity) 에러 대응 코드
 }
+
+// --------------------------------- Querydsl settings -----------------------------------------------
+def generated = layout.buildDirectory.dir("generated/querydsl").get().asFile
+
+tasks.withType(JavaCompile).configureEach {
+    options.getGeneratedSourceOutputDirectory().set(file(generated))
+}
+
+sourceSets {
+    main.java.srcDirs += [generated]
+}
+
+clean {
+    delete file(generated)
+}
+// ----------------------------------------------------------------------------------------------------
+
+// --------------------------------- ENV Setting  -----------------------------------------------------
+def static getenv(path = ".env") {
+    def env = [:]
+    def file = new File(path)
+    if (file.exists()) {
+        file.eachLine { line ->
+            def pair = line.split("=", 2)
+            if (pair.length == 2) {
+                def (name, value) = pair
+                env[name.trim()] = value.trim()
+            }
+        }
+    }
+    return env
+}
+
+def envVariables = getenv()
+envVariables.each { name, value ->
+    project.ext[name] = value
+}
+// ----------------------------------------------------------------------------------------------------
 
 tasks.named('test') {
     useJUnitPlatform()
+    environment envVariables
+}
+
+bootJar {
+    mainClass = 'com.example.capstone.CapstoneApplication'
 }
