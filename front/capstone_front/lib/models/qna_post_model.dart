@@ -5,9 +5,8 @@ class QnaPostModel {
   String content;
   String category;
   String country;
-  DateTime? datePublished;
-  List<String> imagesList;
-  int commentAmount;
+  String createdDate;
+  int answerCount;
 
   QnaPostModel({
     required this.id,
@@ -16,60 +15,42 @@ class QnaPostModel {
     required this.content,
     required this.category,
     required this.country,
-    this.datePublished,
-    required this.imagesList,
-    required this.commentAmount,
+    required this.createdDate,
+    required this.answerCount,
   });
 
   QnaPostModel.fromJson(Map<String, dynamic> json)
       : id = json['id'] as int,
         title = json['title'] as String,
         author = json['author'] as String,
-        content = json['content'] as String,
-        category = json['category'] as String,
+        content = json['context'] as String,
+        category = json['tag'] as String,
         country = json['country'] as String,
-        commentAmount = json['commentAmount'] as int,
-        datePublished = json['date_published'] == null
-            ? null
-            : DateTime.tryParse(json['date_published'] as String),
-        imagesList = json['imagesList'] as List<String>;
+        answerCount = json['answerCount'] as int,
+        createdDate = json['createdDate'] as String;
 }
 
-class QnaPostDetailModel extends QnaPostModel {
-  List<String> imgUrl;
-  DateTime? dateUpdated;
+class QnaPostDetailModel {
+  int id;
+  String title;
+  String author;
+  String content;
+  String category;
+  String country;
+  String createdDate;
   String uuid;
-
-  QnaPostDetailModel({
-    required super.id,
-    required super.title,
-    required super.author,
-    required super.content,
-    required super.category,
-    required super.country,
-    super.datePublished,
-    required super.imagesList,
-    required super.commentAmount,
-    required this.imgUrl,
-    this.dateUpdated,
-    required this.uuid,
-  });
+  List<String> imgUrl;
 
   QnaPostDetailModel.fromJson(Map<String, dynamic> json)
-      : imgUrl = json['imgUrl'] as List<String>,
-        dateUpdated = json['dateUpdated'] == null
-            ? null
-            : DateTime.tryParse(json['dateUpdated'] as String),
-        uuid = json['uuid'] as String,
-        super.fromJson({
-          'id': json['id'] as int,
-          'title': json['title'] as String,
-          'author': json['author'] as String,
-          'content': json['content'] as String,
-          'category': json['category'] as String,
-          'country': json['country'] as String,
-          'date_published': json['date_published'] as String?,
-          'imagesList': json['imagesList'] as List<String>,
-          'commentAmount': json['commentAmount'] as int,
-        });
+      : id = json['questionResponse']['id'] as int,
+        title = json['questionResponse']['title'] as String,
+        author = json['questionResponse']['author'] as String,
+        content = json['questionResponse']['context'] as String,
+        category = json['questionResponse']['tag'] as String,
+        country = json['questionResponse']['country'] as String,
+        createdDate = json['questionResponse']['createdDate'] as String,
+        uuid = json['questionResponse']['uuid'] as String,
+        imgUrl = (json['imgUrl'] as List<dynamic>)
+            .map((item) => item as String)
+            .toList();
 }
