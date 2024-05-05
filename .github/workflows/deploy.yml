@@ -28,6 +28,7 @@ jobs:
 
       - name: Create env file
         run: |
+          pwd
           echo DB_ENDPOINT=${{ secrets.DB_ENDPOINT }} >> .env
           echo DB_NAME=${{ secrets.DB_NAME }} >> .env
           echo MYSQL_USERNAME=${{ secrets.MYSQL_USERNAME }} >> .env
@@ -55,7 +56,7 @@ jobs:
           host: ${{ secrets.AWS_HOST }}
           username: ubuntu
           key: ${{ secrets.AWS_KEY }}
-          source: "/github/workspace/.env"
+          source: "./.env"
           target: "capstone"
 
       - name: Copy docker-compose.yaml to EC2
@@ -64,149 +65,5 @@ jobs:
           host: ${{ secrets.AWS_HOST }}
           username: ubuntu
           key: ${{ secrets.AWS_KEY }}
-          source: "/github/workspace/back/docker-compose.yml"
+          source: "./back/docker-compose.yml"
           target: "capstone"
-
-      - name: action-slack
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          author_name: PetBuddy Github
-          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: always()
-
-  build-spring:
-    runs-on: ubuntu-latest
-    needs: setup-env
-
-    steps:
-      - name: Build and push Spring
-        uses: docker/build-push-action@v5
-        with:
-          context: ./back
-          push: true
-          tags: ${{ secrets.DOCKER_REPO }}/spring:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      - name: action-slack
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          author_name: PetBuddy Github
-          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: always()
-
-  build-nginx:
-    runs-on: ubuntu-latest
-    needs: setup-env
-
-    steps:
-      - name: Build and push Nginx
-        uses: docker/build-push-action@v5
-        with:
-          context: ./back/nginx
-          push: true
-          tags: ${{ secrets.DOCKER_REPO }}/nginx:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      - name: action-slack
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          author_name: PetBuddy Github
-          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: always()
-
-  build-ruby:
-    runs-on: ubuntu-latest
-    needs: setup-env
-
-    steps:
-      - name: Build and push Ruby on Rails
-        uses: docker/build-push-action@v5
-        with:
-          context: ./back-chat
-          push: true
-          tags: ${{ secrets.DOCKER_REPO }}/ruby:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      - name: action-slack
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          author_name: PetBuddy Github
-          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: always()
-
-  build-gateway:
-    runs-on: ubuntu-latest
-    needs: setup-env
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Build and push Spring
-        uses: docker/build-push-action@v5
-        with:
-          context: ./back-gateway
-          push: true
-          tags: ${{ secrets.DOCKER_REPO }}/spring-gateway:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      - name: action-slack
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          author_name: PetBuddy Github
-          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: always()
-
-  deploy:
-    runs-on : ubuntu-latest
-    needs: [build-spring, build-nginx, build-ruby, build-gateway]
-
-    steps:
-      - name: executing remote ssh commands using password
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.AWS_HOST }}
-          username: ubuntu
-          key: ${{ secrets.AWS_KEY }}
-          script: |
-            if [ "$(sudo docker ps -qa)" ]; then
-              sudo docker rm -f $(sudo docker ps -qa)
-            fi
-            
-            sudo docker pull ${{ secrets.DOCKER_REPO }}/spring:latest
-            sudo docker pull ${{ secrets.DOCKER_REPO }}/nginx:latest
-            sudo docker pull ${{ secrets.DOCKER_REPO }}/ruby:latest
-            sudo docker pull ${{ secrets.DOCKER_REPO }}/spring-gateway:latest
-  
-            sudo docker compose -f capstone/docker-compose.yml up -d
-            sudo docker image prune -f
-
-      - name: action-slack
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          author_name: PetBuddy Github
-          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: always()
-
