@@ -18,7 +18,15 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
   final int _maxLines = 1;
   bool _isLoading = true;
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _messages.add([tr("chatbotScreen.init"), 'chatbot']);
+  }
+
   void _sendMessage() async {
+    FocusScope.of(context).unfocus();
     if (_textController.text.isNotEmpty) {
       String question = _textController.text;
       setState(() {
@@ -137,7 +145,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                         decoration: InputDecoration.collapsed(
                           hintText: tr('chatbotScreen.textfield_hint'),
                         ),
-                        style: Theme.of(context).textTheme.bodySmall,
+                        style: Theme.of(context).textTheme.bodyMedium,
                         // onTap: () {
                         //   if (_scrollController.position ==
                         //       _scrollController.position.maxScrollExtent) {

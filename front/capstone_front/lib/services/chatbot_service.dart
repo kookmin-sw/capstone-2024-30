@@ -1,16 +1,33 @@
 import 'dart:convert';
 
+import 'package:capstone_front/models/api_fail_response.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 Future<String> getChatbotAnswer(String question) async {
-  // final String baseUrl = dotenv.get('BASE_URL');
-  const String baseUrl = "https://jsonplaceholder.typicode.com/todos/1";
-  final url = Uri.parse(baseUrl);
-  final response = await http.get(url);
+  final String baseUrl = dotenv.get('CHATBOT_URL');
+  final url = Uri.parse('$baseUrl/chatbot');
+
+  Map data = {"query": question};
+  var body = json.encode(data);
+
+  final response = await http.post(
+    url,
+    headers: {'Content-Type': "application/json"},
+    body: body,
+  );
 
   final Map<String, dynamic> jsonMap =
       jsonDecode(utf8.decode(response.bodyBytes));
 
-  return jsonMap['title'];
+  if (response.statusCode == 200) {
+    print("success");
+    return jsonMap['response']['answer'];
+  } else {
+    // var apiFailResponse = ApiFailResponse.fromJson(jsonMap);
+    // print(apiFailResponse.message);
+    print(response.body);
+    print('Request failed with status: ${response.statusCode}.');
+    throw Exception('Failed to load chatbot answer');
+  }
 }
