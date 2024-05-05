@@ -49,6 +49,7 @@ jobs:
           echo SERVER_NAME=${{ secrets.SERVER_NAME }} >> .env
           echo SERVER_URL=${{ secrets.SERVER_URL }} >> .env
           echo CHATBOT_URL=${{ secrets.CHATBOT_URL }} >> .env
+          ls -a
 
       - name: Copy .env to EC2
         uses: appleboy/scp-action@master
