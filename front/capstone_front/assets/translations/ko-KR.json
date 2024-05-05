@@ -77,7 +77,9 @@
   },
   "chatbotScreen": {
     "chatbot": "챗봇",
-    "textfield_hint": "궁금한 내용을 입력해주세요"
+    "textfield_hint": "궁금한 내용을 입력해주세요",
+    "loading": "답변을 생성중입니다...",
+    "init": "안녕하세요! 국민대학교 전용 챗봇 KUKU입니다. 국민대학교에 대한 건 모든 질문해주세요!"
   },
   "helper": {
     "helper": "헬퍼",
