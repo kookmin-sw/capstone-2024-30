@@ -26,8 +26,8 @@ public class GatewayConfig {
                         .filters(f->f.filter(authFilter.apply(config -> {config.setRequiredRole("role_user");})))
                         .uri("http://ruby:3000"))
                 .route("business", r -> r.path("/api/user/signin", "/api/user/test", "/api/user/signup",
-                                "/api/announcement/**", "/api/menu/**", "/api/speech/**", "/api/question/**",
-                                "/api/answer/**", "/api/faq/**", "/api/help/**", "/api/auth/**", "/api/swagger-ui/**", "/api/api-docs/**")
+                                "/api/announcement/**", "/api/menu/**", "/api/speech/**", "/api/question/read", "/api/question/list",
+                                "/api/answer/list", "/api/faq/**", "/api/help/read", "/api/help/list", "/api/auth/**", "/api/swagger-ui/**", "/api/api-docs/**")
                         .uri("http://spring:8080"))
                 .route("business", r -> r.path("/api/**")
                         .filters(f->f.filter(authFilter.apply(config -> {config.setRequiredRole("role_user");})))
