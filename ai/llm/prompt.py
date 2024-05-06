@@ -40,12 +40,3 @@ def score_prompt():
     Classification:"""
     )
     return prompt
-
-def translate_prompt():
-    prompt = PromptTemplate.from_template("""
-    You are a translator with vast knowledge of human languages. Translate the content into the language corresponding to the question. You should only translate and never answer questions.
-        
-    question : {question}
-    content : {content}
-    result :""")
-    return prompt
