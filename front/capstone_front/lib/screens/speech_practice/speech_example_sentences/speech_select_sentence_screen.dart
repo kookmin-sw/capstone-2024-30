@@ -13,21 +13,15 @@ class _SpeechSentenceScreenState extends State<SpeechSentenceScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: ListView.builder(
-          itemBuilder: (BuildContext context, int index) {
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 10),
-              child: SpeechSentenceCard(
-                index: index,
-                canTap: true,
-                verticalPadding: 0,
-              ),
-            );
-          },
-          itemCount: sentences.length,
-        ),
+      body: ListView.builder(
+        itemBuilder: (BuildContext context, int index) {
+          return SpeechSentenceCard(
+            index: index,
+            canTap: true,
+            verticalPadding: 0,
+          );
+        },
+        itemCount: sentences.length,
       ),
     );
   }
