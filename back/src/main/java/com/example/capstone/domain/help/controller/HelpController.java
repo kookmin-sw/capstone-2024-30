@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 public class HelpController {
 
     private final HelpService helpService;
-    private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping(value = "/create")
     @Operation(summary = "헬퍼글 생성", description = "request 정보를 기반으로 헬퍼글을 생성합니다.")

@@ -3,6 +3,7 @@ package com.example.capstone.domain.qna.controller;
 import com.example.capstone.domain.jwt.JwtTokenProvider;
 import com.example.capstone.domain.qna.dto.*;
 import com.example.capstone.domain.qna.service.AnswerService;
+import com.example.capstone.domain.star.service.StarService;
 import com.example.capstone.global.dto.ApiResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/answer")
 public class AnswerController {
     private final AnswerService answerService;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final StarService starService;
 
     @PostMapping("/create")
     @Operation(summary = "댓글 생성", description = "request 정보를 기반으로 댓글을 생성합니다.")
@@ -34,9 +35,10 @@ public class AnswerController {
     @PostMapping("/list")
     @Operation(summary = "댓글 리스트 생성", description = "request 정보를 기반으로 댓글의 리스트를 생성합니다.")
     @ApiResponse(responseCode = "200", description = "request 정보를 기반으로 생성된 댓글의 리스트가 반환됩니다.")
-    public ResponseEntity<ApiResult<AnswerSliceResponse>> listAnswer(@Parameter(description = "댓글 리스트 생성을 위한 파라미터 값입니다. 질문글의 id, cursorId, 댓글 정렬 기준( date / like )이 필요합니다.", required = true)
+    public ResponseEntity<ApiResult<AnswerSliceResponse>> listAnswer(@RequestHeader("X-User-ID") String userId,
+                                        @Parameter(description = "댓글 리스트 생성을 위한 파라미터 값입니다. 질문글의 id, cursorId, 댓글 정렬 기준( date / like )이 필요합니다.", required = true)
                                         @RequestBody AnswerListRequest request) {
-        AnswerSliceResponse response = answerService.getAnswerList(request.questionId(), request.cursorId(), request.sortBy());
+        AnswerSliceResponse response = answerService.getAnswerList(request.questionId(), request.cursorId(), request.sortBy(), userId);
         return ResponseEntity
                 .ok(new ApiResult<>("Successfully create answer list", response));
     }

@@ -29,10 +29,10 @@ public class AnswerService {
         return answer.toDTO();
     }
 
-    public AnswerSliceResponse getAnswerList(Long questionId, Long cursorId, String sortBy) {
+    public AnswerSliceResponse getAnswerList(Long questionId, Long cursorId, String sortBy, String uuid) {
         Pageable page = PageRequest.of(0, 10);
         if(cursorId == 0) cursorId = null;
-        AnswerSliceResponse answerList = answerRepository.getAnswerListByPaging(cursorId, page, questionId, sortBy);
+        AnswerSliceResponse answerList = answerRepository.getAnswerListByPaging(cursorId, page, questionId, sortBy, uuid);
 
         return answerList;
     }

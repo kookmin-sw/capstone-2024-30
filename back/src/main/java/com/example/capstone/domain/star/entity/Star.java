@@ -3,8 +3,6 @@ package com.example.capstone.domain.star.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.UUID;
-
 @Entity
 @Table(name = "stars")
 @Getter
@@ -19,7 +17,7 @@ public class Star {
     private Long id;
 
     @Column(name = "uuid", nullable = false)
-    private UUID uuid;
+    private String uuid;
 
     @Column(name = "answer_id", nullable = false)
     private Long answerId;

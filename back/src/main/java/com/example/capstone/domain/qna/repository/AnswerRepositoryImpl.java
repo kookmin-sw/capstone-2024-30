@@ -5,6 +5,7 @@ import com.example.capstone.domain.qna.dto.AnswerSliceResponse;
 import com.example.capstone.domain.qna.dto.QuestionListResponse;
 import com.example.capstone.domain.qna.entity.QAnswer;
 import com.example.capstone.domain.qna.entity.QQuestion;
+import com.example.capstone.domain.star.entity.QStar;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
@@ -26,19 +27,22 @@ public class AnswerRepositoryImpl implements AnswerListRepository {
     private final JPAQueryFactory jpaQueryFactory;
     private final QAnswer answer = QAnswer.answer;
     private final QQuestion question = QQuestion.question;
+    private final QStar star = QStar.star;
 
     @Override
-    public AnswerSliceResponse getAnswerListByPaging(Long cursorId, Pageable page, Long questionId, String sortBy) {
+    public AnswerSliceResponse getAnswerListByPaging(Long cursorId, Pageable page, Long questionId, String sortBy, String uuid) {
         OrderSpecifier[] orderSpecifiers = createOrderSpecifier(sortBy);
 
         List<AnswerListResponse> answerList = jpaQueryFactory
                 .select(
                         Projections.constructor(AnswerListResponse.class, answer.id, answer.question.id,
                         answer.author, answer.context,
-                        answer.likeCount ,answer.createdDate, answer.updatedDate, answer.uuid)
+                        answer.likeCount, star.answerId.isNotNull(), answer.createdDate, answer.updatedDate, answer.uuid)
                 )
                 .from(answer)
                 .innerJoin(answer.question, question)
+                .leftJoin(star)
+                .on(answer.id.eq(star.answerId), star.uuid.eq(uuid))
                 .where(cursorId(cursorId),
                         questionEq(questionId))
                 .orderBy(orderSpecifiers)
