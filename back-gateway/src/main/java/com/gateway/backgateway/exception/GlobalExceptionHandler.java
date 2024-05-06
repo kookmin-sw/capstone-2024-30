@@ -17,8 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
-import static com.gateway.backgateway.exception.ErrorCode.INTERNAL_SERVER_ERROR;
-import static com.gateway.backgateway.exception.ErrorCode.INVALID_JWT_TOKEN;
+import static com.gateway.backgateway.exception.ErrorCode.*;
 
 @Slf4j
 @Order(-1)
@@ -41,6 +40,10 @@ public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
         response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
         if (ex instanceof JwtTokenInvalidException) {
             errorCode = INVALID_JWT_TOKEN;
+            response.setStatusCode(HttpStatusCode.valueOf(errorCode.getStatus()));
+        }
+        else if (ex instanceof TooManyRequestException) {
+            errorCode = TOO_MANY_REQUESTS;
             response.setStatusCode(HttpStatusCode.valueOf(errorCode.getStatus()));
         }
         else{
