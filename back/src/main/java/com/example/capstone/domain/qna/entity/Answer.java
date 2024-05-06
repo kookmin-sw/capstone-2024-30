@@ -37,7 +37,7 @@ public class Answer {
     @Column(name = "updated_date", nullable = false)
     private LocalDateTime updatedDate;
 
-    @Column(name = "uuid", nullable = false, unique = true)
+    @Column(name = "uuid", nullable = false)
     private String uuid;
 
     public void update(String context, LocalDateTime updatedDate) {
