@@ -1,4 +1,5 @@
 from langchain import PromptTemplate
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 
 def casual_prompt():
     prompt = PromptTemplate.from_template(
@@ -10,7 +11,8 @@ def casual_prompt():
 
 def is_qna_prompt():
     prompt = PromptTemplate.from_template(
-    """Given the user input below, classify it as either being about `question`, `casual` or 'other'.
+    """Given the user input below, classify it as either being about `question`, `casual`.
+    Input that asks for information is always classified as a question.
     Do not respond with more than one word.
     <input>
     {input}
@@ -40,3 +42,26 @@ def score_prompt():
     Classification:"""
     )
     return prompt
+
+def contextualize_prompt():
+
+    contextualize_q_system_prompt = """Given a chat history and the latest user question \
+    which might reference context in the chat history, formulate a standalone question \
+    which can be understood without the chat history. Do NOT answer the question, \
+    just reformulate it if needed and otherwise return it as is.\n
+
+    ex1) 
+    HUMAN : What is Task Decomposition? 
+    AI : Task decomposition is a technique used to break down complex tasks into smaller and simpler steps. This approach helps agents or models handle difficult tasks by dividing them into more manageable subtasks. It can be achieved through methods like Chain of Thought (CoT) or Tree of Thoughts, which guide the model in thinking step by step or exploring multiple reasoning possibilities at each step.
+    HUMAN(latest user question) : What are common ways of doing it?
+    REFORMULATE QUESTION(your response) : What are common ways of doing Task Decomposition?
+"""
+    contextualize_q_prompt = ChatPromptTemplate.from_messages(
+        [
+            ("system", contextualize_q_system_prompt),
+            MessagesPlaceholder("chat_history"),
+            ("human", "{input}"),
+        ]
+    )
+
+    return contextualize_q_prompt

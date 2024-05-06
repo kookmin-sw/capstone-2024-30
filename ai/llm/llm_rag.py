@@ -3,8 +3,11 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough, RunnableLambda
 from langchain_openai import ChatOpenAI
 from tavily import TavilyClient
-from llm.prompt import casual_prompt, is_qna_prompt, combine_result_prompt, score_prompt
+from llm.prompt import casual_prompt, is_qna_prompt, combine_result_prompt, score_prompt, contextualize_prompt
 from langchain.retrievers.multi_query import MultiQueryRetriever
+from langchain.memory import ChatMessageHistory
+from langchain_core.runnables.history import RunnableWithMessageHistory
+from langchain_core.chat_history import BaseChatMessageHistory
 import deepl
 import os
 
@@ -19,6 +22,7 @@ class LLM_RAG:
         self.is_qna_prompt = is_qna_prompt()
         self.combine_result_prompt = combine_result_prompt()
         self.score_prompt = score_prompt()
+        self.contextualize_prompt = contextualize_prompt()
         self.deepl = deepl.Translator(os.getenv("DEEPL_API_KEY"))
         self.ko_query = None
         self.result_lang = None
@@ -26,6 +30,9 @@ class LLM_RAG:
         self.school_retriever = None
         self.notice_multiquery_retriever = None
         self.school_multiquery_retriever = None
+        self.store = {}
+        self.session_id = 'unused'
+        self.ephemeral_chat_history = ChatMessageHistory()
 
 
         if trace:
@@ -97,24 +104,37 @@ class LLM_RAG:
             self.score_route
         )
 
+        self.contextualize_question_chain = RunnableWithMessageHistory(
+            self.contextualize_prompt
+            |self.llm
+            |StrOutputParser(),
+            self.get_session_history,
+            input_messages_key='input',
+            history_messages_key='chat_history'
+        )
+
 
     def qna_route(self, info):
+        self.ko_query = self.contextualize_question_chain.invoke(
+                {"input": self.ko_query},
+                {"configurable": {"session_id": "unused"}},
+                )
+        
         if "question" in info["topic"].lower():
             self.result = self.rag_combine_chain.invoke(self.ko_query)
             score = self.score_chain.invoke({"question" : self.ko_query, "answer": self.result})
             self.score_invoke_chain.invoke({"score" : score, "question": self.ko_query})
         
         elif "casual" in info["topic"].lower():
-            self.result =  self.casual_answer_chain.invoke(self.question)
+            self.result =  self.casual_answer_chain.invoke(self.ko_query)
 
         else:
-            self.result = self.rag_combine_chain.invoke(self.question)
+            self.result = self.rag_combine_chain.invoke(self.ko_query)
 
         
     def score_route(self, info):
         if "good" in info["score"].lower():
             self.result = self.deepl.translate_text(self.result, target_lang=self.result_lang).text
-            return self.result
         else:
             print('-- google search --')
             content = self.tavily.qna_search(query='국민대학교 ' + self.ko_query)
@@ -125,9 +145,17 @@ class LLM_RAG:
     # 검색한 문서 결과를 하나의 문단으로 합쳐줍니다.
         return "\n\n".join(doc.page_content + '\nmetadata=' + str(doc.metadata) for doc in docs)
     
-    def query(self, question, result_lang):
+    def query(self, question, result_lang, session_id='unused'):
         self.question = question
         self.ko_query = self.deepl.translate_text(self.question, target_lang='ko').text
+        self.session_id = session_id
         self.result_lang = result_lang
         self.qna_route_chain.invoke(question)
+        #self.ephemeral_chat_history.add_ai_message(self.result)
+        self.store['unused'].add_ai_message(self.result)
         return self.result
+
+    def get_session_history(self, session_id: str) -> BaseChatMessageHistory:
+        if session_id not in self.store:
+            self.store[session_id] = ChatMessageHistory()
+        return self.store[session_id]
