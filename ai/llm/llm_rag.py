@@ -3,9 +3,8 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough, RunnableLambda
 from langchain_openai import ChatOpenAI
 from tavily import TavilyClient
-from llm.prompt import casual_prompt, is_qna_prompt, combine_result_prompt, score_prompt
+from llm.prompt import casual_prompt, is_qna_prompt, combine_result_prompt, score_prompt, translate_prompt
 from langchain.retrievers.multi_query import MultiQueryRetriever
-import deepl
 import os
 
 class LLM_RAG:
@@ -19,9 +18,7 @@ class LLM_RAG:
         self.is_qna_prompt = is_qna_prompt()
         self.combine_result_prompt = combine_result_prompt()
         self.score_prompt = score_prompt()
-        self.deepl = deepl.Translator(os.getenv("DEEPL_API_KEY"))
-        self.ko_query = None
-        self.result_lang = None
+        self.translate_prompt = translate_prompt()
         self.notice_retriever = None
         self.school_retriever = None
         self.notice_multiquery_retriever = None
@@ -97,37 +94,41 @@ class LLM_RAG:
             self.score_route
         )
 
+        self.translate_chain = (
+            self.translate_prompt
+            | self.llm
+            | StrOutputParser()
+        )
 
     def qna_route(self, info):
         if "question" in info["topic"].lower():
-            self.result = self.rag_combine_chain.invoke(self.ko_query)
-            score = self.score_chain.invoke({"question" : self.ko_query, "answer": self.result})
-            self.score_invoke_chain.invoke({"score" : score, "question": self.ko_query})
+
+            self.result = self.rag_combine_chain.invoke(info["question"])
+            score = self.score_chain.invoke({"question" : self.question, "answer": self.result})
+            self.score_invoke_chain.invoke({"score" : score, "question": self.question})
         
         elif "casual" in info["topic"].lower():
-            self.result =  self.casual_answer_chain.invoke(self.question)
+            self.result =  self.casual_answer_chain.invoke(info['question'])
 
         else:
-            self.result = self.rag_combine_chain.invoke(self.question)
+            self.result = self.rag_combine_chain.invoke(info["question"])
 
         
     def score_route(self, info):
         if "good" in info["score"].lower():
-            self.result = self.deepl.translate_text(self.result, target_lang=self.result_lang).text
             return self.result
         else:
             print('-- google search --')
-            content = self.tavily.qna_search(query='국민대학교 ' + self.ko_query)
-            self.result = "I couldn't find the answer, so I searched on Google.\n\n" + content
-            self.result = self.deepl.translate_text(self.result, target_lang=self.result_lang).text
+            content = self.tavily.qna_search(query='국민대학교 ' + self.question)
+            self.result = "답을 찾을 수 없어서 구글에 검색했습니다.\n\n"
+            self.result += self.translate_chain.invoke({'content' : content, 'question':self.question})
+            return self.result
 
     def format_docs(self, docs):
     # 검색한 문서 결과를 하나의 문단으로 합쳐줍니다.
         return "\n\n".join(doc.page_content + '\nmetadata=' + str(doc.metadata) for doc in docs)
     
-    def query(self, question, result_lang):
+    def query(self, question):
         self.question = question
-        self.ko_query = self.deepl.translate_text(self.question, target_lang='ko').text
-        self.result_lang = result_lang
         self.qna_route_chain.invoke(question)
         return self.result
