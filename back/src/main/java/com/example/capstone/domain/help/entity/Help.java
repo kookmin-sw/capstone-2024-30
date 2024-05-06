@@ -43,7 +43,7 @@ public class Help {
     @Column(name = "updated_date", nullable = false)
     private LocalDateTime updatedDate;
 
-    @Column(name = "uuid", nullable = false, unique = true)
+    @Column(name = "uuid", nullable = false)
     private String uuid;
 
     public void update(String title, String context, LocalDateTime updatedDate) {
