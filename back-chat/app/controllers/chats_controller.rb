@@ -3,7 +3,7 @@
 class ChatsController < ApplicationController
   before_action :authorize_request
   def list
-    user_id = @decoded[:uuid]
+    user_id = @decoded
 
     user = User.find_by(user_id: user_id)
     if user.nil?
@@ -26,21 +26,26 @@ class ChatsController < ApplicationController
         chat_room_id: chat_room.id,
         user_id: other_user_id,
         user_name: users_info[other_user_id]&.name,
-        last_message_id: last_message&.id,
-        chat_room_message: last_message&.content,
-        chat_room_date: last_message&.timestamp&.strftime("%Y-%m-%d %H:%M")
+        last_message_id: last_message ? last_message.id : 0,
+        chat_room_message: last_message ? last_message.content : "",
+        chat_room_date: last_message ? last_message.timestamp.strftime("%Y-%m-%d %H:%M") : "2000-06-04 00:00"
       }
     end
 
     sorted_rooms = chat_rooms_data.sort_by { |room| room[:chat_room_date] ? DateTime.parse(room[:chat_room_date]) : DateTime.new(0) }.reverse
+    max = chat_rooms.maximum(:id)
 
-    render_success(data: { rooms: sorted_rooms }, message: "Chat rooms retrieved successfully")
+    if max.nil?
+      max = 0
+    end
+
+    render_success(data: { rooms: sorted_rooms, max:max }, message: "Chat rooms retrieved successfully")
   end
 
   # 유저간 채팅방을 생성해줌
   def connect
     user1_id = params[:user_id]
-    user2_id = @decoded[:uuid]
+    user2_id = @decoded
 
     user1 = User.find_by(user_id: user1_id)
     user2 = User.find_by(user_id: user2_id)
@@ -62,7 +67,7 @@ class ChatsController < ApplicationController
   end
 
   def join
-    user_id = @decoded[:uuid]
+    user_id = @decoded
     chat_room = ChatRoom.where('id = ? AND (user1_uuid = ? OR user2_uuid = ?)',
                                params[:chat_id], user_id, user_id).first
 
@@ -81,6 +86,7 @@ class ChatsController < ApplicationController
       {
         id: message.id,
         content: message.content,
+        user_id: message.user_id,
         timestamp: message.timestamp.strftime("%Y-%m-%d %H:%M")
       }
     end
@@ -96,7 +102,7 @@ class ChatsController < ApplicationController
   end
 
   def send_message
-    user_id = @decoded[:uuid]
+    user_id = @decoded
 
     chat_room = ChatRoom.where('id = ? AND (user1_uuid = ? OR user2_uuid = ?)',
                                params[:chat_id], user_id, user_id).first
@@ -110,23 +116,14 @@ class ChatsController < ApplicationController
     response = {
       id: message.id,
       content: message.content,
-      timestamp: message.timestamp.strftime("%Y-%m-%d %H:%M")
+      timestamp: message.timestamp.strftime("%Y-%m-%d %H:%M"),
+      user_id: user_id
     }
-
-    print(response)
 
     if message.persisted?
       render_success(data: response, message: "Message sent", status: :created)
       return
     end
     render_fail(message: "Message Send Error", status: :bad_request)
-  end
-
-  def test
-    test = @decoded[:uuid]
-
-    test = User.find_by(user_id: "rqwerwerwer")
-
-    render_success(data:test, message: "Hello World")
   end
 end

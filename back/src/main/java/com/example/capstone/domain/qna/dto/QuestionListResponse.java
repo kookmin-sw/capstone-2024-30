@@ -12,6 +12,7 @@ public record QuestionListResponse (
         String context,
         String tag,
         String country,
+        Long answerCount,
         LocalDateTime createdDate
 ) {
 }

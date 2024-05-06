@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Table(name = "helps")
@@ -45,7 +44,7 @@ public class Help {
     private LocalDateTime updatedDate;
 
     @Column(name = "uuid", nullable = false)
-    private UUID uuid;
+    private String uuid;
 
     public void update(String title, String context, LocalDateTime updatedDate) {
         this.title = title;

@@ -31,29 +31,23 @@ public class QuestionRepositoryImpl implements QuestionListRepository {
                                 QuestionListResponse.class,
                                 question.id, question.title,
                                 question.author, question.context,
-                                question.tag, question.country, question.createdDate
-                                )
+                                question.tag, question.country, answer.id.count(), question.createdDate
+                        )
                 )
                 .from(question)
+                .leftJoin(answer)
+                .on(question.id.eq(answer.question.id))
                 .where(cursorId(cursorId),
                         wordEq(word),
                         tagEq(tag))
                 .orderBy(question.createdDate.desc())
                 .limit(page.getPageSize() + 1)
+                .groupBy(question.id)
+                .distinct()
                 .fetch();
 
-        Map<Long, Long> answerCount = new HashMap<>();
-        for(QuestionListResponse response : questionList) {
-            Long count = jpaQueryFactory
-                    .select(answer.count())
-                    .from(answer)
-                    .where(questionIdEq(response.id()))
-                    .fetchFirst();
-            answerCount.put(response.id(), count);
-        }
-
         boolean hasNext = false;
-        if(questionList.size() > page.getPageSize()) {
+        if(questionList.size() > page.getPageSize() && questionList.size() != 0) {
             questionList.remove(page.getPageSize());
             hasNext = true;
         }
@@ -64,7 +58,7 @@ public class QuestionRepositoryImpl implements QuestionListRepository {
             lastCursorId = questionList.get(questionList.size() - 1).id();
         }
 
-        return new QuestionSliceResponse(lastCursorId, hasNext, questionList, answerCount);
+        return new QuestionSliceResponse(lastCursorId, hasNext, questionList);
     }
 
     private BooleanExpression cursorId(Long cursorId) {

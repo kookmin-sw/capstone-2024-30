@@ -32,13 +32,12 @@ public class QuestionController {
     @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "질문글 생성", description = "request 정보를 기반으로 질문글을 생성합니다. imgList 정보를 통해 이미지 파일을 업로드 합니다")
     @ApiResponse(responseCode = "200", description = "request 정보를 기반으로 생성된 질문글과 imgList을 통해 업로드된 이미지 파일의 url 정보가 함께 반환됩니다.")
-    public ResponseEntity<ApiResult<QuestionEntireResponse>> createQuestion(/*@RequestHeader String token,*/
+    public ResponseEntity<ApiResult<QuestionEntireResponse>> createQuestion(@RequestHeader("X-User-ID") String userId,
                                             @Parameter(description = "질문글의 구성 요소 입니다. 제목, 작성자, 본문, 태그, 국가 정보가 들어가야 합니다.", required = true)
                                             @RequestPart QuestionPostRequest request,
                                             @Parameter(description = "질문글에 첨부되는 이미지 파일들 입니다. 여러 파일을 리스트 형식으로 입력해야 합니다.")
                                             @RequestPart(required = false) List<MultipartFile> imgList) {
         List<String> urlList = new ArrayList<>();
-        String userId = UUID.randomUUID().toString();//jwtTokenProvider.extractUUID(token);
         QuestionResponse quest = questionService.createQuestion(userId, request);
         if(imgList != null){
             urlList = imageService.upload(imgList, quest.id(), false);
@@ -62,10 +61,9 @@ public class QuestionController {
     @PutMapping("/update")
     @Operation(summary = "질문글 수정", description = "request 정보를 기반으로 질문글을 수정합니다.")
     @ApiResponse(responseCode = "200", description = "완료시 200을 리턴합니다.")
-    public ResponseEntity<ApiResult<Integer>> updateQuestion(/*@RequestHeader String token,*/
-                                            @Parameter(description = "수정할 질문글의 id와 질문글의 content가 들어갑니다.", required = true)
+    public ResponseEntity<ApiResult<Integer>> updateQuestion(@RequestHeader("X-User-ID") String userId,
+                                            @Parameter(description = "수정할 질문글의 id와 질문글의 request가 들어갑니다.", required = true)
                                             @RequestBody QuestionPutRequest request) {
-        String userId = UUID.randomUUID().toString();//jwtTokenProvider.extractUUID(token);
         questionService.updateQuestion(userId, request);
         return ResponseEntity
                 .ok(new ApiResult<>("Successfully update question", 200));
@@ -87,7 +85,7 @@ public class QuestionController {
                 .ok(new ApiResult<>("Successfully delete question", 200));
     }
 
-    @GetMapping("/list")
+    @PostMapping("/list")
     @Operation(summary = "질문글 미리보기 리스트 생성", description = "request 정보를 기반으로 페이지네이션이 적용된 질문글 리스트를 반환합니다.")
     @ApiResponse(responseCode = "200", description = "request 조건에 맞는 질문글 리스트를 반환합니다.")
     public ResponseEntity<ApiResult<QuestionSliceResponse>> listQuestion(

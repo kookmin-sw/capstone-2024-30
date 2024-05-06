@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: back-gateway
+
+jwt:
+  secret:
+    key: ${JWT_SECRET}
+
+server:
+  port: 8081
+  chatbot-url: ${CHATBOT_URL}

@@ -1,9 +1,6 @@
 package com.example.capstone.domain.help.dto;
 
-import jakarta.persistence.Column;
-
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 public record HelpResponse(
         Long id,
@@ -24,6 +21,6 @@ public record HelpResponse(
 
         LocalDateTime updatedDate,
 
-        UUID uuid
+        String uuid
 ) {
 }
