@@ -18,7 +18,7 @@ This project aims to develop a comprehensive app service for international stude
 
 ## 3. 프로젝트 기능
 
-### 번역된 국민대학교 공지사항/학식/학교정보 제공
+### 번역된 국민대학교 공지사항 / 학식 / 학교정보 제공
 
 국민대학교는 공지사항, 학식, 학교정보의 번역을 잘 지원하지 않습니다. 그래서 외국인들이 학교에 대한 정보를 얻고, 적응하기 쉽지가 않습니다.
 
