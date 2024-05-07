@@ -6,9 +6,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table(name = "questions")
@@ -44,7 +41,7 @@ public class Question {
     private String country;
 
     @Column(name = "uuid", nullable = false)
-    private UUID uuid;
+    private String uuid;
 
     public void update(String title, String context, LocalDateTime updatedDate) {
         this.title = title;

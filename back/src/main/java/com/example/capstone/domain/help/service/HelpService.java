@@ -12,8 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Map;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +22,7 @@ public class HelpService {
         LocalDateTime current = LocalDateTime.now();
         Help help = helpRepository.save(Help.builder().title(request.title()).context(request.context())
                 .author(request.author()).createdDate(current).updatedDate(current).isHelper(request.isHelper())
-                .isDone(false).country(request.country()).uuid(UUID.fromString(userId)).build());
+                .isDone(false).country(request.country()).uuid(userId).build());
 
         return help.toDTO();
     }
@@ -38,7 +36,9 @@ public class HelpService {
     public void updateHelp(String userId, HelpPutRequest request) {
         LocalDateTime current = LocalDateTime.now();
         Help help = helpRepository.findById(request.id()).get();
-        help.update(request.title(), request.context(), current);
+        if(help.getUuid().equals(userId)){
+            help.update(request.title(), request.context(), current);
+        }
     }
 
     public void eraseHelp(Long id){
@@ -55,8 +55,10 @@ public class HelpService {
     }
 
     @Transactional
-    public void doneHelp(Long id) {
+    public void doneHelp(String userId, Long id) {
         Help help = helpRepository.findById(id).get();
-        help.done();
+        if(help.getUuid().equals(userId)){
+            help.done();
+        }
     }
 }
