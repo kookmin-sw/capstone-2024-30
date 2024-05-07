@@ -3,15 +3,11 @@ package com.gateway.backgateway.config;
 import com.gateway.backgateway.filter.AuthorizationHeaderFilter;
 import com.gateway.backgateway.filter.RequestRateLimitFilter;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.gateway.filter.factory.RequestRateLimiterGatewayFilterFactory;
-import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
 import org.springframework.cloud.gateway.filter.ratelimit.RedisRateLimiter;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.server.ServerWebExchange;
-import reactor.core.publisher.Mono;
 
 @Configuration
 public class GatewayConfig {
@@ -49,18 +45,17 @@ public class GatewayConfig {
                 .route("spring", r -> r.path("/api/**")
                         .filters(f->f
                                 .filter(authFilter.apply(config -> {config.setRequiredRole("role_user");}))
-                                .filter(limitFilter.apply(config -> {
-                                    config.setRateLimiter(redisRateLimiter());
-                                    config.setRouteId("22");
-                                }))
+                                .requestRateLimiter(c -> {
+                                    c.setRateLimiter(redisRateLimiter());
+                                })
                         )
-                        .uri("http://localhost:8080"))
+                        .uri("http://spring:8080"))
                 .build();
     }
 
     @Bean
     public RedisRateLimiter redisRateLimiter() {
-        return new RedisRateLimiter(0, 1, 1); // 기본 replenishRate 및 burstCapacity 값을 지정합니다
+        return new RedisRateLimiter(1, 1, 1); // 기본 replenishRate 및 burstCapacity 값을 지정합니다
     }
 
     public UserIdKeyResolver userKeyResolver() {

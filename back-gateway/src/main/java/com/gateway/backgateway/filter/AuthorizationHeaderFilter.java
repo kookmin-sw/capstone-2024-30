@@ -46,6 +46,8 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
             String token = request.getHeaders()
                     .getFirst(HttpHeaders.AUTHORIZATION).replace("Bearer ", "");
 
+            System.out.println(token);
+
             if (!validateToken(token)) {
                 throw JwtTokenInvalidException.INSTANCE;
             }
