@@ -21,18 +21,23 @@ class _SpeechCustomSentenceScreenState
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: Column(
-            children: [
-              Container(
+        body: Column(
+          children: [
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5),
+              child: Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(
-                    color: const Color(0xffd2d7dd),
-                    width: 2,
-                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.15),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
                 ),
                 padding: const EdgeInsets.all(10),
                 child: TextField(
@@ -51,16 +56,19 @@ class _SpeechCustomSentenceScreenState
                   ),
                 ),
               ),
-              const Spacer(),
-              BasicButton(
+            ),
+            const Spacer(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+              child: BasicButton(
                   text: tr('speech.speech_practice'),
                   onPressed: () {
                     context.push('/speech/practice',
                         extra: [_textController.text, '']);
                   }),
-              const SizedBox(height: 15),
-            ],
-          ),
+            ),
+            const SizedBox(height: 15),
+          ],
         ),
       ),
     );

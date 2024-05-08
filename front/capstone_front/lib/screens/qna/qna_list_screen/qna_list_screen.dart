@@ -59,7 +59,14 @@ class _QnaListScreenState extends State<QnaListScreen> {
         title: TextField(
           controller: _controller,
           onChanged: (text) {
-            setState(() {});
+            if (text.trim() == "") {
+              setState(() {
+                word = "";
+              });
+            }
+            setState(() {
+              word = text;
+            });
           },
           decoration: InputDecoration(
             hintText: "검색어를 입력하세요",
@@ -71,6 +78,9 @@ class _QnaListScreenState extends State<QnaListScreen> {
                 ? IconButton(
                     onPressed: () {
                       _controller.clear();
+                      setState(() {
+                        word = "";
+                      });
                     },
                     icon: const Icon(
                       Icons.cancel,
@@ -90,7 +100,15 @@ class _QnaListScreenState extends State<QnaListScreen> {
               Icons.search,
               color: Theme.of(context).primaryColor,
             ),
-            onPressed: () => {},
+            onPressed: () {
+              setState(() {
+                qnas = [];
+                cursor = 0;
+                hasNext = true;
+                itemCount = 0;
+              });
+              loadQnas(0, tag, word);
+            },
           ),
         ],
       ),
