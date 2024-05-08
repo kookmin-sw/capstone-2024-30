@@ -1,4 +1,6 @@
 import 'package:capstone_front/firebase_options.dart';
+import 'package:capstone_front/models/chat_init_model.dart';
+import 'package:capstone_front/models/helper_model.dart';
 import 'package:capstone_front/models/cafeteria_menu_model.dart';
 import 'package:capstone_front/models/helper_article_preview_model.dart';
 import 'package:capstone_front/models/notice_model.dart';
@@ -8,9 +10,10 @@ import 'package:capstone_front/screens/cafeteriaMenu/cafeteriaMenuScreen.dart';
 import 'package:capstone_front/screens/chatbot/chatbot.dart';
 import 'package:capstone_front/screens/faq/faq_screen.dart';
 import 'package:capstone_front/screens/helper/helper_board/helper_board_screen.dart';
+import 'package:capstone_front/screens/helper/helper_chatting/helper_chatting_room.dart';
 import 'package:capstone_front/screens/helper/helper_screen.dart';
 import 'package:capstone_front/screens/helper/helper_write_screen.dart';
-import 'package:capstone_front/screens/helper/helper_board/helper_writing_screen.dart';
+import 'package:capstone_front/screens/helper/helper_board/helper_detail_screen.dart';
 import 'package:capstone_front/screens/home/home_screen.dart';
 import 'package:capstone_front/screens/login/login_screen.dart';
 import 'package:capstone_front/screens/question/question_screen.dart';
@@ -41,6 +44,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // 앱에서 지원하는 언어 리스트 변수
 final supportedLocales = [const Locale('en', 'US'), const Locale('ko', 'KR')];
@@ -67,6 +71,11 @@ Future<void> setSetting() async {
   if (str == 'true') {
     _isLogin = true;
   }
+  // storage.write(key: "uuid", value: "D8WsXf9Ncncn2lvjjGSvwKUOrEl2");
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  // prefs.remove("chatRoomData");
+  // prefs.remove("XWu4UVpXJnh4Q0pdP88DA90k2wf1");
+  // prefs.remove("3YuwArylP5gr6njKBtMcAe9RgJr1");
 }
 
 void initializeFirebase() async {
@@ -138,7 +147,7 @@ final GoRouter router = GoRouter(
                 if (notice == null) {
                   return const HelperScreen();
                 }
-                return HelperWritingScreen(notice);
+                return HelperDetailScreen(notice);
               },
             ),
             GoRoute(
@@ -243,6 +252,17 @@ final GoRouter router = GoRouter(
       name: 'question',
       path: '/question',
       builder: (context, state) => const QuestionScreen(),
+    ),
+    GoRoute(
+      name: 'chatroom',
+      path: '/chatroom',
+      builder: (context, state) {
+        final chatInitModel = state.extra as ChatInitModel?;
+        if (chatInitModel == null) {
+          return const HelperWriteScreen();
+        }
+        return HelperChattingRoom(chatInitModel);
+      },
     ),
   ],
 );

@@ -1,3 +1,5 @@
+import 'package:capstone_front/models/chat_init_model.dart';
+import 'package:capstone_front/models/helper_model.dart';
 import 'package:capstone_front/models/helper_article_model.dart';
 import 'package:capstone_front/models/helper_article_preview_model.dart';
 import 'package:capstone_front/screens/helper/helper_board/helper_writing_json.dart';
@@ -8,20 +10,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class HelperWritingScreen extends StatefulWidget {
+class HelperDetailScreen extends StatefulWidget {
   final HelperArticlePreviewModel helperArticlePreviewModel;
 
-  const HelperWritingScreen(
+  const HelperDetailScreen(
     this.helperArticlePreviewModel, {
     super.key,
   });
 
   @override
-  State<HelperWritingScreen> createState() => _HelperWritingScreenState();
+  State<HelperDetailScreen> createState() => _HelperDetailScreenState();
 }
 
-class _HelperWritingScreenState extends State<HelperWritingScreen> {
-  HelperArticleModel? helperArticleModel;
+class _HelperDetailScreenState extends State<HelperDetailScreen> {
+  late HelperArticleModel helperArticleModel;
   bool isLoading = true;
 
   void loadDetail() async {
@@ -101,7 +103,7 @@ class _HelperWritingScreenState extends State<HelperWritingScreen> {
                       const SizedBox(height: 20),
                       isLoading
                           ? const CircularProgressIndicator()
-                          : Text(helperArticleModel!.context),
+                          : Text(helperArticleModel.context),
                     ],
                   ),
                 ),
@@ -112,7 +114,11 @@ class _HelperWritingScreenState extends State<HelperWritingScreen> {
               BasicButton(
                   text: tr('helper.start_chat'),
                   onPressed: () {
-                    context.pop();
+                    var chatInitModel = ChatInitModel.fromJson({
+                      'author': widget.helperArticlePreviewModel.author,
+                      'uuid': helperArticleModel.uuid,
+                    });
+                    context.push("/chatroom", extra: chatInitModel);
                   })
             ],
           ),
