@@ -140,11 +140,15 @@ class QnaService {
 
   static Future<Map<String, dynamic>> createQnaPost(
       Map<String, dynamic> qnaPost, List<XFile>? images) async {
+    FlutterSecureStorage storage = const FlutterSecureStorage();
+    final accessToken = await storage.read(key: "accessToken");
     // final url = Uri.parse('https://postman-echo.com/post');
     final url = Uri.parse('$baseUrl/question/create');
 
     var request = http.MultipartRequest('POST', url);
     request.fields['request'] = jsonEncode(qnaPost);
+    request.headers['Authorization'] = 'Bearer $accessToken';
+    request.headers['Content-Type'] = 'multipart/form-data';
 
     if (images != null) {
       for (var image in images) {
@@ -162,7 +166,6 @@ class QnaService {
 
     final bytes = await response.stream.toBytes();
     final String decodedBody = utf8.decode(bytes);
-
     final Map<String, dynamic> jsonMap = jsonDecode(decodedBody);
     if (response.statusCode == 201) {
       // TODO 게시글 id 리턴받아서, 게시글 객체 완성한 다음에 리스트에 추가 및 띄워주기
@@ -191,7 +194,6 @@ class QnaService {
     final response = await http.post(
       url,
       headers: {
-        'Content-Type': 'application/json',
         'Authorization': 'Bearer $accessToken',
       },
       body: jsonEncode(answer),
