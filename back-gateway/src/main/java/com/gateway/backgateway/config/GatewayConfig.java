@@ -61,7 +61,7 @@ public class GatewayConfig {
     //TODO: Custom RedisRateLimiter로 변경 예정
     @Bean
     public RedisRateLimiter redisRateLimiter() {
-        // 기본 replenishRate 및 burstCapacity 값을 지정합니다
+        // 기본 replenishRate 및 burstCapacity 값을 지정합니다.
         return new RedisRateLimiter(20, 60, 3);
     }
 }
