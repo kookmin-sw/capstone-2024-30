@@ -23,11 +23,30 @@ class _NoticeScreenState extends State<NoticeScreen> {
   var hasNext = true;
   var itemCount = 0;
   var language = 'KO';
+  bool isSearchMode = false;
 
   void loadNotices(int lastCursor, String language) async {
     try {
       NoticesResponse res =
           await NoticeService.getNotices(lastCursor, selectedItem, language);
+      setState(() {
+        hasNext = res.hasNext;
+        if (hasNext) {
+          cursor = res.lastCursorId!;
+        }
+        notices.addAll(res.notices);
+        itemCount += res.notices.length;
+      });
+    } catch (e) {
+      print(e);
+      throw Exception('error');
+    }
+  }
+
+  void loadNoticesByWord(int lastCursor, String language, String word) async {
+    try {
+      NoticesResponse res = await NoticeService.getNoticesByWord(
+          lastCursor, selectedItem, language, word);
       setState(() {
         hasNext = res.hasNext;
         if (hasNext) {
@@ -72,7 +91,11 @@ class _NoticeScreenState extends State<NoticeScreen> {
         title: TextField(
           controller: _controller,
           onChanged: (text) {
-            setState(() {});
+            if (text.trim() == "") {
+              setState(() {
+                isSearchMode = false;
+              });
+            }
           },
           decoration: InputDecoration(
             hintText: "검색어를 입력하세요",
@@ -84,7 +107,16 @@ class _NoticeScreenState extends State<NoticeScreen> {
                 ? IconButton(
                     onPressed: () {
                       _controller.clear();
-                      setState(() {});
+                      setState(() {
+                        setState(() {
+                          cursor = 0;
+                          hasNext = true;
+                          itemCount = 0;
+                          notices = [];
+                          isSearchMode = false;
+                        });
+                        loadNotices(cursor, language);
+                      });
                     },
                     icon: const Icon(
                       Icons.cancel,
@@ -104,7 +136,16 @@ class _NoticeScreenState extends State<NoticeScreen> {
               Icons.search,
               color: Theme.of(context).primaryColor,
             ),
-            onPressed: () => {},
+            onPressed: () {
+              setState(() {
+                cursor = 0;
+                hasNext = true;
+                itemCount = 0;
+                notices = [];
+                isSearchMode = true;
+              });
+              loadNoticesByWord(cursor, language, _controller.text);
+            },
           ),
         ],
       ),
@@ -190,7 +231,12 @@ class _NoticeScreenState extends State<NoticeScreen> {
           Expanded(
             child: RefreshIndicator(
               onRefresh: () async {
-                loadNotices(0, language);
+                setState(() {
+                  notices = [];
+                });
+                isSearchMode
+                    ? loadNoticesByWord(0, language, _controller.text)
+                    : loadNotices(0, language);
               },
               child: ListView.separated(
                 itemCount: notices.length,
