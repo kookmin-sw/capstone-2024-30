@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 Future<String> login(String email, String pw) async {
   try {
@@ -10,7 +11,8 @@ Future<String> login(String email, String pw) async {
     user = FirebaseAuth.instance.currentUser;
 
     if (user!.emailVerified) {
-      user = credential.user;
+      FlutterSecureStorage storage = const FlutterSecureStorage();
+      await storage.write(key: 'uuid', value: user.uid);
       return "success";
     } else {
       return "email";

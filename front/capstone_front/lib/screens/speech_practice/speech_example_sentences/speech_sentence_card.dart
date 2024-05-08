@@ -27,49 +27,56 @@ class _SpeechSentenceCardState extends State<SpeechSentenceCard> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: _canTap
-          ? () async {
-              var status = await Permission.microphone.request();
-              if (status != PermissionStatus.granted) {
-                permssionNotice(context);
-              } else {
-                context.push('/speech/practice',
-                    extra: [sentences[_index][0], sentences[_index][1]]);
+    return Padding(
+      padding: const EdgeInsets.only(left: 15.0, right: 15, top: 5, bottom: 10),
+      child: InkWell(
+        onTap: _canTap
+            ? () async {
+                var status = await Permission.microphone.request();
+                if (status != PermissionStatus.granted) {
+                  permssionNotice(context);
+                } else {
+                  context.push('/speech/practice',
+                      extra: [sentences[_index][0], sentences[_index][1]]);
+                }
               }
-            }
-          : null,
-      child: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: const Color(0xffd2d7dd),
-            width: 1.5,
-          ),
-        ),
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-              vertical: 10.0 + _verticalPadding, horizontal: 10),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                sentences[_index][0],
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              Text(
-                sentences[_index][1],
-                style: Theme.of(context).textTheme.bodySmall,
-                overflow: TextOverflow.ellipsis,
+            : null,
+        child: Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.15),
+                spreadRadius: 2,
+                blurRadius: 5,
+                offset: const Offset(0, 3),
               ),
             ],
+          ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+                vertical: 10.0 + _verticalPadding, horizontal: 10),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  sentences[_index][0],
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                Text(
+                  sentences[_index][1],
+                  style: Theme.of(context).textTheme.bodySmall,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
           ),
         ),
       ),

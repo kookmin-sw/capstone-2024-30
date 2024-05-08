@@ -21,10 +21,10 @@ class _WhiteBoxState extends State<WhiteBox> {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
-            spreadRadius: 0,
-            blurRadius: 2.0,
-            offset: const Offset(0, 3), // changes position of shadow
+            color: Colors.black.withOpacity(0.15),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: const Offset(0, 3),
           ),
         ],
       ),

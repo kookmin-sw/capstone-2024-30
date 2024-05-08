@@ -24,7 +24,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7F9),
       appBar: AppBar(
         title: const Text(
           "외국민",
@@ -351,15 +350,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       IconButton(
                         icon: const Text("\u{1f1f0}\u{1f1f7}"), // 한국어
                         onPressed: () async {
-                          await storage.write(key: 'language', value: 'korean');
+                          await storage.write(key: 'language', value: 'KO');
                           restartDialog(context);
                         },
                       ),
                       IconButton(
                           icon: const Text("\u{1f1fa}\u{1f1f8}"), // 영어
                           onPressed: () async {
-                            await storage.write(
-                                key: 'language', value: 'english');
+                            await storage.write(key: 'language', value: 'EN');
                             restartDialog(context);
                           }),
                     ],

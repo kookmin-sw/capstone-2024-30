@@ -58,7 +58,7 @@ late CafeteriaMenuModel menus;
 Future<void> setSetting() async {
   const storage = FlutterSecureStorage();
   String? language = await storage.read(key: 'language');
-  if (language == 'english') {
+  if (language == 'EN') {
     languageSetting = ['en', 'US'];
   } else {
     languageSetting = ['ko', 'KR'];
