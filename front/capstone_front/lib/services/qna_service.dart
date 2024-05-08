@@ -148,6 +148,7 @@ class QnaService {
     var request = http.MultipartRequest('POST', url);
     request.fields['request'] = jsonEncode(qnaPost);
     request.headers['Authorization'] = 'Bearer $accessToken';
+    request.headers['Content-Type'] = 'multipart/form-data';
 
     if (images != null) {
       for (var image in images) {
