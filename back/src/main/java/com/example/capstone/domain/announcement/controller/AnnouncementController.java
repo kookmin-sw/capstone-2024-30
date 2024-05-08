@@ -99,14 +99,14 @@ public class AnnouncementController {
             @RequestParam(defaultValue = "KO", value = "language") String language,
             @Parameter(description = "어디까지 로드됐는지 가르키는 커서입니다. 입력하지 않으면 처음부터 10개 받아옵니다.")
             @RequestParam(defaultValue = "0", value = "cursor") long cursor,
-            @RequestBody AnnouncementSearchListRequest request
+            @Parameter(description = "검색어입니다. 문자열을 인코딩해서 보내주셔야됩니다.")
+            @RequestParam(value = "word") String word
     ) {
-
-        if (request.word().length() < 2) throw new BusinessException(SEARCH_TOO_SHORT);
+        if (word.length() < 2) throw new BusinessException(SEARCH_TOO_SHORT);
 
 
         Slice<AnnouncementListResponse> slice = announcementSearchService.getAnnouncementSearchList(cursor, type,
-                language, request.word());
+                language, word);
 
         List<AnnouncementListResponse> announcements = slice.getContent();
         boolean hasNext = slice.hasNext();
