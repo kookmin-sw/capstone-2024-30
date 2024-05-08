@@ -43,6 +43,10 @@ public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
             errorCode = TOO_MANY_REQUESTS;
             response.setStatusCode(HttpStatus.valueOf(errorCode.getStatus()));
         }
+        else if (ex instanceof  BusinessException) {
+            errorCode = ((BusinessException) ex).getErrorCode();
+            response.setStatusCode(HttpStatus.valueOf(String.valueOf(((BusinessException) ex).getErrorCode())));
+        }
         else{
             errorCode = INTERNAL_SERVER_ERROR;
             response.setStatusCode(HttpStatus.valueOf(errorCode.getStatus()));

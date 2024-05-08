@@ -18,6 +18,10 @@ public class GatewayConfig {
     public RouteLocator gatewayRoutes(RouteLocatorBuilder builder,
                                       AuthorizationHeaderFilter authFilter,
                                       RequestRateLimitFilter limitFilter) {
+        /**
+         * 여기에 JWT토큰 및 API Rate Limiter가 필요한 Api Routing을 작성해주세요.
+         * Spring Security와 비슷한 느낌으로 해주시면 됩니다.
+         */
         return builder.routes()
                 .route("chatbot-docs",r -> r.path("/docs", "/openapi.json")
                         .uri(chatbotUrl))
@@ -26,7 +30,7 @@ public class GatewayConfig {
                                 .filter(authFilter.apply(config -> {config.setRequiredRole("role_user");}))
                                 .filter(limitFilter.apply(config -> {
                                     config.setRateLimiter(redisRateLimiter());
-                                    config.setRouteId("chat");
+                                    config.setRouteId("chatbot");
                                 }))
                         )
                         .uri(chatbotUrl))
@@ -45,20 +49,19 @@ public class GatewayConfig {
                 .route("spring", r -> r.path("/api/**")
                         .filters(f->f
                                 .filter(authFilter.apply(config -> {config.setRequiredRole("role_user");}))
-                                .requestRateLimiter(c -> {
-                                    c.setRateLimiter(redisRateLimiter());
-                                })
+                                .filter(limitFilter.apply(config -> {
+                                    config.setRateLimiter(redisRateLimiter());
+                                    config.setRouteId("spring");
+                                }))
                         )
                         .uri("http://spring:8080"))
                 .build();
     }
 
+    //TODO: Custom RedisRateLimiter로 변경 예정
     @Bean
     public RedisRateLimiter redisRateLimiter() {
-        return new RedisRateLimiter(1, 1, 1); // 기본 replenishRate 및 burstCapacity 값을 지정합니다
-    }
-
-    public UserIdKeyResolver userKeyResolver() {
-        return new UserIdKeyResolver();
+        // 기본 replenishRate 및 burstCapacity 값을 지정합니다
+        return new RedisRateLimiter(20, 60, 3);
     }
 }
