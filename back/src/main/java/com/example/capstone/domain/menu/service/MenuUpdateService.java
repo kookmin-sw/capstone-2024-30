@@ -27,6 +27,7 @@ public class MenuUpdateService {
 
     @Value("${deepl.api.key}")
     private String authKey;
+    List<String> languages = List.of("KO", "EN-US", "ZH");
 
     @Async
     public void updateMenus(LocalDateTime startTime) {
@@ -39,7 +40,6 @@ public class MenuUpdateService {
         CompletableFuture<String> decode = decodeUnicodeService.decodeUnicode(escapeString);
 
         Translator translator = new Translator(authKey);
-        List<String> languages = List.of("KO", "EN-US");
 
         try {
             String response = decode.get();
