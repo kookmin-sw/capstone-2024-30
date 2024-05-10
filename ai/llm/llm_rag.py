@@ -157,7 +157,7 @@ class LLM_RAG:
         self.session_id = session_id
         self.result_lang = result_lang
         self.qna_route_chain.invoke(question)
-        self.store[self.session_id].add_ai_message(self.result)
+        self.store[self.session_id].add_user_message(self.ko_query)
         return self.result
 
     def get_session_history(self, session_id: str) -> BaseChatMessageHistory:

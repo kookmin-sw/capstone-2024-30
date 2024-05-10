@@ -26,7 +26,7 @@ def is_qna_prompt():
 
 def combine_result_prompt():
     prompt = PromptTemplate.from_template("""
-    You are an assistant for question-answering tasks. Use the following informations of 'notice_info' and 'school_info' to answer the question.  If you don't know the answer, just say that you don't know. Include as much of the provided information as possible.
+    You are an assistant for question-answering tasks. Use the following informations of 'notice_info' and 'school_info' to answer the question.  If you can't make the answer, just say that you don't know. Include as much of the provided information as possible.
     Question: {question}
     Notice_info: {notice_info}
     School_info: {school_info}
@@ -49,10 +49,9 @@ def score_prompt():
 
 def contextualize_prompt():
 
-    contextualize_q_system_prompt = """You're an assistant that transforms follow-up questions into independent queries. 
-    DO NOT answer the question. Given chat transcripts and recent user inquiries, you need to generate standalone questions that incorporate the context of the conversation by referring to the chat history. 
-    In other words, you should create questions that can be understood independently without referencing the transcript. You need to make the question more specific, such as changing the pronoun.
-    For instance, if there's a memory like "Tell me about the universe" and the user asks, "Are there any books related to that?" you should respond with "Are there any books related to space?"
+    contextualize_q_system_prompt = """You're an assistant that transforms follow-up questions into independent query. For instance, if there's a memory like "Tell me about the universe" and the user asks, "Are there any books related to that?" you should respond with "Are there any books related to space?"
+    DO NOT answer the question. Given memories and recent user query, you need to generate standalone questions that incorporate the context of the conversation by referring to the chat history. 
+    In other words, you should create questions that can be understood independently without referencing the memories. You need to make the question more specific, such as changing the pronoun like 'that' or 'this'. Please DO NOT answer the question.
 
     Remember: 
     If it's considered a follow-up question, rephrase it. Otherwise, return it as is If it's not related to the previous question. 
