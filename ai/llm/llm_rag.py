@@ -117,7 +117,7 @@ class LLM_RAG:
     def qna_route(self, info):
         self.ko_query = self.contextualize_question_chain.invoke(
                 {"input": self.ko_query},
-                {"configurable": {"session_id": "unused"}},
+                {"configurable": {"session_id": self.session_id}},
                 )
         
         if "question" in info["topic"].lower():
@@ -136,10 +136,12 @@ class LLM_RAG:
         if "good" in info["score"].lower():
             self.result = self.deepl.translate_text(self.result, target_lang=self.result_lang).text
         else:
-            print('-- google search --')
+            #print('-- google search --')
             content = self.tavily.qna_search(query='국민대학교 ' + self.ko_query)
-            self.result = "I couldn't find the answer, so I searched on Google.\n\n" + content
-            self.result = self.deepl.translate_text(self.result, target_lang=self.result_lang).text
+            content = self.deepl.translate_text(content, target_lang=self.result_lang).text
+            base = "I couldn't find the answer, so I searched on Google.\n\n"
+            base = self.deepl.translate_text(base, target_lang=self.result_lang).text
+            self.result = base + content
 
     def format_docs(self, docs):
     # 검색한 문서 결과를 하나의 문단으로 합쳐줍니다.
@@ -151,8 +153,7 @@ class LLM_RAG:
         self.session_id = session_id
         self.result_lang = result_lang
         self.qna_route_chain.invoke(question)
-        #self.ephemeral_chat_history.add_ai_message(self.result)
-        self.store['unused'].add_ai_message(self.result)
+        self.store[session_id].add_ai_message(self.result)
         return self.result
 
     def get_session_history(self, session_id: str) -> BaseChatMessageHistory:
