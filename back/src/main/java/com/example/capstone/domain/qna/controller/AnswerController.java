@@ -70,7 +70,11 @@ public class AnswerController {
     public ResponseEntity<ApiResult<Integer>> upLikeCount(@RequestHeader("X-User-ID") String userId,
                                             @Parameter(description = "추천할 댓글의 id가 필요합니다.", required = true)
                                             @RequestParam Long id) {
-        answerService.upLikeCountById(userId, id);
+        if(starService.checkStar(id, userId) == false) {
+            starService.createStar(id, userId);
+            answerService.increaseLikeCountById(userId, id);
+        }
+
         return ResponseEntity
                 .ok(new ApiResult<>("Successfully like answer", 200));
     }
@@ -81,7 +85,10 @@ public class AnswerController {
     public ResponseEntity<ApiResult<Integer>> downLikeCount(@RequestHeader("X-User-ID") String userId,
                                             @Parameter(description = "추천 해제할 댓글의 id가 필요합니다.", required = true)
                                             @RequestParam Long id) {
-        answerService.downLikeCountById(userId, id);
+        if(starService.checkStar(id, userId) == true){
+            starService.deleteStar(id, userId);
+            answerService.decreaseLikeCountById(userId, id);
+        }
         return ResponseEntity
                 .ok(new ApiResult<>("Successfully unlike answer", 200));
     }
