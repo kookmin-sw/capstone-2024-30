@@ -31,7 +31,7 @@ class LLM_RAG:
         self.notice_multiquery_retriever = None
         self.school_multiquery_retriever = None
         self.store = {}
-        self.session_id = 'unused'
+        self.session_id = None
         self.ephemeral_chat_history = ChatMessageHistory()
 
 
@@ -115,11 +115,15 @@ class LLM_RAG:
 
 
     def qna_route(self, info):
-        self.ko_query = self.contextualize_question_chain.invoke(
-                {"input": self.ko_query},
-                {"configurable": {"session_id": self.session_id}},
-                )
-        
+        if self.session_id in self.store.keys():
+            self.ko_query = self.contextualize_question_chain.invoke(
+                    {"input": self.ko_query},
+                    {"configurable": {"session_id": self.session_id}},
+                    )
+            self.ko_query = self.deepl.translate_text(self.ko_query, target_lang=self.result_lang).text
+        else:
+            self.store[self.session_id] = ChatMessageHistory()
+    
         if "question" in info["topic"].lower():
             self.result = self.rag_combine_chain.invoke(self.ko_query)
             score = self.score_chain.invoke({"question" : self.ko_query, "answer": self.result})
@@ -153,7 +157,7 @@ class LLM_RAG:
         self.session_id = session_id
         self.result_lang = result_lang
         self.qna_route_chain.invoke(question)
-        self.store[session_id].add_ai_message(self.result)
+        self.store[self.session_id].add_ai_message(self.result)
         return self.result
 
     def get_session_history(self, session_id: str) -> BaseChatMessageHistory:

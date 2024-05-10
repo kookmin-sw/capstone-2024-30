@@ -2,10 +2,12 @@ from langchain import PromptTemplate
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 
 def casual_prompt():
-    prompt = PromptTemplate.from_template(
-    """
-    question: {question}
-    answer:"""
+    system_prompt = 'You are ‘KUKU’, a friendly chatbot in charge of counseling for Kookmin University students.'
+    prompt = ChatPromptTemplate.from_messages(
+        [
+             ("system", system_prompt),
+             ("human", "{question}"),
+        ]
     )
     return prompt
 
@@ -34,7 +36,9 @@ def combine_result_prompt():
 
 def score_prompt():
     prompt = PromptTemplate.from_template("""
-    I am a student at Kookmin University. Given a question-answer pair, you need to respond whether the answer to the question is "good" or "bad". Also, even if you cannot answer, you must respond as 'bad'. Do not respond with more than one word.
+    I am a student at Kookmin University. Given a question-answer pair, you need to respond whether the answer to the question is "good" or "bad". 
+    If it answers the question well, respond 'good'. otherwise respond 'bad'.
+    Also, even if there is a context in the answer that says 'I don't know', you must respond as 'bad'. Do not respond with more than one word.
 
     question: {question}
     answer: {answer}
@@ -45,16 +49,14 @@ def score_prompt():
 
 def contextualize_prompt():
 
-    contextualize_q_system_prompt = """Given a chat history and the latest user question \
-    which might reference context in the chat history, formulate a standalone question \
-    which can be understood without the chat history. Do NOT answer the question, \
-    just reformulate it if needed and otherwise return it as is.\n
+    contextualize_q_system_prompt = """You're an assistant that transforms follow-up questions into independent queries. 
+    DO NOT answer the question. Given chat transcripts and recent user inquiries, you need to generate standalone questions that incorporate the context of the conversation by referring to the chat history. 
+    In other words, you should create questions that can be understood independently without referencing the transcript. You need to make the question more specific, such as changing the pronoun.
+    For instance, if there's a memory like "Tell me about the universe" and the user asks, "Are there any books related to that?" you should respond with "Are there any books related to space?"
 
-    ex1) 
-    HUMAN : What is Task Decomposition? 
-    AI : Task decomposition is a technique used to break down complex tasks into smaller and simpler steps. This approach helps agents or models handle difficult tasks by dividing them into more manageable subtasks. It can be achieved through methods like Chain of Thought (CoT) or Tree of Thoughts, which guide the model in thinking step by step or exploring multiple reasoning possibilities at each step.
-    HUMAN(latest user question) : What are common ways of doing it?
-    REFORMULATE QUESTION(your response) : What are common ways of doing Task Decomposition?
+    Remember: 
+    If it's considered a follow-up question, rephrase it. Otherwise, return it as is If it's not related to the previous question. 
+    Don't answer the question and Don't reply to the user, you are only responsible for rephrase.
 """
     contextualize_q_prompt = ChatPromptTemplate.from_messages(
         [
