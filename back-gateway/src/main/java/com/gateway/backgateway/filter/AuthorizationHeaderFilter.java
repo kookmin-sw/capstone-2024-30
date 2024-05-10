@@ -11,15 +11,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
-import org.springframework.web.server.ServerWebExchange;
-import reactor.core.publisher.Mono;
 
 import java.security.Key;
-import java.util.Map;
 import java.util.function.Function;
 
 @Component
@@ -45,6 +40,8 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
 
             String token = request.getHeaders()
                     .getFirst(HttpHeaders.AUTHORIZATION).replace("Bearer ", "");
+
+            System.out.println(token);
 
             if (!validateToken(token)) {
                 throw JwtTokenInvalidException.INSTANCE;
