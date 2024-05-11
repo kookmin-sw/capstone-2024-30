@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:capstone_front/models/api_fail_response.dart';
 import 'package:capstone_front/models/api_success_response.dart';
+import 'package:capstone_front/models/user_info_model.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
@@ -81,6 +82,34 @@ class AuthService {
     }
 
     return true;
+  }
+
+  static Future<void> getUserInfo(String uuid, String accessToken) async {
+    FlutterSecureStorage storage = const FlutterSecureStorage();
+
+    final String baseUrl = dotenv.get('BASE_URL');
+    final url = Uri.parse('$baseUrl/user/$uuid');
+
+    final response = await http.get(
+      url,
+      headers: {
+        'Content-Type': "application/json",
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
+
+    final Map<String, dynamic> jsonMap =
+        jsonDecode(utf8.decode(response.bodyBytes));
+
+    if (response.statusCode == 200) {
+      UserInfoModel userInfoModel = UserInfoModel.fromJson(jsonMap['response']);
+      await storage.write(key: "userName", value: userInfoModel.name);
+      await storage.write(key: "userMajor", value: userInfoModel.major);
+    } else {
+      var apiFailResponse = ApiFailResponse.fromJson(jsonMap);
+      print(apiFailResponse.message);
+      throw Exception('Failed to load userinfo');
+    }
   }
 
   static void reissue() async {
