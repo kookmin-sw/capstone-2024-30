@@ -4,9 +4,7 @@ import 'package:capstone_front/screens/notice/notice_screen.dart';
 import 'package:capstone_front/services/login_service.dart';
 import 'package:capstone_front/utils/white_box.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'dart:async';
@@ -21,8 +19,21 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   FlutterSecureStorage storage = const FlutterSecureStorage();
+
+  Future<Map<String, String>> getUserInfo() async {
+    String userName = (await storage.read(key: "userName"))!;
+    String userMajor = (await storage.read(key: "userMajor"))!;
+    return {"userName": userName, "userMajor": userMajor};
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    getUserInfo();
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -64,31 +75,87 @@ class _HomeScreenState extends State<HomeScreen> {
                           offset: const Offset(0, -80),
                           child: Column(
                             children: [
-                              WhiteBox(
-                                content: const Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          "김민제",
-                                          style: TextStyle(
-                                            fontSize: 24,
-                                            fontWeight: FontWeight.w700,
-                                          ),
+                              FutureBuilder(
+                                  future: getUserInfo(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      // 데이터 로딩 중인 경우
+                                      return WhiteBox(
+                                        content: const Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  '',
+                                                  style: TextStyle(
+                                                    fontSize: 24,
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(height: 15),
+                                            Text(
+                                              '',
+                                            ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 15),
-                                    Text("소프트웨어융합대학 소프트웨어학부"),
-                                    Text(
-                                      "20191557",
-                                      style:
-                                          TextStyle(color: Color(0xFF979797)),
-                                    )
-                                  ],
-                                ),
-                              ),
+                                      );
+                                    } else if (snapshot.hasError) {
+                                      // 에러 발생 시
+                                      return WhiteBox(
+                                        content: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "Error: ${snapshot.error}",
+                                                  style: const TextStyle(
+                                                    fontSize: 24,
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(height: 15),
+                                            const Text(
+                                              '',
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    } else {
+                                      // 데이터 로딩 완료 후
+                                      return WhiteBox(
+                                        content: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  snapshot.data!['userName']!,
+                                                  style: const TextStyle(
+                                                    fontSize: 24,
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(height: 15),
+                                            Text(
+                                              snapshot.data!['userMajor']!,
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    }
+                                  }),
                               const SizedBox(height: 15),
                               WhiteBox(
                                 content: Column(
@@ -221,76 +288,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ],
                                 ),
                               ),
-                              // Row(
-                              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              //   children: [
-                              //     MenuButton(
-                              //       title: tr("mainScreen.notice"),
-                              //       icon: Icons.notifications_rounded,
-                              //       routeCallbackFun: () => context.push("/notice"),
-                              //     ),
-                              //     MenuButton(
-                              //       title: tr("mainScreen.cafeteria"),
-                              //       icon: Icons.restaurant_menu_rounded,
-                              //       routeCallbackFun: () =>
-                              //           context.push("/cafeteriamenu"),
-                              //     ),
-                              //     MenuButton(
-                              //       title: tr("mainScreen.school_info"),
-                              //       icon: Icons.school_rounded,
-                              //       routeCallbackFun: () => context.push("/login"),
-                              //     ),
-                              //   ],
-                              // ),
-                              // const SizedBox(
-                              //   height: 20,
-                              // ),
-                              // Row(
-                              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              //   children: [
-                              //     MenuButton(
-                              //       title: tr("mainScreen.qna"),
-                              //       icon: Icons.question_answer_outlined,
-                              //       routeCallbackFun: () =>
-                              //           context.push("/qnalist"),
-                              //     ),
-                              //     MenuButton(
-                              //       title: tr("mainScreen.faq"),
-                              //       icon: Icons.question_mark_rounded,
-                              //       routeCallbackFun: () => context.push("/faq"),
-                              //     ),
-                              //     MenuButton(
-                              //       title: tr("mainScreen.community"),
-                              //       icon: Icons.question_answer_rounded,
-                              //       routeCallbackFun: () => context.push("/login"),
-                              //     ),
-                              //   ],
-                              // ),
-                              // const SizedBox(
-                              //   height: 20,
-                              // ),
-                              // Row(
-                              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              //   children: [
-                              //     MenuButton(
-                              //       title: tr("mainScreen.guide"),
-                              //       icon: Icons.help_center_rounded,
-                              //       routeCallbackFun: () =>
-                              //           context.push("/chatbot"),
-                              //     ),
-                              //     MenuButton(
-                              //       title: tr("mainScreen.helper"),
-                              //       icon: Icons.person_2_rounded,
-                              //       routeCallbackFun: () => context.push("/helper"),
-                              //     ),
-                              //     MenuButton(
-                              //       title: tr("mainScreen.pronunciation_practice"),
-                              //       icon: Icons.speaker_group_rounded,
-                              //       routeCallbackFun: () =>
-                              //           context.push("/pronunciation"),
-                              //     ),
-                              //   ],
-                              // ),
                             ],
                           ),
                         ),
@@ -340,32 +337,35 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Padding(
               padding: const EdgeInsets.all(20.0),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(tr('mainScreen.language_setting')),
-                  const SizedBox(
-                    height: 15,
-                  ),
+                  const SizedBox(height: 5),
                   Row(
                     children: [
                       IconButton(
                         icon: const Text("\u{1f1f0}\u{1f1f7}"), // 한국어
                         onPressed: () async {
                           await storage.write(key: 'language', value: 'KO');
-                          restartDialog(context);
+                          restartDialog(context, "KO");
                         },
                       ),
                       IconButton(
                           icon: const Text("\u{1f1fa}\u{1f1f8}"), // 영어
                           onPressed: () async {
-                            await storage.write(key: 'language', value: 'EN');
-                            restartDialog(context);
+                            await storage.write(
+                                key: 'language', value: 'EN/US');
+                            restartDialog(context, 'EN/US');
                           }),
                     ],
                   ),
+                  const SizedBox(height: 5),
+                  Text(tr('mainScreen.account_setting')),
+                  const SizedBox(height: 5),
                   ElevatedButton(
                     onPressed: () async {
                       logout();
-                      await storage.write(key: 'isLogin', value: 'true');
+                      await storage.write(key: 'isLogin', value: 'false');
                       context.go('/login');
                     },
                     child: Text(tr("mainScreen.logout")),
@@ -379,19 +379,19 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Future<dynamic> restartDialog(BuildContext context) {
+  Future<dynamic> restartDialog(BuildContext context, String language) {
     return showDialog(
       context: context,
       builder: ((context) {
         return AlertDialog(
-          content: const Text("언어 변경을 적용하려면 앱을 재시작해야 합니다.\n재시작하시겠습니까?"),
+          content: Text(tr("mainScreen.language_setting_notice")),
           actions: [
             Container(
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: const Text("아니요"),
+                child: Text(tr("mainScreen.no")),
               ),
             ),
             Container(
@@ -399,7 +399,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onPressed: () {
                   Restart.restartApp(webOrigin: "/");
                 },
-                child: const Text("네"),
+                child: Text(tr("mainScreen.yes")),
               ),
             ),
           ],
