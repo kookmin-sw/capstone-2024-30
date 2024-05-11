@@ -37,7 +37,7 @@ public class AnnouncementCrawlService {
 
     private final AnnouncementRepository announcementRepository;
 
-    private final List<String> languages = List.of("KO", "EN-US");
+    private final List<String> languages = List.of("KO", "EN-US", "ZH");
 
     @Async
     @Transactional
