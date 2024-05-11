@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class BubblePainter2 extends CustomPainter {
   final Color bubbleColor;
 
-  BubblePainter2({this.bubbleColor = const Color(0x00ffffff)});
+  BubblePainter2({this.bubbleColor = Colors.white});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -14,7 +14,7 @@ class BubblePainter2 extends CustomPainter {
     var borderPaint = Paint()
       ..color = Colors.black // 검은색 테두리
       ..style = PaintingStyle.stroke // 테두리만 그림
-      ..strokeWidth = 2; // 테두리 두께 설정
+      ..strokeWidth = 1.5; // 테두리 두께 설정
 
     var path = Path();
 
@@ -37,9 +37,10 @@ class BubblePainter2 extends CustomPainter {
 
     // 말풍선 꼬리 (왼쪽에 그리기)
     path = Path();
-    path.moveTo(2, 10); // 시작점을 말풍선의 왼쪽 가장자리 근처로 옮김
-    path.lineTo(-10, 10); // 왼쪽으로 향하는 꼬리의 중간점
-    path.lineTo(0, 20); // 꼬리의 끝점을 아래로 조정
+    // 말풍선 꼬리
+    path.moveTo(size.width - 2, 10);
+    path.lineTo(size.width + 10, 10);
+    path.lineTo(size.width - 0.5, 20);
 
     // 말풍선 꼬리 본체 그리기
     canvas.drawPath(path, bodyPaint);
