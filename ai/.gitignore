@@ -7,3 +7,6 @@ __pycache__
 data/
 cap30.pem
 chatbot.pem
+FAISS/
+*.pkl
+*.faiss
