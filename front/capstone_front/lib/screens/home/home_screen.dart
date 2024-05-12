@@ -35,8 +35,7 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   void initState() {
     super.initState();
-    if (language! != 'korean') {
-      print(language);
+    if (language! != 'KO') {
       language = "EN-US";
     } else {
       language = 'KO';
