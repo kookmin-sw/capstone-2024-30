@@ -11,6 +11,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:http_parser/http_parser.dart';
 
 class QnaService {
   static String baseUrl = dotenv.get('BASE_URL');
@@ -146,7 +147,20 @@ class QnaService {
     final url = Uri.parse('$baseUrl/question/create');
 
     var request = http.MultipartRequest('POST', url);
-    request.fields['request'] = jsonEncode(qnaPost);
+
+    // JSON 데이터를 UTF-8로 인코딩하여 바이트로 변환 후 MultipartFile로 추가
+    List<int> jsonData = utf8.encode(jsonEncode(qnaPost));
+    request.files.add(http.MultipartFile.fromBytes(
+      'request',
+      jsonData,
+      contentType: MediaType(
+        'application',
+        'json',
+        {'charset': 'utf-8'},
+      ),
+    ));
+
+    // request.fields['request'] = jsonEncode(qnaPost);
     request.headers['Authorization'] = 'Bearer $accessToken';
     request.headers['Content-Type'] = 'multipart/form-data';
 
