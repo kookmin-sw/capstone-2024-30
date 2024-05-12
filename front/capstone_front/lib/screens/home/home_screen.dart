@@ -1,9 +1,11 @@
 import 'package:capstone_front/main.dart';
+import 'package:capstone_front/models/notice_response.dart';
 import 'package:capstone_front/screens/cafeteriaMenu/cafeteriaMenuScreen.dart';
 import 'package:capstone_front/screens/home/image_screen.dart';
 import 'package:capstone_front/screens/home/webview_screen.dart';
 import 'package:capstone_front/screens/notice/notice_screen.dart';
 import 'package:capstone_front/services/login_service.dart';
+import 'package:capstone_front/services/notice_service.dart';
 import 'package:capstone_front/utils/bubble_painter2.dart';
 import 'package:capstone_front/utils/bubble_painter_right.dart';
 import 'package:capstone_front/utils/white_box.dart';
@@ -28,10 +30,18 @@ class _HomeScreenState extends State<HomeScreen>
   FlutterSecureStorage storage = const FlutterSecureStorage();
   bool _isVisible = true;
   late AnimationController _controller;
+  late Future<NoticesResponse> noticesRes;
 
   @override
   void initState() {
     super.initState();
+    if (language! != 'korean') {
+      print(language);
+      language = "EN-US";
+    } else {
+      language = 'KO';
+    }
+    noticesRes = NoticeService.getNotices(0, 'all', language!);
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
@@ -150,40 +160,66 @@ class _HomeScreenState extends State<HomeScreen>
                                   ],
                                 ),
                                 const SizedBox(height: 10),
-                                const Text(
-                                  "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 ...",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                const Text(
-                                  "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 ...",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                const Text(
-                                  "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 ...",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                const Text(
-                                  "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 ...",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                const Text(
-                                  "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 ...",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
+                                FutureBuilder(
+                                  future: noticesRes,
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasData) {
+                                      return Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            snapshot.data!.notices[0].title!,
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          const SizedBox(
+                                            height: 2,
+                                          ),
+                                          Text(
+                                            snapshot.data!.notices[1].title!,
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          const SizedBox(
+                                            height: 2,
+                                          ),
+                                          Text(
+                                            snapshot.data!.notices[2].title!,
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          const SizedBox(
+                                            height: 2,
+                                          ),
+                                          Text(
+                                            snapshot.data!.notices[3].title!,
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          const SizedBox(
+                                            height: 2,
+                                          ),
+                                          Text(
+                                            snapshot.data!.notices[4].title!,
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ],
+                                      );
+                                    }
+                                    return const CircularProgressIndicator();
+                                  },
                                 ),
                               ],
                             ),
