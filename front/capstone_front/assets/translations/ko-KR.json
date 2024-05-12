@@ -25,7 +25,7 @@
     "department": "학부ㆍ학과",
     "name": "이름",
     "student_number": "학번",
-    "enter_name": "이름, 학번을 입력해주세요",
+    "enter_name": "이름을 입력해주세요",
     "enter_kmuemail": "국민대 이메일을 입력해주세요",
     "enter_password": "비밀번호를 입력해주세요",
     "enter_college_department": "단과대학 및 학과를 입력해주세요",

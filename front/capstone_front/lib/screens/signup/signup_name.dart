@@ -38,17 +38,11 @@ class _SignupNameScreenState extends State<SignupNameScreen> {
                 info: 'name',
                 isObscure: false,
                 userInfo: userInfo),
-            SignupTextField(
-                context: context,
-                label: tr('signup.student_number'),
-                info: 'studentNum',
-                isObscure: false,
-                userInfo: userInfo),
             const Spacer(),
             BasicButton(
                 text: tr('signup.next'),
                 onPressed: () {
-                  if (userInfo['name'] != '' && userInfo['studentNum'] != '') {
+                  if (userInfo['name'] != '') {
                     context.push('/signup/college');
                   }
                 }),

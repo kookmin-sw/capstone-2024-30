@@ -1,5 +1,5 @@
 import 'package:capstone_front/main.dart';
-import 'package:capstone_front/models/cafeteria_menu_model.dart';
+import 'package:capstone_front/models/cafeteria_menu_model_ko.dart';
 import 'package:capstone_front/screens/cafeteriaMenu/menuCard.dart';
 import 'package:capstone_front/screens/main_screen.dart';
 import 'package:capstone_front/services/cafeteria_menu_service.dart';

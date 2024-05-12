@@ -8,7 +8,9 @@ import 'package:capstone_front/utils/bubble_painter2.dart';
 import 'package:capstone_front/utils/bubble_painter_right.dart';
 import 'package:capstone_front/utils/white_box.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'dart:async';
@@ -21,23 +23,40 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
   FlutterSecureStorage storage = const FlutterSecureStorage();
-
-  Future<Map<String, String>> getUserInfo() async {
-    String userName = (await storage.read(key: "userName"))!;
-    String userMajor = (await storage.read(key: "userMajor"))!;
-    return {"userName": userName, "userMajor": userMajor};
-  }
+  bool _isVisible = true;
+  late AnimationController _controller;
 
   @override
   void initState() {
     super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    )..addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          setState(() {
+            _isVisible = !_isVisible;
+          });
+          _controller.reverse();
+        } else if (status == AnimationStatus.dismissed) {
+          _controller.forward();
+        }
+      });
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    getUserInfo();
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -62,7 +81,8 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Stack(
         children: [
-          Expanded(
+          SizedBox(
+            height: MediaQuery.of(context).size.height,
             child: SingleChildScrollView(
               child: Column(
                 children: [
@@ -78,87 +98,28 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          FutureBuilder(
-                              future: getUserInfo(),
-                              builder: (context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  // 데이터 로딩 중인 경우
-                                  return WhiteBox(
-                                    content: const Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Text(
-                                              '',
-                                              style: TextStyle(
-                                                fontSize: 24,
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(height: 15),
-                                        Text(
-                                          '',
-                                        ),
-                                      ],
+                          WhiteBox(
+                            content: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      userName,
+                                      style: const TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.w700,
+                                      ),
                                     ),
-                                  );
-                                } else if (snapshot.hasError) {
-                                  // 에러 발생 시
-                                  return WhiteBox(
-                                    content: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Text(
-                                              "Error: ${snapshot.error}",
-                                              style: const TextStyle(
-                                                fontSize: 24,
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(height: 15),
-                                        const Text(
-                                          '',
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                } else {
-                                  // 데이터 로딩 완료 후
-                                  return WhiteBox(
-                                    content: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Text(
-                                              snapshot.data!['userName']!,
-                                              style: const TextStyle(
-                                                fontSize: 24,
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(height: 15),
-                                        Text(
-                                          snapshot.data!['userMajor']!,
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                }
-                              }),
+                                  ],
+                                ),
+                                const SizedBox(height: 15),
+                                Text(
+                                  userMajor,
+                                ),
+                              ],
+                            ),
+                          ),
                           const SizedBox(height: 15),
                           WhiteBox(
                             content: Column(
@@ -381,13 +342,17 @@ class _HomeScreenState extends State<HomeScreen> {
           Positioned(
             right: 75,
             bottom: 20,
-            child: CustomPaint(
-              painter: BubblePainter2(),
-              child: const Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Text(
-                  "챗봇 사용하기",
-                  style: TextStyle(fontWeight: FontWeight.w500),
+            child: AnimatedOpacity(
+              opacity: _isVisible ? 1.0 : 0.0,
+              duration: const Duration(milliseconds: 500),
+              child: CustomPaint(
+                painter: BubblePainter2(),
+                child: const Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Text(
+                    "챗봇 사용하기",
+                    style: TextStyle(fontWeight: FontWeight.w500),
+                  ),
                 ),
               ),
             ),
@@ -508,8 +473,6 @@ class MenuButton extends StatelessWidget {
     return Column(
       children: [
         SizedBox(
-          height: 70,
-          width: 70,
           child: InkWell(
               onTap: routeCallbackFun,
               borderRadius: BorderRadius.circular(20),

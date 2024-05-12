@@ -1,6 +1,6 @@
 import 'package:capstone_front/firebase_options.dart';
 import 'package:capstone_front/models/chat_init_model.dart';
-import 'package:capstone_front/models/cafeteria_menu_model.dart';
+import 'package:capstone_front/models/cafeteria_menu_model_ko.dart';
 import 'package:capstone_front/models/helper_article_preview_model.dart';
 import 'package:capstone_front/models/notice_model.dart';
 import 'package:capstone_front/models/qna_post_model.dart';
@@ -37,6 +37,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 // 앱에서 지원하는 언어 리스트 변수
 final supportedLocales = [
@@ -53,6 +54,10 @@ bool _isLogin = false;
 
 // 학식 메뉴
 late CafeteriaMenuModel menus;
+
+// 로그인 유저 정보
+String userName = '';
+String userMajor = '';
 
 // 언어를 설정해주고 로그인 정보를 불러오는 함수
 Future<void> setSetting() async {
@@ -86,13 +91,22 @@ Future<void> getMenus() async {
   menus = await getCafeteriaMenu(DateTime.now().toString().substring(0, 10));
 }
 
+Future<void> getUserInfo() async {
+  const storage = FlutterSecureStorage();
+  userName = (await storage.read(key: "userName"))!;
+  userMajor = (await storage.read(key: "userMajor"))!;
+}
+
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   initializeFirebase();
   await setSetting();
   await EasyLocalization.ensureInitialized();
   await dotenv.load(fileName: ".env");
   await getMenus();
+  getUserInfo();
+  FlutterNativeSplash.remove();
 
   runApp(
     EasyLocalization(
