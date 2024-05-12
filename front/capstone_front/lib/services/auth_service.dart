@@ -108,6 +108,8 @@ class AuthService {
       UserInfoModel userInfoModel = UserInfoModel.fromJson(jsonMap['response']);
       await storage.write(key: "userName", value: userInfoModel.name);
       await storage.write(key: "userMajor", value: userInfoModel.major);
+      await storage.write(key: "userEmail", value: userInfoModel.email);
+      await storage.write(key: "userCountry", value: userInfoModel.country);
       userName = userInfoModel.name;
       userMajor = userInfoModel.major;
     } else {
