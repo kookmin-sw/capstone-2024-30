@@ -250,9 +250,9 @@ class _HomeScreenState extends State<HomeScreen>
                               content: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                "기타정보",
-                                style: TextStyle(
+                              Text(
+                                tr('mainScreen.other_info'),
+                                style: const TextStyle(
                                   fontSize: 24,
                                   fontWeight: FontWeight.w700,
                                 ),
@@ -263,7 +263,7 @@ class _HomeScreenState extends State<HomeScreen>
                                 //     MainAxisAlignment.spaceBetween,
                                 children: [
                                   MenuButton(
-                                      title: "학교지도",
+                                      title: tr('mainScreen.shcool_map'),
                                       icon: Icons.map_outlined,
                                       routeCallbackFun: () {
                                         Navigator.push(
@@ -278,7 +278,7 @@ class _HomeScreenState extends State<HomeScreen>
                                     width: 15,
                                   ),
                                   MenuButton(
-                                      title: "시설정보",
+                                      title: tr('mainScreen.facility_info'),
                                       icon: Icons.business,
                                       routeCallbackFun: () {
                                         Navigator.push(
@@ -293,7 +293,7 @@ class _HomeScreenState extends State<HomeScreen>
                                     width: 15,
                                   ),
                                   MenuButton(
-                                      title: "셔틀정보",
+                                      title: tr('mainScreen.shuttle_info'),
                                       icon: Icons.directions_bus,
                                       routeCallbackFun: () {
                                         Navigator.push(
@@ -347,11 +347,11 @@ class _HomeScreenState extends State<HomeScreen>
               duration: const Duration(milliseconds: 500),
               child: CustomPaint(
                 painter: BubblePainter2(),
-                child: const Padding(
-                  padding: EdgeInsets.all(10.0),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
                   child: Text(
-                    "챗봇 사용하기",
-                    style: TextStyle(fontWeight: FontWeight.w500),
+                    tr("mainScreen.use_chatbot"),
+                    style: const TextStyle(fontWeight: FontWeight.w500),
                   ),
                 ),
               ),

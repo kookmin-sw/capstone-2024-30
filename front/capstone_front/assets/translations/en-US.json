@@ -29,5 +29,14 @@
   "chatbotScreen": {
     "chatbot": "Chat Bot",
     "textfield_hint": "Please enter your questions"
+  },
+  "weekday": {
+    "mon": "MON",
+    "tue": "TUE",
+    "wed": "WED",
+    "thu": "THU",
+    "fri": "FRI",
+    "sat": "SAT",
+    "sun": "SUN"
   }
 }

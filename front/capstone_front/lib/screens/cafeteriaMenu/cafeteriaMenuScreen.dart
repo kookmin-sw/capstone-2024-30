@@ -1,5 +1,5 @@
 import 'package:capstone_front/main.dart';
-import 'package:capstone_front/models/cafeteria_menu_model_ko.dart';
+import 'package:capstone_front/models/cafeteria_menu_model.dart';
 import 'package:capstone_front/screens/cafeteriaMenu/menuCard.dart';
 import 'package:capstone_front/screens/main_screen.dart';
 import 'package:capstone_front/services/cafeteria_menu_service.dart';
@@ -168,19 +168,19 @@ class _CafeteriaMenuScreenState extends State<CafeteriaMenuScreen>
   String _getWeekDayName(int weekday) {
     switch (weekday) {
       case 1:
-        return '월';
+        return tr('weekday.mon');
       case 2:
-        return '화';
+        return tr('weekday.tue');
       case 3:
-        return '수';
+        return tr('weekday.wed');
       case 4:
-        return '목';
+        return tr('weekday.thu');
       case 5:
-        return '금';
+        return tr('weekday.fri');
       case 6:
-        return '토';
+        return tr('weekday.sat');
       case 7:
-        return '일';
+        return tr('weekday.sun');
       default:
         return '';
     }

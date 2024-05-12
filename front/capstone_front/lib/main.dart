@@ -1,6 +1,6 @@
 import 'package:capstone_front/firebase_options.dart';
 import 'package:capstone_front/models/chat_init_model.dart';
-import 'package:capstone_front/models/cafeteria_menu_model_ko.dart';
+import 'package:capstone_front/models/cafeteria_menu_model.dart';
 import 'package:capstone_front/models/helper_article_preview_model.dart';
 import 'package:capstone_front/models/notice_model.dart';
 import 'package:capstone_front/models/qna_post_model.dart';

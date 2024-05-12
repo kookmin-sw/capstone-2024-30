@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:capstone_front/models/api_fail_response.dart';
-import 'package:capstone_front/models/cafeteria_menu_model_ko.dart';
+import 'package:capstone_front/models/cafeteria_menu_model.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
@@ -20,7 +20,7 @@ Future<CafeteriaMenuModel> getCafeteriaMenu(String date) async {
 
   if (response.statusCode == 200) {
     // print(json['response']);
-    return CafeteriaMenuModel.fromJson(json['response'], date);
+    return CafeteriaMenuModel.fromJson(json['response'], date, language!);
   } else {
     var apiFailResponse = ApiFailResponse.fromJson(json);
     print('Request failed with status: ${response.statusCode}.');
