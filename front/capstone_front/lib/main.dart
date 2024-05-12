@@ -42,7 +42,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 final supportedLocales = [
   const Locale('ko', 'KR'),
   const Locale('en', 'US'),
-  const Locale('zh', 'CH'),
+  const Locale('zh', 'CN'),
 ];
 
 // 기본적으로 한국어로 세팅
@@ -61,7 +61,7 @@ Future<void> setSetting() async {
   if (language == 'EN-US') {
     languageSetting = ['en', 'US'];
   } else if (language == 'ZH') {
-    languageSetting = ['zh', 'CH'];
+    languageSetting = ['zh', 'CN'];
   } else {
     languageSetting = ['ko', 'KR'];
   }
