@@ -1,7 +1,11 @@
 import 'package:capstone_front/main.dart';
 import 'package:capstone_front/screens/cafeteriaMenu/cafeteriaMenuScreen.dart';
+import 'package:capstone_front/screens/home/image_screen.dart';
+import 'package:capstone_front/screens/home/webview_screen.dart';
 import 'package:capstone_front/screens/notice/notice_screen.dart';
 import 'package:capstone_front/services/login_service.dart';
+import 'package:capstone_front/utils/bubble_painter2.dart';
+import 'package:capstone_front/utils/bubble_painter_right.dart';
 import 'package:capstone_front/utils/white_box.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -58,245 +62,303 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Stack(
         children: [
-          Column(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 100,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        child: Transform.translate(
-                          offset: const Offset(0, -80),
-                          child: Column(
-                            children: [
-                              FutureBuilder(
-                                  future: getUserInfo(),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      // 데이터 로딩 중인 경우
-                                      return WhiteBox(
-                                        content: const Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  '',
-                                                  style: TextStyle(
-                                                    fontSize: 24,
-                                                    fontWeight: FontWeight.w700,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(height: 15),
-                                            Text(
-                                              '',
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    } else if (snapshot.hasError) {
-                                      // 에러 발생 시
-                                      return WhiteBox(
-                                        content: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  "Error: ${snapshot.error}",
-                                                  style: const TextStyle(
-                                                    fontSize: 24,
-                                                    fontWeight: FontWeight.w700,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            const SizedBox(height: 15),
-                                            const Text(
-                                              '',
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    } else {
-                                      // 데이터 로딩 완료 후
-                                      return WhiteBox(
-                                        content: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  snapshot.data!['userName']!,
-                                                  style: const TextStyle(
-                                                    fontSize: 24,
-                                                    fontWeight: FontWeight.w700,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            const SizedBox(height: 15),
-                                            Text(
-                                              snapshot.data!['userMajor']!,
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    }
-                                  }),
-                              const SizedBox(height: 15),
-                              WhiteBox(
-                                content: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 100,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Transform.translate(
+                      offset: const Offset(0, -80),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          FutureBuilder(
+                              future: getUserInfo(),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  // 데이터 로딩 중인 경우
+                                  return WhiteBox(
+                                    content: const Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(tr("mainScreen.notice"),
-                                            style: const TextStyle(
-                                              fontSize: 24,
-                                              fontWeight: FontWeight.w700,
-                                            )),
-                                        IconButton(
-                                          icon: const Icon(Icons.add),
-                                          onPressed: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const NoticeScreen(),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              '',
+                                              style: TextStyle(
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.w700,
                                               ),
-                                            );
-                                          },
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(height: 15),
+                                        Text(
+                                          '',
                                         ),
                                       ],
                                     ),
-                                    const SizedBox(
-                                      height: 10,
+                                  );
+                                } else if (snapshot.hasError) {
+                                  // 에러 발생 시
+                                  return WhiteBox(
+                                    content: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "Error: ${snapshot.error}",
+                                              style: const TextStyle(
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 15),
+                                        const Text(
+                                          '',
+                                        ),
+                                      ],
                                     ),
-                                    const Text(
-                                      "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 ...",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
+                                  );
+                                } else {
+                                  // 데이터 로딩 완료 후
+                                  return WhiteBox(
+                                    content: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text(
+                                              snapshot.data!['userName']!,
+                                              style: const TextStyle(
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 15),
+                                        Text(
+                                          snapshot.data!['userMajor']!,
+                                        ),
+                                      ],
                                     ),
-                                    const Text(
-                                      "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 ...",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const Text(
-                                      "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 ...",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const Text(
-                                      "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 ...",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const Text(
-                                      "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 ...",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
+                                  );
+                                }
+                              }),
+                          const SizedBox(height: 15),
+                          WhiteBox(
+                            content: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(tr("mainScreen.notice"),
+                                        style: const TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.w700,
+                                        )),
+                                    IconButton(
+                                      icon: const Icon(Icons.add),
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const NoticeScreen(),
+                                          ),
+                                        );
+                                      },
                                     ),
                                   ],
                                 ),
-                              ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              WhiteBox(
-                                content: Column(
+                                const SizedBox(height: 10),
+                                const Text(
+                                  "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 ...",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const Text(
+                                  "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 ...",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const Text(
+                                  "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 ...",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const Text(
+                                  "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 ...",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const Text(
+                                  "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 ...",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          WhiteBox(
+                            content: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(tr("mainScreen.cafeteria"),
-                                            style: const TextStyle(
-                                              fontSize: 24,
-                                              fontWeight: FontWeight.w700,
-                                            )),
-                                        IconButton(
-                                          icon: const Icon(Icons.add),
-                                          onPressed: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const CafeteriaMenuScreen(),
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      ],
+                                    Text(tr("mainScreen.cafeteria"),
+                                        style: const TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.w700,
+                                        )),
+                                    IconButton(
+                                      icon: const Icon(Icons.add),
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const CafeteriaMenuScreen(),
+                                          ),
+                                        );
+                                      },
                                     ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    menus.cafeteriaMenus.isEmpty ||
-                                            menus.cafeteriaMenus[0].isEmpty
-                                        ? Center(
-                                            child:
-                                                Text(tr('mainScreen.no_data')))
-                                        : Column(
+                                  ],
+                                ),
+                                const SizedBox(height: 10),
+                                menus.cafeteriaMenus.isEmpty ||
+                                        menus.cafeteriaMenus[0].isEmpty
+                                    ? Center(
+                                        child: Text(tr('mainScreen.no_data')))
+                                    : Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children:
+                                            menus.cafeteriaMenus[0].map((data) {
+                                          return Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
-                                            children: menus.cafeteriaMenus[0]
-                                                .map((data) {
-                                              return Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(data[0]),
-                                                  Text(data[1]),
-                                                  if (data[2] != "0")
-                                                    Text('₩${data[2]}'),
-                                                  const Text(""),
-                                                ],
-                                              );
-                                            }).toList(),
-                                          ),
-                                  ],
+                                            children: [
+                                              Text(data[0]),
+                                              Text(data[1]),
+                                              if (data[2] != "0")
+                                                Text('₩${data[2]}'),
+                                              const Text(""),
+                                            ],
+                                          );
+                                        }).toList(),
+                                      ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 15),
+                          WhiteBox(
+                              content: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "기타정보",
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w700,
                                 ),
                               ),
+                              const SizedBox(height: 10),
+                              Row(
+                                // mainAxisAlignment:
+                                //     MainAxisAlignment.spaceBetween,
+                                children: [
+                                  MenuButton(
+                                      title: "학교지도",
+                                      icon: Icons.map_outlined,
+                                      routeCallbackFun: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => const ImageScreen(
+                                                'assets/images/kookmin_map_row.jpg'),
+                                          ),
+                                        );
+                                      }),
+                                  const SizedBox(
+                                    width: 15,
+                                  ),
+                                  MenuButton(
+                                      title: "시설정보",
+                                      icon: Icons.business,
+                                      routeCallbackFun: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => const ImageScreen(
+                                                'assets/images/facility_time.jpg'),
+                                          ),
+                                        );
+                                      }),
+                                  const SizedBox(
+                                    width: 15,
+                                  ),
+                                  MenuButton(
+                                      title: "셔틀정보",
+                                      icon: Icons.directions_bus,
+                                      routeCallbackFun: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const WebViewScreen(
+                                                    'https://coss.kookmin.ac.kr/fvedu/intro/shuttle.do'),
+                                          ),
+                                        );
+                                      }),
+                                  // MenuButton(
+                                  //     title: "챗봇",
+                                  //     icon: Icons.chat,
+                                  //     routeCallbackFun: () {}),
+                                ],
+                              )
                             ],
-                          ),
-                        ),
+                          ))
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
           ),
           Positioned(
             right: 20,
@@ -312,6 +374,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(50),
                   child: Image.asset('assets/images/koomin.png'),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            right: 75,
+            bottom: 20,
+            child: CustomPaint(
+              painter: BubblePainter2(),
+              child: const Padding(
+                padding: EdgeInsets.all(10.0),
+                child: Text(
+                  "챗봇 사용하기",
+                  style: TextStyle(fontWeight: FontWeight.w500),
                 ),
               ),
             ),
@@ -426,60 +502,34 @@ class MenuButton extends StatelessWidget {
     return Column(
       children: [
         SizedBox(
-          height: 90,
-          width: 90,
+          height: 70,
+          width: 70,
           child: InkWell(
-            onTap: routeCallbackFun,
-            borderRadius: BorderRadius.circular(20),
-            child: Ink(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
-                    spreadRadius: 3,
-                    blurRadius: 10,
-                    offset: const Offset(0, 8),
+              onTap: routeCallbackFun,
+              borderRadius: BorderRadius.circular(20),
+              child: Column(
+                children: [
+                  Ink(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: Colors.black),
+                    ),
+                    child: Icon(
+                      icon,
+                      size: 40,
+                    ),
                   ),
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
-                    spreadRadius: 0,
-                    blurRadius: 0,
-                    offset: const Offset(-1, 0),
-                  ),
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
-                    spreadRadius: 0,
-                    blurRadius: 0,
-                    offset: const Offset(1, 0),
-                  ),
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
-                    spreadRadius: 0,
-                    blurRadius: 0,
-                    offset: const Offset(0, -1),
-                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 16,
+                    ),
+                  )
                 ],
-              ),
-              child: Center(
-                child: Icon(
-                  icon,
-                  size: 40,
-                ),
-              ),
-            ),
-          ),
+              )),
         ),
-        const SizedBox(
-          height: 10,
-        ),
-        Text(
-          title,
-          style: const TextStyle(
-            fontSize: 16,
-          ),
-        )
       ],
     );
   }

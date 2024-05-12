@@ -6,7 +6,7 @@ import 'package:capstone_front/models/notice_model.dart';
 import 'package:capstone_front/models/qna_post_model.dart';
 import 'package:capstone_front/provider/qna_provider.dart';
 import 'package:capstone_front/screens/cafeteriaMenu/cafeteriaMenuScreen.dart';
-import 'package:capstone_front/screens/chatbot/chatbot.dart';
+import 'package:capstone_front/screens/chatbot/chatbot_screen.dart';
 import 'package:capstone_front/screens/faq/faq_screen.dart';
 import 'package:capstone_front/screens/helper/helper_chatting/helper_chatting_room.dart';
 import 'package:capstone_front/screens/helper/helper_screen.dart';
