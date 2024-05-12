@@ -15,7 +15,7 @@ Future<String> getChatbotAnswer(String question) async {
 
   Map data = {
     "query": question,
-    "target_lang": "KO",
+    "target_lang": language,
   };
   var body = json.encode(data);
 

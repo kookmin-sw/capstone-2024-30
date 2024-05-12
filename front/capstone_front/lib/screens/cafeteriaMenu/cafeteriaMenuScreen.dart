@@ -20,7 +20,6 @@ class _CafeteriaMenuScreenState extends State<CafeteriaMenuScreen>
   late TabController tabController = TabController(length: 7, vsync: this);
 
   late DateTime currentDate;
-  String language = 'KO';
 
   @override
   void initState() {
@@ -106,8 +105,7 @@ class _CafeteriaMenuScreenState extends State<CafeteriaMenuScreen>
             ],
           ),
           FutureBuilder(
-              future: getCafeteriaMenu(
-                  currentDate.toString().substring(0, 10), language),
+              future: getCafeteriaMenu(currentDate.toString().substring(0, 10)),
               builder: (
                 BuildContext context,
                 AsyncSnapshot snapshot,

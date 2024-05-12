@@ -354,8 +354,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           icon: const Text("\u{1f1fa}\u{1f1f8}"), // 영어
                           onPressed: () async {
                             await storage.write(
-                                key: 'language', value: 'EN/US');
-                            restartDialog(context, 'EN/US');
+                                key: 'language', value: 'EN-US');
+                            restartDialog(context, 'EN-US');
+                          }),
+                      IconButton(
+                          icon: const Text("\u{1F1E8}\u{1F1F3}"), // 중국어
+                          onPressed: () async {
+                            await storage.write(key: 'language', value: 'ZH');
+                            restartDialog(context, 'ZH');
                           }),
                     ],
                   ),
