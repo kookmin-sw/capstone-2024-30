@@ -11,6 +11,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:http_parser/http_parser.dart';
 
 class QnaService {
   static String baseUrl = dotenv.get('BASE_URL');
@@ -146,7 +147,20 @@ class QnaService {
     final url = Uri.parse('$baseUrl/question/create');
 
     var request = http.MultipartRequest('POST', url);
-    request.fields['request'] = jsonEncode(qnaPost);
+
+    // JSON 데이터를 UTF-8로 인코딩하여 바이트로 변환 후 MultipartFile로 추가
+    List<int> jsonData = utf8.encode(jsonEncode(qnaPost));
+    request.files.add(http.MultipartFile.fromBytes(
+      'request',
+      jsonData,
+      contentType: MediaType(
+        'application',
+        'json',
+        {'charset': 'utf-8'},
+      ),
+    ));
+
+    // request.fields['request'] = jsonEncode(qnaPost);
     request.headers['Authorization'] = 'Bearer $accessToken';
     request.headers['Content-Type'] = 'multipart/form-data';
 
@@ -167,7 +181,7 @@ class QnaService {
     final bytes = await response.stream.toBytes();
     final String decodedBody = utf8.decode(bytes);
     final Map<String, dynamic> jsonMap = jsonDecode(decodedBody);
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
       // TODO 게시글 id 리턴받아서, 게시글 객체 완성한 다음에 리스트에 추가 및 띄워주기
       ApiSuccessResponse apiSuccessResponse =
           ApiSuccessResponse.fromJson(jsonMap);
@@ -195,6 +209,7 @@ class QnaService {
       url,
       headers: {
         'Authorization': 'Bearer $accessToken',
+        'Content-Type': 'application/json',
       },
       body: jsonEncode(answer),
     );
@@ -210,7 +225,9 @@ class QnaService {
 
       return answerModel;
     } else {
+      var apiFailResponse = ApiFailResponse.fromJson(jsonMap);
       print('Request failed with status: ${response.statusCode}.');
+      print('Request failed with status: ${apiFailResponse.message}.');
       throw Exception('Failed to load notices');
     }
   }

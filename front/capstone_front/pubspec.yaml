@@ -59,6 +59,7 @@ dependencies:
   record: ^5.0.5
   change_app_package_name: ^1.1.0
   photo_view: ^0.15.0
+  http_parser: ^4.0.2
 
 dev_dependencies:
   flutter_test:
