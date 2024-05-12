@@ -30,9 +30,11 @@ class AuthService {
       body: json,
     );
 
+    final String decodedBody = utf8.decode(response.bodyBytes);
+    final jsonMap = jsonDecode(decodedBody);
+
     if (response.statusCode != 201) {
-      final String decodedBody = utf8.decode(response.bodyBytes);
-      final apiFailResponse = jsonDecode(decodedBody);
+      final apiFailResponse = ApiFailResponse.fromJson(jsonMap);
       print('Request failed with status: ${response.statusCode}.');
       print('Request failed with status: ${apiFailResponse.message}');
       return false;
