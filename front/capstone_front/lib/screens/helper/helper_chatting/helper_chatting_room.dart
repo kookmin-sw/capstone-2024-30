@@ -131,21 +131,21 @@ class _HelperChattingRoomState extends State<HelperChattingRoom> {
     }
 
     if (flag) {
-      print(lastMessageId);
-      print(lastMessageId);
-      print(lastMessageId);
-      print(lastMessageId);
-      print(lastMessageId);
+      // 기존에 채팅을 하던 사람이라면 새로운 쌓인 채팅들 로드
       var newChats = await ChatService.loadNewChats(chatRoomId, lastMessageId);
       if (newChats != null) {
         messages.addAll(newChats);
+        print(newChats);
+        print(newChats.last.id);
         lastMessageId = newChats.last.id;
         currentChatRoom.lastMessageId = newChats.last.id;
+        currentChatRoom.lastMessagePreviewId = newChats.last.id;
         saveChatRoomData(chatRoomList);
         saveChatData(messages, userId);
         setState(() {});
       }
     } else {
+      // 새로운 채팅 상대라면 커넥트
       var newChatRoomId = await ChatService.connectChat(userId);
       var newChatRoom = ChatRoomModel(
         chatRoomId: newChatRoomId,

@@ -77,7 +77,7 @@ Future<void> setSetting() async {
   // storage.write(key: "uuid", value: "D8WsXf9Ncncn2lvjjGSvwKUOrEl2");
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   // prefs.remove("chatRoomData");
-  // prefs.remove("XWu4UVpXJnh4Q0pdP88DA90k2wf1");
+  // prefs.remove("L02OBbuvRGfI6QPE0GcKkywVcdJ2");
   // prefs.remove("3YuwArylP5gr6njKBtMcAe9RgJr1");
 }
 

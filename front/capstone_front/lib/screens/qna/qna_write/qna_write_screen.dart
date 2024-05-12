@@ -235,8 +235,6 @@ class _HelperWriteScreenState extends State<QnaWriteScreen> {
                     "country": country,
                   };
                   var res = await QnaService.createQnaPost(qnaPost, images);
-                  print(res);
-                  print('@@@@@');
 
                   widget.qnas.insert(
                       0,

@@ -19,11 +19,13 @@ class HelperChattingListScreen extends StatefulWidget {
 
 class _HelperChattingListScreenState extends State<HelperChattingListScreen> {
   late List<ChatRoomModel> chatRoomList = [];
+  late List<ChatRoomModel> myChatRooms = [];
   late List<Map<String, dynamic>> currentChatRoomInfos = [];
   late List<ChatModelForChatList> currentNewChatsInfos = [];
   bool isActive = true;
 
   Future<void> loadChatRooms() async {
+    currentChatRoomInfos.clear();
     chatRoomList = await ChatService.loadChatRooms();
     for (var chatRoom in chatRoomList) {
       currentChatRoomInfos.add({
@@ -39,24 +41,19 @@ class _HelperChattingListScreenState extends State<HelperChattingListScreen> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> chatRoomData =
         chatRooms.map((chatRoom) => json.encode(chatRoom.toJson())).toList();
-    print('room data before save');
-    print(chatRoomData);
-    print('room data before save');
     await prefs.setStringList('chatRoomData', chatRoomData);
   }
 
   Future<void> startPolling(Map<String, dynamic> roomInfo) async {
     try {
       while (isActive) {
-        print('polling1');
-        print(chatRoomList);
-        print('polling2');
         // loadChatRooms();
         try {
           var currentNewChatsInfos =
               await ChatService.pollingChatList(roomInfo);
+          print('roominfo');
+          print(roomInfo);
           for (var newChatInfo in currentNewChatsInfos) {
-            print(newChatInfo.content);
             var flag = true; // 새로운 채팅방인지 아닌지 확인
             for (var chatRoom in chatRoomList) {
               if (newChatInfo.chatRoomId == chatRoom.chatRoomId) {
@@ -124,6 +121,7 @@ class _HelperChattingListScreenState extends State<HelperChattingListScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: HelperChattingCard(
               chatRoomModel: chatRoomList[index],
+              chatRoomListUpdate: loadChatRooms,
             ),
           );
         },
