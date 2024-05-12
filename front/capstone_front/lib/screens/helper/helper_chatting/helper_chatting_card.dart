@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:capstone_front/models/chat_init_model.dart';
+import 'package:capstone_front/models/chat_model.dart';
 import 'package:capstone_front/models/chat_room_model.dart';
 import 'package:capstone_front/screens/helper/helper_board/helper_writing_json.dart';
 import 'package:capstone_front/screens/helper/helper_chatting/helper_chatting_json.dart';
@@ -6,13 +9,16 @@ import 'package:capstone_front/screens/helper/helper_chatting/helper_chatting_ro
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HelperChattingCard extends StatefulWidget {
   final ChatRoomModel chatRoomModel;
+  final Function() chatRoomListUpdate;
 
   const HelperChattingCard({
     super.key,
     required this.chatRoomModel,
+    required this.chatRoomListUpdate,
   });
 
   @override
@@ -20,6 +26,31 @@ class HelperChattingCard extends StatefulWidget {
 }
 
 class _HelperChattingCardState extends State<HelperChattingCard> {
+  int lastMessageId = 0;
+
+  // 채팅 데이터 불러오기
+  Future<List<ChatModel>> loadChatData(String partner) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> chatData = prefs.getStringList(partner) ?? [];
+
+    return chatData
+        .map((chat) => ChatModel.fromJson(json.decode(chat)))
+        .toList();
+  }
+
+  Future<void> initInitialState() async {
+    var chatHistory = await loadChatData(widget.chatRoomModel.userId);
+    setState(() {
+      lastMessageId = chatHistory.last.id;
+    });
+  }
+
+  @override
+  void initState() {
+    initInitialState();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -33,6 +64,8 @@ class _HelperChattingCardState extends State<HelperChattingCard> {
             context,
             MaterialPageRoute(
                 builder: (context) => HelperChattingRoom(chatInitModel)));
+        await widget.chatRoomListUpdate();
+        await initInitialState();
         if (result == 'g') {
           setState(() {});
         }
@@ -103,8 +136,7 @@ class _HelperChattingCardState extends State<HelperChattingCard> {
             ),
             Row(
               children: [
-                widget.chatRoomModel.lastMessageId !=
-                        widget.chatRoomModel.lastMessagePreviewId
+                lastMessageId != widget.chatRoomModel.lastMessagePreviewId
                     ? const Text(
                         "N",
                         style: TextStyle(
