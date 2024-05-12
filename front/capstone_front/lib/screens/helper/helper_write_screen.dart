@@ -3,6 +3,7 @@ import 'package:capstone_front/utils/basic_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 
 class HelperWriteScreen extends StatefulWidget {
@@ -93,19 +94,21 @@ class _HelperWriteScreenState extends State<HelperWriteScreen> {
             BasicButton(
               text: tr('helper.write_complete'),
               onPressed: () async {
-                setState(() {
-                  if (_titleController.text != "" &&
-                      _contentController.text != "") {
-                    var result = HelperService.createHelperPost({
-                      "title": _titleController.text,
-                      "author": "지훈초이",
-                      "country": "korea",
-                      "context": _contentController.text,
-                      "isHelper": _selectedIndex
-                    });
-                    Navigator.pop(context, result);
-                  }
-                });
+                if (_titleController.text != "" &&
+                    _contentController.text != "") {
+                  FlutterSecureStorage storage = const FlutterSecureStorage();
+
+                  var author = await storage.read(key: "userName");
+                  var country = await storage.read(key: "userCountry");
+                  var result = HelperService.createHelperPost({
+                    "title": _titleController.text,
+                    "author": author,
+                    "country": country,
+                    "context": _contentController.text,
+                    "isHelper": _selectedIndex
+                  });
+                  Navigator.pop(context, result);
+                }
               },
             )
           ],
