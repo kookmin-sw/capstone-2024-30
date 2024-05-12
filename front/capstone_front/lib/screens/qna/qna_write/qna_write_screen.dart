@@ -7,6 +7,7 @@ import 'package:capstone_front/utils/basic_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:image_picker/image_picker.dart';
 
 class QnaWriteScreen extends StatefulWidget {
@@ -221,12 +222,17 @@ class _HelperWriteScreenState extends State<QnaWriteScreen> {
                   // id를 리턴받아서 qnas list에 넣기
                   // Map<String, dynamic> res =
                   //     await QnaService.createQnaPost(articleInfo, images);
+
+                  FlutterSecureStorage storage = const FlutterSecureStorage();
+
+                  var author = await storage.read(key: "userName");
+                  var country = await storage.read(key: "userCountry");
                   var qnaPost = {
                     "title": _titleController.text,
-                    "author": "author",
+                    "author": author,
                     "context": _contentController.text,
-                    "tag": "tagggg",
-                    "country": "qwe",
+                    "tag": _helperWriteList[_selectedIndex].toString(),
+                    "country": country,
                   };
                   var res = await QnaService.createQnaPost(qnaPost, images);
                   print(res);
