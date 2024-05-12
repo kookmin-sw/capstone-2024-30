@@ -43,12 +43,13 @@ class _LoginScreenState extends State<LoginScreen> {
               Row(
                 children: [
                   Flexible(
-                    child: loginTextField(context, tr("kmu_email"), 0, false),
+                    child: loginTextField(
+                        context, tr("login.kmu_email"), 0, false),
                   ),
                   const Text("@kookmin.ac.kr"),
                 ],
               ),
-              loginTextField(context, tr("password"), 1, true),
+              loginTextField(context, tr("login.password"), 1, true),
               Row(
                 children: [
                   Flexible(
