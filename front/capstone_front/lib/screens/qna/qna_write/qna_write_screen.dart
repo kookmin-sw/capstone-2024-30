@@ -221,19 +221,6 @@ class _HelperWriteScreenState extends State<QnaWriteScreen> {
                   // id를 리턴받아서 qnas list에 넣기
                   // Map<String, dynamic> res =
                   //     await QnaService.createQnaPost(articleInfo, images);
-                  widget.qnas.insert(
-                      0,
-                      QnaPostModel(
-                        id: 1,
-                        title: _titleController.text,
-                        author: "author",
-                        content: _contentController.text,
-                        category: "category",
-                        country: "country",
-                        answerCount: 2,
-                        createdDate: "2024-05-04",
-                      ));
-
                   var qnaPost = {
                     "title": _titleController.text,
                     "author": "author",
@@ -241,7 +228,22 @@ class _HelperWriteScreenState extends State<QnaWriteScreen> {
                     "tag": "tagggg",
                     "country": "qwe",
                   };
-                  QnaService.createQnaPost(qnaPost, images);
+                  var res = await QnaService.createQnaPost(qnaPost, images);
+                  print(res);
+                  print('@@@@@');
+
+                  widget.qnas.insert(
+                      0,
+                      QnaPostModel(
+                        id: res['questionResponse']['id'],
+                        title: res['questionResponse']['title'],
+                        author: res['questionResponse']['author'],
+                        content: res['questionResponse']['context'],
+                        category: res['questionResponse']['tag'],
+                        country: res['questionResponse']['country'],
+                        answerCount: 0,
+                        createdDate: res['questionResponse']['createdDate'],
+                      ));
                   Navigator.pop(context);
                 } else {
                   makeToast("내용을 다 채워주세요");

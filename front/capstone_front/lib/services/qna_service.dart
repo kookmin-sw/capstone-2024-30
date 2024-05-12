@@ -167,7 +167,7 @@ class QnaService {
     final bytes = await response.stream.toBytes();
     final String decodedBody = utf8.decode(bytes);
     final Map<String, dynamic> jsonMap = jsonDecode(decodedBody);
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
       // TODO 게시글 id 리턴받아서, 게시글 객체 완성한 다음에 리스트에 추가 및 띄워주기
       ApiSuccessResponse apiSuccessResponse =
           ApiSuccessResponse.fromJson(jsonMap);
@@ -195,6 +195,7 @@ class QnaService {
       url,
       headers: {
         'Authorization': 'Bearer $accessToken',
+        'Content-Type': 'application/json',
       },
       body: jsonEncode(answer),
     );
@@ -210,7 +211,9 @@ class QnaService {
 
       return answerModel;
     } else {
+      var apiFailResponse = ApiFailResponse.fromJson(jsonMap);
       print('Request failed with status: ${response.statusCode}.');
+      print('Request failed with status: ${apiFailResponse.message}.');
       throw Exception('Failed to load notices');
     }
   }
