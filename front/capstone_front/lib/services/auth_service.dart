@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:capstone_front/main.dart';
 import 'package:capstone_front/models/api_fail_response.dart';
 import 'package:capstone_front/models/api_success_response.dart';
 import 'package:capstone_front/models/user_info_model.dart';
@@ -107,6 +108,8 @@ class AuthService {
       UserInfoModel userInfoModel = UserInfoModel.fromJson(jsonMap['response']);
       await storage.write(key: "userName", value: userInfoModel.name);
       await storage.write(key: "userMajor", value: userInfoModel.major);
+      userName = userInfoModel.name;
+      userMajor = userInfoModel.major;
     } else {
       var apiFailResponse = ApiFailResponse.fromJson(jsonMap);
       print(apiFailResponse.message);
