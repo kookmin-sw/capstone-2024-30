@@ -39,7 +39,11 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // 앱에서 지원하는 언어 리스트 변수
-final supportedLocales = [const Locale('en', 'US'), const Locale('ko', 'KR')];
+final supportedLocales = [
+  const Locale('ko', 'KR'),
+  const Locale('en', 'US'),
+  const Locale('zh', 'CN'),
+];
 
 // 기본적으로 한국어로 세팅
 List<String> languageSetting = ['ko', 'KR'];
@@ -54,8 +58,10 @@ late CafeteriaMenuModel menus;
 Future<void> setSetting() async {
   const storage = FlutterSecureStorage();
   String? language = await storage.read(key: 'language');
-  if (language == 'EN/US') {
+  if (language == 'EN-US') {
     languageSetting = ['en', 'US'];
+  } else if (language == 'ZH') {
+    languageSetting = ['zh', 'CN'];
   } else {
     languageSetting = ['ko', 'KR'];
   }
@@ -77,8 +83,7 @@ void initializeFirebase() async {
 }
 
 Future<void> getMenus() async {
-  menus =
-      await getCafeteriaMenu(DateTime.now().toString().substring(0, 10), 'KO');
+  menus = await getCafeteriaMenu(DateTime.now().toString().substring(0, 10));
 }
 
 void main() async {

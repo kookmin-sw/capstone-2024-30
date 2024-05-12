@@ -3,11 +3,15 @@ import 'dart:convert';
 import 'package:capstone_front/models/api_fail_response.dart';
 import 'package:capstone_front/models/cafeteria_menu_model.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
-Future<CafeteriaMenuModel> getCafeteriaMenu(
-    String date, String language) async {
+Future<CafeteriaMenuModel> getCafeteriaMenu(String date) async {
   final String baseUrl = dotenv.get('BASE_URL');
+
+  FlutterSecureStorage storage = const FlutterSecureStorage();
+  final language = await storage.read(key: "language");
+
   final url = Uri.parse('$baseUrl/menu/daily?date=$date&language=$language');
   final response = await http.get(url);
 
