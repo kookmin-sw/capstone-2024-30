@@ -58,7 +58,6 @@ class ChatService {
     List<ChatModel> chatInstances = [];
 
     if (response.statusCode == 200) {
-      print('load new chats');
       var apiSuccessResponse = ApiSuccessResponse.fromJson(jsonMap);
       final List<dynamic> chats = apiSuccessResponse.response['messages'];
 
@@ -68,7 +67,6 @@ class ChatService {
 
       return chatInstances;
     } else if (response.statusCode == 400) {
-      print('not load new chats');
       // 새로 로드할 채팅이 없을 때
       return null;
     } else {
@@ -107,7 +105,6 @@ class ChatService {
 
       return chatInstances;
     } else {
-      print('여기');
       var apiFailResponse = ApiFailResponse.fromJson(jsonMap);
       print(response.statusCode);
       print(apiFailResponse.message);
@@ -132,8 +129,6 @@ class ChatService {
     );
 
     final String decodedBody = utf8.decode(response.bodyBytes);
-    print('sendChat');
-    print(decodedBody);
     final Map<String, dynamic> jsonMap = jsonDecode(decodedBody);
     if (response.statusCode == 201) {
       var apiSuccessResponse = ApiSuccessResponse.fromJson(jsonMap);
@@ -168,6 +163,10 @@ class ChatService {
     if (response.statusCode == 200) {
       var apiSuccessResponse = ApiSuccessResponse.fromJson(jsonMap);
       final List<dynamic> chatRooms = apiSuccessResponse.response['rooms'];
+      print('response');
+      print(jsonMap);
+      print(chatRooms.length);
+      print('response');
 
       // print(decodedBody);
       for (var chatRoom in chatRooms) {
@@ -184,10 +183,13 @@ class ChatService {
 
   static Future<List<ChatModelForChatList>> pollingChatList(
       Map<String, dynamic> myChatRooms) async {
+    print(myChatRooms);
+    print(myChatRooms);
+    print(myChatRooms);
     FlutterSecureStorage storage = const FlutterSecureStorage();
     final accessToken = await storage.read(key: "accessToken");
 
-    final url = Uri.parse('$baseUrl/chat/poll/list');
+    final url = Uri.parse('$baseUrl/chat/poll/message');
     final response = await http.post(
       url,
       headers: {
@@ -201,9 +203,7 @@ class ChatService {
 
     final String decodedBody = utf8.decode(response.bodyBytes);
     final Map<String, dynamic> jsonMap = jsonDecode(decodedBody);
-    // print('@@@@');
-    // print(decodedBody);
-    // print('@@@@');
+
     if (response.statusCode == 200) {
       var apiSuccessResponse = ApiSuccessResponse.fromJson(jsonMap);
       final List<dynamic> chatModelForChatRooms =
