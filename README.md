@@ -159,7 +159,7 @@ ON국민에도 자주 물어보는 질문들을 모아둔 FAQ가 있습니다. �
 ### 💻 서비스 아키택처
 
 <br>
-<img src = "https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/824e72af-b435-4c15-ad24-663df94ccdc2" width=800>
+<img src = "https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/dc5dc4de-8111-46c0-bd60-34f5e15a3f9a" width=800>
 
 ### 🤖 챗봇 아키텍처
 
