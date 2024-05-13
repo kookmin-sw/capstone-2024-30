@@ -58,18 +58,21 @@ late CafeteriaMenuModel menus;
 // 로그인 유저 정보
 String userName = '';
 String userMajor = '';
-late String? language;
+String language = 'KO';
 
 // 언어를 설정해주고 로그인 정보를 불러오는 함수
 Future<void> setSetting() async {
   const storage = FlutterSecureStorage();
-  language = await storage.read(key: 'language');
-  if (language == 'EN-US') {
+  String? tmpLanguage = await storage.read(key: 'language');
+  if (tmpLanguage == 'EN-US') {
     languageSetting = ['en', 'US'];
-  } else if (language == 'ZH') {
+    language = 'EN-US';
+  } else if (tmpLanguage == 'ZH') {
     languageSetting = ['zh', 'CN'];
+    language = 'ZH';
   } else {
     languageSetting = ['ko', 'KR'];
+    language = 'KO';
   }
   String? str = await storage.read(key: 'isLogin');
   if (str == 'true') {
@@ -94,8 +97,18 @@ Future<void> getMenus() async {
 
 Future<void> getUserInfo() async {
   const storage = FlutterSecureStorage();
-  userName = (await storage.read(key: "userName"))!;
-  userMajor = (await storage.read(key: "userMajor"))!;
+  String? _userName = (await storage.read(key: "userName"));
+  if (_userName == null) {
+    userName = '';
+  } else {
+    userName = _userName;
+  }
+  String? _userMajor = (await storage.read(key: "userMajor"));
+  if (_userMajor == null) {
+    userMajor = '';
+  } else {
+    userMajor = _userMajor;
+  }
 }
 
 void main() async {
