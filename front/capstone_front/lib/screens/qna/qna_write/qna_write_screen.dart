@@ -7,6 +7,7 @@ import 'package:capstone_front/utils/basic_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:image_picker/image_picker.dart';
 
 class QnaWriteScreen extends StatefulWidget {
@@ -221,17 +222,31 @@ class _HelperWriteScreenState extends State<QnaWriteScreen> {
                   // id를 리턴받아서 qnas list에 넣기
                   // Map<String, dynamic> res =
                   //     await QnaService.createQnaPost(articleInfo, images);
+
+                  FlutterSecureStorage storage = const FlutterSecureStorage();
+
+                  var author = await storage.read(key: "userName");
+                  var country = await storage.read(key: "userCountry");
+                  var qnaPost = {
+                    "title": _titleController.text,
+                    "author": author,
+                    "context": _contentController.text,
+                    "tag": _helperWriteList[_selectedIndex].toString(),
+                    "country": country,
+                  };
+                  var res = await QnaService.createQnaPost(qnaPost, images);
+
                   widget.qnas.insert(
                       0,
                       QnaPostModel(
-                        id: 1,
-                        title: _titleController.text,
-                        author: "author",
-                        content: _contentController.text,
-                        category: "category",
-                        country: "country",
-                        imagesList: ["qwe", "asd"],
-                        commentAmount: 2,
+                        id: res['questionResponse']['id'],
+                        title: res['questionResponse']['title'],
+                        author: res['questionResponse']['author'],
+                        content: res['questionResponse']['context'],
+                        category: res['questionResponse']['tag'],
+                        country: res['questionResponse']['country'],
+                        answerCount: 0,
+                        createdDate: res['questionResponse']['createdDate'],
                       ));
                   Navigator.pop(context);
                 } else {

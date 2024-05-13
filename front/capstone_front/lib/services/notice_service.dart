@@ -63,4 +63,38 @@ class NoticeService {
       throw Exception('Failed to load noticeDetail');
     }
   }
+
+  static Future<NoticesResponse> getNoticesByWord(
+      int cursor, String type, String language, String word) async {
+    var query = 'type=$type&language=$language&cursor=$cursor&word=$word';
+    final url = Uri.parse('$baseUrl/announcement/search?$query');
+    final response = await http.get(url);
+
+    List<NoticeModel> noticeInstances = [];
+
+    final String decodedBody = utf8.decode(response.bodyBytes);
+    final Map<String, dynamic> jsonMap = jsonDecode(decodedBody);
+    if (response.statusCode == 200) {
+      var apiSuccessResponse = ApiSuccessResponse.fromJson(jsonMap);
+      var res = apiSuccessResponse.response;
+      var notices = res['announcements'];
+
+      for (var notice in notices) {
+        noticeInstances.add(NoticeModel.fromJson(notice));
+      }
+
+      var result = NoticesResponse(
+        notices: noticeInstances,
+        lastCursorId: res['lastCursorId'],
+        hasNext: res['hasNext'],
+      );
+
+      return result;
+    } else {
+      var apiFailResponse = ApiFailResponse.fromJson(jsonMap);
+      print(apiFailResponse.message);
+      print('Request failed with status: ${response.statusCode}.');
+      throw Exception('Failed to load notices');
+    }
+  }
 }

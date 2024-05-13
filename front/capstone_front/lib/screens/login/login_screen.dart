@@ -1,7 +1,6 @@
 import 'package:capstone_front/services/auth_service.dart';
 import 'package:capstone_front/services/login_service.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -44,12 +43,13 @@ class _LoginScreenState extends State<LoginScreen> {
               Row(
                 children: [
                   Flexible(
-                    child: loginTextField(context, tr("kmu_email"), 0, false),
+                    child: loginTextField(
+                        context, tr("login.kmu_email"), 0, false),
                   ),
                   const Text("@kookmin.ac.kr"),
                 ],
               ),
-              loginTextField(context, tr("password"), 1, true),
+              loginTextField(context, tr("login.password"), 1, true),
               Row(
                 children: [
                   Flexible(
@@ -59,26 +59,28 @@ class _LoginScreenState extends State<LoginScreen> {
                             '${_userInfo[0]}@kookmin.ac.kr', _userInfo[1]);
                         switch (result) {
                           case "success":
-                            await storage.write(key: 'isLogin', value: 'true');
-                            await storage.write(
-                                key: 'userEmail',
-                                value: '${_userInfo[0]}@kookmin.ac.kr');
                             var uuid = await storage.read(key: 'uuid');
                             var isLogined = await AuthService.signIn({
                               "uuid": uuid,
                               "email": '${_userInfo[0]}@kookmin.ac.kr',
                             });
                             if (isLogined) {
-                              makeToast("로그인에 성공하였습니다");
+                              var accessToken =
+                                  await storage.read(key: "accessToken");
+                              await AuthService.getUserInfo(
+                                  uuid!, accessToken!);
+
+                              await storage.write(
+                                  key: 'isLogin', value: 'true');
+                              makeToast(tr("login.login_success"));
                               context.go('/');
                             }
-
                           case "email":
-                            makeToast("이메일이 인증되지 않았습니다");
+                            makeToast(tr("login.email_not_varified"));
                           case "invalid-credential":
-                            makeToast("아이디 또는 비밀번호가 일치하지 않습니다");
+                            makeToast(tr("login.invalid_credential"));
                           default:
-                            makeToast("로그인 실패");
+                            makeToast(tr("login.login_fail"));
                         }
                       },
                       child: Ink(

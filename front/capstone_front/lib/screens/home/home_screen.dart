@@ -1,6 +1,11 @@
+import 'package:capstone_front/main.dart';
 import 'package:capstone_front/screens/cafeteriaMenu/cafeteriaMenuScreen.dart';
+import 'package:capstone_front/screens/home/image_screen.dart';
+import 'package:capstone_front/screens/home/webview_screen.dart';
 import 'package:capstone_front/screens/notice/notice_screen.dart';
 import 'package:capstone_front/services/login_service.dart';
+import 'package:capstone_front/utils/bubble_painter2.dart';
+import 'package:capstone_front/utils/bubble_painter_right.dart';
 import 'package:capstone_front/utils/white_box.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,12 +23,41 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
   FlutterSecureStorage storage = const FlutterSecureStorage();
+  bool _isVisible = true;
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    )..addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          setState(() {
+            _isVisible = !_isVisible;
+          });
+          _controller.reverse();
+        } else if (status == AnimationStatus.dismissed) {
+          _controller.forward();
+        }
+      });
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7F9),
       appBar: AppBar(
         title: const Text(
           "외국민",
@@ -47,271 +81,245 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Stack(
         children: [
-          Column(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 100,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        child: Transform.translate(
-                          offset: const Offset(0, -80),
-                          child: Column(
-                            children: [
-                              WhiteBox(
-                                content: const Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          "김민제",
-                                          style: TextStyle(
-                                            fontSize: 24,
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 15),
-                                    Text("소프트웨어융합대학 소프트웨어학부"),
-                                    Text(
-                                      "20191557",
-                                      style:
-                                          TextStyle(color: Color(0xFF979797)),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 15),
-                              WhiteBox(
-                                content: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(tr("mainScreen.notice"),
-                                            style: const TextStyle(
-                                              fontSize: 24,
-                                              fontWeight: FontWeight.w700,
-                                            )),
-                                        IconButton(
-                                          icon: const Icon(Icons.add),
-                                          onPressed: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const NoticeScreen(),
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    const Text(
-                                      "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 ...",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const Text(
-                                      "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 ...",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const Text(
-                                      "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 ...",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const Text(
-                                      "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 ...",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const Text(
-                                      "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 ...",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              WhiteBox(
-                                content: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(tr("mainScreen.cafeteria"),
-                                            style: const TextStyle(
-                                              fontSize: 24,
-                                              fontWeight: FontWeight.w700,
-                                            )),
-                                        IconButton(
-                                          icon: const Icon(Icons.add),
-                                          onPressed: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const CafeteriaMenuScreen(),
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    const Text(
-                                      "김치찌개",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const Text(
-                                      "밥",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const Text(
-                                      "짜장면",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const Text(
-                                      "얼큰국밥",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const Text(
-                                      "고치돈",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              // Row(
-                              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              //   children: [
-                              //     MenuButton(
-                              //       title: tr("mainScreen.notice"),
-                              //       icon: Icons.notifications_rounded,
-                              //       routeCallbackFun: () => context.push("/notice"),
-                              //     ),
-                              //     MenuButton(
-                              //       title: tr("mainScreen.cafeteria"),
-                              //       icon: Icons.restaurant_menu_rounded,
-                              //       routeCallbackFun: () =>
-                              //           context.push("/cafeteriamenu"),
-                              //     ),
-                              //     MenuButton(
-                              //       title: tr("mainScreen.school_info"),
-                              //       icon: Icons.school_rounded,
-                              //       routeCallbackFun: () => context.push("/login"),
-                              //     ),
-                              //   ],
-                              // ),
-                              // const SizedBox(
-                              //   height: 20,
-                              // ),
-                              // Row(
-                              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              //   children: [
-                              //     MenuButton(
-                              //       title: tr("mainScreen.qna"),
-                              //       icon: Icons.question_answer_outlined,
-                              //       routeCallbackFun: () =>
-                              //           context.push("/qnalist"),
-                              //     ),
-                              //     MenuButton(
-                              //       title: tr("mainScreen.faq"),
-                              //       icon: Icons.question_mark_rounded,
-                              //       routeCallbackFun: () => context.push("/faq"),
-                              //     ),
-                              //     MenuButton(
-                              //       title: tr("mainScreen.community"),
-                              //       icon: Icons.question_answer_rounded,
-                              //       routeCallbackFun: () => context.push("/login"),
-                              //     ),
-                              //   ],
-                              // ),
-                              // const SizedBox(
-                              //   height: 20,
-                              // ),
-                              // Row(
-                              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              //   children: [
-                              //     MenuButton(
-                              //       title: tr("mainScreen.guide"),
-                              //       icon: Icons.help_center_rounded,
-                              //       routeCallbackFun: () =>
-                              //           context.push("/chatbot"),
-                              //     ),
-                              //     MenuButton(
-                              //       title: tr("mainScreen.helper"),
-                              //       icon: Icons.person_2_rounded,
-                              //       routeCallbackFun: () => context.push("/helper"),
-                              //     ),
-                              //     MenuButton(
-                              //       title: tr("mainScreen.pronunciation_practice"),
-                              //       icon: Icons.speaker_group_rounded,
-                              //       routeCallbackFun: () =>
-                              //           context.push("/pronunciation"),
-                              //     ),
-                              //   ],
-                              // ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
+          SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 100,
+                    color: Theme.of(context).colorScheme.primary,
                   ),
-                ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Transform.translate(
+                      offset: const Offset(0, -80),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          WhiteBox(
+                            content: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      userName,
+                                      style: const TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 15),
+                                Text(
+                                  userMajor,
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 15),
+                          WhiteBox(
+                            content: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(tr("mainScreen.notice"),
+                                        style: const TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.w700,
+                                        )),
+                                    IconButton(
+                                      icon: const Icon(Icons.add),
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const NoticeScreen(),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 10),
+                                const Text(
+                                  "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 ...",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const Text(
+                                  "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 ...",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const Text(
+                                  "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 ...",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const Text(
+                                  "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 ...",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const Text(
+                                  "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 ...",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          WhiteBox(
+                            content: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(tr("mainScreen.cafeteria"),
+                                        style: const TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.w700,
+                                        )),
+                                    IconButton(
+                                      icon: const Icon(Icons.add),
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const CafeteriaMenuScreen(),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 10),
+                                menus.cafeteriaMenus.isEmpty ||
+                                        menus.cafeteriaMenus[0].isEmpty
+                                    ? Center(
+                                        child: Text(tr('mainScreen.no_data')))
+                                    : Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children:
+                                            menus.cafeteriaMenus[0].map((data) {
+                                          return Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(data[0]),
+                                              Text(data[1]),
+                                              if (data[2] != "0")
+                                                Text('₩${data[2]}'),
+                                              const Text(""),
+                                            ],
+                                          );
+                                        }).toList(),
+                                      ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 15),
+                          WhiteBox(
+                              content: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "기타정보",
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              Row(
+                                // mainAxisAlignment:
+                                //     MainAxisAlignment.spaceBetween,
+                                children: [
+                                  MenuButton(
+                                      title: "학교지도",
+                                      icon: Icons.map_outlined,
+                                      routeCallbackFun: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => const ImageScreen(
+                                                'assets/images/kookmin_map_row.jpg'),
+                                          ),
+                                        );
+                                      }),
+                                  const SizedBox(
+                                    width: 15,
+                                  ),
+                                  MenuButton(
+                                      title: "시설정보",
+                                      icon: Icons.business,
+                                      routeCallbackFun: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => const ImageScreen(
+                                                'assets/images/facility_time.jpg'),
+                                          ),
+                                        );
+                                      }),
+                                  const SizedBox(
+                                    width: 15,
+                                  ),
+                                  MenuButton(
+                                      title: "셔틀정보",
+                                      icon: Icons.directions_bus,
+                                      routeCallbackFun: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const WebViewScreen(
+                                                    'https://coss.kookmin.ac.kr/fvedu/intro/shuttle.do'),
+                                          ),
+                                        );
+                                      }),
+                                  // MenuButton(
+                                  //     title: "챗봇",
+                                  //     icon: Icons.chat,
+                                  //     routeCallbackFun: () {}),
+                                ],
+                              )
+                            ],
+                          ))
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
           Positioned(
             right: 20,
@@ -327,6 +335,24 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(50),
                   child: Image.asset('assets/images/koomin.png'),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            right: 75,
+            bottom: 20,
+            child: AnimatedOpacity(
+              opacity: _isVisible ? 1.0 : 0.0,
+              duration: const Duration(milliseconds: 500),
+              child: CustomPaint(
+                painter: BubblePainter2(),
+                child: const Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Text(
+                    "챗봇 사용하기",
+                    style: TextStyle(fontWeight: FontWeight.w500),
+                  ),
                 ),
               ),
             ),
@@ -352,33 +378,41 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Padding(
               padding: const EdgeInsets.all(20.0),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(tr('mainScreen.language_setting')),
-                  const SizedBox(
-                    height: 15,
-                  ),
+                  const SizedBox(height: 5),
                   Row(
                     children: [
                       IconButton(
                         icon: const Text("\u{1f1f0}\u{1f1f7}"), // 한국어
                         onPressed: () async {
-                          await storage.write(key: 'language', value: 'korean');
-                          restartDialog(context);
+                          await storage.write(key: 'language', value: 'KO');
+                          restartDialog(context, "KO");
                         },
                       ),
                       IconButton(
                           icon: const Text("\u{1f1fa}\u{1f1f8}"), // 영어
                           onPressed: () async {
                             await storage.write(
-                                key: 'language', value: 'english');
-                            restartDialog(context);
+                                key: 'language', value: 'EN-US');
+                            restartDialog(context, 'EN-US');
+                          }),
+                      IconButton(
+                          icon: const Text("\u{1F1E8}\u{1F1F3}"), // 중국어
+                          onPressed: () async {
+                            await storage.write(key: 'language', value: 'ZH');
+                            restartDialog(context, 'ZH');
                           }),
                     ],
                   ),
+                  const SizedBox(height: 5),
+                  Text(tr('mainScreen.account_setting')),
+                  const SizedBox(height: 5),
                   ElevatedButton(
                     onPressed: () async {
                       logout();
-                      await storage.write(key: 'isLogin', value: 'true');
+                      await storage.write(key: 'isLogin', value: 'false');
                       context.go('/login');
                     },
                     child: Text(tr("mainScreen.logout")),
@@ -392,19 +426,19 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Future<dynamic> restartDialog(BuildContext context) {
+  Future<dynamic> restartDialog(BuildContext context, String language) {
     return showDialog(
       context: context,
       builder: ((context) {
         return AlertDialog(
-          content: const Text("언어 변경을 적용하려면 앱을 재시작해야 합니다.\n재시작하시겠습니까?"),
+          content: Text(tr("mainScreen.language_setting_notice")),
           actions: [
             Container(
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: const Text("아니요"),
+                child: Text(tr("mainScreen.no")),
               ),
             ),
             Container(
@@ -412,7 +446,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onPressed: () {
                   Restart.restartApp(webOrigin: "/");
                 },
-                child: const Text("네"),
+                child: Text(tr("mainScreen.yes")),
               ),
             ),
           ],
@@ -439,60 +473,32 @@ class MenuButton extends StatelessWidget {
     return Column(
       children: [
         SizedBox(
-          height: 90,
-          width: 90,
           child: InkWell(
-            onTap: routeCallbackFun,
-            borderRadius: BorderRadius.circular(20),
-            child: Ink(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
-                    spreadRadius: 3,
-                    blurRadius: 10,
-                    offset: const Offset(0, 8),
+              onTap: routeCallbackFun,
+              borderRadius: BorderRadius.circular(20),
+              child: Column(
+                children: [
+                  Ink(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: Colors.black),
+                    ),
+                    child: Icon(
+                      icon,
+                      size: 40,
+                    ),
                   ),
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
-                    spreadRadius: 0,
-                    blurRadius: 0,
-                    offset: const Offset(-1, 0),
-                  ),
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
-                    spreadRadius: 0,
-                    blurRadius: 0,
-                    offset: const Offset(1, 0),
-                  ),
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
-                    spreadRadius: 0,
-                    blurRadius: 0,
-                    offset: const Offset(0, -1),
-                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 16,
+                    ),
+                  )
                 ],
-              ),
-              child: Center(
-                child: Icon(
-                  icon,
-                  size: 40,
-                ),
-              ),
-            ),
-          ),
+              )),
         ),
-        const SizedBox(
-          height: 10,
-        ),
-        Text(
-          title,
-          style: const TextStyle(
-            fontSize: 16,
-          ),
-        )
       ],
     );
   }

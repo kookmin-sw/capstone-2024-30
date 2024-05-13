@@ -6,7 +6,11 @@
     "login": "로그인",
     "kmu_email": "국민대 이메일",
     "password": "비밀번호",
-    "signup": "회원가입"
+    "signup": "회원가입",
+    "login_success": "로그인에 성공하였습니다",
+    "login_fail": "로그인 실패",
+    "email_not_varified": "이메일이 인증되지 않았습니다",
+    "invalid_credential": "아이디 또는 비밀번호가 일치하지 않습니다"
   },
   "signup": {
     "next": "다음",
@@ -21,7 +25,7 @@
     "department": "학부ㆍ학과",
     "name": "이름",
     "student_number": "학번",
-    "enter_name": "이름, 학번을 입력해주세요",
+    "enter_name": "이름을 입력해주세요",
     "enter_kmuemail": "국민대 이메일을 입력해주세요",
     "enter_password": "비밀번호를 입력해주세요",
     "enter_college_department": "단과대학 및 학과를 입력해주세요",
@@ -46,7 +50,15 @@
     "helper": "헬퍼",
     "pronunciation_practice": "발음 연습",
     "language_setting": "언어 설정",
-    "logout": "로그아웃"
+    "language_setting_notice": "언어 변경이 완료되었습니다.\n변경을 적용하려면 앱을 재시작해야 합니다.\n재시작하시겠습니까?",
+    "yes": "네",
+    "no": "아니요",
+    "account_setting": "계정 설정",
+    "logout": "로그아웃",
+    "no_data": "데이터가 없습니다"
+  },
+  "cafeteria": {
+    "no_data": "미운영중입니다"
   },
   "speech": {
     "speech_practice": "발음 연습",
@@ -73,7 +85,9 @@
   },
   "chatbotScreen": {
     "chatbot": "챗봇",
-    "textfield_hint": "궁금한 내용을 입력해주세요"
+    "textfield_hint": "궁금한 내용을 입력해주세요",
+    "loading": "답변을 생성중입니다...",
+    "init": "안녕하세요! 국민대학교 전용 챗봇 KUKU입니다. 국민대학교에 대한 건 무엇이든 질문해주세요!"
   },
   "helper": {
     "helper": "헬퍼",
