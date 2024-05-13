@@ -11,7 +11,12 @@ Future<String> getChatbotAnswer(String question) async {
 
   FlutterSecureStorage storage = const FlutterSecureStorage();
   final accessToken = await storage.read(key: "accessToken");
-  final language = await storage.read(key: "language");
+  String language = "KO";
+
+  final tmpLanguage = await storage.read(key: "language");
+  if (tmpLanguage != null) {
+    language = tmpLanguage;
+  }
 
   Map data = {
     "query": question,
