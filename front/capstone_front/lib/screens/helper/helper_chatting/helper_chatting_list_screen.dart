@@ -51,8 +51,6 @@ class _HelperChattingListScreenState extends State<HelperChattingListScreen> {
         try {
           var currentNewChatsInfos =
               await ChatService.pollingChatList(roomInfo);
-          print('roominfo');
-          print(roomInfo);
           for (var newChatInfo in currentNewChatsInfos) {
             var flag = true; // 새로운 채팅방인지 아닌지 확인
             for (var chatRoom in chatRoomList) {

@@ -40,9 +40,11 @@ class _HelperChattingCardState extends State<HelperChattingCard> {
 
   Future<void> initInitialState() async {
     var chatHistory = await loadChatData(widget.chatRoomModel.userId);
-    setState(() {
-      lastMessageId = chatHistory.last.id;
-    });
+    if (chatHistory.isNotEmpty) {
+      setState(() {
+        lastMessageId = chatHistory.last.id;
+      });
+    }
   }
 
   @override
