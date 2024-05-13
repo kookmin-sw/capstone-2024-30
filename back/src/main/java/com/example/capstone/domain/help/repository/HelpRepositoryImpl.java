@@ -8,13 +8,9 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.SliceImpl;
+import org.springframework.util.StringUtils;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 @RequiredArgsConstructor
 public class HelpRepositoryImpl implements HelpListRepository {
@@ -23,7 +19,7 @@ public class HelpRepositoryImpl implements HelpListRepository {
     private QHelp help = QHelp.help;
     
     @Override
-    public HelpSliceResponse getHelpListByPaging(Long cursorId, Pageable page, Boolean isDone, Boolean isHelper, UUID isMine) {
+    public HelpSliceResponse getHelpListByPaging(Long cursorId, Pageable page, Boolean isDone, Boolean isHelper, String isMine) {
         List<HelpListResponse> helpList = jpaQueryFactory
                 .select(
                         Projections.constructor(
@@ -69,7 +65,7 @@ public class HelpRepositoryImpl implements HelpListRepository {
         return isHelper == null ? null : help.isHelper.eq(isHelper);
     }
 
-    private  BooleanExpression mineEq(UUID isMine) {
-        return isMine == null ? null : help.uuid.eq(isMine);
+    private  BooleanExpression mineEq(String isMine) {
+        return StringUtils.hasText(isMine) ? help.uuid.eq(isMine) : null;
     }
 }

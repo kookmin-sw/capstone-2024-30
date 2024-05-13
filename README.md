@@ -18,9 +18,35 @@ This project aims to develop a comprehensive app service for international stude
 
 ## 3. 프로젝트 기능
 
-### 기능 1
+### 번역된 국민대학교 공지사항 / 학식 / 학교정보 제공
 
-### 기능 2
+국민대학교는 공지사항, 학식, 학교정보의 번역을 잘 지원하지 않습니다. 그래서 외국인들이 학교에 대한 정보를 얻고, 적응하기 쉽지가 않습니다.
+
+저희 외국민 서비스는 설정한 언어에 맞춰서 공지사항/학식/학교정보 번역본을 제공합니다!
+
+### 챗봇 기능
+
+현재 국민대학교에서 제공하는 ON국민 챗봇 "쿠민이"의 성능이 매우 형편없습니다. 간단한 질문에도 동문서답을 하거나, 영어로 질문했는데 한글로 답변하는 등 전혀 챗봇으로서의 기능을 수행하지 못하고 있습니다.
+
+따라서, RAG와 LLM을 사용하여 국민대학교와 관련하여 더 적절하고 맞는 언어로 답변을 제공해주는 "KuKu" 챗봇을 제공합니다.
+
+### 발음 교정 기능
+
+많은 외국인들이 한국에 와서 언어 문제때문에 힘들어합니다. 특히 학교 생활을 하다보면 발표를 하는 경우가 많은데, 발표 스크립트 발음이 맞는지 확인할 방법이 없어서 힘들어합니다.
+
+따라서, 외국민 서비스는 자신의 발표 스크립트를 넣어서 발음 평가를 받을 수 있을 뿐만 아니라, 한국에서 많이 쓰이는 여러 표현들을 연습할 수 있도록하여 한국 유학생활을 돕고자 합니다.
+
+### 헬퍼 매칭 기능
+
+많은 외국인들이 낯선 땅에 와서 언어도 안통하고, 도움을 받을 사람도 없어서 매우 힘들어합니다. 따라서, 저희는 이런 외국인들을 도울 수 있도록 헬퍼 매칭 기능을 제공합니다.
+
+외국인들은 한국인 or 오랜 유학생활을 하여 한국 생활에 익숙해진 외국인 헬퍼를 구할 수 있도록 커뮤니티를 제공합니다.
+
+### Q&A와 FAQ 기능
+
+ON국민에도 자주 물어보는 질문들을 모아둔 FAQ가 있습니다. 하지만, 이 또한 번역을 전혀 제공하지 않고 있습니다. 따라서, 저희는 이 FAQ도 번역하여 제공합니다.
+
+또한, FAQ에 없는 질문도 물어보고 서로 답변할 수 있도록 Q&A 게시판도 제공합니다.
 
 <br>
 
@@ -98,13 +124,12 @@ This project aims to develop a comprehensive app service for international stude
 |-|-|
 |Framework|<img alt="RED" src ="https://img.shields.io/badge/SPRING Boot-6DB33F.svg?&style=for-the-badge&logo=SpringBoot&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/Spring Security-6DB33F.svg?&style=for-the-badge&logo=springsecurity&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/Spring Cloud Gateway-6DB33F.svg?&style=for-the-badge&logo=Spring&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/Ruby On Rails-D30001.svg?&style=for-the-badge&logo=rubyonrails&logoColor=white"/>|
 |Database|<img alt="RED" src ="https://img.shields.io/badge/MySQL-4479A1.svg?&style=for-the-badge&logo=MySQL&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/Redis-DC382D.svg?&style=for-the-badge&logo=Redis&logoColor=white"/>|
-|Programming Language|<img alt="RED" src ="https://img.shields.io/badge/JAVA-004027.svg?&style=for-the-badge&logo=Jameson&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/Ruby-CC342D.svg?&style=for-the-badge&logo=Ruby&logoColor=white"/>|
-|API|![REST](https://img.shields.io/badge/Rest-4B3263?style=for-the-badge&logo=rest&logoColor=white)                                     
-|Test|<img alt="RED" src ="https://img.shields.io/badge/JUnit5-25A162.svg?&style=for-the-badge&logo=JUnit5&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/Test Conatiner-333333.svg?&style=for-the-badge&logo=linuxcontainers&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/Jacoco-85EA2D.svg?&style=for-the-badge&logo=jacoco&logoColor=white"/>|
+|Programming Language|<img alt="RED" src ="https://img.shields.io/badge/JAVA-004027.svg?&style=for-the-badge&logo=Jameson&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/Ruby-CC342D.svg?&style=for-the-badge&logo=Ruby&logoColor=white"/>|             |Test|<img alt="RED" src ="https://img.shields.io/badge/JUnit5-25A162.svg?&style=for-the-badge&logo=JUnit5&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/Test Conatiner-333333.svg?&style=for-the-badge&logo=linuxcontainers&logoColor=white"/> |
 |Deploy|<img alt="RED" src ="https://img.shields.io/badge/Nginx-009639.svg?&style=for-the-badge&logo=nginx&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/Docker-2496ED.svg?&style=for-the-badge&logo=docker&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/Amazon EC2-FF9900.svg?&style=for-the-badge&logo=AmazonEC2&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/Amazon Rds-527FFF.svg?&style=for-the-badge&logo=AmazonRds&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/Amazon S3-569A31.svg?&style=for-the-badge&logo=AmazonS3&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/Amazon Route 53-8C4FFF.svg?&style=for-the-badge&logo=Amazon Route 53&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/Certbot-FF1E0D.svg?&style=for-the-badge&logo=Certbot&logoColor=white"/>|
 |CI/CD|<img alt="RED" src ="https://img.shields.io/badge/Github Actions-2088FF.svg?&style=for-the-badge&logo=githubactions&logoColor=white"/>|
 |ETC|<img alt="RED" src ="https://img.shields.io/badge/Azure Speech SDK-0078D4.svg?&style=for-the-badge&logo=Microsoft Azure&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/Let's Encrypt-003A70.svg?&style=for-the-badge&logo=letsencrypt&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/DeepL-0F2B46.svg?&style=for-the-badge&logo=DeepL&logoColor=white"/>|
-<br />
+<br />                  
+
 
 ### 📻 AI
 
@@ -133,7 +158,12 @@ This project aims to develop a comprehensive app service for international stude
 ### 💻 서비스 아키택처
 
 <br>
-<img src ="https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/9ca1e9f4-7ac4-4930-b89b-72e4a489035d" width = "800">
+<img src = "https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/dc5dc4de-8111-46c0-bd60-34f5e15a3f9a" width=800>
+
+### 🤖 챗봇 아키텍처
+
+<br>
+<img src = "https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/e059e861-d395-4634-bcab-8de9aea6fcaf" width=900>
 
 ### 📂 디렉토리 구조
 

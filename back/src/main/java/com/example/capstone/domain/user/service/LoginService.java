@@ -17,6 +17,7 @@ import com.example.capstone.global.error.exception.EntityNotFoundException;
 import com.example.capstone.global.error.exception.ErrorCode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.Request;
 import org.apache.tomcat.util.buf.HexUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,6 +39,7 @@ import static com.example.capstone.global.error.exception.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 @Transactional(readOnly = true)
 public class LoginService {
     private final UserRepository userRepository;
@@ -55,6 +57,8 @@ public class LoginService {
             String hashed = calculateHMAC(objectMapper.writeValueAsString(request));
             byte[] decodedBytes = Base64.getDecoder().decode(hmac);
             String decoded = HexUtils.toHexString(decodedBytes);
+            log.debug("Request HMAC: {}", hashed);
+            log.debug("HMAC verified: {}", decoded);
 
             if(!decoded.equals(hashed)) {
                 throw new BusinessException(HMAC_NOT_VALID);

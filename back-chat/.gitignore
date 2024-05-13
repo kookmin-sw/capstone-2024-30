@@ -28,3 +28,14 @@
 
 .env
 env.bashrc
+.idea
+
+# 디폴트 무시된 파일
+.idea/dataSources.xml
+.idea/vcs.xml
+.idea/workspace.xml
+.idea/.gitignore
+.idea/dataSources
+.idea/modules.xml
+.idea/dataSources.local.xml
+.idea/back-chat.iml

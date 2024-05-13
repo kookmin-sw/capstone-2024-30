@@ -7,8 +7,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,11 +19,9 @@ import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -141,25 +137,5 @@ public class JwtTokenProvider {
             throw JwtTokenInvalidException.INSTANCE;
         }
 
-    }
-
-    /**
-     * 좀만 고민해보고 폐기 예정
-     */
-    private Claims parseClaims(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-    }
-
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = parseClaims(token);
-        return claimsResolver.apply(claims);
-    }
-
-    public String extractUUID(String token) {
-        return extractClaim(token, claims -> claims.get(JwtClaim.UUID.getKey(), String.class));
     }
 }

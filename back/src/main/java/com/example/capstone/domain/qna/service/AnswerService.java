@@ -14,8 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Map;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +25,7 @@ public class AnswerService {
         LocalDateTime current = LocalDateTime.now();
         Question questionId = questionRepository.findById(request.questionId()).get();
         Answer answer = answerRepository.save(Answer.builder().question(questionId).author(request.author())
-                .context(request.context()).createdDate(current).updatedDate(current).likeCount(0L).uuid(UUID.fromString(userId)).build());
+                .context(request.context()).createdDate(current).updatedDate(current).likeCount(0L).uuid(userId).build());
         return answer.toDTO();
     }
 
@@ -43,7 +41,9 @@ public class AnswerService {
     public void updateAnswer(String userId, AnswerPutRequest request) {
         LocalDateTime current = LocalDateTime.now();
         Answer answer = answerRepository.findById(request.id()).get();
-        answer.update(request.context(), current);
+        if(answer.getUuid().equals(userId)){
+            answer.update(request.context(), current);
+        }
     }
 
     public void eraseAnswer(Long id) {
@@ -51,13 +51,13 @@ public class AnswerService {
     }
 
     @Transactional
-    public void upLikeCountById(Long id) {
+    public void upLikeCountById(String userId, Long id) {
         Answer answer = answerRepository.findById(id).get();
         answer.upLikeCount();
     }
 
     @Transactional
-    public void downLikeCountById(Long id) {
+    public void downLikeCountById(String userId, Long id) {
         Answer answer = answerRepository.findById(id).get();
         answer.downLikeCount();
     }

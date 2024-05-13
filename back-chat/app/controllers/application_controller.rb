@@ -25,9 +25,7 @@ class ApplicationController < ActionController::API
 
   private
   def authorize_request
-    header = request.headers['Authorization']
-    header = header.split(' ').last if header
-    @decoded = JsonWebToken.decode(header)
+    @decoded = request.headers['x-user-id']
   end
 
   def handle_not_found(exception)

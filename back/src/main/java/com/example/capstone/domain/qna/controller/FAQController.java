@@ -35,7 +35,8 @@ public class FAQController {
     @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "FAQ글 생성", description = "request 정보를 기반으로 FAQ글을 생성합니다. imgList 정보를 통해 이미지 파일을 업로드 합니다")
     @ApiResponse(responseCode = "200", description = "request 정보를 기반으로 생성된 FAQ글과 imgList을 통해 업로드된 이미지 파일의 url 정보가 함께 반환됩니다.")
-    public ResponseEntity<ApiResult<FAQEntireResponse>> createFAQ( @Parameter(description = "FAQ글 생성을 위한 파라미터입니다. 제목, 작성자, 질문, 답변, 언어, 태그값이 필요합니다.", required = true)
+    public ResponseEntity<ApiResult<FAQEntireResponse>> createFAQ(
+                                        @Parameter(description = "FAQ글 생성을 위한 파라미터입니다. 제목, 작성자, 질문, 답변, 언어, 태그값이 필요합니다.", required = true)
                                         @RequestPart FAQPostRequest request,
                                         @Parameter(description = "FAQ글에 첨부될 이미지입니다. List 형태로 입력되야 합니다.")
                                         @RequestPart(required = false) List<MultipartFile> imgList) {
@@ -51,7 +52,7 @@ public class FAQController {
 
     @GetMapping("/read")
     @Operation(summary = "FAQ글 읽기", description = "FAQ글을 읽어 반환합니다.")
-    @ApiResponse(responseCode = "200", description = "FAQ글의 내용이 담긴 content와 첨부이미지 주소가 담긴 imgUrl이 반환됩니다.")
+    @ApiResponse(responseCode = "200", description = "FAQ글의 내용이 담긴 faqResponse와 첨부이미지 주소가 담긴 imgUrl이 반환됩니다.")
     public ResponseEntity<ApiResult<FAQEntireResponse>> readFAQ(   @Parameter(description = "읽을 FAQ글의 id가 필요합니다.", required = true)
                                         @RequestParam Long id) {
         FAQResponse faqResponse = faqService.getFAQ(id);
@@ -85,7 +86,7 @@ public class FAQController {
                 .ok(new ApiResult<>("Successfully delete FAQ", 200));
     }
 
-    @GetMapping("/list")
+    @PostMapping("/list")
     @Operation(summary = "FAQ글의 미리보기 리스트 생성", description = "FAQ글 리스트를 생성하여 반환합니다.")
     @ApiResponse(responseCode = "200", description = "FAQ글의 미리보기 리스트가 반환됩니다.")
     public ResponseEntity<ApiResult<FAQSliceResponse>> listFAQ(   @Parameter(description = "FAQ글 리스트를 생성하기 위한 파라미터입니다. cursorId, 언어, 검색어, 태그값이 필요합니다.", required = true)

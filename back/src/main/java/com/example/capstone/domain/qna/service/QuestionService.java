@@ -12,8 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Map;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +23,7 @@ public class QuestionService {
         LocalDateTime current = LocalDateTime.now();
         Question quest = questionRepository.save(Question.builder().title(request.title()).context(request.context())
                 .author(request.author()).createdDate(current).updatedDate(current).tag(request.tag())
-                .country(request.country()).uuid(UUID.fromString(userId)).build());
+                .country(request.country()).uuid(userId).build());
 
         return quest.toDTO();
     }
@@ -39,7 +37,9 @@ public class QuestionService {
     public void updateQuestion(String userId, QuestionPutRequest request) {
         LocalDateTime current = LocalDateTime.now();
         Question quest = questionRepository.findById(request.id()).get();
-        quest.update(request.title(), request.context(), current);
+        if(quest.getUuid().equals(userId)) {
+            quest.update(request.title(), request.context(), current);
+        }
     }
 
     public void eraseQuestion(Long id){

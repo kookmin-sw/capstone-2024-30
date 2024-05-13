@@ -22,7 +22,7 @@ class _NoticeScreenState extends State<NoticeScreen> {
   var cursor = 0;
   var hasNext = true;
   var itemCount = 0;
-  var language = 'KO';
+  late String language;
   bool isSearchMode = false;
 
   void loadNotices(int lastCursor, String language) async {
@@ -65,7 +65,7 @@ class _NoticeScreenState extends State<NoticeScreen> {
     const storage = FlutterSecureStorage();
     String? storedLanguage = await storage.read(key: 'language');
     var temp = '';
-    if (storedLanguage == "english") {
+    if (storedLanguage != "KO") {
       temp = 'EN-US';
     } else {
       temp = 'KO';
@@ -74,7 +74,7 @@ class _NoticeScreenState extends State<NoticeScreen> {
       language = temp;
     });
 
-    loadNotices(cursor, language);
+    loadNotices(cursor, temp);
   }
 
   @override

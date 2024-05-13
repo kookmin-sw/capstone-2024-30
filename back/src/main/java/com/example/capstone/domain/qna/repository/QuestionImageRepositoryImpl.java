@@ -20,8 +20,7 @@ public class QuestionImageRepositoryImpl implements QuestionImageCustomRepositor
         List<String> urlList = jpaQueryFactory
                 .select(questionImage.url)
                 .from(questionImage)
-                .leftJoin(questionImage.questionId, question)
-                .fetchJoin()
+                .innerJoin(questionImage.questionId, question)
                 .where(questionImage.questionId.id.eq(questionId))
                 .distinct()
                 .fetch();
