@@ -30,7 +30,6 @@ public class FAQController {
 
     private final ImageService imageService;
 
-    private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "FAQ글 생성", description = "request 정보를 기반으로 FAQ글을 생성합니다. imgList 정보를 통해 이미지 파일을 업로드 합니다")

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
@@ -30,9 +31,10 @@ public class MenuUpdateService {
     List<String> languages = List.of("KO", "EN-US", "ZH");
 
     @Async
-    public void updateMenus(LocalDateTime startTime) {
+    @Transactional
+    public void updateMenus(LocalDate startTime) {
         RestTemplate restTemplate = new RestTemplateBuilder().build();
-        String sdate = startTime.format(DateTimeFormatter.ISO_LOCAL_DATE);
+        String sdate = startTime.toString();
         String url = "https://kmucoop.kookmin.ac.kr/menu/menujson.php?callback=jQuery112401919322099601417_1711424604017";
 
         url += "&sdate=" + sdate + "&edate=" + sdate + "&today=" + sdate + "&_=1711424604018";

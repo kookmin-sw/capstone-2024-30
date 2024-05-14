@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static com.example.capstone.global.error.exception.ErrorCode.TEST_KEY_NOT_VALID;
@@ -26,7 +27,7 @@ public class MenuCrawlingService {
 
     @Scheduled(cron = "0 0 4 * * MON")
     public void crawlingMenus(){
-        LocalDateTime startDay = LocalDateTime.now();
+        LocalDate startDay = LocalDate.now();
 
         for(int i=0; i<7; i++){
             menuUpdateService.updateMenus(startDay.plusDays(i));
