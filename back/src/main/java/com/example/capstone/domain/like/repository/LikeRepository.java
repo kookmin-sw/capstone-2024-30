@@ -1,12 +1,10 @@
-package com.example.capstone.domain.star.repository;
+package com.example.capstone.domain.like.repository;
 
-import com.example.capstone.domain.star.entity.Star;
+import com.example.capstone.domain.like.entity.Like;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @Repository
-public interface StarRepository extends JpaRepository<Star, Long>, StarCustomRepository {
-    Star save(Star star);
+public interface LikeRepository extends JpaRepository<Like, Long>, LikeCustomRepository {
+    Like save(Like like);
 }

@@ -1,11 +1,12 @@
-package com.example.capstone.domain.star.repository;
+package com.example.capstone.domain.like.repository;
 
-import com.example.capstone.domain.star.entity.Star;
+import com.example.capstone.domain.like.entity.Like;
 
 import java.util.List;
+import java.util.Optional;
 
-public interface StarCustomRepository {
-    List<Star> findByAnswerIdAndUuid(Long answerId, String uuid);
+public interface LikeCustomRepository {
+    Optional<Like> findByAnswerIdAndUuid(Long answerId, String uuid);
 
     void deleteByAnswerIdAndUuid(Long answerId, String uuid);
 }
