@@ -1,8 +1,10 @@
+import 'package:capstone_front/main.dart';
 import 'package:capstone_front/models/notice_model.dart';
 import 'package:capstone_front/models/notice_response.dart';
 import 'package:capstone_front/screens/notice/test_notice_data.dart';
 import 'package:capstone_front/screens/notice/notice_detail_screen.dart';
 import 'package:capstone_front/services/notice_service.dart';
+import 'package:capstone_front/utils/search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -16,14 +18,14 @@ class NoticeScreen extends StatefulWidget {
 
 class _NoticeScreenState extends State<NoticeScreen> {
   String selectedItem = 'all';
-  final _controller = TextEditingController();
+  // final _controller = TextEditingController();
 
   List<NoticeModel> notices = [];
   var cursor = 0;
   var hasNext = true;
   var itemCount = 0;
-  late String language;
   bool isSearchMode = false;
+  String _word = '';
 
   void loadNotices(int lastCursor, String language) async {
     try {
@@ -45,6 +47,7 @@ class _NoticeScreenState extends State<NoticeScreen> {
 
   void loadNoticesByWord(int lastCursor, String language, String word) async {
     try {
+      word ??= '';
       NoticesResponse res = await NoticeService.getNoticesByWord(
           lastCursor, selectedItem, language, word);
       setState(() {
@@ -62,19 +65,32 @@ class _NoticeScreenState extends State<NoticeScreen> {
   }
 
   void initLanguageAndLoadNotices() async {
-    const storage = FlutterSecureStorage();
-    String? storedLanguage = await storage.read(key: 'language');
-    var temp = '';
-    if (storedLanguage != "KO") {
-      temp = 'EN-US';
-    } else {
-      temp = 'KO';
-    }
-    setState(() {
-      language = temp;
-    });
+    // const storage = FlutterSecureStorage();
+    // String? storedLanguage = await storage.read(key: 'language');
+    // var temp = '';
+    // if (storedLanguage != "KO") {
+    //   temp = 'EN-US';
+    // } else {
+    //   temp = 'KO';
+    // }
+    // setState(() {
+    //   language = temp;
+    // });
 
-    loadNotices(cursor, temp);
+    loadNotices(cursor, language);
+  }
+
+  void searchNotice(String searchWord) {
+    setState(() {
+      cursor = 0;
+      hasNext = true;
+      itemCount = 0;
+      notices = [];
+      isSearchMode = true;
+      _word = searchWord;
+    });
+    print(_word);
+    loadNoticesByWord(cursor, language, _word);
   }
 
   @override
@@ -88,48 +104,49 @@ class _NoticeScreenState extends State<NoticeScreen> {
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0,
-        title: TextField(
-          controller: _controller,
-          onChanged: (text) {
-            if (text.trim() == "") {
-              setState(() {
-                isSearchMode = false;
-              });
-            }
-          },
-          decoration: InputDecoration(
-            hintText: "검색어를 입력하세요",
-            border: InputBorder.none,
-            hintStyle: const TextStyle(
-              color: Color(0XFFd7d7d7),
-            ),
-            suffixIcon: _controller.text.isNotEmpty
-                ? IconButton(
-                    onPressed: () {
-                      _controller.clear();
-                      setState(() {
-                        setState(() {
-                          cursor = 0;
-                          hasNext = true;
-                          itemCount = 0;
-                          notices = [];
-                          isSearchMode = false;
-                        });
-                        loadNotices(cursor, language);
-                      });
-                    },
-                    icon: const Icon(
-                      Icons.cancel,
-                      color: Colors.grey,
-                    ),
-                  )
-                : null,
-          ),
-          style: const TextStyle(
-            color: Colors.black,
-            fontSize: 18.0,
-          ),
-        ),
+        title: const Text("공지사항"),
+        // title: TextField(
+        //   controller: _controller,
+        //   onChanged: (text) {
+        //     if (text.trim() == "") {
+        //       setState(() {
+        //         isSearchMode = false;
+        //       });
+        //     }
+        //   },
+        //   decoration: InputDecoration(
+        //     hintText: "검색어를 입력하세요",
+        //     border: InputBorder.none,
+        //     hintStyle: const TextStyle(
+        //       color: Color(0XFFd7d7d7),
+        //     ),
+        //     suffixIcon: _controller.text.isNotEmpty
+        //         ? IconButton(
+        //             onPressed: () {
+        //               _controller.clear();
+        //               setState(() {
+        //                 setState(() {
+        //                   cursor = 0;
+        //                   hasNext = true;
+        //                   itemCount = 0;
+        //                   notices = [];
+        //                   isSearchMode = false;
+        //                 });
+        //                 loadNotices(cursor, language);
+        //               });
+        //             },
+        //             icon: const Icon(
+        //               Icons.cancel,
+        //               color: Colors.grey,
+        //             ),
+        //           )
+        //         : null,
+        //   ),
+        //   style: const TextStyle(
+        //     color: Colors.black,
+        //     fontSize: 18.0,
+        //   ),
+        // ),
         actions: [
           IconButton(
             icon: Icon(
@@ -137,14 +154,15 @@ class _NoticeScreenState extends State<NoticeScreen> {
               color: Theme.of(context).primaryColor,
             ),
             onPressed: () {
-              setState(() {
-                cursor = 0;
-                hasNext = true;
-                itemCount = 0;
-                notices = [];
-                isSearchMode = true;
-              });
-              loadNoticesByWord(cursor, language, _controller.text);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => SearchScreen(
+                          searchCallback: (text) {
+                            searchNotice(text);
+                          },
+                        )),
+              );
             },
           ),
         ],
@@ -235,7 +253,7 @@ class _NoticeScreenState extends State<NoticeScreen> {
                   notices = [];
                 });
                 isSearchMode
-                    ? loadNoticesByWord(0, language, _controller.text)
+                    ? loadNoticesByWord(0, language, _word)
                     : loadNotices(0, language);
               },
               child: ListView.separated(

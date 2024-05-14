@@ -38,6 +38,10 @@
     "complete_signup": "회원가입 완료",
     "ok": "확인"
   },
+  "searchScreen": {
+    "more_than_two": "두 글자 이상 입력해주세요",
+    "enter_word": "검색어를 입력해주세요"
+  },
   "mainScreen": {
     "home": "홈",
     "notice": "공지사항",

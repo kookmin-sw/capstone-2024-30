@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
+GlobalKey<_QnaListScreenState> qnaListScreenGlobalKey = GlobalKey();
+
 class QnaListScreen extends StatefulWidget {
   const QnaListScreen({super.key});
 
@@ -51,67 +53,80 @@ class _QnaListScreenState extends State<QnaListScreen> {
     loadQnas(cursor, tag, word);
   }
 
+  void searchQna(String searchWord) {
+    print('...................................');
+    print(searchWord);
+    setState(() {
+      qnas = [];
+      cursor = 0;
+      hasNext = true;
+      itemCount = 0;
+      word = searchWord;
+    });
+    loadQnas(0, tag, word);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        scrolledUnderElevation: 0,
-        title: TextField(
-          controller: _controller,
-          onChanged: (text) {
-            if (text.trim() == "") {
-              setState(() {
-                word = "";
-              });
-            }
-            setState(() {
-              word = text;
-            });
-          },
-          decoration: InputDecoration(
-            hintText: "검색어를 입력하세요",
-            border: InputBorder.none,
-            hintStyle: const TextStyle(
-              color: Color(0XFFd7d7d7),
-            ),
-            suffixIcon: _controller.text.isNotEmpty
-                ? IconButton(
-                    onPressed: () {
-                      _controller.clear();
-                      setState(() {
-                        word = "";
-                      });
-                    },
-                    icon: const Icon(
-                      Icons.cancel,
-                      color: Colors.grey,
-                    ),
-                  )
-                : null,
-          ),
-          style: const TextStyle(
-            color: Colors.black,
-            fontSize: 18.0,
-          ),
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.search,
-              color: Theme.of(context).primaryColor,
-            ),
-            onPressed: () {
-              setState(() {
-                qnas = [];
-                cursor = 0;
-                hasNext = true;
-                itemCount = 0;
-              });
-              loadQnas(0, tag, word);
-            },
-          ),
-        ],
-      ),
+      // appBar: AppBar(
+      //   scrolledUnderElevation: 0,
+      //   title: TextField(
+      //     controller: _controller,
+      //     onChanged: (text) {
+      //       if (text.trim() == "") {
+      //         setState(() {
+      //           word = "";
+      //         });
+      //       }
+      //       setState(() {
+      //         word = text;
+      //       });
+      //     },
+      //     decoration: InputDecoration(
+      //       hintText: "검색어를 입력하세요",
+      //       border: InputBorder.none,
+      //       hintStyle: const TextStyle(
+      //         color: Color(0XFFd7d7d7),
+      //       ),
+      //       suffixIcon: _controller.text.isNotEmpty
+      //           ? IconButton(
+      //               onPressed: () {
+      //                 _controller.clear();
+      //                 setState(() {
+      //                   word = "";
+      //                 });
+      //               },
+      //               icon: const Icon(
+      //                 Icons.cancel,
+      //                 color: Colors.grey,
+      //               ),
+      //             )
+      //           : null,
+      //     ),
+      //     style: const TextStyle(
+      //       color: Colors.black,
+      //       fontSize: 18.0,
+      //     ),
+      //   ),
+      //   actions: [
+      //     IconButton(
+      //       icon: Icon(
+      //         Icons.search,
+      //         color: Theme.of(context).primaryColor,
+      //       ),
+      //       onPressed: () {
+      //         setState(() {
+      //           qnas = [];
+      //           cursor = 0;
+      //           hasNext = true;
+      //           itemCount = 0;
+      //         });
+      //         loadQnas(0, tag, word);
+      //       },
+      //     ),
+      //   ],
+      // ),
       body: Stack(
         children: [
           RefreshIndicator(
@@ -124,54 +139,56 @@ class _QnaListScreenState extends State<QnaListScreen> {
               qnas = [];
               await loadQnas(cursor, tag, word);
             },
-            child: Container(
-              color: const Color(0xFFF8F8F8),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Column(
-                  children: [
-                    Container(
-                      color: const Color(0xFFF8F8F8),
-                      height: 15,
-                    ),
-                    Expanded(
-                      child: ListView.separated(
-                        shrinkWrap: true,
-                        itemCount: qnas.length,
-                        itemBuilder: (context, index) {
-                          if (index + 1 == itemCount && hasNext) {
-                            loadQnas(cursor, tag, word);
-                          }
-                          var post = qnas[index];
-                          return InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => QnaDetailScreen(
-                                    postModel: post,
-                                  ),
-                                ),
-                              );
-                            },
-                            child: QuestionCard(
-                              title: post.title,
-                              content: post.content,
-                              name: post.author,
-                              country: post.country,
-                              tag: post.category,
-                              answerCount: post.answerCount,
+            child: Column(
+              children: [
+                // Container(
+                //   // color: const Color(0xFFF8F8F8),
+                //   height: 15,
+                // ),
+                Expanded(
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    itemCount: qnas.length,
+                    itemBuilder: (context, index) {
+                      if (index + 1 == itemCount && hasNext) {
+                        loadQnas(cursor, tag, word);
+                      }
+                      var post = qnas[index];
+                      return InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => QnaDetailScreen(
+                                postModel: post,
+                              ),
                             ),
                           );
                         },
-                        separatorBuilder: (context, index) => const SizedBox(
-                          height: 20,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            left: 15,
+                            right: 15,
+                            top: 5,
+                            bottom: 10,
+                          ),
+                          child: QuestionCard(
+                            title: post.title,
+                            content: post.content,
+                            name: post.author,
+                            country: post.country,
+                            tag: post.category,
+                            answerCount: post.answerCount,
+                          ),
                         ),
-                      ),
+                      );
+                    },
+                    separatorBuilder: (context, index) => const SizedBox(
+                      height: 0,
                     ),
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
           ),
           Positioned(
@@ -215,89 +232,79 @@ class _MyCustomBottomSheetState extends State<MyCustomBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(20.0),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20.0),
-          topRight: Radius.circular(20.0),
+    return Column(
+      mainAxisSize: MainAxisSize.min, // 컨텐츠 크기에 맞춰 조정
+      children: <Widget>[
+        Text(
+          tr('qna.writetitle'),
+          style: const TextStyle(fontSize: 24.0, fontWeight: FontWeight.w700),
         ),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min, // 컨텐츠 크기에 맞춰 조정
-        children: <Widget>[
-          Text(
-            tr('qna.writetitle'),
-            style: const TextStyle(fontSize: 24.0, fontWeight: FontWeight.w700),
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-          CheckboxListTile(
-            title: Text(tr('qna.category_1')),
-            value: productInfo,
-            activeColor: Theme.of(context).primaryColor,
-            checkColor: Colors.white,
-            onChanged: (bool? value) {
-              setState(() {
-                productInfo = value!;
-              });
-            },
-          ),
-          const Divider(
-            color: Color(0xFFc9c9c9),
-          ),
-          CheckboxListTile(
-            title: Text(tr('qna.category_2')),
-            value: ingredientInfo,
-            activeColor: Theme.of(context).primaryColor,
-            checkColor: Colors.white,
-            onChanged: (bool? value) {
-              setState(() {
-                ingredientInfo = value!;
-              });
-            },
-          ),
-          const Divider(
-            color: Color(0xFFc9c9c9),
-          ),
-          CheckboxListTile(
-            title: Text(tr('qna.category_3')),
-            value: nutritionAnalysis,
-            activeColor: Theme.of(context).primaryColor,
-            checkColor: Colors.white,
-            onChanged: (bool? value) {
-              setState(() {
-                nutritionAnalysis = value!;
-              });
-            },
-          ),
-          const Divider(
-            color: Color(0xFFc9c9c9),
-          ),
-          CheckboxListTile(
-            title: Text(tr('qna.category_4')),
-            value: others,
-            activeColor: Theme.of(context).primaryColor,
-            checkColor: Colors.white,
-            onChanged: (bool? value) {
-              setState(() {
-                others = value!;
-              });
-            },
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-          BasicButton(
-            text: "선택완료",
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      ),
+        const SizedBox(
+          height: 30,
+        ),
+        CheckboxListTile(
+          title: Text(tr('qna.category_1')),
+          value: productInfo,
+          activeColor: Theme.of(context).primaryColor,
+          checkColor: Colors.white,
+          onChanged: (bool? value) {
+            setState(() {
+              productInfo = value!;
+            });
+          },
+        ),
+        const Divider(
+          color: Color(0xFFc9c9c9),
+        ),
+        CheckboxListTile(
+          title: Text(tr('qna.category_2')),
+          value: ingredientInfo,
+          activeColor: Theme.of(context).primaryColor,
+          checkColor: Colors.white,
+          onChanged: (bool? value) {
+            setState(() {
+              ingredientInfo = value!;
+            });
+          },
+        ),
+        const Divider(
+          color: Color(0xFFc9c9c9),
+        ),
+        CheckboxListTile(
+          title: Text(tr('qna.category_3')),
+          value: nutritionAnalysis,
+          activeColor: Theme.of(context).primaryColor,
+          checkColor: Colors.white,
+          onChanged: (bool? value) {
+            setState(() {
+              nutritionAnalysis = value!;
+            });
+          },
+        ),
+        const Divider(
+          color: Color(0xFFc9c9c9),
+        ),
+        CheckboxListTile(
+          title: Text(tr('qna.category_4')),
+          value: others,
+          activeColor: Theme.of(context).primaryColor,
+          checkColor: Colors.white,
+          onChanged: (bool? value) {
+            setState(() {
+              others = value!;
+            });
+          },
+        ),
+        const SizedBox(
+          height: 30,
+        ),
+        BasicButton(
+          text: "선택완료",
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
     );
   }
 }

@@ -29,6 +29,7 @@ import 'package:capstone_front/screens/speech_practice/speech_practice_screen.da
 import 'package:capstone_front/screens/speech_practice/speech_screen.dart';
 import 'package:capstone_front/services/cafeteria_menu_service.dart';
 import 'package:capstone_front/utils/page_animation.dart';
+import 'package:capstone_front/utils/search_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -97,17 +98,17 @@ Future<void> getMenus() async {
 
 Future<void> getUserInfo() async {
   const storage = FlutterSecureStorage();
-  String? _userName = (await storage.read(key: "userName"));
-  if (_userName == null) {
+  String? tmpUserName = (await storage.read(key: "userName"));
+  if (tmpUserName == null) {
     userName = '';
   } else {
-    userName = _userName;
+    userName = tmpUserName;
   }
-  String? _userMajor = (await storage.read(key: "userMajor"));
-  if (_userMajor == null) {
+  String? tmpUserMajor = (await storage.read(key: "userMajor"));
+  if (tmpUserMajor == null) {
     userMajor = '';
   } else {
-    userMajor = _userMajor;
+    userMajor = tmpUserMajor;
   }
 }
 
