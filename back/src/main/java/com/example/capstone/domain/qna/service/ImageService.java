@@ -77,7 +77,7 @@ public class ImageService {
     }
 
     private String uploadImage(MultipartFile image) {
-        this.validateImageFileExtention(image.getOriginalFilename());
+        this.validateImageFileExtension(image.getOriginalFilename());
         try {
             return this.uploadImageToS3(image);
         } catch (IOException e) {
@@ -85,23 +85,23 @@ public class ImageService {
         }
     }
 
-    private void validateImageFileExtention(String filename) {
+    private void validateImageFileExtension(String filename) {
         int lastDotIndex = filename.lastIndexOf(".");
         if (lastDotIndex == -1) {
-            throw new BusinessException(ErrorCode.NO_FILE_EXTENTION);
+            throw new BusinessException(ErrorCode.NO_FILE_EXTENSION);
         }
 
-        String extention = filename.substring(lastDotIndex + 1).toLowerCase();
-        List<String> allowedExtentionList = Arrays.asList("jpg", "jpeg", "png", "gif");
+        String extension = filename.substring(lastDotIndex + 1).toLowerCase();
+        List<String> allowedExtensionList = Arrays.asList("jpg", "jpeg", "png", "gif");
 
-        if (!allowedExtentionList.contains(extention)) {
-            throw new BusinessException(ErrorCode.INVALID_FILE_EXTENTION);
+        if (!allowedExtensionList.contains(extension)) {
+            throw new BusinessException(ErrorCode.INVALID_FILE_EXTENSION);
         }
     }
 
     private String uploadImageToS3(MultipartFile image) throws IOException {
         String originalFilename = image.getOriginalFilename();
-        String extention = originalFilename.substring(originalFilename.lastIndexOf("."));
+        String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
 
         String s3FileName = UUID.randomUUID().toString().substring(0, 10) + originalFilename;
 
@@ -109,7 +109,7 @@ public class ImageService {
         byte[] bytes = IOUtils.toByteArray(is);
 
         ObjectMetadata metadata = new ObjectMetadata();
-        metadata.setContentType("image/" + extention);
+        metadata.setContentType("image/" + extension);
         metadata.setContentLength(bytes.length);
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
 
