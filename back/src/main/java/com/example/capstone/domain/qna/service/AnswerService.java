@@ -3,34 +3,38 @@ package com.example.capstone.domain.qna.service;
 import com.example.capstone.domain.qna.dto.*;
 import com.example.capstone.domain.qna.entity.Answer;
 import com.example.capstone.domain.qna.entity.Question;
+import com.example.capstone.domain.qna.exception.AnswerNotFoundException;
+import com.example.capstone.domain.qna.exception.QuestionNotFoundException;
 import com.example.capstone.domain.qna.repository.AnswerRepository;
 import com.example.capstone.domain.qna.repository.QuestionRepository;
-import com.example.capstone.domain.star.entity.Star;
+import com.querydsl.core.QueryException;
 import lombok.RequiredArgsConstructor;
-import org.redisson.api.RLock;
-import org.redisson.api.RMapCache;
-import org.redisson.api.RedissonClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.concurrent.TimeUnit;
+import java.util.Iterator;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class AnswerService {
     private final AnswerRepository answerRepository;
     private final QuestionRepository questionRepository;
-    private final RMapCache<String, Answer> answerRMapCache;
-    private final RedissonClient redissonClient;
+    @Autowired
+    private RedisTemplate<String, Object> countTemplate;
 
     public AnswerResponse createAnswer(String userId, AnswerPostRequest request) {
         LocalDateTime current = LocalDateTime.now();
-        Question questionId = questionRepository.findById(request.questionId()).get();
+        Question questionId = questionRepository.findById(request.questionId()).orElseThrow(() ->
+                new QuestionNotFoundException(request.questionId())
+                );
         Answer answer = answerRepository.save(Answer.builder().question(questionId).author(request.author())
                 .context(request.context()).createdDate(current).updatedDate(current).likeCount(0L).uuid(userId).build());
         return answer.toDTO();
@@ -47,7 +51,9 @@ public class AnswerService {
     @Transactional
     public void updateAnswer(String userId, AnswerPutRequest request) {
         LocalDateTime current = LocalDateTime.now();
-        Answer answer = answerRepository.findById(request.id()).get();
+        Answer answer = answerRepository.findById(request.id()).orElseThrow(() ->
+                new AnswerNotFoundException(request.id())
+        );
         if(answer.getUuid().equals(userId)){
             answer.update(request.context(), current);
         }
@@ -58,30 +64,48 @@ public class AnswerService {
     }
 
     @Transactional
-    public void increaseLikeCountById(String userId, Long id) {
-        final String lockName = "like:lock";
-        final RLock lock = redissonClient.getLock(lockName);
-
-        try {
-            if(!lock.tryLock(1, 3, TimeUnit.SECONDS)){
-                return;
-            }
-            Answer answer = answerRMapCache.get(String.valueOf(id));
-            answer.upLikeCount();
-            answerRMapCache.put(String.valueOf(id), answer);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if(lock != null && lock.isLocked()) {
-                lock.unlock();
-            }
+    public void increaseLikeCountById(Long id) {
+        HashOperations<String, String, Object> hashOperations = countTemplate.opsForHash();
+        String key = "starId::" + id.toString();
+        String hashKey = "likes";
+        if(hashOperations.get(key, hashKey) == null) {
+            hashOperations.put(key, hashKey, answerRepository.getLikeCountById(id));
         }
+        hashOperations.increment(key, hashKey, 1L);
+        System.out.println(hashOperations.get(key, hashKey));
     }
 
     @Transactional
-    public void decreaseLikeCountById(String userId, Long id) {
-        Answer answer = answerRepository.findById(id).get();
-        answer.downLikeCount();
+    public void decreaseLikeCountById(Long id) {
+        HashOperations<String, String, Object> hashOperations = countTemplate.opsForHash();
+        String key = "starId::" + id.toString();
+        String hashKey = "likes";
+        if(hashOperations.get(key, hashKey) == null) {
+            hashOperations.put(key, hashKey, answerRepository.getLikeCountById(id));
+        }
+        hashOperations.increment(key, hashKey, -1L);
+        System.out.println(hashOperations.get(key, hashKey));
+    }
+
+    @Scheduled(fixedDelay = 1000L * 30L)
+    @Transactional
+    public void updateLikeCount() {
+        String hashKey = "likes";
+        Set<String> RedisKey = countTemplate.keys("starId*");
+        Iterator<String> it = RedisKey.iterator();
+
+        while(it.hasNext() == true) {
+            String data = it.next();
+            Long answerId = Long.parseLong(data.split("::")[1]);
+            if(countTemplate.opsForHash().get(data, hashKey) == null){
+                break;
+            }
+            Long likeCount = Long.parseLong((String.valueOf(countTemplate.opsForHash().get(data, hashKey))));
+            answerRepository.findById(answerId).ifPresent(a -> {
+                a.updateLikeCount(likeCount);
+            });
+            countTemplate.opsForHash().delete(data, hashKey);
+        }
+        System.out.println("likes update complete");
     }
 }

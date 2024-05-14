@@ -7,6 +7,8 @@ import com.example.capstone.domain.qna.entity.FAQ;
 import com.example.capstone.domain.qna.entity.FAQImage;
 import com.example.capstone.domain.qna.entity.Question;
 import com.example.capstone.domain.qna.entity.QuestionImage;
+import com.example.capstone.domain.qna.exception.FAQNotFoundException;
+import com.example.capstone.domain.qna.exception.QuestionNotFoundException;
 import com.example.capstone.domain.qna.repository.FAQImageRepository;
 import com.example.capstone.domain.qna.repository.FAQRepository;
 import com.example.capstone.domain.qna.repository.QuestionImageRepository;
@@ -55,13 +57,17 @@ public class ImageService {
         }
 
         if(isFAQ) {
-            FAQ faq = faqRepository.findById(questionId).get();
+            FAQ faq = faqRepository.findById(questionId).orElseThrow(() ->
+                new FAQNotFoundException(questionId)
+            );
             for(String url : imgUrlList) {
                 faqImageRepository.save(FAQImage.builder().faqId(faq).url(url).build());
             }
         }
         else {
-            Question question = questionRepository.findById(questionId).get();
+            Question question = questionRepository.findById(questionId).orElseThrow(() ->
+                new QuestionNotFoundException(questionId)
+            );
             for(String url : imgUrlList) {
                 questionImageRepository.save(QuestionImage.builder().questionId(question).url(url).build());
             }

@@ -2,6 +2,7 @@ package com.example.capstone.domain.qna.service;
 
 import com.example.capstone.domain.qna.dto.*;
 import com.example.capstone.domain.qna.entity.FAQ;
+import com.example.capstone.domain.qna.exception.FAQNotFoundException;
 import com.example.capstone.domain.qna.repository.FAQRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -27,14 +28,18 @@ public class FAQService {
     }
 
     public FAQResponse getFAQ(Long id) {
-        FAQ faq = faqRepository.findById(id).get();
+        FAQ faq = faqRepository.findById(id).orElseThrow(() ->
+                new FAQNotFoundException(id)
+        );
         return faq.toDTO();
     }
 
     @Transactional
     public void updateFAQ(FAQPutRequest request) {
         LocalDateTime current = LocalDateTime.now();
-        FAQ faq = faqRepository.findById(request.id()).get();
+        FAQ faq = faqRepository.findById(request.id()).orElseThrow(() ->
+                new FAQNotFoundException(request.id())
+        );
         faq.update(request.title(), request.question(), request.answer(), current);
     }
 
