@@ -98,17 +98,17 @@ Future<void> getMenus() async {
 
 Future<void> getUserInfo() async {
   const storage = FlutterSecureStorage();
-  String? userName = (await storage.read(key: "userName"));
-  if (userName == null) {
+  String? tmpUserName = (await storage.read(key: "userName"));
+  if (tmpUserName == null) {
     userName = '';
   } else {
-    userName = userName;
+    userName = tmpUserName;
   }
-  String? userMajor = (await storage.read(key: "userMajor"));
-  if (userMajor == null) {
+  String? tmpUserMajor = (await storage.read(key: "userMajor"));
+  if (tmpUserMajor == null) {
     userMajor = '';
   } else {
-    userMajor = userMajor;
+    userMajor = tmpUserMajor;
   }
 }
 

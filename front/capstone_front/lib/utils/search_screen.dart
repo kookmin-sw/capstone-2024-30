@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -72,11 +74,19 @@ class _SearchScreenState extends State<SearchScreen> {
                         setState(() {});
                       },
                       onEditingComplete: () {
-                        context.pop();
-                        widget.searchCallback(_controller.text);
+                        if (_controller.text.length >= 2) {
+                          context.pop();
+                          widget.searchCallback(_controller.text);
+                        } else {
+                          Fluttertoast.showToast(
+                            msg: tr("searchScreen.more_than_two"),
+                            gravity: ToastGravity.BOTTOM,
+                            fontSize: 20,
+                          );
+                        }
                       },
                       decoration: InputDecoration(
-                        hintText: "검색어를 입력하세요",
+                        hintText: tr("enter_word"),
                         border: InputBorder.none,
                         hintStyle: const TextStyle(
                           fontSize: 16,
