@@ -25,8 +25,8 @@ public class Like {
     @Column(name = "is_click", nullable = false)
     private Boolean isClick;
 
-    public void updateClick() {
-        isClick = !isClick;
+    public void updateClick(Boolean isClick) {
+        this.isClick = isClick;
     }
 
 }

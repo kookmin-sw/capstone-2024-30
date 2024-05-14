@@ -18,7 +18,7 @@ public class LikeService {
     public void likeAnswer(String userId, Long answerId) {
         likeRepository.findByAnswerIdAndUuid(answerId, userId).ifPresentOrElse(
                 l -> {
-                    l.updateClick();
+                    l.updateClick(true);
         },      () -> {
                     likeRepository.save(Like.builder().uuid(userId).answerId(answerId).isClick(true).build());
         });
@@ -28,7 +28,7 @@ public class LikeService {
     public void unlikeAnswer(String userId, Long answerId) {
         likeRepository.findByAnswerIdAndUuid(answerId, userId).ifPresent(
                 l -> {
-                    l.updateClick();
+                    l.updateClick(false);
                 });
     }
 
