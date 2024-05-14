@@ -9,4 +9,6 @@ import java.util.Map;
 
 public interface AnswerListRepository {
     AnswerSliceResponse getAnswerListByPaging(Long cursorId, Pageable page, Long questionId, String sortBy, String uuid);
+
+    Long getLikeCountById(Long id);
 }

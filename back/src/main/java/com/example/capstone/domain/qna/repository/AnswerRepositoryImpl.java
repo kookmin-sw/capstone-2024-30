@@ -2,32 +2,26 @@ package com.example.capstone.domain.qna.repository;
 
 import com.example.capstone.domain.qna.dto.AnswerListResponse;
 import com.example.capstone.domain.qna.dto.AnswerSliceResponse;
-import com.example.capstone.domain.qna.dto.QuestionListResponse;
 import com.example.capstone.domain.qna.entity.QAnswer;
 import com.example.capstone.domain.qna.entity.QQuestion;
-import com.example.capstone.domain.star.entity.QStar;
+import com.example.capstone.domain.like.entity.QLike;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.util.StringUtils;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.SliceImpl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RequiredArgsConstructor
 public class AnswerRepositoryImpl implements AnswerListRepository {
     private final JPAQueryFactory jpaQueryFactory;
     private final QAnswer answer = QAnswer.answer;
     private final QQuestion question = QQuestion.question;
-    private final QStar star = QStar.star;
+    private final QLike like = QLike.like;
 
     @Override
     public AnswerSliceResponse getAnswerListByPaging(Long cursorId, Pageable page, Long questionId, String sortBy, String uuid) {
@@ -37,12 +31,12 @@ public class AnswerRepositoryImpl implements AnswerListRepository {
                 .select(
                         Projections.constructor(AnswerListResponse.class, answer.id, answer.question.id,
                         answer.author, answer.context,
-                        answer.likeCount, star.answerId.isNotNull(), answer.createdDate, answer.updatedDate, answer.uuid)
+                        answer.likeCount, like.isClick.isTrue(), answer.createdDate, answer.updatedDate, answer.uuid)
                 )
                 .from(answer)
                 .innerJoin(answer.question, question)
-                .leftJoin(star)
-                .on(answer.id.eq(star.answerId), star.uuid.eq(uuid))
+                .leftJoin(like)
+                .on(answer.id.eq(like.answerId), like.uuid.eq(uuid))
                 .where(cursorId(cursorId),
                         questionEq(questionId))
                 .orderBy(orderSpecifiers)
@@ -63,6 +57,17 @@ public class AnswerRepositoryImpl implements AnswerListRepository {
         }
 
         return new AnswerSliceResponse(lastCursorId, hasNext, answerList);
+    }
+
+    @Override
+    public Long getLikeCountById(Long id) {
+        Long likeCount = jpaQueryFactory
+                .select(answer.likeCount)
+                .from(answer)
+                .where(answer.id.eq(id))
+                .fetchOne();
+
+        return likeCount;
     }
 
     private OrderSpecifier[] createOrderSpecifier(String sortBy) {

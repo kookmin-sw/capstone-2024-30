@@ -1,15 +1,13 @@
 package com.example.capstone.domain.qna.controller;
 
-import com.example.capstone.domain.jwt.JwtTokenProvider;
 import com.example.capstone.domain.qna.dto.*;
 import com.example.capstone.domain.qna.service.AnswerService;
-import com.example.capstone.domain.star.service.StarService;
+import com.example.capstone.domain.like.service.LikeService;
 import com.example.capstone.global.dto.ApiResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/answer")
 public class AnswerController {
     private final AnswerService answerService;
-    private final StarService starService;
+    private final LikeService likeService;
 
     @PostMapping("/create")
     @Operation(summary = "댓글 생성", description = "request 정보를 기반으로 댓글을 생성합니다.")
@@ -70,10 +68,8 @@ public class AnswerController {
     public ResponseEntity<ApiResult<Integer>> upLikeCount(@RequestHeader("X-User-ID") String userId,
                                             @Parameter(description = "추천할 댓글의 id가 필요합니다.", required = true)
                                             @RequestParam Long id) {
-        if(starService.checkStar(id, userId) == false) {
-            starService.createStar(id, userId);
-            answerService.increaseLikeCountById(userId, id);
-        }
+        likeService.likeAnswer(userId, id);
+        answerService.increaseLikeCountById(id);
 
         return ResponseEntity
                 .ok(new ApiResult<>("Successfully like answer", 200));
@@ -85,10 +81,9 @@ public class AnswerController {
     public ResponseEntity<ApiResult<Integer>> downLikeCount(@RequestHeader("X-User-ID") String userId,
                                             @Parameter(description = "추천 해제할 댓글의 id가 필요합니다.", required = true)
                                             @RequestParam Long id) {
-        if(starService.checkStar(id, userId) == true){
-            starService.deleteStar(id, userId);
-            answerService.decreaseLikeCountById(userId, id);
-        }
+        likeService.unlikeAnswer(userId, id);
+        answerService.decreaseLikeCountById(id);
+
         return ResponseEntity
                 .ok(new ApiResult<>("Successfully unlike answer", 200));
     }
