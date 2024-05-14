@@ -86,7 +86,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         }
                       },
                       decoration: InputDecoration(
-                        hintText: tr("enter_word"),
+                        hintText: tr("searchScreen.enter_word"),
                         border: InputBorder.none,
                         hintStyle: const TextStyle(
                           fontSize: 16,
