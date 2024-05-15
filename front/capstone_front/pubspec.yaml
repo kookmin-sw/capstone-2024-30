@@ -86,7 +86,9 @@ flutter:
     - assets/images/koomin.png
     - assets/images/kookmin_map.jpg
     - assets/images/kookmin_map_row.jpg
-    - assets/images/facility_time.jpg
+    - assets/images/facility_time_ko.jpg
+    - assets/images/facility_time_en.jpg
+    - assets/images/facility_time_zh.jpg
     - assets/audio/sample.wav
 
     - .env

@@ -35,12 +35,8 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   void initState() {
     super.initState();
-    if (language! != 'KO') {
-      language = "EN-US";
-    } else {
-      language = 'KO';
-    }
-    noticesRes = NoticeService.getNotices(0, 'all', language!);
+
+    noticesRes = NoticeService.getNotices(0, 'all', language);
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
@@ -322,13 +318,34 @@ class _HomeScreenState extends State<HomeScreen>
                                       title: tr('mainScreen.facility_info'),
                                       icon: Icons.business,
                                       routeCallbackFun: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => const ImageScreen(
-                                                'assets/images/facility_time.jpg'),
-                                          ),
-                                        );
+                                        if (language == 'EN-US') {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const ImageScreen(
+                                                      'assets/images/facility_time_en.jpg'),
+                                            ),
+                                          );
+                                        } else if (language == 'ZH') {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const ImageScreen(
+                                                      'assets/images/facility_time_zh.jpg'),
+                                            ),
+                                          );
+                                        } else {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const ImageScreen(
+                                                      'assets/images/facility_time_ko.jpg'),
+                                            ),
+                                          );
+                                        }
                                       }),
                                   const SizedBox(
                                     width: 15,
