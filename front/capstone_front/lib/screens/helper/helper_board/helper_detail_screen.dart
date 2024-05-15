@@ -8,6 +8,7 @@ import 'package:capstone_front/utils/basic_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 
 class HelperDetailScreen extends StatefulWidget {
@@ -25,13 +26,22 @@ class HelperDetailScreen extends StatefulWidget {
 class _HelperDetailScreenState extends State<HelperDetailScreen> {
   late HelperArticleModel helperArticleModel;
   bool isLoading = true;
+  bool isMyArticle = true;
 
   void loadDetail() async {
+    FlutterSecureStorage storage = const FlutterSecureStorage();
     helperArticleModel =
         await HelperService.getDetailById(widget.helperArticlePreviewModel.id);
     setState(() {
       isLoading = false;
     });
+    final uuid = await storage.read(key: "uuid");
+    print(uuid);
+    print(helperArticleModel.uuid);
+    if (uuid != helperArticleModel.uuid) {
+      isMyArticle = false;
+    }
+    setState(() {});
   }
 
   @override
@@ -111,15 +121,18 @@ class _HelperDetailScreenState extends State<HelperDetailScreen> {
               const SizedBox(
                 height: 20,
               ),
-              BasicButton(
-                  text: tr('helper.start_chat'),
-                  onPressed: () {
-                    var chatInitModel = ChatInitModel.fromJson({
-                      'author': widget.helperArticlePreviewModel.author,
-                      'uuid': helperArticleModel.uuid,
-                    });
-                    context.push("/chatroom", extra: chatInitModel);
-                  })
+              isMyArticle
+                  ? const SizedBox.shrink()
+                  : BasicButton(
+                      text: tr('helper.start_chat'),
+                      onPressed: () {
+                        var chatInitModel = ChatInitModel.fromJson({
+                          'author': widget.helperArticlePreviewModel.author,
+                          'uuid': helperArticleModel.uuid,
+                        });
+                        context.push("/chatroom", extra: chatInitModel);
+                      },
+                    )
             ],
           ),
         ));
