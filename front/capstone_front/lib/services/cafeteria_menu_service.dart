@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:capstone_front/main.dart';
 import 'package:capstone_front/models/api_fail_response.dart';
 import 'package:capstone_front/models/cafeteria_menu_model_ko.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -10,7 +11,14 @@ Future<CafeteriaMenuModel> getCafeteriaMenu(String date) async {
   final String baseUrl = dotenv.get('BASE_URL');
 
   FlutterSecureStorage storage = const FlutterSecureStorage();
-  final language = await storage.read(key: "language");
+  final tmpLanguage = await storage.read(key: "language");
+  if (tmpLanguage == 'EN-US') {
+    language = 'EN-US';
+  } else if (tmpLanguage == 'ZH') {
+    language = 'ZH';
+  } else {
+    language = 'KO';
+  }
 
   final url = Uri.parse('$baseUrl/menu/daily?date=$date&language=$language');
   print(url);
@@ -19,7 +27,9 @@ Future<CafeteriaMenuModel> getCafeteriaMenu(String date) async {
   final Map<String, dynamic> json = jsonDecode(utf8.decode(response.bodyBytes));
 
   if (response.statusCode == 200) {
-    // print(json['response']);
+    print("2222222222222222222222222222222222222");
+    print(json);
+    print(json['response']);
     return CafeteriaMenuModel.fromJson(json['response'], date);
   } else {
     var apiFailResponse = ApiFailResponse.fromJson(json);
