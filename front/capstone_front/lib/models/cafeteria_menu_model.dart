@@ -18,6 +18,14 @@ class CafeteriaMenuModel {
     "Dormitory Cafeteria (Dormitory A, 1st floor)",
     "Dormitory Cafeteria (Dormitory Building A, 1st floor)",
   ];
+  List<String> cafeteriaZh = [
+    "Hanwool 餐厅（法律大厦 B1F）",
+    "学生餐厅（福利大楼 1F）",
+    "员工餐厅（福利大楼 1F）",
+    "清香韩国餐厅（法律大厦 5 楼）",
+    "呈祥中厅（法律大厦 5 楼）",
+    "宿舍餐厅（宿舍楼 A 座 1 楼）",
+  ];
 
   void addFunc(
       var data, List<List<String>> targetList, String type, String addName) {
@@ -29,6 +37,17 @@ class CafeteriaMenuModel {
       int tmp1 = 0;
       // []가 2번 이상 나오면 줄바꿈
       int tmp2 = 0;
+      tmpMenu = tmpMenu.replaceAll('ë\'˜)', '');
+      tmpMenu = tmpMenu.replaceAll('ï', '');
+      tmpMenu = tmpMenu.replaceAll('ë', '');
+      tmpMenu = tmpMenu.replaceAll('\'', '');
+      tmpMenu = tmpMenu.replaceAll('˜', '');
+      tmpMenu = tmpMenu.replaceAll('ì', '');
+      tmpMenu = tmpMenu.replaceAll('š', '');
+      tmpMenu = tmpMenu.replaceAll('¿', '');
+      tmpMenu = tmpMenu.replaceAll('¦', '');
+      tmpMenu = tmpMenu.replaceAll('´', '');
+      tmpMenu = tmpMenu.replaceAll('¬', '');
       for (int i = 0; i < tmpMenu.length; i++) {
         if (tmpMenu[i] == '※') {
           tmp1 += 1;
@@ -42,9 +61,6 @@ class CafeteriaMenuModel {
             tmpMenu = '${tmpMenu.substring(0, i)}\n${tmpMenu.substring(i)}';
             i += 2;
           }
-        } else if (tmpMenu[i] == 'ï') {
-          tmpMenu = '${tmpMenu.substring(0, i)}${tmpMenu.substring(i + 3)}';
-          i += 2;
         }
         if (tmp1 == 2) {
           tmp1 = 0;
@@ -102,14 +118,14 @@ class CafeteriaMenuModel {
   void addDataEn(int cafeteriaIndex, var data) {
     List<List<String>> tmpList = [];
     if (cafeteriaIndex == 0) {
-      addFunc(data, tmpList, "1Corner\u003Cbr\u003ESNACK1", "Corner1 SNACK1");
-      addFunc(data, tmpList, "1Corner\u003Cbr\u003ESNACK2", "Corner1 SNACK2");
-      addFunc(data, tmpList, "2Corner\u003CBR\u003ENOODLE", "Corner2 NOODLE");
-      addFunc(data, tmpList, "3Corner\u003Cbr\u003ECUTLET", "Corner3 CUTLET");
-      addFunc(
-          data, tmpList, "4Corner\u003Cbr\u003ERICE.Oven", "Corner4 RICE.Oven");
+      addFunc(data, tmpList, "1Corner\u003Cbr\u003ESNACK1", "Corner 1 SNACK1");
+      addFunc(data, tmpList, "1Corner\u003Cbr\u003ESNACK2", "Corner 1 SNACK2");
+      addFunc(data, tmpList, "2Corner\u003CBR\u003ENOODLE", "Corner 2 NOODLE");
+      addFunc(data, tmpList, "3Corner\u003Cbr\u003ECUTLET", "Corner 3 CUTLET");
+      addFunc(data, tmpList, "4Corner\u003Cbr\u003ERICE.Oven",
+          "Corner 4 RICE.Oven");
       addFunc(data, tmpList, "5Corner\u003Cbr\u003EGUKBAP.Chef",
-          "Corner5 GUKBAP.Chef");
+          "Corner 5 GUKBAP.Chef");
     } else if (cafeteriaIndex == 1) {
       addFunc(data, tmpList, "Good Morning", "Good Morning");
       addFunc(data, tmpList, "Breakfast for a Thousand",
@@ -125,15 +141,15 @@ class CafeteriaMenuModel {
       addFunc(data, tmpList, "Dinner I", "Dinner Ⅰ");
       addFunc(data, tmpList, "Dinner II", "Dinner Ⅱ");
     } else if (cafeteriaIndex == 2) {
-      addFunc(data, tmpList, "Kitchen1", "Kitchen1");
-      addFunc(data, tmpList, "Kitchen2", "Kitchen2");
+      addFunc(data, tmpList, "Kitchen1", "Kitchen 1");
+      addFunc(data, tmpList, "Kitchen2", "Kitchen 2");
       addFunc(data, tmpList, "Today's\u003Cbr\u003ESalad", "Today's Salad");
       addFunc(data, tmpList, "Dinner", "Dinner");
     } else if (cafeteriaIndex == 3) {
-      addFunc(data, tmpList, "Menu1", "Menu1");
-      addFunc(data, tmpList, "Menu2", "Menu2");
-      addFunc(data, tmpList, "Menu3", "Menu3");
-      addFunc(data, tmpList, "Menu4", "Menu4");
+      addFunc(data, tmpList, "Menu1", "Menu 1");
+      addFunc(data, tmpList, "Menu2", "Menu 2");
+      addFunc(data, tmpList, "Menu3", "Menu 3");
+      addFunc(data, tmpList, "Menu4", "Menu 4");
     } else if (cafeteriaIndex == 4) {
       addFunc(data, tmpList, "PASTA", "PASTA");
       addFunc(data, tmpList, "RICE", "RISOTTO");
@@ -148,9 +164,58 @@ class CafeteriaMenuModel {
     cafeteriaMenus.add(tmpList);
   }
 
+  void addDataZh(int cafeteriaIndex, var data) {
+    List<List<String>> tmpList = [];
+    if (cafeteriaIndex == 0) {
+      addFunc(data, tmpList, "1角\u003Cbr\u003ESNACK1", "Corner 1 SNACK1");
+      addFunc(data, tmpList, "1角\u003CBR\u003ENOODLE", "Corner 1 SNACK2");
+      addFunc(data, tmpList, "2角\u003CBR\u003ENOODLE", "Corner 2 NOODLE");
+      addFunc(data, tmpList, "3角\u003Cbr\u003E小刀", "Corner 3 CUTLET");
+      addFunc(data, tmpList, "4Corner\u003Cbr\u003ERICE.Oven",
+          "Corner 4 RICE.Oven");
+      addFunc(data, tmpList, "5Corner\u003Cbr\u003EGUKBAP.Chef",
+          "Corner 5 GUKBAP.Chef");
+    } else if (cafeteriaIndex == 1) {
+      addFunc(data, tmpList, "天苑早餐", "天苑早餐");
+      addFunc(data, tmpList, "Breakfast for a Thousand",
+          "Breakfast for a Thousand");
+      addFunc(data, tmpList, "伽马\u003Cbr\u003E午餐", "Kama lunch");
+      addFunc(data, tmpList, "每日膳食\u003Cbr\u003E午餐", "DailyBop Lunch");
+      addFunc(
+          data, tmpList, "Vegetarian\u003Cbr\u003EMedium", "Vegiterian Lunch");
+      addFunc(data, tmpList, "国际大厨\u003Cbr\u003E午餐", "InterChef Lunch");
+      addFunc(data, tmpList, "面颂\u003Cbr\u003E午餐", "NoodleSong Lunch");
+      addFunc(data, tmpList, "晚餐Ⅰ", "Dinner Ⅰ");
+      addFunc(data, tmpList, "晚餐 II", "Dinner Ⅱ");
+    } else if (cafeteriaIndex == 2) {
+      addFunc(data, tmpList, "厨房1", "Kitchen 1");
+      addFunc(data, tmpList, "厨房2", "Kitchen 2");
+      addFunc(data, tmpList, "今日沙拉", "今日沙拉");
+      addFunc(data, tmpList, "晚餐", "晚餐");
+    } else if (cafeteriaIndex == 3) {
+      addFunc(data, tmpList, "菜单1", "菜单 1");
+      addFunc(data, tmpList, "菜单2", "菜单 2");
+      addFunc(data, tmpList, "菜单3", "菜单 3");
+      addFunc(data, tmpList, "菜单4", "菜单 4");
+    } else if (cafeteriaIndex == 4) {
+      addFunc(data, tmpList, "意大利面", "PASTA");
+      addFunc(data, tmpList, "里索托", "RISOTTO");
+      addFunc(data, tmpList, "牛排", "STEAK");
+    } else if (cafeteriaIndex == 5) {
+      addFunc(data, tmpList, "午餐", "午餐");
+      cafeteriaMenus.add(tmpList);
+      tmpList = [];
+      if (data != null && data["晚餐"] != null) {
+        tmpList.add(["晚餐", data["晚餐"]["메뉴"], "仅限申请人"]);
+      }
+    }
+    cafeteriaMenus.add(tmpList);
+  }
+
   CafeteriaMenuModel.fromJson(
       List<dynamic> json, String date, String language) {
     if (language == 'KO') {
+      // 한국어
       for (int i = 0; i < cafeteriaKo.length; i++) {
         bool dataAdded = false;
         for (int j = 0; j < json.length; j++) {
@@ -165,11 +230,27 @@ class CafeteriaMenuModel {
         }
       }
     } else if (language == 'EN-US') {
+      // 영어
       for (int i = 0; i < cafeteriaEn.length; i++) {
         bool dataAdded = false;
         for (int j = 0; j < json.length; j++) {
           if (json[j][cafeteriaEn[i]] != null) {
             addDataEn(i, json[j][cafeteriaEn[i]][date]);
+            dataAdded = true;
+            break;
+          }
+        }
+        if (!dataAdded) {
+          cafeteriaMenus.add([]);
+        }
+      }
+    } else {
+      // 중국어
+      for (int i = 0; i < cafeteriaZh.length; i++) {
+        bool dataAdded = false;
+        for (int j = 0; j < json.length; j++) {
+          if (json[j][cafeteriaZh[i]] != null) {
+            addDataZh(i, json[j][cafeteriaZh[i]][date]);
             dataAdded = true;
             break;
           }

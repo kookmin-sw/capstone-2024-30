@@ -6,6 +6,7 @@ import 'package:capstone_front/models/speech_model.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:path_provider/path_provider.dart';
 
 Future<SpeechModel> getSpeechResult(String filePath, String sentence) async {
@@ -14,6 +15,8 @@ Future<SpeechModel> getSpeechResult(String filePath, String sentence) async {
 
   // Multipart request 생성
   var request = http.MultipartRequest('POST', url);
+
+  request.headers['Content-Type'] = 'multipart/form-data';
 
   var file = File.fromUri(Uri.parse(filePath));
   // 오디오 파일 추가
@@ -28,7 +31,18 @@ Future<SpeechModel> getSpeechResult(String filePath, String sentence) async {
   var data = {
     'context': sentence,
   };
-  request.fields.addAll(data);
+
+  // JSON 데이터를 UTF-8로 인코딩하여 바이트로 변환 후 MultipartFile로 추가
+  List<int> jsonData = utf8.encode(jsonEncode(data));
+  request.files.add(http.MultipartFile.fromBytes(
+    'context',
+    jsonData,
+    contentType: MediaType(
+      'application',
+      'json',
+      {'charset': 'utf-8'},
+    ),
+  ));
 
   // 요청 보내기
   var streamResponse = await request.send();

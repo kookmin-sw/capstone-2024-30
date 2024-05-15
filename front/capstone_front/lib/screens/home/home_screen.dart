@@ -144,17 +144,20 @@ class _HomeScreenState extends State<HomeScreen>
                                           fontSize: 24,
                                           fontWeight: FontWeight.w700,
                                         )),
-                                    IconButton(
-                                      icon: const Icon(Icons.add),
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const NoticeScreen(),
-                                          ),
-                                        );
-                                      },
+                                    Transform.translate(
+                                      offset: Offset(10, -10),
+                                      child: IconButton(
+                                        icon: const Icon(Icons.add),
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const NoticeScreen(),
+                                            ),
+                                          );
+                                        },
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -240,17 +243,20 @@ class _HomeScreenState extends State<HomeScreen>
                                           fontSize: 24,
                                           fontWeight: FontWeight.w700,
                                         )),
-                                    IconButton(
-                                      icon: const Icon(Icons.add),
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const CafeteriaMenuScreen(),
-                                          ),
-                                        );
-                                      },
+                                    Transform.translate(
+                                      offset: Offset(10, -10),
+                                      child: IconButton(
+                                        icon: const Icon(Icons.add),
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const CafeteriaMenuScreen(),
+                                            ),
+                                          );
+                                        },
+                                      ),
                                     ),
                                   ],
                                 ),
