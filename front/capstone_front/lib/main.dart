@@ -1,6 +1,6 @@
 import 'package:capstone_front/firebase_options.dart';
 import 'package:capstone_front/models/chat_init_model.dart';
-import 'package:capstone_front/models/cafeteria_menu_model_ko.dart';
+import 'package:capstone_front/models/cafeteria_menu_model.dart';
 import 'package:capstone_front/models/helper_article_preview_model.dart';
 import 'package:capstone_front/models/notice_model.dart';
 import 'package:capstone_front/models/qna_post_model.dart';
@@ -29,6 +29,7 @@ import 'package:capstone_front/screens/speech_practice/speech_practice_screen.da
 import 'package:capstone_front/screens/speech_practice/speech_screen.dart';
 import 'package:capstone_front/services/cafeteria_menu_service.dart';
 import 'package:capstone_front/utils/page_animation.dart';
+import 'package:capstone_front/utils/search_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -97,17 +98,17 @@ Future<void> getMenus() async {
 
 Future<void> getUserInfo() async {
   const storage = FlutterSecureStorage();
-  String? userName = (await storage.read(key: "userName"));
-  if (userName == null) {
+  String? tmpUserName = (await storage.read(key: "userName"));
+  if (tmpUserName == null) {
     userName = '';
   } else {
-    userName = userName;
+    userName = tmpUserName;
   }
-  String? userMajor = (await storage.read(key: "userMajor"));
-  if (userMajor == null) {
+  String? tmpUserMajor = (await storage.read(key: "userMajor"));
+  if (tmpUserMajor == null) {
     userMajor = '';
   } else {
-    userMajor = userMajor;
+    userMajor = tmpUserMajor;
   }
 }
 

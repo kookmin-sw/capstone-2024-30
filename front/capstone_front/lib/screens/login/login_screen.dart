@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
+import 'package:restart_app/restart_app.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -142,6 +143,71 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ],
               ),
+              const SizedBox(height: 20),
+              InkWell(
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20.0),
+                            topRight: Radius.circular(20.0),
+                          ),
+                        ),
+                        child: SingleChildScrollView(
+                          child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(tr('mainScreen.language_setting')),
+                                const SizedBox(height: 5),
+                                Row(
+                                  children: [
+                                    IconButton(
+                                      icon: const Text(
+                                          "\u{1f1f0}\u{1f1f7}"), // 한국어
+                                      onPressed: () async {
+                                        await storage.write(
+                                            key: 'language', value: 'KO');
+                                        restartDialog(context, "KO");
+                                      },
+                                    ),
+                                    IconButton(
+                                        icon: const Text(
+                                            "\u{1f1fa}\u{1f1f8}"), // 영어
+                                        onPressed: () async {
+                                          await storage.write(
+                                              key: 'language', value: 'EN-US');
+                                          restartDialog(context, 'EN-US');
+                                        }),
+                                    IconButton(
+                                        icon: const Text(
+                                            "\u{1F1E8}\u{1F1F3}"), // 중국어
+                                        onPressed: () async {
+                                          await storage.write(
+                                              key: 'language', value: 'ZH');
+                                          restartDialog(context, 'ZH');
+                                        }),
+                                  ],
+                                ),
+                                const SizedBox(height: 5),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+                child: const Text(
+                  "Change Language",
+                  style: TextStyle(decoration: TextDecoration.underline),
+                ),
+              )
             ],
           ),
         ),
@@ -187,6 +253,35 @@ class _LoginScreenState extends State<LoginScreen> {
       msg: msg,
       gravity: ToastGravity.BOTTOM,
       fontSize: 20,
+    );
+  }
+
+  Future<dynamic> restartDialog(BuildContext context, String language) {
+    return showDialog(
+      context: context,
+      builder: ((context) {
+        return AlertDialog(
+          content: Text(tr("mainScreen.language_setting_notice")),
+          actions: [
+            Container(
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text(tr("mainScreen.no")),
+              ),
+            ),
+            Container(
+              child: ElevatedButton(
+                onPressed: () {
+                  Restart.restartApp(webOrigin: "/");
+                },
+                child: Text(tr("mainScreen.yes")),
+              ),
+            ),
+          ],
+        );
+      }),
     );
   }
 }

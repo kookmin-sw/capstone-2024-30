@@ -38,11 +38,19 @@
     "complete_signup": "회원가입 완료",
     "ok": "확인"
   },
+  "searchScreen": {
+    "more_than_two": "두 글자 이상 입력해주세요",
+    "enter_word": "검색어를 입력해주세요"
+  },
   "mainScreen": {
     "home": "홈",
     "notice": "공지사항",
     "cafeteria": "학식정보",
     "school_info": "학교정보",
+    "other_info": "기타정보",
+    "shcool_map": "학교지도",
+    "facility_info": "시설정보",
+    "shuttle_info": "셔틀정보",
     "qna": "질문과 답변",
     "faq": "자주 묻는 질문",
     "community": "커뮤니티",
@@ -55,10 +63,20 @@
     "no": "아니요",
     "account_setting": "계정 설정",
     "logout": "로그아웃",
-    "no_data": "데이터가 없습니다"
+    "no_data": "데이터가 없습니다",
+    "use_chatbot": "챗봇 사용하기"
   },
   "cafeteria": {
     "no_data": "미운영중입니다"
+  },
+  "weekday": {
+    "mon": "월",
+    "tue": "화",
+    "wed": "수",
+    "thu": "목",
+    "fri": "금",
+    "sat": "토",
+    "sun": "일"
   },
   "speech": {
     "speech_practice": "발음 연습",
