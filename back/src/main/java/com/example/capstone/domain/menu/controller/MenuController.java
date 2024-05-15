@@ -37,7 +37,7 @@ public class MenuController {
         menuCrawlingService.testKeyCheck(key);
         menuUpdateService.updateMenus(date);
         return ResponseEntity
-                .ok(new ApiResult<>("Successfully update menu"));
+                .ok(new ApiResult<>("Successfully update menu", 200));
     }
 
 }
