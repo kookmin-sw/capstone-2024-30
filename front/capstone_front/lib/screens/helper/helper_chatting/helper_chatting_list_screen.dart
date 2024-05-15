@@ -47,6 +47,7 @@ class _HelperChattingListScreenState extends State<HelperChattingListScreen> {
   Future<void> startPolling(Map<String, dynamic> roomInfo) async {
     try {
       while (isActive) {
+        await loadChatRooms();
         try {
           var currentNewChatsInfos =
               await ChatService.pollingChatList(roomInfo);
