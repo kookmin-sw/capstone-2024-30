@@ -16,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -45,19 +46,28 @@ public class MenuUpdateService {
 
         try {
             String response = decode.get();
+
+            System.out.println(response);
+
             for(String language : languages) {
                 String json = response.substring(response.indexOf("(") + 1, response.lastIndexOf(")"));
                 ObjectMapper mapper = new ObjectMapper();
                 Map<String, Object> allMap = mapper.readValue(json, Map.class);
 
                 for (Map.Entry<String, Object> cafeEntry : allMap.entrySet()) {
+                    if( (cafeEntry.getValue() instanceof Map) == false ) continue;
+
                     String cafeteria = translator.translateText(cafeEntry.getKey(), null, language).getText();
 
                     for (Map.Entry<String, Object> dateEntry : ((Map<String, Object>) cafeEntry.getValue()).entrySet()) {
+                        if( (dateEntry.getValue() instanceof Map) == false ) continue;
+
                         String dateString = dateEntry.getKey();
                         LocalDateTime date = LocalDate.parse(dateString, DateTimeFormatter.ISO_LOCAL_DATE).atStartOfDay();
 
                         for (Map.Entry<String, Object> sectionEntry : ((Map<String, Object>) dateEntry.getValue()).entrySet()) {
+                            if( (sectionEntry.getValue() instanceof Map) == false ) continue;
+
                             String section = translator.translateText(sectionEntry.getKey(), null, language).getText();
                             String name = "";
                             Long price = 0L;
