@@ -60,7 +60,10 @@ dependencies:
   change_app_package_name: ^1.1.0
   photo_view: ^0.15.0
   flutter_native_splash: ^2.4.0
+<<<<<<< HEAD
   http_parser: ^4.0.2
+=======
+>>>>>>> 95fafb122cfb7dcb89b68c39cd5b4b0cc30002d5
 
 dev_dependencies:
   flutter_test:
