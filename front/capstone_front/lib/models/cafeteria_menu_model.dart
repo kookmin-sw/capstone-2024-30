@@ -257,6 +257,9 @@ class CafeteriaMenuModel {
         }
         if (!dataAdded) {
           cafeteriaMenus.add([]);
+          if (i == cafeteriaZh.length - 1) {
+            cafeteriaMenus.add([]);
+          }
         }
       }
     }
