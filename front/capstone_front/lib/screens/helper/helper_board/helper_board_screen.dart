@@ -108,17 +108,22 @@ class _HelperBoardState extends State<HelperBoardScreen> {
                   ),
                 );
                 if (articleObj != null) {
-                  helperArticlePreviews.insert(
+                  if (isHelper == articleObj.isHelper) {
+                    helperArticlePreviews.insert(
                       0,
-                      HelperArticlePreviewModel.fromJson({
-                        "id": articleObj.id,
-                        "isDone": articleObj.isDone,
-                        "isHelper": articleObj.isHelper,
-                        "title": articleObj.title,
-                        "author": articleObj.author,
-                        "country": articleObj.country,
-                        "createdDate": articleObj.createdDate,
-                      }));
+                      HelperArticlePreviewModel.fromJson(
+                        {
+                          "id": articleObj.id,
+                          "isDone": articleObj.isDone,
+                          "isHelper": articleObj.isHelper,
+                          "title": articleObj.title,
+                          "author": articleObj.author,
+                          "country": articleObj.country,
+                          "createdDate": articleObj.createdDate,
+                        },
+                      ),
+                    );
+                  }
                   setState(() {});
                 }
               },
