@@ -223,8 +223,8 @@ class _HelperChattingRoomState extends State<HelperChattingRoom> {
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         scrolledUnderElevation: 0,
-        title: const Text(
-          "최지훈",
+        title: Text(
+          widget.chatInitModel.author,
         ),
       ),
       body: Column(
