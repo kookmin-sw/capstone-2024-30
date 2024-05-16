@@ -29,6 +29,7 @@ class _QnaListScreenState extends State<QnaListScreen> {
   int itemCount = 0;
   String? word;
   String? tag;
+  String selectedTag = '';
 
   Future<void> loadQnas(int lastCursor, String? tag, String? word) async {
     try {
@@ -66,67 +67,27 @@ class _QnaListScreenState extends State<QnaListScreen> {
     loadQnas(0, tag, word);
   }
 
+  void selectTag(String tag) {
+    setState(() {
+      if (selectedTag == tag) {
+        selectedTag = '';
+      } else {
+        selectedTag = tag;
+      }
+    });
+    setState(() {
+      qnas = [];
+      cursor = 0;
+      hasNext = true;
+      itemCount = 0;
+      word = null;
+    });
+    loadQnas(0, selectedTag, word);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   scrolledUnderElevation: 0,
-      //   title: TextField(
-      //     controller: _controller,
-      //     onChanged: (text) {
-      //       if (text.trim() == "") {
-      //         setState(() {
-      //           word = "";
-      //         });
-      //       }
-      //       setState(() {
-      //         word = text;
-      //       });
-      //     },
-      //     decoration: InputDecoration(
-      //       hintText: "검색어를 입력하세요",
-      //       border: InputBorder.none,
-      //       hintStyle: const TextStyle(
-      //         color: Color(0XFFd7d7d7),
-      //       ),
-      //       suffixIcon: _controller.text.isNotEmpty
-      //           ? IconButton(
-      //               onPressed: () {
-      //                 _controller.clear();
-      //                 setState(() {
-      //                   word = "";
-      //                 });
-      //               },
-      //               icon: const Icon(
-      //                 Icons.cancel,
-      //                 color: Colors.grey,
-      //               ),
-      //             )
-      //           : null,
-      //     ),
-      //     style: const TextStyle(
-      //       color: Colors.black,
-      //       fontSize: 18.0,
-      //     ),
-      //   ),
-      //   actions: [
-      //     IconButton(
-      //       icon: Icon(
-      //         Icons.search,
-      //         color: Theme.of(context).primaryColor,
-      //       ),
-      //       onPressed: () {
-      //         setState(() {
-      //           qnas = [];
-      //           cursor = 0;
-      //           hasNext = true;
-      //           itemCount = 0;
-      //         });
-      //         loadQnas(0, tag, word);
-      //       },
-      //     ),
-      //   ],
-      // ),
       body: Stack(
         children: [
           RefreshIndicator(
@@ -141,50 +102,81 @@ class _QnaListScreenState extends State<QnaListScreen> {
             },
             child: Column(
               children: [
-                // Container(
-                //   // color: const Color(0xFFF8F8F8),
-                //   height: 15,
-                // ),
                 Expanded(
-                  child: ListView.separated(
-                    shrinkWrap: true,
-                    itemCount: qnas.length,
-                    itemBuilder: (context, index) {
-                      if (index + 1 == itemCount && hasNext) {
-                        loadQnas(cursor, tag, word);
-                      }
-                      var post = qnas[index];
-                      return InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => QnaDetailScreen(
-                                postModel: post,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              const SizedBox(
+                                width: 15,
                               ),
-                            ),
-                          );
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            left: 15,
-                            right: 15,
-                            top: 5,
-                            bottom: 10,
-                          ),
-                          child: QuestionCard(
-                            title: post.title,
-                            content: post.content,
-                            name: post.author,
-                            country: post.country,
-                            tag: post.category,
-                            answerCount: post.answerCount,
+                              buildSelectableButton("학사안내"),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              buildSelectableButton("대학생활"),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              buildSelectableButton("교직원안내"),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              buildSelectableButton("교수자"),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                            ],
                           ),
                         ),
-                      );
-                    },
-                    separatorBuilder: (context, index) => const SizedBox(
-                      height: 0,
+                        ListView.separated(
+                          shrinkWrap: true,
+                          physics:
+                              const NeverScrollableScrollPhysics(), // 부모 스크롤뷰가 스크롤을 관리하도록 함
+                          itemCount: qnas.length,
+                          itemBuilder: (context, index) {
+                            if (index + 1 == itemCount && hasNext) {
+                              loadQnas(cursor, tag, word);
+                            }
+                            var post = qnas[index];
+                            return InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => QnaDetailScreen(
+                                      postModel: post,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 15,
+                                  right: 15,
+                                  top: 5,
+                                  bottom: 10,
+                                ),
+                                child: QuestionCard(
+                                  title: post.title,
+                                  content: post.content,
+                                  name: post.author,
+                                  country: post.country,
+                                  tag: post.category,
+                                  answerCount: post.answerCount,
+                                ),
+                              ),
+                            );
+                          },
+                          separatorBuilder: (context, index) => const SizedBox(
+                            height: 0,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -212,6 +204,35 @@ class _QnaListScreenState extends State<QnaListScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget buildSelectableButton(String tag) {
+    final bool isSelected = selectedTag == tag;
+    return ElevatedButton(
+      onPressed: () {
+        selectTag(tag);
+      },
+      style: ElevatedButton.styleFrom(
+        elevation: 0,
+        foregroundColor: isSelected ? Colors.white : const Color(0xff6E2FF4),
+        backgroundColor: isSelected ? const Color(0xff6E2FF4) : Colors.white,
+        side: const BorderSide(
+          color: Color(0xff6E2FF4),
+          width: 1,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+      ),
+      child: Text(
+        tag,
+        style: TextStyle(
+          color: isSelected ? Colors.white : const Color(0xff6E2FF4),
+          fontSize: 16,
+          fontWeight: FontWeight.w700,
+        ),
       ),
     );
   }
