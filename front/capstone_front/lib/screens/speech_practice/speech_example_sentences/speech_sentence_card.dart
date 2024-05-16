@@ -89,8 +89,7 @@ class _SpeechSentenceCardState extends State<SpeechSentenceCard> {
       context: context,
       builder: ((context) {
         return AlertDialog(
-          content:
-              Text(tr("pronunciationPracticeScreen.permission_allow_notice")),
+          content: Text(tr("speech.permission_allow_notice")),
           actions: [
             Container(
               child: ElevatedButton(
