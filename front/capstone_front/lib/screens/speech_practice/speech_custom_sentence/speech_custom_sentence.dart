@@ -2,6 +2,7 @@ import 'package:capstone_front/utils/basic_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class SpeechCustomSentenceScreen extends StatefulWidget {
   const SpeechCustomSentenceScreen({super.key});
@@ -62,15 +63,50 @@ class _SpeechCustomSentenceScreenState
               padding: const EdgeInsets.symmetric(horizontal: 15.0),
               child: BasicButton(
                   text: tr('speech.speech_practice'),
-                  onPressed: () {
-                    context.push('/speech/practice',
-                        extra: [_textController.text, '']);
+                  onPressed: () async {
+                    var status = await Permission.microphone.request();
+                    if (status != PermissionStatus.granted) {
+                      permssionNotice(context);
+                    } else {
+                      context.push('/speech/practice',
+                          extra: [_textController.text, '']);
+                    }
                   }),
             ),
             const SizedBox(height: 15),
           ],
         ),
       ),
+    );
+  }
+
+  // 녹음 권한 거부 시 설정
+  Future<dynamic> permssionNotice(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: ((context) {
+        return AlertDialog(
+          content: Text(tr("speech.permission_allow_notice")),
+          actions: [
+            Container(
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text("취소"),
+              ),
+            ),
+            Container(
+              child: ElevatedButton(
+                onPressed: () {
+                  openAppSettings();
+                },
+                child: const Text("설정"),
+              ),
+            ),
+          ],
+        );
+      }),
     );
   }
 }
