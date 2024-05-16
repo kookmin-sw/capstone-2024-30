@@ -24,6 +24,7 @@ class _NoticeDetailState extends State<NoticeDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         // backgroundColor: Theme.of(context).primaryColor,
         // foregroundColor: Colors.white,
         title: Text(

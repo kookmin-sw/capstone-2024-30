@@ -205,6 +205,8 @@ class _NoticeScreenState extends State<NoticeScreen> {
                                         selectedItem = item;
                                         notices = [];
                                         itemCount = 0;
+                                        _word = '';
+                                        isSearchMode = false;
                                       });
                                       loadNotices(0, language);
                                       Navigator.of(context).pop();
@@ -252,14 +254,18 @@ class _NoticeScreenState extends State<NoticeScreen> {
               onRefresh: () async {
                 setState(() {
                   notices = [];
+                  cursor = 0;
+                  itemCount = 0;
                 });
                 isSearchMode
-                    ? loadNoticesByWord(0, language, _word)
-                    : loadNotices(0, language);
+                    ? loadNoticesByWord(cursor, language, _word)
+                    : loadNotices(cursor, language);
               },
               child: ListView.separated(
                 itemCount: notices.length,
                 itemBuilder: (context, index) {
+                  print(index + 1);
+                  print(itemCount);
                   if (index + 1 == itemCount && hasNext) {
                     loadNotices(cursor, language);
                   }

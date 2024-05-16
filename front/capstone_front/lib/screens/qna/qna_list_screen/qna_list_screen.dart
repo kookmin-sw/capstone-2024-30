@@ -28,8 +28,7 @@ class _QnaListScreenState extends State<QnaListScreen> {
   bool hasNext = true;
   int itemCount = 0;
   String? word;
-  String? tag;
-  String selectedTag = '';
+  String? selectedTag;
 
   Future<void> loadQnas(int lastCursor, String? tag, String? word) async {
     try {
@@ -51,7 +50,7 @@ class _QnaListScreenState extends State<QnaListScreen> {
   @override
   void initState() {
     super.initState();
-    loadQnas(cursor, tag, word);
+    loadQnas(cursor, selectedTag, word);
   }
 
   void searchQna(String searchWord) {
@@ -64,7 +63,7 @@ class _QnaListScreenState extends State<QnaListScreen> {
       itemCount = 0;
       word = searchWord;
     });
-    loadQnas(0, tag, word);
+    loadQnas(0, selectedTag, word);
   }
 
   void selectTag(String tag) {
@@ -98,7 +97,7 @@ class _QnaListScreenState extends State<QnaListScreen> {
                 itemCount = 0;
               });
               qnas = [];
-              await loadQnas(cursor, tag, word);
+              await loadQnas(cursor, selectedTag, word);
             },
             child: Column(
               children: [
@@ -140,7 +139,7 @@ class _QnaListScreenState extends State<QnaListScreen> {
                           itemCount: qnas.length,
                           itemBuilder: (context, index) {
                             if (index + 1 == itemCount && hasNext) {
-                              loadQnas(cursor, tag, word);
+                              loadQnas(cursor, selectedTag, word);
                             }
                             var post = qnas[index];
                             return InkWell(

@@ -138,11 +138,16 @@ class _HelperDetailScreenState extends State<HelperDetailScreen> {
                   : BasicButton(
                       text: tr('helper.start_chat'),
                       onPressed: () {
-                        var chatInitModel = ChatInitModel.fromJson({
-                          'author': widget.helperArticlePreviewModel.author,
-                          'uuid': helperArticleModel.uuid,
-                        });
-                        context.push("/chatroom", extra: chatInitModel);
+                        if (helperArticleModel.isDone) {
+                          makeToast(
+                              tr('helper.msg_already_recruitment_complete'));
+                        } else {
+                          var chatInitModel = ChatInitModel.fromJson({
+                            'author': widget.helperArticlePreviewModel.author,
+                            'uuid': helperArticleModel.uuid,
+                          });
+                          context.push("/chatroom", extra: chatInitModel);
+                        }
                       },
                     )
             ],
