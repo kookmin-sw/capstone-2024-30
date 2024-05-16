@@ -44,7 +44,8 @@ public class GatewayConfig {
                         .uri("http://ruby:3000"))
                 .route("nonJwt-spring", r -> r.path("/api/user/signin", "/api/user/test", "/api/user/signup",
                                 "/api/announcement/**", "/api/menu/**", "/api/speech/**", "/api/question/read", "/api/question/list",
-                                "/api/answer/list", "/api/faq/**", "/api/help/read", "/api/help/list", "/api/auth/**", "/api/swagger-ui/**", "/api/api-docs/**")
+                                "/api/answer/list", "/api/faq/**", "/api/help/read", "/api/help/list", "/api/auth/**", "/api/swagger-ui/**"
+                                , "/api/api-docs/**", "/api/auth/logout")
                         .uri("http://spring:8080"))
                 .route("spring", r -> r.path("/api/**")
                         .filters(f->f
