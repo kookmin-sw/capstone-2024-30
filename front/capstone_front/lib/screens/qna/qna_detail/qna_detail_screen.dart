@@ -274,13 +274,16 @@ class _QnaDetailScreenState extends State<QnaDetailScreen>
                                     children: [
                                       IconButton(
                                         icon: Icon(
-                                          likeList[index]
+                                          answerList[index].likeCheck
                                               ? Icons.favorite_rounded
                                               : Icons.favorite_border_rounded,
                                         ),
                                         color: const Color(0xFF848484),
                                         iconSize: 26,
                                         onPressed: () {
+                                          QnaService.toggleLike(
+                                              widget.postModel.id,
+                                              answerList[index].likeCheck);
                                           setState(() {
                                             if (likeList[index]) {
                                               likeCount[index] -= 1;

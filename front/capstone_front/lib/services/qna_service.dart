@@ -114,6 +114,7 @@ class QnaService {
 
     final String decodedBody = utf8.decode(response.bodyBytes);
     final jsonMap = jsonDecode(decodedBody);
+    print(jsonMap);
 
     if (response.statusCode == 200) {
       final ApiSuccessResponse apiSuccessResponse =
@@ -263,18 +264,27 @@ class QnaService {
     }
   }
 
-  static Future<bool> toggleLike(int commentId) async {
-    final url = Uri.parse('$baseUrl/yet/commentLike');
+  static Future<bool> toggleLike(int commentId, bool curState) async {
+    FlutterSecureStorage storage = const FlutterSecureStorage();
+    final accessToken = await storage.read(key: "accessToken");
+    final url = curState
+        ? Uri.parse('$baseUrl/answer/unlike')
+        : Uri.parse('$baseUrl/answer/like');
 
-    final response = await http.post(
+    final response = await http.put(
       url,
       headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $accessToken',
+        'Content-Type': 'application/json',
       },
       body: jsonEncode({
-        "commentId": commentId,
+        "id": commentId,
       }),
     );
+
+    print(jsonEncode({
+      "id": commentId,
+    }));
 
     final String decodedBody = utf8.decode(response.bodyBytes);
     final jsonMap = jsonDecode(decodedBody);

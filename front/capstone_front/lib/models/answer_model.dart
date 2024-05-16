@@ -7,6 +7,7 @@ class AnswerModel {
   String createdDate;
   String updatedDate;
   String uuid;
+  bool likeCheck;
 
   AnswerModel.fromJson(Map<String, dynamic> json)
       : id = json['id'] as int,
@@ -17,5 +18,6 @@ class AnswerModel {
         createdDate =
             json['createdDate'].substring(5, 16).replaceAll('T', ' ') as String,
         updatedDate = json['updatedDate'] ?? "",
-        uuid = json['uuid'] ?? "";
+        uuid = json['uuid'] ?? "",
+        likeCheck = json['likeCheck'] ?? false;
 }
