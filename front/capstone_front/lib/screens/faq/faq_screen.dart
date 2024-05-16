@@ -12,6 +12,28 @@ class FaqScreenState extends State<FaqScreen> {
   String selectedItem = 'major';
   String selectedItemToShow = '전공';
   final _controller = TextEditingController();
+  List<Map<String, dynamic>> filteredFaqs = [];
+
+  @override
+  void initState() {
+    super.initState();
+    filteredFaqs = faqs[selectedItem]!;
+  }
+
+  void _filterFaqs(String query) {
+    final List<Map<String, dynamic>> allFaqs = faqs[selectedItem]!;
+    if (query.isEmpty) {
+      filteredFaqs = allFaqs;
+    } else {
+      filteredFaqs = allFaqs.where((faq) {
+        final title = faq['title'].toLowerCase();
+        final content = faq['content'].toLowerCase();
+        final searchQuery = query.toLowerCase();
+        return title.contains(searchQuery) || content.contains(searchQuery);
+      }).toList();
+    }
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +43,7 @@ class FaqScreenState extends State<FaqScreen> {
         title: TextField(
           controller: _controller,
           onChanged: (text) {
-            setState(() {});
+            _filterFaqs(text);
           },
           decoration: InputDecoration(
             hintText: "검색어를 입력하세요",
@@ -33,7 +55,7 @@ class FaqScreenState extends State<FaqScreen> {
                 ? IconButton(
                     onPressed: () {
                       _controller.clear();
-                      setState(() {});
+                      _filterFaqs('');
                     },
                     icon: const Icon(
                       Icons.cancel,
@@ -93,6 +115,7 @@ class FaqScreenState extends State<FaqScreen> {
                                       setState(() {
                                         selectedItem = faqCategoryMapper[item]!;
                                         selectedItemToShow = item;
+                                        filteredFaqs = faqs[selectedItem]!;
                                       });
                                       Navigator.of(context).pop();
                                     },
@@ -136,13 +159,13 @@ class FaqScreenState extends State<FaqScreen> {
           ),
           Expanded(
             child: ListView.separated(
-              itemCount: faqs[selectedItem]!.length,
+              itemCount: filteredFaqs.length,
               itemBuilder: (context, index) {
                 return Theme(
                   data: ThemeData().copyWith(dividerColor: Colors.transparent),
                   child: ExpansionTile(
                     title: Text(
-                      faqs[selectedItem]![index]['title'],
+                      filteredFaqs[index]['title'],
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
                         fontSize: 18,
@@ -151,7 +174,7 @@ class FaqScreenState extends State<FaqScreen> {
                     children: <Widget>[
                       ListTile(
                         subtitle: Text(
-                          faqs[selectedItem]![index]['content'],
+                          filteredFaqs[index]['content'],
                         ),
                       ),
                     ],
@@ -165,7 +188,7 @@ class FaqScreenState extends State<FaqScreen> {
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );
