@@ -17,7 +17,7 @@ class HelperService {
   static String baseUrl = dotenv.get('BASE_URL');
 
   static Future<HelperArticleResponse> getHelperAtricles(
-      int cursor, bool isHelper, bool isDone, String? uuid) async {
+      int cursor, bool? isHelper, bool? isDone, String? uuid) async {
     FlutterSecureStorage storage = const FlutterSecureStorage();
     final accessToken = await storage.read(key: "accessToken");
     final url = Uri.parse('$baseUrl/help/list');
@@ -159,6 +159,30 @@ class HelperService {
     } else {
       print('Request failed with status: ${response.statusCode}.');
       throw Exception('Failed to load QnA posts');
+    }
+  }
+
+  static Future<bool> completeRecruitment(int articleId) async {
+    FlutterSecureStorage storage = const FlutterSecureStorage();
+    final accessToken = await storage.read(key: "accessToken");
+    final url = Uri.parse('$baseUrl/help/done?id=$articleId');
+    final response = await http.put(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
+
+    final String decodedBody = utf8.decode(response.bodyBytes);
+    final jsonMap = jsonDecode(decodedBody);
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      var apiFailResponse = ApiFailResponse.fromJson(jsonMap);
+      print('Request failed with status: ${response.statusCode}.');
+      print('Request failed with status: ${apiFailResponse.message}.');
+      throw ('fail to put article');
     }
   }
 

@@ -1,6 +1,7 @@
 import 'package:capstone_front/models/helper_model.dart';
 import 'package:capstone_front/models/helper_article_preview_model.dart';
 import 'package:capstone_front/screens/helper/helper_board/helper_writing_json.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -59,16 +60,44 @@ class _HelperWritingCardState extends State<HelperWritingCard> {
                 const SizedBox(
                   height: 4,
                 ),
-                Text(
-                  '${widget.helperArticlePreviewModel.author} | ${widget.helperArticlePreviewModel.createdDate}',
-                  style: const TextStyle(
-                    fontFamily: 'pretendard',
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xff868e96),
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      '${widget.helperArticlePreviewModel.author} | ' +
+                          widget.helperArticlePreviewModel.createdDate
+                              .substring(5, 10) +
+                          ' | ' +
+                          widget.helperArticlePreviewModel.country,
+                      style: const TextStyle(
+                        fontFamily: 'pretendard',
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xff868e96),
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                    if (widget.helperArticlePreviewModel.isDone)
+                      Container(
+                        padding: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                            color: Color(0x88000000),
+                            borderRadius: BorderRadius.circular(6)),
+                        child: Text(
+                          tr('helper.recruitment_complete'),
+                          style: const TextStyle(
+                            fontFamily: 'pretendard',
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.white,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        ),
+                      )
+                  ],
                 ),
               ],
             ),
