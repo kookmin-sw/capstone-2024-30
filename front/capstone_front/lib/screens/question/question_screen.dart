@@ -2,7 +2,6 @@ import 'package:capstone_front/screens/faq/faq_screen.dart';
 import 'package:capstone_front/screens/qna/qna_list_screen/qna_list_screen.dart';
 import 'package:capstone_front/utils/search_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:capstone_front/screens/qna/qna_list_screen/qna_list_screen.dart';
 import 'package:go_router/go_router.dart';
 
 class QuestionScreen extends StatefulWidget {
@@ -19,7 +18,22 @@ class _QuestionScreenState extends State<QuestionScreen> {
     const FaqScreen(),
   ];
 
-  String qnaSearchWord = 'what';
+  String qnaSearchWord = '';
+  final _searchController = TextEditingController();
+
+  void _clearSearch() {
+    setState(() {
+      qnaSearchWord = '';
+    });
+    qnaListScreenGlobalKey.currentState?.searchQna('');
+  }
+
+  void _performSearch(String text) {
+    setState(() {
+      qnaSearchWord = text;
+    });
+    qnaListScreenGlobalKey.currentState?.searchQna(text);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +73,30 @@ class _QuestionScreenState extends State<QuestionScreen> {
           ],
         ),
         actions: [
+          if (qnaSearchWord.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: Chip(
+                label: Text(
+                  qnaSearchWord,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                backgroundColor: const Color(0xFF6E2FF4),
+                deleteIcon: const Icon(
+                  Icons.close,
+                  color: Colors.white,
+                  size: 18,
+                ),
+                onDeleted: _clearSearch,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                side: BorderSide.none,
+              ),
+            ),
           IconButton(
             icon: Icon(
               Icons.search,
@@ -72,8 +110,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                   MaterialPageRoute(
                       builder: (context) => SearchScreen(
                             searchCallback: (text) {
-                              qnaListScreenGlobalKey.currentState
-                                  ?.searchQna(text);
+                              _performSearch(text);
                             },
                           )),
                 );
