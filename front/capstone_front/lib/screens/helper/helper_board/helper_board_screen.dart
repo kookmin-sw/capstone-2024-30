@@ -21,7 +21,7 @@ class _HelperBoardState extends State<HelperBoardScreen> {
   FlutterSecureStorage storage = const FlutterSecureStorage();
   late List<HelperArticlePreviewModel> helperArticlePreviews = [];
   int cursor = 0;
-  bool isHelper = false;
+  bool? isHelper = false;
   bool isDone = false;
   bool hasNext = false;
   String? uuid = "";
@@ -32,6 +32,7 @@ class _HelperBoardState extends State<HelperBoardScreen> {
   final List<String> _helperList = [
     tr('helper.need_helper'),
     tr('helper.need_helpee'),
+    tr('helper.my_article'),
   ];
 
   Future<void> loadHelperAtricles() async {
@@ -40,7 +41,7 @@ class _HelperBoardState extends State<HelperBoardScreen> {
       uuid = await storage.read(key: "uuid");
     }
     var res =
-        await HelperService.getHelperAtricles(cursor, isHelper, isDone, uuid);
+        await HelperService.getHelperAtricles(cursor, isHelper, null, uuid);
     helperArticlePreviews.addAll(res.articles);
     hasNext = res.hasNext;
     if (res.hasNext) {
@@ -182,7 +183,18 @@ class _HelperBoardState extends State<HelperBoardScreen> {
                   onTap: () async {
                     setState(() {
                       _selectedHelperIndex = index;
-                      isHelper = _selectedHelperIndex == 0 ? false : true;
+                      if (_selectedHelperIndex == 0) {
+                        isHelper = false;
+                        searchMyArticles = false;
+                      } else if (_selectedHelperIndex == 1) {
+                        isHelper = true;
+                        searchMyArticles = false;
+                      } else {
+                        isHelper = null;
+                        searchMyArticles = true;
+                      }
+                      searchMyArticles =
+                          _selectedHelperIndex == 2 ? true : false;
                     });
                     await initStateForChangeType();
                     await loadHelperAtricles();

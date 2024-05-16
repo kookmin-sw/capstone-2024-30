@@ -125,46 +125,56 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
           // ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-            child: Container(
-              decoration: BoxDecoration(
-                color: const Color(0xFFDFE7EE),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(top: 5.0, left: 10, bottom: 5),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Expanded(
-                      child: TextField(
-                        keyboardType: TextInputType.multiline,
-                        minLines: 1,
-                        maxLines: 3,
-                        controller: _textController,
-                        textInputAction: TextInputAction.newline,
-                        decoration: InputDecoration.collapsed(
-                          hintText: tr('chatbotScreen.textfield_hint'),
+            child: Column(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFDFE7EE),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.only(top: 5.0, left: 10, bottom: 5),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Expanded(
+                          child: TextField(
+                            keyboardType: TextInputType.multiline,
+                            minLines: 1,
+                            maxLines: 3,
+                            controller: _textController,
+                            textInputAction: TextInputAction.newline,
+                            decoration: InputDecoration.collapsed(
+                              hintText: tr('chatbotScreen.textfield_hint'),
+                            ),
+                            style: Theme.of(context).textTheme.bodyMedium,
+                            // onTap: () {
+                            //   if (_scrollController.position ==
+                            //       _scrollController.position.maxScrollExtent) {
+                            //     _scrollController.jumpTo(
+                            //         _scrollController.position.maxScrollExtent);
+                            //   }
+                            // },
+                          ),
                         ),
-                        style: Theme.of(context).textTheme.bodyMedium,
-                        // onTap: () {
-                        //   if (_scrollController.position ==
-                        //       _scrollController.position.maxScrollExtent) {
-                        //     _scrollController.jumpTo(
-                        //         _scrollController.position.maxScrollExtent);
-                        //   }
-                        // },
-                      ),
+                        IconButton(
+                            icon: const Icon(Icons.send),
+                            onPressed: () {
+                              if (!_isLoading) {
+                                _sendMessage();
+                              }
+                            }),
+                      ],
                     ),
-                    IconButton(
-                        icon: const Icon(Icons.send),
-                        onPressed: () {
-                          if (!_isLoading) {
-                            _sendMessage();
-                          }
-                        }),
-                  ],
+                  ),
                 ),
-              ),
+                SizedBox(height: 5),
+                Text(
+                  tr("chatbotScreen.can_fault"),
+                  style: TextStyle(color: Colors.black54, fontSize: 12),
+                )
+              ],
             ),
           ),
         ],

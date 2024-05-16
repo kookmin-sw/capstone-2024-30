@@ -105,13 +105,15 @@
     "chatbot": "챗봇",
     "textfield_hint": "궁금한 내용을 입력해주세요",
     "loading": "답변을 생성중입니다...",
-    "init": "안녕하세요! 국민대학교 전용 챗봇 KUKU입니다. 국민대학교에 대한 건 무엇이든 질문해주세요!"
+    "init": "안녕하세요! 국민대학교 전용 챗봇 KUKU입니다. 국민대학교에 대한 건 무엇이든 질문해주세요!",
+    "can_fault": "KUKU는 실수를 할 수 있습니다. 중요한 정보를 확인하세요."
   },
   "helper": {
     "helper": "헬퍼",
     "total": "전체",
     "need_helper": "헬퍼 구해요",
     "need_helpee": "헬피 구해요",
+    "my_article": "나의 글",
     "board": "게시판",
     "chatting": "채팅",
     "start_chat": "채팅하기",
@@ -119,7 +121,10 @@
     "type": "종류",
     "title": "제목",
     "content": "내용",
-    "write_complete": "작성 완료"
+    "write_complete": "작성 완료",
+    "recruitment_complete": "모집 완료",
+    "msg_already_recruitment_complete": "이미 모집이 완료되었습니다",
+    "msg_recruitment_complete": "모집이 완료되었습니다"
   },
   "qna": {
     "writetitle": "무엇을 물어보고 싶으세요?",

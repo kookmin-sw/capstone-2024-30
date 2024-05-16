@@ -9,6 +9,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
 class HelperDetailScreen extends StatefulWidget {
@@ -36,8 +37,6 @@ class _HelperDetailScreenState extends State<HelperDetailScreen> {
       isLoading = false;
     });
     final uuid = await storage.read(key: "uuid");
-    print(uuid);
-    print(helperArticleModel.uuid);
     if (uuid != helperArticleModel.uuid) {
       isMyArticle = false;
     }
@@ -122,7 +121,20 @@ class _HelperDetailScreenState extends State<HelperDetailScreen> {
                 height: 20,
               ),
               isMyArticle
-                  ? const SizedBox.shrink()
+                  ? BasicButton(
+                      text: tr('helper.recruitment_complete'),
+                      onPressed: () {
+                        if (helperArticleModel.isDone) {
+                          makeToast(
+                              tr('helper.msg_already_recruitment_complete'));
+                        } else {
+                          makeToast(tr('helper.msg_recruitment_complete'));
+                          HelperService.completeRecruitment(
+                              widget.helperArticlePreviewModel.id);
+                          context.pop();
+                        }
+                      },
+                    )
                   : BasicButton(
                       text: tr('helper.start_chat'),
                       onPressed: () {
@@ -137,4 +149,12 @@ class _HelperDetailScreenState extends State<HelperDetailScreen> {
           ),
         ));
   }
+}
+
+void makeToast(String msg) {
+  Fluttertoast.showToast(
+    msg: msg,
+    gravity: ToastGravity.BOTTOM,
+    fontSize: 20,
+  );
 }
