@@ -7,7 +7,7 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-04-30T01:59:17+0900",
+    date = "2024-05-17T01:46:24+0900",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.9 (JetBrains s.r.o.)"
 )
 public class UserMapperImpl implements UserMapper {
@@ -22,6 +22,7 @@ public class UserMapperImpl implements UserMapper {
 
         user.id( request.uuid() );
         user.email( request.email() );
+        user.bigmajor( request.bigmajor() );
         user.major( request.major() );
         user.country( request.country() );
         user.name( request.name() );

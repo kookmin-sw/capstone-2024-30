@@ -8,6 +8,7 @@ import com.example.capstone.domain.announcement.service.AnnouncementCallerServic
 import com.example.capstone.domain.announcement.service.AnnouncementSearchService;
 import com.example.capstone.global.dto.ApiResult;
 import com.example.capstone.global.error.exception.BusinessException;
+import com.example.capstone.global.util.Timer;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -42,6 +43,7 @@ public class AnnouncementController {
                 .ok("");
     }
 
+    @Timer
     @GetMapping("")
     @Operation(summary = "공지사항 받아오기", description = "커서기반으로 공지사항을 받아옵니다")
     @ApiResponses(value = {
@@ -74,6 +76,7 @@ public class AnnouncementController {
                 .ok(new ApiResult<>("Successfully load announcement list", response));
     }
 
+    @Timer
     @GetMapping("/{announcementId}")
     @Operation(summary = "공지사항 세부정보 받아오기", description = "공지사항의 세부적인 내용을 받아옵니다.")
     @ApiResponses(value = {
@@ -86,6 +89,7 @@ public class AnnouncementController {
                 .ok(new ApiResult<>("Successfully load announcement", announcement));
     }
 
+    @Timer
     @GetMapping("/search")
     @Operation(summary = "공지사항 검색기반으로 가져오기", description = "검색한 공지사항을 커서기반으로 받아옵니다. 2글자 이상으로만 검색됩니다.")
     @ApiResponses(value = {
