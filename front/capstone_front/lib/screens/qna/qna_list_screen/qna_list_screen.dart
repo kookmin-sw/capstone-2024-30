@@ -11,16 +11,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
-GlobalKey<_QnaListScreenState> qnaListScreenGlobalKey = GlobalKey();
+GlobalKey<QnaListScreenState> qnaListScreenGlobalKey = GlobalKey();
 
 class QnaListScreen extends StatefulWidget {
   const QnaListScreen({super.key});
 
   @override
-  State<QnaListScreen> createState() => _QnaListScreenState();
+  State<QnaListScreen> createState() => QnaListScreenState();
 }
 
-class _QnaListScreenState extends State<QnaListScreen> {
+class QnaListScreenState extends State<QnaListScreen> {
   final _controller = TextEditingController();
 
   List<QnaPostModel> qnas = [];

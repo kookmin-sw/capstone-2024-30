@@ -272,7 +272,10 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: 'faq',
       path: '/faq',
-      builder: (context, state) => const FaqScreen(),
+      builder: (context, state) => FaqScreen(
+        performSearch: (text) {},
+        searchController: TextEditingController(),
+      ),
     ),
     GoRoute(
       name: 'question',
