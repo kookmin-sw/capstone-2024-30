@@ -4,6 +4,7 @@ import com.example.capstone.domain.menu.service.MenuCrawlingService;
 import com.example.capstone.domain.menu.service.MenuSearchService;
 import com.example.capstone.domain.menu.service.MenuUpdateService;
 import com.example.capstone.global.dto.ApiResult;
+import com.example.capstone.global.util.Timer;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.json.JsonArray;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ public class MenuController {
     private final MenuSearchService menuSearchService;
     private final MenuUpdateService menuUpdateService;
 
+    @Timer
     @GetMapping("/daily")
     public ResponseEntity<ApiResult<List<Object>>> getMenuByDate(@RequestParam LocalDate date, @RequestParam String language){
         List<Object> menu = menuSearchService.findMenuByDate(date, language);
