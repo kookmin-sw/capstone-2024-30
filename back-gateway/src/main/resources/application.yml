@@ -16,7 +16,3 @@ server:
   port: 8081
   chatbot-url: ${CHATBOT_URL}
 
-logging:
-  level:
-    root: debug
-

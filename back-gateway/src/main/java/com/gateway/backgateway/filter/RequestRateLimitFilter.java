@@ -28,12 +28,10 @@ public class RequestRateLimitFilter extends AbstractGatewayFilterFactory<Request
 
     @Override
     public GatewayFilter apply(Config config) {
-        log.info("여기 필터 지나는지 확인 1111");
         GatewayFilter filter = (exchange, chain) -> {
             KeyResolver keyResolver = getOrDefault(config.keyResolver, defaultKeyResolver);
             RedisRateLimiter rateLimiter = getOrDefault(config.rateLimiter, defaultRateLimiter);
             String routeId = config.getRouteId();
-            log.info("여기 필터 지나는지 확인 2222222");
 
             return keyResolver.resolve(exchange)
                     .flatMap(key -> rateLimiter.isAllowed(routeId, key))
