@@ -24,8 +24,8 @@ class _NoticeDetailState extends State<NoticeDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
-        foregroundColor: Colors.white,
+        // backgroundColor: Theme.of(context).primaryColor,
+        // foregroundColor: Colors.white,
         title: Text(
           widget.notice.department!,
           style: const TextStyle(

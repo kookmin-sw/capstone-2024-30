@@ -5,6 +5,7 @@ import 'package:capstone_front/screens/notice/test_notice_data.dart';
 import 'package:capstone_front/screens/notice/notice_detail_screen.dart';
 import 'package:capstone_front/services/notice_service.dart';
 import 'package:capstone_front/utils/search_screen.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -104,7 +105,7 @@ class _NoticeScreenState extends State<NoticeScreen> {
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0,
-        title: const Text("공지사항"),
+        title: Text(tr("mainScreen.notice")),
         // title: TextField(
         //   controller: _controller,
         //   onChanged: (text) {
