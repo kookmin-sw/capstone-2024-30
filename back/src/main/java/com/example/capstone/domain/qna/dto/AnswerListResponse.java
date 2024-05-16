@@ -8,6 +8,9 @@ public record AnswerListResponse(
         String author,
         String context,
         Long likeCount,
-        LocalDateTime createdDate
+        Boolean likeCheck,
+        LocalDateTime createdDate,
+        LocalDateTime updatedDate,
+        String uuid
 ) {
 }

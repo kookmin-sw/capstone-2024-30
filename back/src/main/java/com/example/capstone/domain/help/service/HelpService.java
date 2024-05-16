@@ -1,6 +1,7 @@
 package com.example.capstone.domain.help.service;
 
 import com.example.capstone.domain.help.dto.*;
+import com.example.capstone.domain.help.exception.HelpNotFoundException;
 import com.example.capstone.domain.help.repository.HelpListRepository;
 import com.example.capstone.domain.help.repository.HelpRepository;
 import com.example.capstone.domain.help.entity.Help;
@@ -28,14 +29,17 @@ public class HelpService {
     }
 
     public HelpResponse getHelp(Long id) {
-        Help help = helpRepository.findById(id).get();
+        Help help = helpRepository.findById(id).orElseThrow(() ->
+            new HelpNotFoundException(id)
+        );
         return help.toDTO();
     }
 
     @Transactional
     public void updateHelp(String userId, HelpPutRequest request) {
         LocalDateTime current = LocalDateTime.now();
-        Help help = helpRepository.findById(request.id()).get();
+        Help help = helpRepository.findById(request.id()).orElseThrow(() ->
+                new HelpNotFoundException(request.id()));
         if(help.getUuid().equals(userId)){
             help.update(request.title(), request.context(), current);
         }
@@ -56,7 +60,9 @@ public class HelpService {
 
     @Transactional
     public void doneHelp(String userId, Long id) {
-        Help help = helpRepository.findById(id).get();
+        Help help = helpRepository.findById(id).orElseThrow(() ->
+            new HelpNotFoundException(id)
+        );
         if(help.getUuid().equals(userId)){
             help.done();
         }

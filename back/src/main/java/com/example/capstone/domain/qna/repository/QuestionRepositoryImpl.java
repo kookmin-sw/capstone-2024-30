@@ -31,7 +31,7 @@ public class QuestionRepositoryImpl implements QuestionListRepository {
                                 QuestionListResponse.class,
                                 question.id, question.title,
                                 question.author, question.context,
-                                question.tag, question.country, answer.id.count(), question.createdDate
+                                question.tag, question.country, answer.count(), question.createdDate
                         )
                 )
                 .from(question)

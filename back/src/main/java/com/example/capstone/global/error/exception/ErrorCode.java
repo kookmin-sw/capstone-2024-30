@@ -35,10 +35,11 @@ public enum ErrorCode {
     // S3 Error
     EMPTY_FILE_EXCEPTION(400, "S301", "File is empty"),
     IO_EXCEPTION_ON_IMAGE_UPLOAD(400, "S302", "Io exception on image"),
-    NO_FILE_EXTENTION(400, "S303", "Not found file"),
-    INVALID_FILE_EXTENTION(400, "S304", "File is invalid"),
+    NO_FILE_EXTENSION(400, "S303", "Not found file"),
+    INVALID_FILE_EXTENSION(400, "S304", "File is invalid"),
     PUT_OBJECT_EXCEPTION(400, "S305", "Object can not put"),
     IO_EXCEPTION_ON_IMAGE_DELETE(400, "S306", "Io exception on image delete"),
+    MAX_SIZE_UPLOAD_EXCEED(400, "S307", "File size exceeded the max size"),
 
     // HMAC
     HMAC_NOT_VALID(403, "HM001", "HMAC is not valid"),

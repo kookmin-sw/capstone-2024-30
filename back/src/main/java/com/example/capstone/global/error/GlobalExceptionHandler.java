@@ -15,6 +15,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.nio.file.AccessDeniedException;
@@ -64,6 +66,19 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<ApiResult<?>> handleJwtTokenInvalidException(final JwtTokenInvalidException e){
         log.error("handleJwtTokenInvalid", e);
         final ErrorCode errorCode = e.getErrorCode();
+        return ResponseEntity
+                .status(errorCode.getStatus())
+                .body(new ApiResult<>(errorCode));
+    }
+
+    /*
+    * 업로드 파일 용량이 최대 용량보다 초과시 발생
+    * */
+    @ExceptionHandler(MultipartException.class)
+    @ResponseStatus(HttpStatus.PAYLOAD_TOO_LARGE)
+    protected ResponseEntity<ApiResult<?>> handleMaxUploadSizeExceededException (final MultipartException e){
+        log.error("handleMaxUploadSizeExceededException", e);
+        final ErrorCode errorCode = ErrorCode.MAX_SIZE_UPLOAD_EXCEED;
         return ResponseEntity
                 .status(errorCode.getStatus())
                 .body(new ApiResult<>(errorCode));
