@@ -79,6 +79,17 @@ class _NoticeScreenState extends State<NoticeScreen> {
     }
   }
 
+  String translateTagKoToOther(String koreanTag, String nowLanguage) {
+    switch (nowLanguage) {
+      case 'EN-US':
+        return noticeMapperKoToEn[koreanTag] ?? koreanTag;
+      case 'ZH':
+        return noticeMapperKoToZh[koreanTag] ?? koreanTag;
+      default:
+        return koreanTag;
+    }
+  }
+
   void initLanguageAndLoadNotices() async {
     // const storage = FlutterSecureStorage();
     // String? storedLanguage = await storage.read(key: 'language');
@@ -297,7 +308,7 @@ class _NoticeScreenState extends State<NoticeScreen> {
                     subtitle: Row(
                       children: [
                         Text(
-                          notice.type!,
+                          translateTagKoToOther(notice.type!, language),
                           style: const TextStyle(
                             fontSize: 16,
                             color: Color(0xFF8266DF),
