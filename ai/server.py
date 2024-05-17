@@ -87,7 +87,7 @@ def log_new_announcements():
         doc.metadata['title'] = announcement.title
         doc.metadata['datetime'] = announcement.writtenDate
         docs.append(doc)
-    with open(f'{datetime.datetime.now(datetime.UTC)}'+'.pkl', 'wb') as f:
+    with open(f'{datetime.datetime.now(datetime.UTC)}.pkl', 'wb') as f:
             pickle.dump(docs, f)
 
 @app.get("/")
