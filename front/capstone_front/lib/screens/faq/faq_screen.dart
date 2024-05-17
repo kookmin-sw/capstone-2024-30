@@ -65,11 +65,11 @@ class FaqScreenState extends State<FaqScreen> {
   }
 
   void changeCategory(String category) {
+    selectedItemToShow = category;
     category = translateTagOtherToEn(category, language!);
     print(category);
     setState(() {
       selectedItem = category;
-      selectedItemToShow = category;
       filteredFaqs = faqs[selectedItem]!;
       widget.performSearch(widget.searchController.text);
     });
