@@ -29,7 +29,6 @@ Map<String, String> userInfo = {
   'department': '',
   'country': '',
 };
-int selectedPageIndex = 0;
 
 Future<String> signup() async {
   Map<String, dynamic> userData = {
@@ -38,6 +37,7 @@ Future<String> signup() async {
     'name': userInfo['name'],
     'country': userInfo['country'],
     'phoneNumber': '010-8276-8291',
+    'bigmajor': userInfo['college'],
     'major': userInfo['department'],
   };
 

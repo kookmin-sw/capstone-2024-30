@@ -47,12 +47,10 @@ class _HelperChattingListScreenState extends State<HelperChattingListScreen> {
   Future<void> startPolling(Map<String, dynamic> roomInfo) async {
     try {
       while (isActive) {
-        // loadChatRooms();
+        await loadChatRooms();
         try {
           var currentNewChatsInfos =
               await ChatService.pollingChatList(roomInfo);
-          print('roominfo');
-          print(roomInfo);
           for (var newChatInfo in currentNewChatsInfos) {
             var flag = true; // 새로운 채팅방인지 아닌지 확인
             for (var chatRoom in chatRoomList) {
@@ -67,15 +65,17 @@ class _HelperChattingListScreenState extends State<HelperChattingListScreen> {
 
             if (flag) {
               // 새로운 채팅방일 때
-              chatRoomList.add(ChatRoomModel(
-                chatRoomId: newChatInfo.chatRoomId,
-                userId: newChatInfo.userId,
-                userName: newChatInfo.userId,
-                lastMessageId: 0,
-                lastMessagePreviewId: newChatInfo.id,
-                chatRoomMessage: newChatInfo.content,
-                chatRoomDate: newChatInfo.timestamp,
-              ));
+              if (newChatInfo.id != 0) {
+                chatRoomList.add(ChatRoomModel(
+                  chatRoomId: newChatInfo.chatRoomId,
+                  userId: newChatInfo.userId,
+                  userName: newChatInfo.userId,
+                  lastMessageId: 0,
+                  lastMessagePreviewId: newChatInfo.id,
+                  chatRoomMessage: newChatInfo.content,
+                  chatRoomDate: newChatInfo.timestamp,
+                ));
+              }
             }
           }
 
@@ -117,13 +117,17 @@ class _HelperChattingListScreenState extends State<HelperChattingListScreen> {
       body: ListView.builder(
         itemCount: chatRoomList.length,
         itemBuilder: (BuildContext context, int index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: HelperChattingCard(
-              chatRoomModel: chatRoomList[index],
-              chatRoomListUpdate: loadChatRooms,
-            ),
-          );
+          if (chatRoomList[index].lastMessageId != 0) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: HelperChattingCard(
+                chatRoomModel: chatRoomList[index],
+                chatRoomListUpdate: loadChatRooms,
+              ),
+            );
+          } else {
+            return const SizedBox.shrink();
+          }
         },
       ),
     );

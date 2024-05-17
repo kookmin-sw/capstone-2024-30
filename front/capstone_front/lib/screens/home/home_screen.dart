@@ -4,6 +4,7 @@ import 'package:capstone_front/screens/cafeteriaMenu/cafeteriaMenuScreen.dart';
 import 'package:capstone_front/screens/home/image_screen.dart';
 import 'package:capstone_front/screens/home/webview_screen.dart';
 import 'package:capstone_front/screens/notice/notice_screen.dart';
+import 'package:capstone_front/services/auth_service.dart';
 import 'package:capstone_front/services/login_service.dart';
 import 'package:capstone_front/services/notice_service.dart';
 import 'package:capstone_front/utils/bubble_painter2.dart';
@@ -35,12 +36,8 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   void initState() {
     super.initState();
-    if (language! != 'KO') {
-      language = "EN-US";
-    } else {
-      language = 'KO';
-    }
-    noticesRes = NoticeService.getNotices(0, 'all', language!);
+
+    noticesRes = NoticeService.getNotices(0, 'all', language);
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
@@ -124,7 +121,7 @@ class _HomeScreenState extends State<HomeScreen>
                                 ),
                                 const SizedBox(height: 15),
                                 Text(
-                                  userMajor,
+                                  '$userBigMajor  $userMajor',
                                 ),
                               ],
                             ),
@@ -144,17 +141,20 @@ class _HomeScreenState extends State<HomeScreen>
                                           fontSize: 24,
                                           fontWeight: FontWeight.w700,
                                         )),
-                                    IconButton(
-                                      icon: const Icon(Icons.add),
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const NoticeScreen(),
-                                          ),
-                                        );
-                                      },
+                                    Transform.translate(
+                                      offset: Offset(10, -10),
+                                      child: IconButton(
+                                        icon: const Icon(Icons.add),
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const NoticeScreen(),
+                                            ),
+                                          );
+                                        },
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -240,17 +240,20 @@ class _HomeScreenState extends State<HomeScreen>
                                           fontSize: 24,
                                           fontWeight: FontWeight.w700,
                                         )),
-                                    IconButton(
-                                      icon: const Icon(Icons.add),
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const CafeteriaMenuScreen(),
-                                          ),
-                                        );
-                                      },
+                                    Transform.translate(
+                                      offset: Offset(10, -10),
+                                      child: IconButton(
+                                        icon: const Icon(Icons.add),
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const CafeteriaMenuScreen(),
+                                            ),
+                                          );
+                                        },
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -285,9 +288,9 @@ class _HomeScreenState extends State<HomeScreen>
                               content: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                "기타정보",
-                                style: TextStyle(
+                              Text(
+                                tr('mainScreen.other_info'),
+                                style: const TextStyle(
                                   fontSize: 24,
                                   fontWeight: FontWeight.w700,
                                 ),
@@ -298,7 +301,7 @@ class _HomeScreenState extends State<HomeScreen>
                                 //     MainAxisAlignment.spaceBetween,
                                 children: [
                                   MenuButton(
-                                      title: "학교지도",
+                                      title: tr('mainScreen.shcool_map'),
                                       icon: Icons.map_outlined,
                                       routeCallbackFun: () {
                                         Navigator.push(
@@ -313,22 +316,43 @@ class _HomeScreenState extends State<HomeScreen>
                                     width: 15,
                                   ),
                                   MenuButton(
-                                      title: "시설정보",
+                                      title: tr('mainScreen.facility_info'),
                                       icon: Icons.business,
                                       routeCallbackFun: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => const ImageScreen(
-                                                'assets/images/facility_time.jpg'),
-                                          ),
-                                        );
+                                        if (language == 'EN-US') {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const ImageScreen(
+                                                      'assets/images/facility_time_en.jpg'),
+                                            ),
+                                          );
+                                        } else if (language == 'ZH') {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const ImageScreen(
+                                                      'assets/images/facility_time_zh.jpg'),
+                                            ),
+                                          );
+                                        } else {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const ImageScreen(
+                                                      'assets/images/facility_time_ko.jpg'),
+                                            ),
+                                          );
+                                        }
                                       }),
                                   const SizedBox(
                                     width: 15,
                                   ),
                                   MenuButton(
-                                      title: "셔틀정보",
+                                      title: tr('mainScreen.shuttle_info'),
                                       icon: Icons.directions_bus,
                                       routeCallbackFun: () {
                                         Navigator.push(
@@ -382,11 +406,11 @@ class _HomeScreenState extends State<HomeScreen>
               duration: const Duration(milliseconds: 500),
               child: CustomPaint(
                 painter: BubblePainter2(),
-                child: const Padding(
-                  padding: EdgeInsets.all(10.0),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
                   child: Text(
-                    "챗봇 사용하기",
-                    style: TextStyle(fontWeight: FontWeight.w500),
+                    tr("mainScreen.use_chatbot"),
+                    style: const TextStyle(fontWeight: FontWeight.w500),
                   ),
                 ),
               ),
@@ -446,6 +470,7 @@ class _HomeScreenState extends State<HomeScreen>
                   const SizedBox(height: 5),
                   ElevatedButton(
                     onPressed: () async {
+                      await AuthService.logout();
                       logout();
                       await storage.write(key: 'isLogin', value: 'false');
                       context.go('/login');

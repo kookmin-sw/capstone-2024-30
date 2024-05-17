@@ -91,7 +91,7 @@ class AuthService {
     FlutterSecureStorage storage = const FlutterSecureStorage();
 
     final String baseUrl = dotenv.get('BASE_URL');
-    final url = Uri.parse('$baseUrl/user/$uuid');
+    final url = Uri.parse('$baseUrl/user/me');
 
     final response = await http.get(
       url,
@@ -108,14 +108,49 @@ class AuthService {
       UserInfoModel userInfoModel = UserInfoModel.fromJson(jsonMap['response']);
       await storage.write(key: "userName", value: userInfoModel.name);
       await storage.write(key: "userMajor", value: userInfoModel.major);
+      await storage.write(key: "userBigMajor", value: userInfoModel.bigMajor);
       await storage.write(key: "userEmail", value: userInfoModel.email);
       await storage.write(key: "userCountry", value: userInfoModel.country);
       userName = userInfoModel.name;
       userMajor = userInfoModel.major;
+      userBigMajor = userInfoModel.bigMajor;
     } else {
       var apiFailResponse = ApiFailResponse.fromJson(jsonMap);
       print(apiFailResponse.message);
       throw Exception('Failed to load userinfo');
+    }
+  }
+
+  static Future<void> logout() async {
+    FlutterSecureStorage storage = const FlutterSecureStorage();
+
+    final url = Uri.parse('$baseUrl/auth/logout');
+    var accessToken = await storage.read(key: 'accessToken');
+    var refreshToken = await storage.read(key: 'refreshToken');
+
+    print("//////////////////////////////////////////////");
+    print(accessToken);
+    print("//////////////////////////////////////////////");
+    print(refreshToken);
+
+    final response = await http.post(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      },
+      body: jsonEncode({
+        'refreshToken': refreshToken,
+      }),
+    );
+
+    final String decodedBody = utf8.decode(response.bodyBytes);
+    final Map<String, dynamic> jsonMap = jsonDecode(decodedBody);
+    if (response.statusCode == 200) {
+      print("logout success");
+    } else {
+      final ApiFailResponse apiFailResponse = ApiFailResponse.fromJson(jsonMap);
+      throw Exception("fail to logout");
     }
   }
 

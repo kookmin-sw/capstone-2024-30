@@ -1,6 +1,6 @@
 import 'package:capstone_front/firebase_options.dart';
 import 'package:capstone_front/models/chat_init_model.dart';
-import 'package:capstone_front/models/cafeteria_menu_model_ko.dart';
+import 'package:capstone_front/models/cafeteria_menu_model.dart';
 import 'package:capstone_front/models/helper_article_preview_model.dart';
 import 'package:capstone_front/models/notice_model.dart';
 import 'package:capstone_front/models/qna_post_model.dart';
@@ -29,6 +29,7 @@ import 'package:capstone_front/screens/speech_practice/speech_practice_screen.da
 import 'package:capstone_front/screens/speech_practice/speech_screen.dart';
 import 'package:capstone_front/services/cafeteria_menu_service.dart';
 import 'package:capstone_front/utils/page_animation.dart';
+import 'package:capstone_front/utils/search_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -58,6 +59,7 @@ late CafeteriaMenuModel menus;
 // 로그인 유저 정보
 String userName = '';
 String userMajor = '';
+String userBigMajor = '';
 String language = 'KO';
 
 // 언어를 설정해주고 로그인 정보를 불러오는 함수
@@ -97,17 +99,23 @@ Future<void> getMenus() async {
 
 Future<void> getUserInfo() async {
   const storage = FlutterSecureStorage();
-  String? _userName = (await storage.read(key: "userName"));
-  if (_userName == null) {
+  String? tmpUserName = (await storage.read(key: "userName"));
+  if (tmpUserName == null) {
     userName = '';
   } else {
-    userName = _userName;
+    userName = tmpUserName;
   }
-  String? _userMajor = (await storage.read(key: "userMajor"));
-  if (_userMajor == null) {
+  String? tmpUserMajor = (await storage.read(key: "userMajor"));
+  if (tmpUserMajor == null) {
     userMajor = '';
   } else {
-    userMajor = _userMajor;
+    userMajor = tmpUserMajor;
+  }
+  String? tmpUserBigMajor = (await storage.read(key: "userBigMajor"));
+  if (tmpUserBigMajor == null) {
+    userBigMajor = '';
+  } else {
+    userBigMajor = tmpUserBigMajor;
   }
 }
 
@@ -259,19 +267,23 @@ final GoRouter router = GoRouter(
           );
         }),
     GoRoute(
-        name: 'qnawrite',
-        path: '/qnawrite',
-        builder: (context, state) {
-          final qnas = state.extra as List<QnaPostModel>?;
-          if (qnas == null) {
-            return const QnaListScreen();
-          }
-          return QnaWriteScreen(qnas: qnas);
-        }),
+      name: 'qnawrite',
+      path: '/qnawrite',
+      builder: (context, state) {
+        final Map<String, dynamic> data = state.extra as Map<String, dynamic>;
+        return QnaWriteScreen(
+          qnas: data['qnas'],
+          selectedTag: data['selectedTag'],
+        );
+      },
+    ),
     GoRoute(
       name: 'faq',
       path: '/faq',
-      builder: (context, state) => const FaqScreen(),
+      builder: (context, state) => FaqScreen(
+        performSearch: (text) {},
+        searchController: TextEditingController(),
+      ),
     ),
     GoRoute(
       name: 'question',
