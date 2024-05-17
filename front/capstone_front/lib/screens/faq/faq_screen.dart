@@ -1,5 +1,7 @@
 import 'package:capstone_front/screens/faq/test_faq_data.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class FaqScreen extends StatefulWidget {
   final Function(String) performSearch;
@@ -12,18 +14,101 @@ class FaqScreen extends StatefulWidget {
   State<FaqScreen> createState() => FaqScreenState();
 }
 
+FlutterSecureStorage storage = const FlutterSecureStorage();
+
 class FaqScreenState extends State<FaqScreen> {
   String selectedItem = 'major';
   String selectedItemToShow = '전공';
   List<Map<String, dynamic>> filteredFaqs = [];
+  String? language;
+
+  List<String> faqKinds = [
+    tr('faq.major'),
+    tr('faq.doubleMajor'),
+    tr('faq.teachingCertification'),
+    tr('faq.engineeringCertification'),
+    tr('faq.courseRegistrationGuide'),
+    tr('faq.classSchedule'),
+    tr('faq.grades'),
+    tr('faq.semesterSystem'),
+    tr('faq.fieldPractice'),
+    tr('faq.ictCreditLinkage'),
+    tr('faq.seoulCityInternship'),
+    tr('faq.eastsoftFieldPractice'),
+    tr('faq.currentStudentJobExperience'),
+    tr('faq.employmentLinkedInternship'),
+    tr('faq.lincProjectFieldPractice'),
+    tr('faq.tuitionPayment'),
+    tr('faq.tuitionRefund'),
+    tr('faq.registrationDocumentIssuance'),
+    tr('faq.criteriaForTuitionCalculationForExceedingCourseDuration'),
+    tr('faq.academicRecords'),
+    tr('faq.leaveOfAbsence'),
+    tr('faq.returnFromLeaveOfAbsence'),
+    tr('faq.completionOfAcademicProgram'),
+    tr('faq.graduationThesis'),
+    tr('faq.graduationCertificationSystem'),
+    tr('faq.onCampusScholarships'),
+    tr('faq.offCampusScholarships'),
+    tr('faq.nationalScholarships'),
+    tr('faq.studentLoans'),
+    tr('faq.preventionOfOverlappingFinancialAid'),
+    tr('faq.employment'),
+    tr('faq.entrepreneurship'),
+    tr('faq.militaryServiceGuidance'),
+    tr('faq.reserveForcesGuidance'),
+    tr('faq.assignmentApplicationChange'),
+    tr('faq.supportFundSettlement'),
+    tr('faq.supportFundExpenditure'),
+    tr('faq.exchangeStudentProgram'),
+    tr('faq.visitingStudentProgram'),
+    tr('faq.doubleDegree'),
+    tr('faq.shortTermLanguageStudyAbroad'),
+    tr('faq.studentGlobalEngagement'),
+    tr('faq.undergraduateStudent'),
+    tr('faq.studentEvent'),
+    tr('faq.undergraduateDepartmentOffice'),
+    tr('faq.studentCounselingCenter'),
+    tr('faq.learningMethodSeminar'),
+    tr('faq.learningVolunteerPeerTutor'),
+    tr('faq.learningCounselingAndClinic'),
+    tr('faq.library'),
+    tr('faq.onCampusWelfareFacilities'),
+    tr('faq.classroomUsage'),
+    tr('faq.itemRental'),
+    tr('faq.website'),
+    tr('faq.educationalObjectives'),
+    tr('faq.educationalPhilosophy'),
+    tr('faq.idealStudentProfile'),
+    tr('faq.kmuVision2030Plus'),
+    tr('faq.specializationPlan')
+  ];
+
+  Future<void> initialize() async {
+    language = await storage.read(key: "language");
+    setState(() {});
+  }
 
   @override
   void initState() {
     super.initState();
+
+    initialize();
     filteredFaqs = faqs[selectedItem]!;
     widget.searchController.addListener(() {
       widget.performSearch(widget.searchController.text);
     });
+  }
+
+  String translateTagOtherToEn(String ohterTag, String nowLanguage) {
+    switch (nowLanguage) {
+      case 'KO':
+        return faqCategoryMapperKoToEn[ohterTag] ?? ohterTag;
+      case 'ZH':
+        return faqCategoryMapperZhToEn[ohterTag] ?? ohterTag;
+      default:
+        return ohterTag;
+    }
   }
 
   void filterFaqs(String query) {
@@ -42,8 +127,10 @@ class FaqScreenState extends State<FaqScreen> {
   }
 
   void changeCategory(String category) {
+    category = translateTagOtherToEn(category, language!);
+    print(category);
     setState(() {
-      selectedItem = faqCategoryMapper[category]!;
+      selectedItem = category;
       selectedItemToShow = category;
       filteredFaqs = faqs[selectedItem]!;
       widget.performSearch(widget.searchController.text);
