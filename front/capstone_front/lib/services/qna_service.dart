@@ -271,6 +271,8 @@ class QnaService {
         ? Uri.parse('$baseUrl/answer/unlike')
         : Uri.parse('$baseUrl/answer/like');
 
+    print(url);
+
     final response = await http.put(
       url,
       headers: {
@@ -278,7 +280,7 @@ class QnaService {
         'Content-Type': 'application/json',
       },
       body: jsonEncode({
-        "id": commentId,
+        "answerId": commentId,
       }),
     );
 
@@ -288,10 +290,9 @@ class QnaService {
 
     final String decodedBody = utf8.decode(response.bodyBytes);
     final jsonMap = jsonDecode(decodedBody);
+    print(jsonMap);
 
     if (response.statusCode == 200) {
-      var apiSuccessResponse = jsonDecode(jsonMap);
-
       return true;
     } else {
       var apiFailResponse = ApiFailResponse.fromJson(jsonMap);
