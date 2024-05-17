@@ -120,36 +120,37 @@ class _HelperDetailScreenState extends State<HelperDetailScreen> {
               const SizedBox(
                 height: 20,
               ),
-              isMyArticle
-                  ? BasicButton(
-                      text: tr('helper.recruitment_complete'),
-                      onPressed: () {
-                        if (helperArticleModel.isDone) {
-                          makeToast(
-                              tr('helper.msg_already_recruitment_complete'));
-                        } else {
-                          makeToast(tr('helper.msg_recruitment_complete'));
-                          HelperService.completeRecruitment(
-                              widget.helperArticlePreviewModel.id);
-                          context.pop();
-                        }
-                      },
-                    )
-                  : BasicButton(
-                      text: tr('helper.start_chat'),
-                      onPressed: () {
-                        if (helperArticleModel.isDone) {
-                          makeToast(
-                              tr('helper.msg_already_recruitment_complete'));
-                        } else {
-                          var chatInitModel = ChatInitModel.fromJson({
-                            'author': widget.helperArticlePreviewModel.author,
-                            'uuid': helperArticleModel.uuid,
-                          });
-                          context.push("/chatroom", extra: chatInitModel);
-                        }
-                      },
-                    )
+              if (!isLoading)
+                isMyArticle
+                    ? BasicButton(
+                        text: tr('helper.recruitment_complete'),
+                        onPressed: () {
+                          if (helperArticleModel.isDone) {
+                            makeToast(
+                                tr('helper.msg_already_recruitment_complete'));
+                          } else {
+                            makeToast(tr('helper.msg_recruitment_complete'));
+                            HelperService.completeRecruitment(
+                                widget.helperArticlePreviewModel.id);
+                            context.pop();
+                          }
+                        },
+                      )
+                    : BasicButton(
+                        text: tr('helper.start_chat'),
+                        onPressed: () {
+                          if (helperArticleModel.isDone) {
+                            makeToast(
+                                tr('helper.msg_already_recruitment_complete'));
+                          } else {
+                            var chatInitModel = ChatInitModel.fromJson({
+                              'author': widget.helperArticlePreviewModel.author,
+                              'uuid': helperArticleModel.uuid,
+                            });
+                            context.push("/chatroom", extra: chatInitModel);
+                          }
+                        },
+                      )
             ],
           ),
         ));
