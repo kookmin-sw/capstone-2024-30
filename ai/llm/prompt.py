@@ -37,20 +37,6 @@ Classification:"""
     )
     return prompt
 
-def contextualize_prompt():
-
-    contextualize_q_system_prompt = """
-Refactor the user's follow-up questions into standalone queries, incorporating the conversation's context by replacing ambiguous pronouns and making them more specific. If a question is not a follow-up or unrelated, DO NOT CHANGE and leave it unchanged. Remember not to provide answers or respond directly to the user; focus solely on rephrasing.
-"""
-    contextualize_q_prompt = ChatPromptTemplate.from_messages(
-        [
-            ("system", contextualize_q_system_prompt),
-            MessagesPlaceholder("chat_history"),
-            ("human", "{input}"),
-        ]
-    )
-
-    return contextualize_q_prompt
 
 def rag_prompt():
     prompt = PromptTemplate.from_template(

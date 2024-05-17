@@ -3,7 +3,7 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough, RunnableLambda
 from langchain_openai import ChatOpenAI
 from tavily import TavilyClient
-from llm.prompt import casual_prompt, is_qna_prompt, score_prompt, contextualize_prompt, rag_prompt
+from llm.prompt import casual_prompt, is_qna_prompt, score_prompt, rag_prompt
 from langchain.retrievers.multi_query import MultiQueryRetriever
 from langchain.retrievers import EnsembleRetriever
 from langchain.memory import ChatMessageHistory
@@ -22,20 +22,13 @@ class LLM_RAG:
         self.casual_prompt = casual_prompt()
         self.is_qna_prompt = is_qna_prompt()
         self.score_prompt = score_prompt()
-        self.contextualize_prompt = contextualize_prompt()
         self.deepl = deepl.Translator(os.getenv("DEEPL_API_KEY"))
         self.ko_query = None
         self.result_lang = None
         self.notice_retriever = None
         self.school_retriever = None
         self.naver_retriever = None
-        self.notice_multiquery_retriever = None
-        self.school_multiquery_retriever = None
-        self.naver_multiquery_retriever = None
         self.ensemble_retriever = None
-        self.store = {}
-        self.session_id = None
-        self.ephemeral_chat_history = ChatMessageHistory()
 
 
         if trace:
@@ -50,15 +43,12 @@ class LLM_RAG:
     def set_retriver(self, data_type, retriever):
         if data_type == 'notice':
             self.notice_retriever = retriever
-            self.notice_multiquery_retriever = MultiQueryRetriever.from_llm(retriever=retriever, llm=self.llm)
 
         elif data_type == 'school_info':
             self.school_retriever = retriever
-            self.school_multiquery_retriever = MultiQueryRetriever.from_llm(retriever=retriever, llm=self.llm)
 
         elif data_type == 'naver':
             self.naver_retriever = retriever
-            self.naver_multiquery_retriever = MultiQueryRetriever.from_llm(retriever=retriever, llm=self.llm)
 
         else:
             print('Choose valid type!')
@@ -103,26 +93,8 @@ class LLM_RAG:
             self.score_route
         )
 
-        self.contextualize_question_chain = RunnableWithMessageHistory(
-            self.contextualize_prompt
-            |self.llm
-            |StrOutputParser(),
-            self.get_session_history,
-            input_messages_key='input',
-            history_messages_key='chat_history'
-        )
-
 
     def qna_route(self, info):
-        if self.session_id in self.store.keys():
-            self.ko_query = self.contextualize_question_chain.invoke(
-                    {"input": self.ko_query},
-                    {"configurable": {"session_id": self.session_id}},
-                    )
-            self.ko_query = self.deepl.translate_text(self.ko_query, target_lang=self.result_lang).text
-        else:
-            self.store[self.session_id] = ChatMessageHistory()
-    
         if "question" in info["topic"].lower():
             self.result = self.rag_chain.invoke(self.ko_query)
             score = self.score_chain.invoke({"question" : self.ko_query, "answer": self.result})
@@ -154,16 +126,9 @@ class LLM_RAG:
     # 검색한 문서 결과를 하나의 문단으로 합쳐줍니다.
         return "\n\n".join(doc.page_content for doc in docs)
     
-    def query(self, question, result_lang, session_id='unused'):
+    def query(self, question, result_lang):
         self.question = question
         self.ko_query = self.deepl.translate_text(self.question, target_lang='ko').text
-        self.session_id = session_id
         self.result_lang = result_lang
         self.qna_route_chain.invoke(question)
-        self.store[self.session_id].add_user_message(self.ko_query)
         return self.result
-
-    def get_session_history(self, session_id: str) -> BaseChatMessageHistory:
-        if session_id not in self.store:
-            self.store[session_id] = ChatMessageHistory()
-        return self.store[session_id]
