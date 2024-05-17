@@ -218,7 +218,7 @@ class QnaListScreenState extends State<QnaListScreen> {
         foregroundColor: isSelected ? Colors.white : const Color(0xFF8266DF),
         backgroundColor: isSelected ? const Color(0xFF8266DF) : Colors.white,
         side: const BorderSide(
-          color: Color(0xff6E2FF4),
+          color: Color(0xFF8266DF),
           width: 1,
         ),
         shape: RoundedRectangleBorder(
