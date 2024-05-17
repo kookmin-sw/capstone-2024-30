@@ -4,12 +4,12 @@ from langchain_core.runnables import RunnablePassthrough, RunnableLambda
 from langchain_openai import ChatOpenAI
 from tavily import TavilyClient
 from llm.prompt import casual_prompt, is_qna_prompt, score_prompt, rag_prompt
+from llm.papago import Papago
 from langchain.retrievers.multi_query import MultiQueryRetriever
 from langchain.retrievers import EnsembleRetriever
 from langchain.memory import ChatMessageHistory
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_core.chat_history import BaseChatMessageHistory
-import deepl
 import os
 
 class LLM_RAG:
@@ -22,14 +22,13 @@ class LLM_RAG:
         self.casual_prompt = casual_prompt()
         self.is_qna_prompt = is_qna_prompt()
         self.score_prompt = score_prompt()
-        self.deepl = deepl.Translator(os.getenv("DEEPL_API_KEY"))
+        self.papago = Papago()
         self.ko_query = None
         self.result_lang = None
         self.notice_retriever = None
         self.school_retriever = None
         self.naver_retriever = None
         self.ensemble_retriever = None
-
 
         if trace:
             self.langsmith_trace()
@@ -94,28 +93,26 @@ class LLM_RAG:
         )
 
 
-    def qna_route(self, info):
-        if "question" in info["topic"].lower():
+    def qna_route(self, info):        
+        if "casual" in info["topic"].lower():
+            self.result =  self.casual_answer_chain.invoke(self.ko_query)
+            self.result = self.papago.translate_text(self.result, target_lang=self.result_lang)
+
+        else: #if "question" in info["topic"].lower():
             self.result = self.rag_chain.invoke(self.ko_query)
             score = self.score_chain.invoke({"question" : self.ko_query, "answer": self.result})
             self.score_invoke_chain.invoke({"score" : score, "question": self.ko_query})
-        
-        elif "casual" in info["topic"].lower():
-            self.result =  self.casual_answer_chain.invoke(self.ko_query)
-
-        else:
-            self.result = self.rag_chain.invoke(self.ko_query)
 
         
     def score_route(self, info):
         if "good" in info["score"].lower():
-            self.result = self.deepl.translate_text(self.result, target_lang=self.result_lang).text
+            self.result = self.papago.translate_text(self.result, target_lang=self.result_lang)
         else:
             #print('-- google search --')
             content = self.tavily.qna_search(query='국민대학교 ' + self.ko_query)
-            content = self.deepl.translate_text(content, target_lang=self.result_lang).text
+            content = self.papago.translate_text(content, target_lang=self.result_lang)
             base = "I couldn't find the answer, so I searched on Google.\n\n"
-            base = self.deepl.translate_text(base, target_lang=self.result_lang).text
+            base = self.papago.translate_text(base, target_lang=self.result_lang)
             self.result = base + content
 
     # def format_docs(self, docs):
@@ -128,7 +125,7 @@ class LLM_RAG:
     
     def query(self, question, result_lang):
         self.question = question
-        self.ko_query = self.deepl.translate_text(self.question, target_lang='ko').text
+        self.ko_query = self.papago.translate_text(self.question, target_lang='ko')
         self.result_lang = result_lang
         self.qna_route_chain.invoke(question)
         return self.result
