@@ -16,7 +16,7 @@ class VectorDB:
 
         self.load_local(vector_db_path)
 
-        text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=50)
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
         if content.startswith('https:'):
             loader = WebBaseLoader(content)
         elif content.endswith('.txt'):
@@ -43,7 +43,7 @@ class VectorDB:
             return
         
         docs = loader.load()
-        text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=50)
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
         splits = text_splitter.split_documents(docs)
         FAISS.add_documents(self.vectorstore, splits)
 
@@ -62,5 +62,5 @@ class VectorDB:
     def similarity_search(self, query, k=1):
         return self.vectorstore.similarity_search(query, k)[0].page_content
 
-    def get_retriever(self):
-        return self.vectorstore.as_retriever()
+    def get_retriever(self, k=2):
+        return self.vectorstore.as_retriever(search_kwargs={"k": k})
