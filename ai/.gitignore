@@ -3,8 +3,11 @@
 .env
 *.zip
 *.pyc
-__pycache__/*
+ai/llm/__pycache__/*
+ai/vectordb/__pycache__/*
 data/
 cap30.pem
 chatbot.pem
-2023+국민대학교+요람.pdf
+FAISS/
+*.pkl
+*.faiss
