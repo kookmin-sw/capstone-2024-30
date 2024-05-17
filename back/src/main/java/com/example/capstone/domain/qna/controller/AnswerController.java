@@ -67,9 +67,9 @@ public class AnswerController {
     @ApiResponse(responseCode = "200", description = "완료시 200을 반환합니다.")
     public ResponseEntity<ApiResult<Integer>> upLikeCount(@RequestHeader("X-User-ID") String userId,
                                             @Parameter(description = "추천할 댓글의 id가 필요합니다.", required = true)
-                                            @RequestParam Long id) {
-        likeService.likeAnswer(userId, id);
-        answerService.increaseLikeCountById(id);
+                                            @RequestBody LikeRequest id) {
+        likeService.likeAnswer(userId, id.answerId());
+        answerService.increaseLikeCountById(id.answerId());
 
         return ResponseEntity
                 .ok(new ApiResult<>("Successfully like answer", 200));
@@ -80,9 +80,9 @@ public class AnswerController {
     @ApiResponse(responseCode = "200", description = "완료시 200을 반환합니다.")
     public ResponseEntity<ApiResult<Integer>> downLikeCount(@RequestHeader("X-User-ID") String userId,
                                             @Parameter(description = "추천 해제할 댓글의 id가 필요합니다.", required = true)
-                                            @RequestParam Long id) {
-        likeService.unlikeAnswer(userId, id);
-        answerService.decreaseLikeCountById(id);
+                                            @RequestBody LikeRequest id) {
+        likeService.unlikeAnswer(userId, id.answerId());
+        answerService.decreaseLikeCountById(id.answerId());
 
         return ResponseEntity
                 .ok(new ApiResult<>("Successfully unlike answer", 200));
