@@ -187,7 +187,10 @@ class QnaListScreenState extends State<QnaListScreen> {
               onPressed: () async {
                 var result = await context.push(
                   '/qnawrite',
-                  extra: qnas,
+                  extra: {
+                    'selectedTag': selectedTag,
+                    'qnas': qnas,
+                  },
                 );
                 setState(() {});
               },

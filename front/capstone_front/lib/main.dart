@@ -260,15 +260,16 @@ final GoRouter router = GoRouter(
           );
         }),
     GoRoute(
-        name: 'qnawrite',
-        path: '/qnawrite',
-        builder: (context, state) {
-          final qnas = state.extra as List<QnaPostModel>?;
-          if (qnas == null) {
-            return const QnaListScreen();
-          }
-          return QnaWriteScreen(qnas: qnas);
-        }),
+      name: 'qnawrite',
+      path: '/qnawrite',
+      builder: (context, state) {
+        final Map<String, dynamic> data = state.extra as Map<String, dynamic>;
+        return QnaWriteScreen(
+          qnas: data['qnas'],
+          selectedTag: data['selectedTag'],
+        );
+      },
+    ),
     GoRoute(
       name: 'faq',
       path: '/faq',

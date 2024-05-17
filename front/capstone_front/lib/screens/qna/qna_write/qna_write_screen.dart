@@ -14,9 +14,11 @@ class QnaWriteScreen extends StatefulWidget {
   const QnaWriteScreen({
     super.key,
     required this.qnas,
+    this.selectedTag,
   });
 
   final List<QnaPostModel> qnas;
+  final String? selectedTag;
 
   @override
   State<QnaWriteScreen> createState() => _HelperWriteScreenState();
@@ -236,18 +238,24 @@ class _HelperWriteScreenState extends State<QnaWriteScreen> {
                   };
                   var res = await QnaService.createQnaPost(qnaPost, images);
 
-                  widget.qnas.insert(
-                      0,
-                      QnaPostModel(
-                        id: res['questionResponse']['id'],
-                        title: res['questionResponse']['title'],
-                        author: res['questionResponse']['author'],
-                        content: res['questionResponse']['context'],
-                        category: res['questionResponse']['tag'],
-                        country: res['questionResponse']['country'],
-                        answerCount: 0,
-                        createdDate: res['questionResponse']['createdDate'],
-                      ));
+                  print(widget.selectedTag);
+                  if (widget.selectedTag == null ||
+                      widget.selectedTag == '' ||
+                      widget.selectedTag ==
+                          _helperWriteList[_selectedIndex].toString()) {
+                    widget.qnas.insert(
+                        0,
+                        QnaPostModel(
+                          id: res['questionResponse']['id'],
+                          title: res['questionResponse']['title'],
+                          author: res['questionResponse']['author'],
+                          content: res['questionResponse']['context'],
+                          category: res['questionResponse']['tag'],
+                          country: res['questionResponse']['country'],
+                          answerCount: 0,
+                          createdDate: res['questionResponse']['createdDate'],
+                        ));
+                  }
                   Navigator.pop(context);
                 } else {
                   makeToast("내용을 다 채워주세요");
