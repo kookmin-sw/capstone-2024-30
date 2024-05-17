@@ -7,6 +7,7 @@ public record UserProfileUpdateRequest(
         @NotBlank String name,
         @NotBlank String country,
         @Pattern(regexp = "[0-9]{10,11}") String phoneNumber,
-        @NotBlank String major
+        @NotBlank String major,
+        @NotBlank String bigmajor
 ) {
 }
