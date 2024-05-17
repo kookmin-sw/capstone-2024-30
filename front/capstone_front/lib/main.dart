@@ -59,6 +59,7 @@ late CafeteriaMenuModel menus;
 // 로그인 유저 정보
 String userName = '';
 String userMajor = '';
+String userBigMajor = '';
 String language = 'KO';
 
 // 언어를 설정해주고 로그인 정보를 불러오는 함수
@@ -109,6 +110,12 @@ Future<void> getUserInfo() async {
     userMajor = '';
   } else {
     userMajor = tmpUserMajor;
+  }
+  String? tmpUserBigMajor = (await storage.read(key: "userBigMajor"));
+  if (tmpUserBigMajor == null) {
+    userBigMajor = '';
+  } else {
+    userBigMajor = tmpUserBigMajor;
   }
 }
 

@@ -4,6 +4,7 @@ import 'package:capstone_front/screens/cafeteriaMenu/cafeteriaMenuScreen.dart';
 import 'package:capstone_front/screens/home/image_screen.dart';
 import 'package:capstone_front/screens/home/webview_screen.dart';
 import 'package:capstone_front/screens/notice/notice_screen.dart';
+import 'package:capstone_front/services/auth_service.dart';
 import 'package:capstone_front/services/login_service.dart';
 import 'package:capstone_front/services/notice_service.dart';
 import 'package:capstone_front/utils/bubble_painter2.dart';
@@ -120,7 +121,7 @@ class _HomeScreenState extends State<HomeScreen>
                                 ),
                                 const SizedBox(height: 15),
                                 Text(
-                                  userMajor,
+                                  '$userBigMajor  $userMajor',
                                 ),
                               ],
                             ),
@@ -469,6 +470,7 @@ class _HomeScreenState extends State<HomeScreen>
                   const SizedBox(height: 5),
                   ElevatedButton(
                     onPressed: () async {
+                      await AuthService.logout();
                       logout();
                       await storage.write(key: 'isLogin', value: 'false');
                       context.go('/login');
