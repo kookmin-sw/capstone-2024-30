@@ -107,7 +107,7 @@ class _HelperWriteScreenState extends State<QnaWriteScreen> {
                       ),
                       const SizedBox(height: 20),
                       Text(
-                        tr('사진'),
+                        tr('helper.picture'),
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,

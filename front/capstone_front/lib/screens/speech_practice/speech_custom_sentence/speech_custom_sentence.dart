@@ -93,7 +93,7 @@ class _SpeechCustomSentenceScreenState
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: const Text("취소"),
+                child: Text(tr("speech.cancel")),
               ),
             ),
             Container(
@@ -101,7 +101,7 @@ class _SpeechCustomSentenceScreenState
                 onPressed: () {
                   openAppSettings();
                 },
-                child: const Text("설정"),
+                child: Text(tr("speech.setting")),
               ),
             ),
           ],

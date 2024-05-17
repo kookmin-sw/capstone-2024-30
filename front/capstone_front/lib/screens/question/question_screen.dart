@@ -1,6 +1,7 @@
 import 'package:capstone_front/screens/faq/faq_screen.dart';
 import 'package:capstone_front/screens/qna/qna_list_screen/qna_list_screen.dart';
 import 'package:capstone_front/utils/search_screen.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -137,7 +138,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                   _performSearch(text);
                 },
                 decoration: InputDecoration(
-                  hintText: "검색어를 입력하세요",
+                  hintText: tr('qna.search_hint'),
                   border: InputBorder.none,
                   hintStyle: const TextStyle(
                     color: Color(0XFFd7d7d7),

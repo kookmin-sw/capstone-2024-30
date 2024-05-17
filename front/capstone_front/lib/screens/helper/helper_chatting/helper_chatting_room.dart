@@ -305,8 +305,8 @@ class _HelperChattingRoomState extends State<HelperChattingRoom> {
                         maxLines: 3,
                         controller: _textController,
                         textInputAction: TextInputAction.newline,
-                        decoration: const InputDecoration.collapsed(
-                          hintText: "채팅을 입력하세요",
+                        decoration: InputDecoration.collapsed(
+                          hintText: tr('helper.text_hint'),
                         ),
                         style: Theme.of(context).textTheme.bodySmall,
                         // onTap: () {

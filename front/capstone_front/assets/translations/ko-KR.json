@@ -67,7 +67,8 @@
     "use_chatbot": "챗봇 사용하기"
   },
   "cafeteria": {
-    "no_data": "미운영중입니다"
+    "no_data": "미운영중입니다",
+    "error_message": "에러가 발생하였습니다."
   },
   "weekday": {
     "mon": "월",
@@ -99,7 +100,9 @@
     "result_detail": "상세 분석 결과",
     "wrong_speech": "잘못된 발음",
     "omission": "생략",
-    "insertion": "삽입"
+    "insertion": "삽입",
+    "cancel": "취소",
+    "setting": "설정"
   },
   "chatbotScreen": {
     "chatbot": "챗봇",
@@ -124,7 +127,9 @@
     "write_complete": "작성 완료",
     "recruitment_complete": "모집 완료",
     "msg_already_recruitment_complete": "이미 모집이 완료되었습니다",
-    "msg_recruitment_complete": "모집이 완료되었습니다"
+    "msg_recruitment_complete": "모집이 완료되었습니다",
+    "picture": "사진",
+    "text_hint": "채팅을 입력하세요"
   },
   "qna": {
     "writetitle": "무엇을 물어보고 싶으세요?",
@@ -132,7 +137,8 @@
     "category_2": "대학생활",
     "category_3": "교직원안내",
     "category_4": "교수자",
-    "enter_comment": "댓글을 입력하세요"
+    "enter_comment": "댓글을 입력하세요",
+    "search_hint": "검색어를 입력하세요"
   },
   "college": {
     "글로벌인문ㆍ지역대학": "글로벌인문ㆍ지역대학",
