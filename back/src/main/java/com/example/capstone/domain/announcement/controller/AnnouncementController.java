@@ -52,7 +52,7 @@ public class AnnouncementController {
     })
     ResponseEntity<ApiResult<AnnouncementListWrapper>> getAnnouncementList(
             @Parameter(description = "공지사항 유형입니다. 입력하지 않으면 전체를 받아옵니다.")
-            @RequestParam(defaultValue = "all", value = "type") String type,
+            @RequestParam(defaultValue = "전체", value = "type") String type,
             @Parameter(description = "공지사항 언어입니다. 입력하지 않으면 한국어로 받아옵니다.")
             @RequestParam(defaultValue = "KO", value = "language") String language,
             @Parameter(description = "어디까지 로드됐는지 가르키는 커서입니다. 입력하지 않으면 처음부터 10개 받아옵니다.")
@@ -98,7 +98,7 @@ public class AnnouncementController {
     })
     ResponseEntity<ApiResult<AnnouncementListWrapper>> getAnnouncementSearchList(
             @Parameter(description = "공지사항 유형입니다. 입력하지 않으면 전체를 받아옵니다.")
-            @RequestParam(defaultValue = "all", value = "type") String type,
+            @RequestParam(defaultValue = "전체", value = "type") String type,
             @Parameter(description = "공지사항 언어입니다. 입력하지 않으면 한국어로 받아옵니다.")
             @RequestParam(defaultValue = "KO", value = "language") String language,
             @Parameter(description = "어디까지 로드됐는지 가르키는 커서입니다. 입력하지 않으면 처음부터 10개 받아옵니다.")
