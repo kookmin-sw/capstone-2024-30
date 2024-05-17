@@ -133,10 +133,11 @@
   },
   "qna": {
     "writetitle": "무엇을 물어보고 싶으세요?",
-    "category_1": "학사안내",
-    "category_2": "대학생활",
-    "category_3": "교직원안내",
-    "category_4": "교수자",
+    "category_1": "대학생활",
+    "category_2": "학업관련",
+    "category_3": "생활정보",
+    "category_4": "문화정보",
+    "category_5": "기숙사",
     "enter_comment": "댓글을 입력하세요",
     "search_hint": "검색어를 입력하세요"
   },

@@ -110,19 +110,23 @@ class QnaListScreenState extends State<QnaListScreen> {
                               const SizedBox(
                                 width: 15,
                               ),
-                              buildSelectableButton("학사안내"),
+                              buildSelectableButton(tr('qna.category_1')),
                               const SizedBox(
                                 width: 10,
                               ),
-                              buildSelectableButton("대학생활"),
+                              buildSelectableButton(tr('qna.category_2')),
                               const SizedBox(
                                 width: 10,
                               ),
-                              buildSelectableButton("교직원안내"),
+                              buildSelectableButton(tr('qna.category_3')),
                               const SizedBox(
                                 width: 10,
                               ),
-                              buildSelectableButton("교수자"),
+                              buildSelectableButton(tr('qna.category_4')),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              buildSelectableButton(tr('qna.category_5')),
                               const SizedBox(
                                 width: 15,
                               ),

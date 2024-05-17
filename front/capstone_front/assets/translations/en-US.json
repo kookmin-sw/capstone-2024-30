@@ -133,10 +133,11 @@
   },
   "qna": {
     "writetitle": "What do you want to ask?",
-    "category_1": "Academic Information",
-    "category_2": "Campus Life",
-    "category_3": "Staff Information",
-    "category_4": "Faculty",
+    "category_1": "Campus Life",
+    "category_2": "Academics",
+    "category_3": "Living Info",
+    "category_4": "Culture",
+    "category_5": "Dormitory",
     "enter_comment": "Enter your comment",
     "search_hint": "Enter search term"
   },
