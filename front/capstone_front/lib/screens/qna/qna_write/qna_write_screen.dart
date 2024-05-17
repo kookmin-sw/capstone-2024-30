@@ -30,6 +30,7 @@ class _HelperWriteScreenState extends State<QnaWriteScreen> {
     tr('qna.category_2'),
     tr('qna.category_3'),
     tr('qna.category_4'),
+    tr('qna.category_5'),
   ];
   int _selectedIndex = 0;
   final TextEditingController _titleController = TextEditingController();
@@ -43,6 +44,18 @@ class _HelperWriteScreenState extends State<QnaWriteScreen> {
   List<XFile> images = [];
   final int _maxPhotos = 4;
   int _currentPhotos = 0;
+
+  Map<String, String> tagMap = {
+    "Campus Life": "대학생활",
+    "Academics": "학업관련",
+    "Living Info": "생활정보",
+    "Culture": "문화정보",
+    "Dormitory": "기숙사"
+  };
+
+  String convertTagToKorean(String tag) {
+    return tagMap[tag] ?? tag;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -212,19 +225,6 @@ class _HelperWriteScreenState extends State<QnaWriteScreen> {
               onPressed: () async {
                 if (_titleController.text != "" &&
                     _contentController.text != "") {
-                  var articleInfo = {
-                    "title": _titleController.text,
-                    "content": _contentController.text,
-                    "author": "messi",
-                    "category": "temp",
-                    "country": "korea",
-                  };
-
-                  // TODO 글쓴 정보들로 글쓰기 post 보내기
-                  // id를 리턴받아서 qnas list에 넣기
-                  // Map<String, dynamic> res =
-                  //     await QnaService.createQnaPost(articleInfo, images);
-
                   FlutterSecureStorage storage = const FlutterSecureStorage();
 
                   var author = await storage.read(key: "userName");
@@ -233,7 +233,8 @@ class _HelperWriteScreenState extends State<QnaWriteScreen> {
                     "title": _titleController.text,
                     "author": author,
                     "context": _contentController.text,
-                    "tag": _helperWriteList[_selectedIndex].toString(),
+                    "tag": convertTagToKorean(
+                        _helperWriteList[_selectedIndex].toString()),
                     "country": country,
                   };
                   var res = await QnaService.createQnaPost(qnaPost, images);
