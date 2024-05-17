@@ -11,16 +11,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
-GlobalKey<_QnaListScreenState> qnaListScreenGlobalKey = GlobalKey();
+GlobalKey<QnaListScreenState> qnaListScreenGlobalKey = GlobalKey();
 
 class QnaListScreen extends StatefulWidget {
   const QnaListScreen({super.key});
 
   @override
-  State<QnaListScreen> createState() => _QnaListScreenState();
+  State<QnaListScreen> createState() => QnaListScreenState();
 }
 
-class _QnaListScreenState extends State<QnaListScreen> {
+class QnaListScreenState extends State<QnaListScreen> {
   final _controller = TextEditingController();
 
   List<QnaPostModel> qnas = [];
@@ -73,13 +73,10 @@ class _QnaListScreenState extends State<QnaListScreen> {
       } else {
         selectedTag = tag;
       }
-    });
-    setState(() {
       qnas = [];
       cursor = 0;
       hasNext = true;
       itemCount = 0;
-      word = null;
     });
     loadQnas(0, selectedTag, word);
   }
@@ -190,7 +187,10 @@ class _QnaListScreenState extends State<QnaListScreen> {
               onPressed: () async {
                 var result = await context.push(
                   '/qnawrite',
-                  extra: qnas,
+                  extra: {
+                    'selectedTag': selectedTag,
+                    'qnas': qnas,
+                  },
                 );
                 setState(() {});
               },
@@ -215,10 +215,10 @@ class _QnaListScreenState extends State<QnaListScreen> {
       },
       style: ElevatedButton.styleFrom(
         elevation: 0,
-        foregroundColor: isSelected ? Colors.white : const Color(0xff6E2FF4),
-        backgroundColor: isSelected ? const Color(0xff6E2FF4) : Colors.white,
+        foregroundColor: isSelected ? Colors.white : const Color(0xFF8266DF),
+        backgroundColor: isSelected ? const Color(0xFF8266DF) : Colors.white,
         side: const BorderSide(
-          color: Color(0xff6E2FF4),
+          color: Color(0xFF8266DF),
           width: 1,
         ),
         shape: RoundedRectangleBorder(
@@ -228,103 +228,11 @@ class _QnaListScreenState extends State<QnaListScreen> {
       child: Text(
         tag,
         style: TextStyle(
-          color: isSelected ? Colors.white : const Color(0xff6E2FF4),
+          color: isSelected ? Colors.white : const Color(0xFF8266DF),
           fontSize: 16,
           fontWeight: FontWeight.w700,
         ),
       ),
-    );
-  }
-}
-
-class MyCustomBottomSheet extends StatefulWidget {
-  const MyCustomBottomSheet({super.key});
-
-  @override
-  _MyCustomBottomSheetState createState() => _MyCustomBottomSheetState();
-}
-
-class _MyCustomBottomSheetState extends State<MyCustomBottomSheet> {
-  bool productInfo = false;
-  bool ingredientInfo = false;
-  bool nutritionAnalysis = false;
-  bool others = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min, // 컨텐츠 크기에 맞춰 조정
-      children: <Widget>[
-        Text(
-          tr('qna.writetitle'),
-          style: const TextStyle(fontSize: 24.0, fontWeight: FontWeight.w700),
-        ),
-        const SizedBox(
-          height: 30,
-        ),
-        CheckboxListTile(
-          title: Text(tr('qna.category_1')),
-          value: productInfo,
-          activeColor: Theme.of(context).primaryColor,
-          checkColor: Colors.white,
-          onChanged: (bool? value) {
-            setState(() {
-              productInfo = value!;
-            });
-          },
-        ),
-        const Divider(
-          color: Color(0xFFc9c9c9),
-        ),
-        CheckboxListTile(
-          title: Text(tr('qna.category_2')),
-          value: ingredientInfo,
-          activeColor: Theme.of(context).primaryColor,
-          checkColor: Colors.white,
-          onChanged: (bool? value) {
-            setState(() {
-              ingredientInfo = value!;
-            });
-          },
-        ),
-        const Divider(
-          color: Color(0xFFc9c9c9),
-        ),
-        CheckboxListTile(
-          title: Text(tr('qna.category_3')),
-          value: nutritionAnalysis,
-          activeColor: Theme.of(context).primaryColor,
-          checkColor: Colors.white,
-          onChanged: (bool? value) {
-            setState(() {
-              nutritionAnalysis = value!;
-            });
-          },
-        ),
-        const Divider(
-          color: Color(0xFFc9c9c9),
-        ),
-        CheckboxListTile(
-          title: Text(tr('qna.category_4')),
-          value: others,
-          activeColor: Theme.of(context).primaryColor,
-          checkColor: Colors.white,
-          onChanged: (bool? value) {
-            setState(() {
-              others = value!;
-            });
-          },
-        ),
-        const SizedBox(
-          height: 30,
-        ),
-        BasicButton(
-          text: "선택완료",
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-      ],
     );
   }
 }
