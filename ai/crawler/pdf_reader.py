@@ -19,7 +19,8 @@ class PdfReader:
         pages = loader.load()
         print('-- start --')
         total_pdf = []
-        for page_no in tqdm(range(10)):
+        print(type(pages[0]))
+        for page_no in tqdm(range(len(pages))):
             doc = pages[page_no]
             doc.page_content = doc.page_content.replace(u"\xa0", u" ")
             doc.page_content = doc.page_content.replace("·", "")
@@ -27,4 +28,6 @@ class PdfReader:
                 total_pdf.append(doc)
         with open(path+name+'.pkl', 'wb') as f:
             pickle.dump(total_pdf, f)
-        print(total_pdf)
+
+tmp = PdfReader()
+tmp.read_pdf('./2023+국민대학교+요람.pdf')
