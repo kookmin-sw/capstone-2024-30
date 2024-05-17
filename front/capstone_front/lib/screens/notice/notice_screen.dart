@@ -17,8 +17,11 @@ class NoticeScreen extends StatefulWidget {
   State<NoticeScreen> createState() => _NoticeScreenState();
 }
 
+FlutterSecureStorage storage = const FlutterSecureStorage();
+
 class _NoticeScreenState extends State<NoticeScreen> {
   String selectedItem = 'all';
+  String selectedItemToView = 'all';
   // final _controller = TextEditingController();
 
   List<NoticeModel> notices = [];
@@ -62,6 +65,17 @@ class _NoticeScreenState extends State<NoticeScreen> {
     } catch (e) {
       print(e);
       throw Exception('error');
+    }
+  }
+
+  String translateTagOtherToKo(String ohterTag, String nowLanguage) {
+    switch (nowLanguage) {
+      case 'EN-US':
+        return noticeMapperEnToKo[ohterTag] ?? ohterTag;
+      case 'ZH':
+        return noticeMapperZhToKo[ohterTag] ?? ohterTag;
+      default:
+        return ohterTag;
     }
   }
 
@@ -202,7 +216,9 @@ class _NoticeScreenState extends State<NoticeScreen> {
                                   (item) => ListTile(
                                     onTap: () {
                                       setState(() {
-                                        selectedItem = item;
+                                        selectedItemToView = item;
+                                        selectedItem = translateTagOtherToKo(
+                                            item, language);
                                         notices = [];
                                         itemCount = 0;
                                         _word = '';
@@ -233,7 +249,7 @@ class _NoticeScreenState extends State<NoticeScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        selectedItem,
+                        selectedItemToView,
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
