@@ -32,6 +32,7 @@ class QnaListScreenState extends State<QnaListScreen> {
   int itemCount = 0;
   String? word;
   String? selectedTag;
+  String? selectedTagForView;
   String? language;
 
   Map<String, String> tagMapEn = {
@@ -133,10 +134,12 @@ class QnaListScreenState extends State<QnaListScreen> {
   void selectTag(String tag) {
     tag = translateTagOtherToKo(tag, language!);
     setState(() {
-      if (selectedTag == tag) {
+      if (selectedTagForView == tag) {
+        selectedTagForView = '';
         selectedTag = '';
       } else {
         selectedTag = tag;
+        selectedTagForView = tag;
       }
       qnas = [];
       cursor = 0;
@@ -278,7 +281,8 @@ class QnaListScreenState extends State<QnaListScreen> {
   }
 
   Widget buildSelectableButton(String tag) {
-    final bool isSelected = selectedTag == tag;
+    final bool isSelected =
+        selectedTagForView == translateTagOtherToKo(tag, language ?? "KO");
     return ElevatedButton(
       onPressed: () {
         selectTag(tag);
