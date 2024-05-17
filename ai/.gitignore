@@ -3,7 +3,7 @@
 .env
 *.zip
 *.pyc
-__pycache__
+__pycache__/*
 data/
 cap30.pem
 chatbot.pem
