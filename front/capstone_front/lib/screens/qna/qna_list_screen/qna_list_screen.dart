@@ -215,8 +215,8 @@ class QnaListScreenState extends State<QnaListScreen> {
       },
       style: ElevatedButton.styleFrom(
         elevation: 0,
-        foregroundColor: isSelected ? Colors.white : const Color(0xff6E2FF4),
-        backgroundColor: isSelected ? const Color(0xff6E2FF4) : Colors.white,
+        foregroundColor: isSelected ? Colors.white : const Color(0xFF8266DF),
+        backgroundColor: isSelected ? const Color(0xFF8266DF) : Colors.white,
         side: const BorderSide(
           color: Color(0xff6E2FF4),
           width: 1,
@@ -228,7 +228,7 @@ class QnaListScreenState extends State<QnaListScreen> {
       child: Text(
         tag,
         style: TextStyle(
-          color: isSelected ? Colors.white : const Color(0xff6E2FF4),
+          color: isSelected ? Colors.white : const Color(0xFF8266DF),
           fontSize: 16,
           fontWeight: FontWeight.w700,
         ),
