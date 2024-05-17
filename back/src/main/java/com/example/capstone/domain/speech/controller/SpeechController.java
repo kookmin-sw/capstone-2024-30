@@ -3,6 +3,7 @@ package com.example.capstone.domain.speech.controller;
 import com.example.capstone.domain.speech.dto.SpeechRequest;
 import com.example.capstone.domain.speech.service.SpeechService;
 import com.example.capstone.global.dto.ApiResult;
+import com.example.capstone.global.util.Timer;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ import java.util.concurrent.ExecutionException;
 public class SpeechController {
     private final SpeechService speechService;
 
+    @Timer
     @PostMapping(value = "/test",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "발음평가 매서드", description = "발음평가 음성파일(.wav)과 비교문을 통해 발음평가 결과를 반환합니다.")

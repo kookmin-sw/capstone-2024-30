@@ -4,6 +4,7 @@ import com.example.capstone.domain.qna.dto.*;
 import com.example.capstone.domain.qna.service.AnswerService;
 import com.example.capstone.domain.like.service.LikeService;
 import com.example.capstone.global.dto.ApiResult;
+import com.example.capstone.global.util.Timer;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -19,6 +20,7 @@ public class AnswerController {
     private final AnswerService answerService;
     private final LikeService likeService;
 
+    @Timer
     @PostMapping("/create")
     @Operation(summary = "댓글 생성", description = "request 정보를 기반으로 댓글을 생성합니다.")
     @ApiResponse(responseCode = "200", description = "생성된 댓글을 반환합니다.")
@@ -30,6 +32,7 @@ public class AnswerController {
                 .ok(new ApiResult<>("Successfully create answer",answer));
     }
 
+    @Timer
     @PostMapping("/list")
     @Operation(summary = "댓글 리스트 생성", description = "request 정보를 기반으로 댓글의 리스트를 생성합니다.")
     @ApiResponse(responseCode = "200", description = "request 정보를 기반으로 생성된 댓글의 리스트가 반환됩니다.")
@@ -41,6 +44,7 @@ public class AnswerController {
                 .ok(new ApiResult<>("Successfully create answer list", response));
     }
 
+    @Timer
     @PutMapping("/update")
     @Operation(summary = "댓글 수정", description = "request 정보를 기반으로 댓글을 수정합니다.")
     @ApiResponse(responseCode = "200", description = "완료시 200을 반환됩니다.")
@@ -52,6 +56,7 @@ public class AnswerController {
                 .ok(new ApiResult<>("Successfully update answer", 200));
     }
 
+    @Timer
     @DeleteMapping("/erase")
     @Operation(summary = "질문글 삭제", description = "댓글 id를 통해 해당글을 삭제합니다.")
     @ApiResponse(responseCode = "200", description = "완료시 200이 반환됩니다.")
@@ -62,6 +67,7 @@ public class AnswerController {
                 .ok(new ApiResult<>("Successfully delete answer", 200));
     }
 
+    @Timer
     @PutMapping("/like")
     @Operation(summary = "댓글 추천", description = "해당 id의 댓글을 추천합니다. 현재 추천 댓글 여부를 관리하지 않습니다.")
     @ApiResponse(responseCode = "200", description = "완료시 200을 반환합니다.")
@@ -75,6 +81,7 @@ public class AnswerController {
                 .ok(new ApiResult<>("Successfully like answer", 200));
     }
 
+    @Timer
     @PutMapping("/unlike")
     @Operation(summary = "댓글 추천 해제", description = "해당 id의 댓글을 추천 해제합니다. 현재 추천 댓글 여부를 관리하지 않습니다.")
     @ApiResponse(responseCode = "200", description = "완료시 200을 반환합니다.")
