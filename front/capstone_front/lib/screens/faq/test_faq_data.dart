@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+
 final Map<String, List<Map<String, dynamic>>> faqs = {
   'major': majorFaq,
   'doubleMajor': doubleMajorFaq,
@@ -61,318 +63,415 @@ final Map<String, List<Map<String, dynamic>>> faqs = {
   'specializationPlan': specializationPlanFaq,
 };
 
+final Map<String, String> faqsEnToFormEn = {
+  'Major': 'major',
+  'Double Major': 'doubleMajor',
+  'Teaching Certification': 'teachingCertification',
+  'Engineering Certification': 'engineeringCertification',
+  'Course Registration Guide': 'courseRegistrationGuide',
+  'Class Schedule': 'classSchedule',
+  'Grades': 'grades',
+  'Semester System': 'semesterSystem',
+  'Field Practice': 'fieldPractice',
+  'ICT Credit Linkage': 'ictCreditLinkage',
+  'Seoul City Internship': 'seoulCityInternship',
+  'Eastsoft Field Practice': 'eastsoftFieldPractice',
+  'Current Student Job Experience': 'currentStudentJobExperience',
+  'Employment Linked Internship': 'employmentLinkedInternship',
+  'LINC Project Field Practice': 'lincProjectFieldPractice',
+  'Tuition Payment': 'tuitionPayment',
+  'Tuition Refund': 'tuitionRefund',
+  'Registration Document Issuance': 'registrationDocumentIssuance',
+  'Exceeding Course Duration Tuition':
+      'criteriaForTuitionCalculationForExceedingCourseDuration',
+  'Academic Records': 'academicRecords',
+  'Leave Of Absence': 'leaveOfAbsence',
+  'Return From Leave Of Absence': 'returnFromLeaveOfAbsence',
+  'Completion Of Academic Program': 'completionOfAcademicProgram',
+  'Graduation Thesis': 'graduationThesis',
+  'Graduation Certification System': 'graduationCertificationSystem',
+  'On Campus Scholarships': 'onCampusScholarships',
+  'Off Campus Scholarships': 'offCampusScholarships',
+  'National Scholarships': 'nationalScholarships',
+  'Student Loans': 'studentLoans',
+  'Prevention Overlapping Financial': 'preventionOfOverlappingFinancialAid',
+  'Employment': 'employment',
+  'Entrepreneurship': 'entrepreneurship',
+  'Military Service Guidance': 'militaryServiceGuidance',
+  'Reserve Forces Guidance': 'reserveForcesGuidance',
+  'Assignment Application Change': 'assignmentApplicationChange',
+  'Support Fund Settlement': 'supportFundSettlement',
+  'Support Fund Expenditure': 'supportFundExpenditure',
+  'Exchange Student Program': 'exchangeStudentProgram',
+  'Visiting Student Program': 'visitingStudentProgram',
+  'Double Degree': 'doubleDegree',
+  'Short Term Language Study Abroad': 'shortTermLanguageStudyAbroad',
+  'Student Global Engagement': 'studentGlobalEngagement',
+  'Undergraduate Student': 'undergraduateStudent',
+  'Student Event': 'studentEvent',
+  'Undergraduate Department Office': 'undergraduateDepartmentOffice',
+  'Student Counseling Center': 'studentCounselingCenter',
+  'Learning Method Seminar': 'learningMethodSeminar',
+  'Learning Volunteer Peer Tutor': 'learningVolunteerPeerTutor',
+  'Learning Counseling And Clinic': 'learningCounselingAndClinic',
+  'Library': 'library',
+  'On Campus Welfare Facilities': 'onCampusWelfareFacilities',
+  'Classroom Usage': 'classroomUsage',
+  'Item Rental': 'itemRental',
+  'Website': 'website',
+  'Educational Objectives': 'educationalObjectives',
+  'Educational Philosophy': 'educationalPhilosophy',
+  'Ideal Student Profile': 'idealStudentProfile',
+  'KMU Vision 2030 Plus': 'kmuVision2030Plus',
+  'Specialization Plan': 'specializationPlan',
+};
+
 final List<Map<String, dynamic>> majorFaq = [
   {
-    'title': '전부(과) 지원범위, 이수방법은?',
-    'content':
-        """"1. 지원자격 - 학칙 제38조에서 정한 1학년 과정 이상의 학점을 취득한 5차 학기 전 재학생/휴학생 □ 1학년 수료인정 학점기준 - 글로벌인문지역/사과/경상/조형/예술/경영(기업경영，KIS제외) : 33학점 이상 - 법과(기업융합법학부제외)/창의공과/과학기술/체육//건축/자동차융합대학 : 34학점 이상 - 경영대학 기업경영/KIS학부， 법과대학 기업융학법학부 : 30학점 이상 2. 지원범위 - 계열 제한 없이 전 학부(과)에 지원가능 (단， 교육학과 제외) - 주간/야간 교차지원 불가， 입학당시 모집단위가 같은 동일학부 내에서의 전공 변경지원 불가 - 전부과는 1개의 학(부)과에만 지원 가능함(복수지원 불가) 3. 지원서 제출방법 - 종합정보시스템 로그인 후 – 학적정보 - “전부(과)신청”에서 해당사항 입력 후 저장 - 지원자의 사진은 별도제출 받지 않으며， 학적부에 등록된 사진으로 대체 - “자기소개서”는 구술고사 또는 면접고사를 실시하는 학부(과) 지원자만 작성 4. 참고사항 가. 최종 승인이 되면 원래 학적으로 돌아갈 수 없음. 나. 계절학기까지 취득한 총 평점평균 성적에 따라 평가 함.(당해년도 신입생 지원가능) 다. 전부(과) 합격자는 합격발표와 동시에 학적이 변경되며， 이에 따라 등록금 고지가 변경 됨. ※ 전부과 지원전 매년 공지되는 전부과 전형안내 공지를 반드시 참고 하시기 바랍니다."""
+    'title': '전부(과) 지원 범위, 이수 방법은?',
+    'content': """
+1. 지원 자격 - 학칙 제38조에서 정한 1학년 과정 이상의 학점을 취득한 5차 학기 전 재학생/휴학생
+- 1학년 수료 인정 학점 기준:
+  - 글로벌인문지역/사과/경상/조형/예술/경영(기업경영, KIS 제외): 33학점 이상
+  - 법과(기업융합법학부 제외)/창의공과/과학기술/체육/건축/자동차융합대학: 34학점 이상
+  - 경영대학 기업경영/KIS학부, 법과대학 기업융합법학부: 30학점 이상
+
+2. 지원 범위
+- 계열 제한 없이 전 학부(과)에 지원 가능 (단, 교육학과 제외)
+- 주간/야간 교차 지원 불가, 입학 당시 모집 단위가 같은 동일 학부 내에서의 전공 변경 지원 불가
+- 전부(과)는 1개의 학(부)과에만 지원 가능 (복수 지원 불가)
+
+3. 지원서 제출 방법
+- 종합정보시스템 로그인 후 – 학적 정보 - “전부(과) 신청”에서 해당 사항 입력 후 저장
+- 지원자의 사진은 별도 제출 받지 않으며, 학적부에 등록된 사진으로 대체
+- “자기소개서”는 구술고사 또는 면접고사를 실시하는 학부(과) 지원자만 작성
+
+4. 참고 사항
+가. 최종 승인이 되면 원래 학적으로 돌아갈 수 없음.
+나. 계절 학기까지 취득한 총 평점 평균 성적에 따라 평가 함. (당해년도 신입생 지원 가능)
+다. 전부(과) 합격자는 합격 발표와 동시에 학적이 변경되며, 이에 따라 등록금 고지가 변경 됨.
+※ 전부(과) 지원 전 매년 공지되는 전부(과) 전형 안내 공지를 반드시 참고하시기 바랍니다.
+""",
   },
   {
-    'title': '전부(과) 지원자격이 어떻게 되나요?',
-    'content':
-        """지원자격 - 학칙 제38조에서 정한 1학년 과정 이상의 학점을 취득한 5차학기 전 재학생(단, 휴학생의 경우 전부 (과) 승인학기에 복학하는 학생은 지원가능) - 1학년 수료인정 학점 기준 * 글로벌인문지역/사과/경상/조형/예술/경영대학 (기업경영, KIS제외) : 33학점 이상 * 법과(기업융합법학과 제외)/창의공과/과학기술/ 체육/소프트웨어융합/건축/자동차융합대학 재학생 : 34학점 이상 * 기업융합법학과/기업경영학부/KIS학부 재학생 : 30학점 이상""",
+    'title': '전부(과) 지원 자격이 어떻게 되나요?',
+    'content': """
+지원 자격
+- 학칙 제38조에서 정한 1학년 과정 이상의 학점을 취득한 5차 학기 전 재학생 (단, 휴학생의 경우 전부(과) 승인 학기에 복학하는 학생은 지원 가능)
+- 1학년 수료 인정 학점 기준:
+  * 글로벌인문지역/사과/경상/조형/예술/경영대학 (기업경영, KIS 제외): 33학점 이상
+  * 법과(기업융합법학과 제외)/창의공과/과학기술/체육/소프트웨어융합/건축/자동차융합대학 재학생: 34학점 이상
+  * 기업융합법학과/기업경영학부/KIS학부 재학생: 30학점 이상
+""",
   },
 ];
 
 final List<Map<String, dynamic>> doubleMajorFaq = [
   {
     'title': '부전공은 어떤 제도인가요?',
-    'content':
-        """제1전공 이외의 다른 전공이나 다른 학부(학과)의 전공과목을 21학점 이상(각 학과(전공)별 부전공 이수 요건 확인 요망) 이수한 자에게는 이를 부전공으로 인정함. LINK: 키를 누른 채 클릭합니다.">https://www.kookmin.ac.kr/comm/menu/user/0dbbd0998b720f892d00562f7fa78428/content/index.do""",
+    'content': """
+제1전공 이외의 다른 전공이나 다른 학부(학과)의 전공과목을 21학점 이상 (각 학과(전공)별 부전공 이수 요건 확인 요망) 이수한 자에게는 이를 부전공으로 인정함.
+LINK: https://www.kookmin.ac.kr/comm/menu/user/0dbbd0998b720f892d00562f7fa78428/content/index.do
+""",
   },
   {
     'title': '다전공, 복수전공은 어떤 것인가요?',
-    'content':
-        """다전공 정의 - 제1전공 이외에 다른 전공(학과) 또는 연계전공과정을 이수한 학생에게는 이를 다전공(제2전공， 제3전공， 연계전공)으로 인정하고，각각의 학사학위를 수여함. 연계전공이란 동일한 계열 내에서 둘 이상의 전공(학부 또는 학과)이 연계하여 제공하는 전공을 말함. - 융합전공이란 상이한 계열(인문사회， 공학， 이학， 예체능 등 서로 다른 계열)의 둘 이상의 전공이 연계하여 제공하는 전공 LINK: 키를 누른 채 클릭합니다.">https://www.kookmin.ac.kr/comm/menu/user/0d6f69373dd19f5c29bf96eae7bc01e1/content/index.do"""
-  },
-  {
-    'title': '연계전공이란 어떤 것인지요?',
     'content': """
-      다전공의 하나이며， 기존의 제2， 제3전공이 단일 전공이었다면 연계·융합전공은 둘 이상의 전공(학과)이 연계하여 제공하는 전공입니다. · 연계융합전공을 다·부전공으로 신청가능하며 해당기간에 주관학과에 방문신청하시기 바랍니다. LINK: 키를 누른 채 클릭합니다.">https://hat.kookmin.ac.kr/""",
+다전공 정의 - 제1전공 이외에 다른 전공(학과) 또는 연계전공과정을 이수한 학생에게는 이를 다전공(제2전공, 제3전공, 연계전공)으로 인정하고, 각각의 학사학위를 수여함.
+연계전공이란 동일한 계열 내에서 둘 이상의 전공(학부 또는 학과)이 연계하여 제공하는 전공을 말함.
+융합전공이란 상이한 계열(인문사회, 공학, 이학, 예체능 등 서로 다른 계열)의 둘 이상의 전공이 연계하여 제공하는 전공.
+LINK: https://www.kookmin.ac.kr/comm/menu/user/0d6f69373dd19f5c29bf96eae7bc01e1/content/index.do
+""",
   },
   {
-    'title': '연계융합전공을 2개 신청할수 있나요?',
-    'content':
-        """"학생들이 최대 이수 가능한 전공은 제1전공 이외에 다전공2개, 연계융합전공 1개, 부전공 1개(연계융합전공포함)입니다. 연계융합전공은 다전공으로 2개신청은 할수 없습니다.""",
+    'title': '연계전공이란 어떤 것인가요?',
+    'content': """
+다전공의 하나이며, 기존의 제2, 제3전공이 단일 전공이었다면 연계·융합전공은 둘 이상의 전공(학과)이 연계하여 제공하는 전공입니다.
+연계융합전공을 다·부전공으로 신청 가능하며 해당 기간에 주관 학과에 방문 신청하시기 바랍니다.
+LINK: https://hat.kookmin.ac.kr/
+""",
   },
   {
-    'title': '연계융합전공 신청시기와 방법을 알고 싶어요?',
-    'content':
-        """"1.연계융합전공은 다전공의 하나로, 매학기 다전공 신청기간에 종합정보시스템에서 신청할수 있습니다.( 매학기 4월, 10월 중 공지)
-2. 현재 승인되어 있는 자기설계융합전공은 융합전공으로 다전공신청기간에 종합정보시스템에서 신청가능합니다.
-
-
-LINK:
-
-키를 누른 채 클릭합니다.">https://hat.kookmin.ac.kr/link/intro https://hat.kookmin.ac.kr/fusion/intro""",
+    'title': '연계융합전공을 2개 신청할 수 있나요?',
+    'content': """
+학생들이 최대 이수 가능한 전공은 제1전공 이외에 다전공 2개, 연계융합전공 1개, 부전공 1개(연계융합전공 포함)입니다.
+연계융합전공은 다전공으로 2개 신청할 수 없습니다.
+""",
   },
   {
-    'title': '자기설계융합전공 신청시기와 방법',
-    'content': """"자기설계융합전공은 매학년도 1학기에 신청가능하며 신청대상
-은 총 평점평균이 3.0이상으로, 3차~6차학기 재학중인 개인 또는 그룹입니다. 신청 후 심의과정을 거쳐 승인 후 결과를 통보해드립니다.
-
-
-LINK:
-
-키를 누른 채 클릭합니다.">https://hat.kookmin.ac.kr/major/intro""",
+    'title': '연계융합전공 신청 시기와 방법을 알고 싶어요?',
+    'content': """
+1. 연계융합전공은 다전공의 하나로, 매 학기 다전공 신청 기간에 종합정보시스템에서 신청할 수 있습니다. (매 학기 4월, 10월 중 공지)
+2. 현재 승인되어 있는 자기설계융합전공은 융합전공으로 다전공 신청 기간에 종합정보시스템에서 신청 가능합니다.
+LINK: https://hat.kookmin.ac.kr/link/intro https://hat.kookmin.ac.kr/fusion/intro
+""",
   },
   {
-    'title': '연계융합전공의 중복학점 문의',
-    'content': """"1. 연계전공의 경우는 다전공의 경우만 제1전공과 최대 15학점
-중복인정이 되며, 부전공의 경우는 중복인정학점이 없습니다.
-2. 융합전공의 경우 다전공의 경우 제1전공과 최대 12학점, 부전공의 경우 제1전공과 최대 6학점 중복인정이 됩니다.
-
-
-LINK:
-
-키를 누른 채 클릭합니다.">https://hat.kookmin.ac.kr/link/intro https://hat.kookmin.ac.kr/fusion/intro""",
+    'title': '자기설계융합전공 신청 시기와 방법',
+    'content': """
+자기설계융합전공은 매 학년도 1학기에 신청 가능하며 신청 대상은 총 평점 평균이 3.0 이상으로, 3차~6차 학기 재학 중인 개인 또는 그룹입니다.
+신청 후 심의 과정을 거쳐 승인 후 결과를 통보해드립니다.
+LINK: https://hat.kookmin.ac.kr/major/intro
+""",
   },
   {
-    'title': '자기설계융합전공의 최소이수학점은 무엇인가요?',
-    'content': """"자기설계융합전공 참여학과 최소이수학점은 총 36학점 중에서
-각 그룹별 기본적으로 이수해야하는 학점입니다. 예를들어 교과목 그룹 또는 참여학과(전공)가 3개일 경우 최소이수학접이 그룹별 9학점이상이라는 것은, 각 그룹에서 9학점씩 3그룹에서 이수하고(27학점) 나머지 학점은(9학점) 본인이 원하는 그룹에서 이수하면 됩니다.
-
-
-LINK:
-
-키를 누른 채 클릭합니다.">https://hat.kookmin.ac.kr/major/approval""",
+    'title': '연계융합전공의 중복 학점 문의',
+    'content': """
+1. 연계전공의 경우는 다전공의 경우만 제1전공과 최대 15학점 중복 인정이 되며, 부전공의 경우는 중복 인정 학점이 없습니다.
+2. 융합전공의 경우 다전공의 경우 제1전공과 최대 12학점, 부전공의 경우 제1전공과 최대 6학점 중복 인정이 됩니다.
+LINK: https://hat.kookmin.ac.kr/link/intro https://hat.kookmin.ac.kr/fusion/intro
+""",
+  },
+  {
+    'title': '자기설계융합전공의 최소 이수 학점은 무엇인가요?',
+    'content': """
+자기설계융합전공 참여 학과 최소 이수 학점은 총 36학점 중에서 각 그룹별 기본적으로 이수해야 하는 학점입니다.
+예를 들어 교과목 그룹 또는 참여 학과(전공)가 3개일 경우 최소 이수 학점이 그룹별 9학점 이상이라는 것은, 각 그룹에서 9학점씩 3그룹에서 이수하고(27학점) 나머지 학점은(9학점) 본인이 원하는 그룹에서 이수하면 됩니다.
+LINK: https://hat.kookmin.ac.kr/major/approval
+""",
   },
   {
     'title': '연계융합전공 교육과정표를 알고 싶어요.',
-    'content':
-        """"매학년도 개설된 교육과정을 반영한 연계융합전공교육과정표는 학교홈페이지-> 학교소개 -> 요람규정집 -> 요람에서 확인할수 있습니다.
-
-
-LINK:
-
-키를 누른 채 클릭합니다.">https://www.kookmin.ac.kr/user/unIntr/unSttu/pdfCmmn/cradle/index.do""",
+    'content': """
+매 학년도 개설된 교육과정을 반영한 연계융합전공 교육과정표는 학교 홈페이지 -> 학교 소개 -> 요람 규정집 -> 요람에서 확인할 수 있습니다.
+LINK: https://www.kookmin.ac.kr/user/unIntr/unSttu/pdfCmmn/cradle/index.do
+""",
   },
   {
-    'title': '연계융합전공 이수 구분 정정관련 문의',
-    'content':
-        """"연계융합전공의 이수구분 정정은 졸업사정때 최종적으로 이루어집니다. 본인의 이수학점에 관한 문의는 인문기술융합학부에서 확인해드립니다.""",
+    'title': '연계융합전공 이수 구분 정정 관련 문의',
+    'content': """
+연계융합전공의 이수 구분 정정은 졸업 사정 때 최종적으로 이루어집니다. 본인의 이수 학점에 관한 문의는 인문기술융합학부에서 확인해드립니다.
+""",
   },
   {
-    'title': '연계융합전공 신청 후 부전공으로 변경가능한지요?',
-    'content': """"네, 다전공 포기 기간에 포기 승인 후 부전공 신청이 가능합니다.
-
-
-LINK:
-
-키를 누른 채 클릭합니다.">https://hat.kookmin.ac.kr/link/intro https://hat.kookmin.ac.kr/fusion/intro""",
+    'title': '연계융합전공 신청 후 부전공으로 변경 가능한가요?',
+    'content': """
+네, 다전공 포기 기간에 포기 승인 후 부전공 신청이 가능합니다.
+LINK: https://hat.kookmin.ac.kr/link/intro https://hat.kookmin.ac.kr/fusion/intro
+""",
   },
 ];
 
 final List<Map<String, dynamic>> teachingCertificationFaq = [
   {
-    'title': '교직과정의 신청, 자격 및 선발',
-    'content':
-        """교직과정을 이수하기 위해서는 학생의 소속 학부(과) 및 전공에 교직과정이 설치되어야 합니다. 2학년에 반드시 교직과정이수신청서를 제출하여야 합니다. 교직과정이수신청은 3차학기 또는 4차학기 중에 1회에 한하여 신청이 가능하며 매 학년도 10월에 교직과정이수신청을 받습니다. 교직이수예정자 선발은 이수신청서를 제출한 학생 중 성적 및 면접점수를 통하여 2학년 말에 선발합니다(매년 2월 말 확정). 기타 자세한 사항은 교직과정홈페이지 http://teaching.kookmin.ac.kr/를 참고하시기 바랍니다. LINK: 키를 누른 채 클릭합니다.">teaching.kookmin.ac.kr""",
+    'title': '교직 과정의 신청, 자격 및 선발',
+    'content': """
+교직 과정을 이수하기 위해서는 학생의 소속 학부(과) 및 전공에 교직 과정이 설치되어야 합니다.
+2학년에 반드시 교직과정이수신청서를 제출하여야 합니다.
+교직과정이수신청은 3차 학기 또는 4차 학기 중에 1회에 한하여 신청이 가능하며 매 학년도 10월에 교직과정이수신청을 받습니다.
+교직이수예정자 선발은 이수신청서를 제출한 학생 중 성적 및 면접 점수를 통하여 2학년 말에 선발합니다(매년 2월 말 확정).
+기타 자세한 사항은 교직 과정 홈페이지 http://teaching.kookmin.ac.kr/를 참고하시기 바랍니다.
+LINK: teaching.kookmin.ac.kr
+""",
   },
 ];
 
-// 너무 많음.. 나중에 파일 분리 해야함
+// 너무 많음.. 나중에 파일 분리해야 함
 final List<Map<String, dynamic>> engineeringCertificationFaq = [
   {
     'title': '설계 과목이 뭔가요?',
-    'content':
-        """"설계 교과목이란 공학인증 내에서 별도로 관리되는 설계 학점을 부여받은 교과목으로, 설계 학점은 교과목 학점과 다를 수 있습니다.
-설계 교과목은 [기초설계-요소설계-종합설계] 순서를 지켜 이수하셔야 합니다.
+    'content': """
+설계 교과목이란 공학인증 내에서 별도로 관리되는 설계 학점을 부여받은 교과목으로, 설계 학점은 교과목 학점과 다를 수 있습니다.
+설계 교과목은 [기초설계 - 요소설계 - 종합설계] 순서를 지켜 이수하셔야 합니다.
 [기초설계] 창업연계공학설계입문
 [요소설계] 프로그램 별 요소설계 교과목
 [종합설계] **종합설계, **캡스톤디자인 교과목
-프로그램 별 상세 설계교과목은 학과 사무실에 문의 바랍니다.
-프로그램 별 설계교과목은 학과 사무실에 문의 바랍니다.""",
+프로그램 별 상세 설계 교과목은 학과 사무실에 문의 바랍니다.
+프로그램 별 설계 교과목은 학과 사무실에 문의 바랍니다.
+""",
   },
   {
     'title': '공학인증이 아닌 과목을 들었을 경우 어떻게 해야 하나요?',
-    'content':
-        """"공학인증 이수를 위해서는 학과별 프로그램에 공학인증으로 관리되는 교과목을 수강해야 공학인증 학점으로 인정됩니다.
-교과목 코드 앞 5자리가 같은 교과목이라고 할지라도 공학인증 학과에서 개설/운영되지 않은 교과목은 공학인증 교과목으로 인정되지 않습니다. (EX 자동차공학부의 열역학은 공학인증 과목 아님)
+    'content': """
+공학인증 이수를 위해서는 학과별 프로그램에 공학인증으로 관리되는 교과목을 수강해야 공학인증 학점으로 인정됩니다.
+교과목 코드 앞 5자리가 같은 교과목이라고 할지라도 공학인증 학과에서 개설/운영되지 않은 교과목은 공학인증 교과목으로 인정되지 않습니다.
+(EX 자동차공학부의 열역학은 공학인증 과목 아님)
 공학인증 필수 교과목인 경우, 교과목 코드 5자리가 같은 타과 과목을 수강하였을 때에는 공학인증을 위해 재수강을 하셔야 합니다. (해당 교과목의 운영 학과가 공학인증 진행 학과인 경우 상관 없음)
 
-재수강이 불가능한 성적인 경우, 졸업이 불가능 할 수 있습니다.
-
-
-LINK:
-
-키를 누른 채 클릭합니다.">https://cieek.kookmin.ac.kr/community/faq/8?sc=269""",
+재수강이 불가능한 성적인 경우, 졸업이 불가능할 수 있습니다.
+LINK: https://cieek.kookmin.ac.kr/community/faq/8?sc=269
+""",
   },
   {
-    'title': 'MSC 과목중 다른학부 공학인증 교과목을 들어도 인정이 되나요?',
-    'content':
-        """"기초교양 및 MSC의 경우 교과목 명 옆에 (공학인증) 혹은 (ABEEK) 표시가 있다면, 타과 교과목을 이수하셔도 인정 됩니다.
-다만, 공학인증을 진행하지 않은 대학의 교과목을 이수하실 경우 공학인증 학점으로 인정이 되지 않아 졸업이 불가능 할 수 있습니다.
-
-
-LINK:
-
-키를 누른 채 클릭합니다.">https://cieek.kookmin.ac.kr/community/faq/8?sc=269""",
+    'title': 'MSC 과목 중 다른 학부 공학인증 교과목을 들어도 인정이 되나요?',
+    'content': """
+기초교양 및 MSC의 경우 교과목 명 옆에 (공학인증) 혹은 (ABEEK) 표시가 있다면, 타과 교과목을 이수하셔도 인정 됩니다.
+다만, 공학인증을 진행하지 않은 대학의 교과목을 이수하실 경우 공학인증 학점으로 인정이 되지 않아 졸업이 불가능할 수 있습니다.
+LINK: https://cieek.kookmin.ac.kr/community/faq/8?sc=269
+""",
   },
   {
-    'title': '교과목에 (공학인증) 이라고 붙어 있는 교과목 공학인증을 안해도 들을 수 있나요?',
-    'content': """"공학인증 이수 여부와 상관 없이 공학인증(ABEEK) 과목을 수강하실 수 있습니다.""",
+    'title': '(공학인증)이라고 붙어 있는 교과목을 공학인증을 안 해도 들을 수 있나요?',
+    'content': """
+공학인증 이수 여부와 상관없이 공학인증(ABEEK) 과목을 수강하실 수 있습니다.
+""",
   },
   {
-    'title': '공학인증하면 어떤 점이 좋은가요?',
-    'content': """"공학인증 이수 시
+    'title': '공학인증을 하면 어떤 점이 좋은가요?',
+    'content': """
+공학인증 이수 시
 1. 국가 간 학위의 등가성 확보를 통한 국제적 엔지니어로서의 자격을 인정
-2. 공학교육인증원과 협정을 맺은 사업체 지원시 혜택을 받을 수 있음
-3. 수요지향 교육이수를 통한 취업경쟁력 우위 확보
-4. 프로그램 학습성과 달성을 통한 창의적 문제해결 능력 확보
+2. 공학교육인증원과 협정을 맺은 사업체 지원 시 혜택을 받을 수 있음
+3. 수요지향 교육 이수를 통한 취업 경쟁력 우위 확보
+4. 프로그램 학습 성과 달성을 통한 창의적 문제 해결 능력 확보
 등의 혜택이 있습니다.
 자세한 내용은 공학교육혁신센터 홈페이지(cieek.kookmin.ac.kr)를 참고하시거나 학부별 공학인증 담당자와 상담하시길 바랍니다.
-
-
-LINK:
-
-키를 누른 채 클릭합니다.">http://www.abeek.or.kr/intro/benefit""",
+LINK: http://www.abeek.or.kr/intro/benefit
+""",
   },
   {
-    'title': '편입/전과 했는데 전에 들었던 교과목이 공학인증으로 인정 되나요?',
-    'content': """"전공 등 일반 교과목은 제1전공에서 인정받는 그대로 공학인증에서 인정됩니다.
-다만, 설계 교과목의 경우 전적 대학이 공학인증을 운영했을 경우, 설계 학점을 인정 받을 수 있습니다.
+    'title': '편입/전과 했는데 전에 들었던 교과목이 공학인증으로 인정되나요?',
+    'content': """
+전공 등 일반 교과목은 제1전공에서 인정받는 그대로 공학인증에서 인정됩니다.
+다만, 설계 교과목의 경우 전적 대학이 공학인증을 운영했을 경우, 설계 학점을 인정받을 수 있습니다.
 
-전적 대학이 공학인증을 운영하지 않음에도 설계 교과목을 제1전공에서 인정받은 경우, 공학인증 졸업요건(설계학점)을 위해 재수강을 하게되거나, 졸업이 불가능 할 수 있습니다.""",
+전적 대학이 공학인증을 운영하지 않음에도 설계 교과목을 제1전공에서 인정받은 경우, 공학인증 졸업 요건(설계학점)을 위해 재수강을 하게 되거나, 졸업이 불가능할 수 있습니다.
+""",
   },
   {
     'title': '제가 공학인증을 하고 있는지 어떻게 확인하나요?',
-    'content': """"종합정보시스템 로그인 > 학생프로필관리 > 개인정보변경 > 기본정보 전공 확인 으로 들어가시면
-공학인증 하고 있는 학생은 전공명 아래(OOO 공학부 심화)라고 표기됩니다.
-EX) 공학인증 이수중 : 신소재공학전공(신소재공학심화) 공학인증 미이수 중: 신소재공학전공
-
-
-LINK:
-
-키를 누른 채 클릭합니다.">https://cieek.kookmin.ac.kr/community/notice/56?sc=261""",
+    'content': """
+종합정보시스템 로그인 > 학생 프로필 관리 > 개인정보 변경 > 기본 정보 전공 확인 으로 들어가시면 공학인증 하고 있는 학생은 전공명 아래 (OOO 공학부 심화)라고 표기됩니다.
+EX) 공학인증 이수 중: 신소재공학전공(신소재공학심화) 공학인증 미이수 중: 신소재공학전공
+LINK: https://cieek.kookmin.ac.kr/community/notice/56?sc=261
+""",
   },
   {
     'title': '설계 과목 순서를 지켜야 하나요?',
-    'content': """"설계 교과목은 [기초설계 - 요소설계 - 종합설계] 순서를 지켜 이수하셔야 합니다.
+    'content': """
+설계 교과목은 [기초설계 - 요소설계 - 종합설계] 순서를 지켜 이수하셔야 합니다.
 [기초설계] 창업연계공학설계입문
 [요소설계] 프로그램 별 요소설계 교과목
 [종합설계] **종합설계, **캡스톤디자인 교과목
-프로그램 별 상세 설계교과목은 학과 사무실에 문의 바랍니다.
+프로그램 별 상세 설계 교과목은 학과 사무실에 문의 바랍니다.
 
-*주의1. 설계는 기초부터 종합까지 총 12학점을 이수해야 합니다.
-*주의2. 기초설계와 같은 학기에 이수한 다른 설계교과목의 설계 학점은 인정되지 않습니다.
-*주의3. 기초설계 재수강 시, 그 이전에 이수한 설계 학점을 인정받지 못합니다.
-*주의4. 종합설계 이수 시, 그 이후에 설계 교과목을 수강하더라도 설계 학점은 인정받지 못합니다.""",
+*주의 1. 설계는 기초부터 종합까지 총 12학점을 이수해야 합니다.
+*주의 2. 기초설계와 같은 학기에 이수한 다른 설계 교과목의 설계 학점은 인정되지 않습니다.
+*주의 3. 기초설계 재수강 시, 그 이전에 이수한 설계 학점을 인정받지 못합니다.
+*주의 4. 종합설계 이수 시, 그 이후에 설계 교과목을 수강하더라도 설계 학점은 인정받지 못합니다.
+""",
   },
 ];
+
 final List<Map<String, dynamic>> courseRegistrationGuideFaq = [
   {
-    'title': '전공과목 수강인원 제한은 어떻게 되나요?',
-    'content': """"수강인원은 강의의 성격상 제한의 필요성이 인정되는 경우(실험, 실습, 전산 및 토론 강의 등)와 강의실,
-실험실 여건을 고려하여 제한합니다.""",
+    'title': '전공과목 수강 인원 제한은 어떻게 되나요?',
+    'content': """
+수강 인원은 강의의 성격상 제한의 필요성이 인정되는 경우 (실험, 실습, 전산 및 토론 강의 등)와 강의실, 실험실 여건을 고려하여 제한합니다.
+""",
   },
   {
-    'title': '일반선택이란?',
-    'content': """"졸업이수학점 중에서 교양과정 및 제1전공의 전공과정으로 이수한 과목 이외의 모든 과목(다전공, 부전공,
-교직, 평생교육사(사회교육전문요원), 군사학과목 및 기타 선택과목)을 말하며, 졸업에 필요한 이수구분별
-요구학점을 초과한 학점은 모두 일반선택 학점으로 계산됩니다.(다만, 이수구분을 일반선택으로 정정표기하
-지는 않음.) 이수구분별 최저이수학점을 초과할 경우 주의할 사항은 학번별로 교양교과목이수학점(교양기초
-+교양선택+계열교양)상한선이 있고 교양교과목이수학점상한선을 초과한 경우는 일반선택으로도 인정되지 않
-으니 주의해 주시기 바랍니다. 교양교과목(교양기초+교양선택+계열교양) 이수학점 상한선 안내(기준 : 학번) *
-2004학번, 2005학번 : 70학점 / 2006학번이후: 60학점 / 2013학번이후: 50학점 * 학번별로 위학점이 초
-과될 경우 이수학점 상한선까지 이수를 인정함""",
+    'title': '일반 선택이란?',
+    'content': """
+졸업 이수 학점 중에서 교양 과정 및 제1전공의 전공 과정으로 이수한 과목 이외의 모든 과목 (다전공, 부전공, 교직, 평생교육사(사회교육전문요원), 군사학과목 및 기타 선택 과목)을 말하며, 졸업에 필요한 이수 구분별 요구 학점을 초과한 학점은 모두 일반 선택 학점으로 계산됩니다. (다만, 이수 구분을 일반 선택으로 정정 표기하지 않음.)
+이수 구분별 최저 이수 학점을 초과할 경우 주의할 사항은 학번별로 교양 교과목 이수 학점 (교양 기초 + 교양 선택 + 계열 교양) 상한선이 있고 교양 교과목 이수 학점 상한선을 초과한 경우는 일반 선택으로도 인정되지 않으니 주의해 주시기 바랍니다.
+교양 교과목 (교양 기초 + 교양 선택 + 계열 교양) 이수 학점 상한선 안내 (기준: 학번)
+* 2004학번, 2005학번: 70학점 / 2006학번 이후: 60학점 / 2013학번 이후: 50학점
+* 학번별로 위 학점이 초과될 경우 이수 학점 상한선까지 이수를 인정함
+""",
   },
   {
     'title': '수강신청은 어떻게 하나요?',
-    'content': """"수강신청 안내 보기
-LINK:
-키를 노른 채 클릭합니
-다.">https://www.kookmin.ac.kr/comm/menu/user/9cc1a72c81e16567bc6a8cfbd57d625f/con""",
+    'content': """
+수강신청 안내 보기
+LINK: https://www.kookmin.ac.kr/comm/menu/user/9cc1a72c81e16567bc6a8cfbd57d625f/con
+""",
   },
   {
-    'title': '4학년 1학기까지 졸업이수학점을 모두 이수하였다면 2학기에 수강신청을 안 해도 되나요?',
-    'content': """"4학년 2학기(졸업학기)에는 수강신청 최저학점 제한이 없으나, 졸업이수학점을 모두 이수하였는지 여부는 꼭
-확인해야 합니다.<학사규정 제8장 제49조>""",
+    'title': '4학년 1학기까지 졸업 이수 학점을 모두 이수하였다면 2학기에 수강신청을 안 해도 되나요?',
+    'content': """
+4학년 2학기 (졸업 학기)에는 수강신청 최저 학점 제한이 없으나, 졸업 이수 학점을 모두 이수하였는지 여부는 꼭 확인해야 합니다. <학사 규정 제8장 제49조>
+""",
   },
   {
-    'title': '일반선택 학점은어떻게 채우나요?',
-    'content': """"졸업요건의 필수 이수 교과목 및 최저이수학점을 모두 채운 경우, 나머지 수업이 모두 일반선택에 포함됩니다.
-예시) 핵심교양-글로벌-3학점이수가 졸업요건일 때, 글로벌영역 6학점일 이수할 경우 나머지 3학점은 일반선택
-으로 이월""",
+    'title': '일반 선택 학점은 어떻게 채우나요?',
+    'content': """
+졸업 요건의 필수 이수 교과목 및 최저 이수 학점을 모두 채운 경우, 나머지 수업이 모두 일반 선택에 포함됩니다.
+예시) 핵심 교양-글로벌-3학점 이수가 졸업 요건일 때, 글로벌 영역 6학점을 이수할 경우 나머지 3학점은 일반 선택으로 이월
+""",
   },
 ];
 
 final List<Map<String, dynamic>> classScheduleFaq = [
   // {
   //   'title': '',
-  //   'content': """" """,
+  //   'content': """ """,
   // },{
   //   'title': '',
-  //   'content': """"""",
+  //   'content': """ """,
   // },{
   //   'title': '',
-  //   'content': """"""",
+  //   'content': """ """,
   // },{
   //   'title': '',
-  //   'content': """"""",
+  //   'content': """ """,
   // },{
   //   'title': '',
-  //   'content': """"""",
+  //   'content': """ """,
   // },{
   //   'title': '',
-  //   'content': """"""",
+  //   'content': """ """,
   // },{
   //   'title': '',
-  //   'content': """"""",
+  //   'content': """ """,
   // },
 ];
+
 final List<Map<String, dynamic>> gradesFaq = [
   {
     'title': '성적 평가는 어떻게 되나요?',
-    'content': """"성적의 평가 교과목의 성적은 담당 교.강사가 학생의 시험성적, 과제물 성적, 출석성적, 수시평가성적 등에
-의해 종합적으로 평가한다. 그러나 실험, 실습, 실기 및 이에 준하는 특수교과목의 성적은 따로 정하는 방법
-으로 평가할 수 있다.
-LINK:
-키를 노른 채클리합니
-다.">https://www.kookmin.ac.kr/comm/menu/user/896d2b98f59c00ba1d6160d1fd80c340/cor
+    'content': """
+교과목의 성적은 담당 교강사가 학생의 시험 성적, 과제물 성적, 출석 성적, 수시 평가 성적 등에 의해 종합적으로 평가합니다. 그러나 실험, 실습, 실기 및 이에 준하는 특수 교과목의 성적은 따로 정하는 방법으로 평가할 수 있습니다.
+LINK: https://www.kookmin.ac.kr/comm/menu/user/896d2b98f59c00ba1d6160d1fd80c340/cor
 """,
   },
   {
-    'title': '성적정정기간을 늘려주실 수 없나요?',
-    'content': """"성적의 정정은 교강사의 명백한 착오가 확인된 경우에 한하며, 이를 위하여 소정의 기간을 정정기간으로 설정
-하고 있습니다. 성적정정기간의의 연장은 타 학사일정에 영향을 미치므로 불가합니다""",
+    'title': '성적 정정 기간을 늘려주실 수 없나요?',
+    'content': """
+성적의 정정은 교강사의 명백한 착오가 확인된 경우에 한하며, 이를 위하여 소정의 기간을 정정 기간으로 설정하고 있습니다. 성적 정정 기간의 연장은 타 학사 일정에 영향을 미치므로 불가합니다.
+""",
   },
   {
-    'title': '학점이월제도란 무엇인가요?',
-    'content':
-        """"학점이월 안내 1. 학점이월 정의 : 이월이 가능한 학점이란 학기당 이수할 수 있는 학점 중 해당 학기에 미신청
-한 학점으로, 그 대상과 범위는 다음과 같음 가.이월 학점은 다음 학기에 학기당 이수할 수 있는 학점을 초과하
-여 신청할 시에만 적용되며, 그 범위는 3학점 이내임 나. 성적우수에 따른 초과 신청 가능 학점은 이월 학점보
-다 우선하며, 이월 학점과 중복 적용되지 않음 다.해당 학기에 발생된 이월 학점은 연속된 다음 학기 1회에 한
-하여 적용되며, 이 중 미신청한 이월 학점은 자동 소멸됨 2. 이월학점 범위 : 1~3학점 3. 시행시기: 2014학
-년도 1학기 수강신청 내역을 2014학년도 2학기에 적용시작 4. 적용대상 : 연속된 정규학기 수강신청자 (EX:
-2014-1학기 수강신청 내역이 있는 재학생이 2014-2학기 수강신청을 할 때 가능) 5. 학점이월 제외사항 가.직
-전학기 성적경고를 받은 경우 나.해당학기 수강신청 전 직전학기 수강신청 내역이 없는 경우 (예: 국제인턴십 학
-점인정, 해외자매대학 교환학생 등) 다. 직전학기 평균평점 3.75이상으로(학, 석사 연계과정생은 3.5이상)
-추가 수강 신청학점 중 신청하지 않은 학점 라.차기학기에 이월된 학점을 수강신청하지 않은 경우 마.정규학기
-가 연속되지 않은 경우(휴학자, 제적자등) 바. 수업연한 초과학생(졸업연기, 탈락자등) 사. 기타사항 1)학점
-초과신청 대상 학생(평점평균 3.75이상)이 이월대상자인 경우 학점 초과신청만 적용 (초과학점과 이월학점을
-중복하여 신청할 수 없음) 2)학칙 제32조 5항에 해당되는 사회봉사 1, 1, 목요특강은 학점이월에 해당되지
-않음 6. 학점이월 예시 안내! 구분 단과대학 18학점 문과대학, 사회과학대학, 경상대학, 조형대학, 예술
-대학, 경영대학 (기업경영학부, KMU International School 제외) 19학점 법과대학(법무학과 제외), 공
-과대학, 삼림과학대학, 자연과학대학, 체육대학, 전자정보통신대학, 건축대학, 자동차융합대학 17학
-점 법과대학 법무학과, 경영대학 기업경영학부, KMU International School 가.예시(문과대학 학생 -1개
-학기 최대 18학점 수강 신청 가능 기준) .가. 2014-1학기 최대 학점(18학점) 중 16학점을 수강 신청한 경우
--2014-2학기 최대 18학점 + 2014-1학기 2학점 이월 = 20학점 신청가능 (학점 이월은 직전학기 미신청한
-학점을 연속된 다음 정규학기 학기당 최대신청학점을 초과하여 신청할 때만 이용 가능함.) (이월된 2학점 중 미
-신청 학점은 다시 이월되지 않음. 이월은 1회만 적용되며, 미신청시 자동 소멸됨) 나. 2014-1학기 최대 학점
-(18학점) 중 14학점을 수강 신청한 경우 -> 2014-2학기 최대 18학점 + 2014-1학기 3학점 이월 =21학점 신
-청가능 ( 학점 이월은 최대 3학점 까지만 가능) 다. 2014-1학기 최대 학점(18학점) 중 16학점을 수강신청을 하
-고 성적우수자가 된 경우 -> 2014-2학기 18학점 + 2014-1학기 2학점 이월 + 성적우수 3학점 = 21학점 신청
-가능 (성적우수에 의한 초과 신청가능 학점과 학점이월은 중복적용되지 않으며
-중복시 성적우수에 의한 초과
-신청가능 학점만 반영됩) 라. 2014-1학기 수강 신청시 성적우수로 인해 추가 3학점을 신청할 수 있었던 학생이
-이중 2학점을 추가 신청하고, 2014-1학기 성적에 의해 성적우수자가 된 경우 -> 2014-2학기 18학점 + 성적
-우수 3학점 = 21학점 신청가능 (성적우수에 의한 초과 신청가능 학점 중 미신청학점은 이월되지 않음) 마.
-2014-1학기에 16학점을 수강신청을 하고 2014-2학기 휴학 후 2015-1학기 복학시 -> 2015-1학기 최대 18
-학점 + 2014-1학기 2학점 이월 = 18학점 신청가능 (학점이월은 연속된 정규학기에만 적용됨) 바. 휴학, 제적
-시 정규학기가 연속되지 않아 학점이월 적용이 되지 않음 사. 수업연한 초과학생(졸업연기, 탈락자등)은 학점
-이월 적용이 되지 않음 아. 기타 제외대상은 상기 "5. 학점이월 제외사항" 참고"
+    'title': '학점 이월 제도란 무엇인가요?',
+    'content': """
+학점 이월 안내
+1. 학점 이월 정의: 이월이 가능한 학점이란 학기당 이수할 수 있는 학점 중 해당 학기에 미신청한 학점으로, 그 대상과 범위는 다음과 같습니다.
+가. 이월 학점은 다음 학기에 학기당 이수할 수 있는 학점을 초과하여 신청할 시에만 적용되며, 그 범위는 3학점 이내입니다.
+나. 성적 우수에 따른 초과 신청 가능 학점은 이월 학점보다 우선하며, 이월 학점과 중복 적용되지 않습니다.
+다. 해당 학기에 발생한 이월 학점은 연속된 다음 학기 1회에 한하여 적용되며, 이 중 미신청한 이월 학점은 자동 소멸됩니다.
+2. 이월 학점 범위: 1~3학점
+3. 시행 시기: 2014학년도 1학기 수강신청 내역을 2014학년도 2학기에 적용 시작
+4. 적용 대상: 연속된 정규학기 수강신청자 (EX: 2014-1학기 수강신청 내역이 있는 재학생이 2014-2학기 수강신청을 할 때 가능)
+5. 학점 이월 제외 사항
+가. 직전 학기 성적 경고를 받은 경우
+나. 해당 학기 수강신청 전 직전 학기 수강신청 내역이 없는 경우 (예: 국제 인턴십 학점 인정, 해외 자매 대학 교환학생 등)
+다. 직전 학기 평균 평점 3.75 이상으로(학, 석사 연계 과정생은 3.5 이상) 추가 수강 신청 학점 중 신청하지 않은 학점
+라. 차기 학기에 이월된 학점을 수강신청하지 않은 경우
+마. 정규학기가 연속되지 않은 경우 (휴학자, 제적자 등)
+바. 수업 연한 초과 학생 (졸업 연기, 탈락자 등)
+사. 기타 사항
+1) 학점 초과 신청 대상 학생(평점 평균 3.75 이상)이 이월 대상자인 경우 학점 초과 신청만 적용 (초과 학점과 이월 학점을 중복하여 신청할 수 없음)
+2) 학칙 제32조 5항에 해당되는 사회봉사 1, 2, 목요특강은 학점 이월에 해당되지 않음
+6. 학점 이월 예시 안내!
+구분 단과 대학
+18학점: 문과대학, 사회과학대학, 경상대학, 조형대학, 예술대학, 경영대학 (기업경영학부, KMU International School 제외)
+19학점: 법과대학(법무학과 제외), 공과대학, 삼림과학대학, 자연과학대학, 체육대학, 전자정보통신대학, 건축대학, 자동차융합대학
+17학점: 법과대학 법무학과, 경영대학 기업경영학부, KMU International School
+
+예시 (문과대학 학생 - 1개 학기 최대 18학점 수강 신청 가능 기준)
+가. 2014-1학기 최대 학점(18학점) 중 16학점을 수강 신청한 경우
+- 2014-2학기 최대 18학점 + 2014-1학기 2학점 이월 = 20학점 신청 가능 (학점 이월은 직전 학기 미신청한 학점을 연속된 다음 정규학기 학기당 최대 신청 학점을 초과하여 신청할 때만 이용 가능함.) (이월된 2학점 중 미신청 학점은 다시 이월되지 않음. 이월은 1회만 적용되며, 미신청 시 자동 소멸됨)
+나. 2014-1학기 최대 학점(18학점) 중 14학점을 수강 신청한 경우
+-> 2014-2학기 최대 18학점 + 2014-1학기 3학점 이월 = 21학점 신청 가능 (학점 이월은 최대 3학점까지만 가능)
+다. 2014-1학기 최대 학점(18학점) 중 16학점을 수강 신청하고 성적 우수자가 된 경우
+-> 2014-2학기 18학점 + 2014-1학기 2학점 이월 + 성적 우수 3학점 = 21학점 신청 가능 (성적 우수에 의한 초과 신청 가능 학점과 학점 이월은 중복 적용되지 않으며 중복 시 성적 우수에 의한 초과 신청 가능 학점만 반영됨)
+라. 2014-1학기 수강 신청 시 성적 우수로 인해 추가 3학점을 신청할 수 있었던 학생이 이 중 2학점을 추가 신청하고, 2014-1학기 성적에 의해 성적 우수자가 된 경우
+-> 2014-2학기 18학점 + 성적 우수 3학점 = 21학점 신청 가능 (성적 우수에 의한 초과 신청 가능 학점 중 미신청 학점은 이월되지 않음)
+마. 2014-1학기에 16학점을 수강 신청하고 2014-2학기 휴학 후 2015-1학기 복학 시
+-> 2015-1학기 최대 18학점 + 2014-1학기 2학점 이월 = 18학점 신청 가능 (학점 이월은 연속된 정규학기에만 적용됨)
+바. 휴학, 제적 시 정규학기가 연속되지 않아 학점 이월 적용이 되지 않음
+사. 수업 연한 초과 학생(졸업 연기, 탈락자 등)은 학점 이월 적용이 되지 않음
+아. 기타 제외 대상은 상기 "5. 학점 이월 제외 사항" 참고
 """,
   },
 ];
@@ -1576,70 +1675,8 @@ final List<Map<String, dynamic>> specializationPlanFaq = [
   }
 ];
 
-final List<String> faqKinds = [
-  '1전공',
-  '다부전공',
-  '교직',
-  '공학인증',
-  '수강신청안내',
-  '수업시간표',
-  '성적',
-  '계절학기',
-  '현장실습',
-  'ICT 학점연계',
-  '서울시정인턴십',
-  '이스트소프트 현장실습',
-  '재학생 직무체험',
-  '취업연계인턴십',
-  'LINC사업단현장실습',
-  '등록금납부',
-  '등록금반환',
-  '등록관련제증명서발급',
-  '수업연한초과자 등록금책정기준',
-  '학적',
-  '휴학',
-  '복학',
-  '학사과정수료',
-  '졸업논문',
-  '졸업인증제',
-  '교내장학금',
-  '교외장학금',
-  '국가장학금',
-  '학자금대출',
-  '학자금중복지원방지',
-  '취업',
-  '창업',
-  '병무안내',
-  '예비군안내',
-  '과제신청(변경)',
-  '지원비 정산',
-  '지원비 집행',
-  '교환학생프로그램',
-  '방문학생프로그램',
-  '복수학위',
-  '단기어학연수',
-  'SGE',
-  '학부생',
-  '학생행사',
-  '학부(과) 사무실',
-  '학생생활상담센터',
-  '학습법 특강',
-  '학습봉사(또래강사)',
-  '학습상담및클리닉',
-  '도서관',
-  '교내복지시설',
-  '강의실 이용',
-  '물품대여',
-  '홈페이지',
-  '교육목표',
-  '교육이념',
-  '인재상',
-  'KMU VISION 2030+',
-  '특성화계획',
-];
-
-final Map<String, String> faqCategoryMapper = {
-  '1전공': 'major',
+final Map<String, String> faqCategoryMapperKoToEn = {
+  '전공': 'major',
   '다부전공': 'doubleMajor',
   '교직': 'teachingCertification',
   '공학인증': 'engineeringCertification',
@@ -1699,3 +1736,127 @@ final Map<String, String> faqCategoryMapper = {
   'KMU VISION 2030+': 'kmuVision2030Plus',
   '특성화계획': 'specializationPlan',
 };
+
+final Map<String, String> faqCategoryMapperZhToEn = {
+  '专业': 'major',
+  '双专业': 'doubleMajor',
+  '教师资格': 'teachingCertification',
+  '工程认证': 'engineeringCertification',
+  '选课指南': 'courseRegistrationGuide',
+  '课程表': 'classSchedule',
+  '成绩': 'grades',
+  '学期制度': 'semesterSystem',
+  '实习': 'fieldPractice',
+  'ICT学分链接': 'ictCreditLinkage',
+  '首尔市政实习': 'seoulCityInternship',
+  'Eastsoft实习': 'eastsoftFieldPractice',
+  '在校生工作体验': 'currentStudentJobExperience',
+  '就业链接实习': 'employmentLinkedInternship',
+  'LINC项目实习': 'lincProjectFieldPractice',
+  '学费支付': 'tuitionPayment',
+  '学费退还': 'tuitionRefund',
+  '注册相关证明文件': 'registrationDocumentIssuance',
+  '超出课程时限的学费计算标准': 'criteriaForTuitionCalculationForExceedingCourseDuration',
+  '学籍': 'academicRecords',
+  '休学': 'leaveOfAbsence',
+  '复学': 'returnFromLeaveOfAbsence',
+  '学业完成': 'completionOfAcademicProgram',
+  '毕业论文': 'graduationThesis',
+  '毕业认证制度': 'graduationCertificationSystem',
+  '校内奖学金': 'onCampusScholarships',
+  '校外奖学金': 'offCampusScholarships',
+  '国家奖学金': 'nationalScholarships',
+  '学生贷款': 'studentLoans',
+  '防止学费重复资助': 'preventionOfOverlappingFinancialAid',
+  '就业': 'employment',
+  '创业': 'entrepreneurship',
+  '兵役指南': 'militaryServiceGuidance',
+  '预备役指南': 'reserveForcesGuidance',
+  '作业申请（变更）': 'assignmentApplicationChange',
+  '支助费结算': 'supportFundSettlement',
+  '支助费支出': 'supportFundExpenditure',
+  '交换生项目': 'exchangeStudentProgram',
+  '访问学生项目': 'visitingStudentProgram',
+  '双学位': 'doubleDegree',
+  '短期语言研修': 'shortTermLanguageStudyAbroad',
+  'SGE': 'studentGlobalEngagement',
+  '本科生': 'undergraduateStudent',
+  '学生活动': 'studentEvent',
+  '本科办公室': 'undergraduateDepartmentOffice',
+  '学生咨询中心': 'studentCounselingCenter',
+  '学习方法讲座': 'learningMethodSeminar',
+  '学习志愿者（同伴导师）': 'learningVolunteerPeerTutor',
+  '学习咨询及诊所': 'learningCounselingAndClinic',
+  '图书馆': 'library',
+  '校内福利设施': 'onCampusWelfareFacilities',
+  '教室使用': 'classroomUsage',
+  '物品租借': 'itemRental',
+  '网站': 'website',
+  '教育目标': 'educationalObjectives',
+  '教育理念': 'educationalPhilosophy',
+  '理想学生形象': 'idealStudentProfile',
+  'KMU VISION 2030+': 'kmuVision2030Plus',
+  '特性化计划': 'specializationPlan'
+};
+
+List<String> faqKinds = [
+  tr('faq.major'),
+  tr('faq.doubleMajor'),
+  tr('faq.teachingCertification'),
+  tr('faq.engineeringCertification'),
+  tr('faq.courseRegistrationGuide'),
+  tr('faq.classSchedule'),
+  tr('faq.grades'),
+  tr('faq.semesterSystem'),
+  tr('faq.fieldPractice'),
+  tr('faq.ictCreditLinkage'),
+  tr('faq.seoulCityInternship'),
+  tr('faq.eastsoftFieldPractice'),
+  tr('faq.currentStudentJobExperience'),
+  tr('faq.employmentLinkedInternship'),
+  tr('faq.lincProjectFieldPractice'),
+  tr('faq.tuitionPayment'),
+  tr('faq.tuitionRefund'),
+  tr('faq.registrationDocumentIssuance'),
+  tr('faq.criteriaForTuitionCalculationForExceedingCourseDuration'),
+  tr('faq.academicRecords'),
+  tr('faq.leaveOfAbsence'),
+  tr('faq.returnFromLeaveOfAbsence'),
+  tr('faq.completionOfAcademicProgram'),
+  tr('faq.graduationThesis'),
+  tr('faq.graduationCertificationSystem'),
+  tr('faq.onCampusScholarships'),
+  tr('faq.offCampusScholarships'),
+  tr('faq.nationalScholarships'),
+  tr('faq.studentLoans'),
+  tr('faq.preventionOfOverlappingFinancialAid'),
+  tr('faq.employment'),
+  tr('faq.entrepreneurship'),
+  tr('faq.militaryServiceGuidance'),
+  tr('faq.reserveForcesGuidance'),
+  tr('faq.assignmentApplicationChange'),
+  tr('faq.supportFundSettlement'),
+  tr('faq.supportFundExpenditure'),
+  tr('faq.exchangeStudentProgram'),
+  tr('faq.visitingStudentProgram'),
+  tr('faq.doubleDegree'),
+  tr('faq.shortTermLanguageStudyAbroad'),
+  tr('faq.studentGlobalEngagement'),
+  tr('faq.undergraduateStudent'),
+  tr('faq.studentEvent'),
+  tr('faq.undergraduateDepartmentOffice'),
+  tr('faq.studentCounselingCenter'),
+  tr('faq.learningMethodSeminar'),
+  tr('faq.learningVolunteerPeerTutor'),
+  tr('faq.learningCounselingAndClinic'),
+  tr('faq.library'),
+  tr('faq.onCampusWelfareFacilities'),
+  tr('faq.classroomUsage'),
+  tr('faq.itemRental'),
+  tr('faq.website'),
+  tr('faq.educationalObjectives'),
+  tr('faq.educationalPhilosophy'),
+  tr('faq.idealStudentProfile'),
+  tr('faq.kmuVision2030Plus'),
+  tr('faq.specializationPlan')
+];

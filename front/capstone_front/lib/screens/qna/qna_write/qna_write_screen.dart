@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:capstone_front/main.dart';
 import 'package:capstone_front/models/qna_post_model.dart';
 import 'package:capstone_front/screens/signup/signup_service.dart';
 import 'package:capstone_front/services/qna_service.dart';
@@ -30,6 +31,7 @@ class _HelperWriteScreenState extends State<QnaWriteScreen> {
     tr('qna.category_2'),
     tr('qna.category_3'),
     tr('qna.category_4'),
+    tr('qna.category_5'),
   ];
   int _selectedIndex = 0;
   final TextEditingController _titleController = TextEditingController();
@@ -43,6 +45,33 @@ class _HelperWriteScreenState extends State<QnaWriteScreen> {
   List<XFile> images = [];
   final int _maxPhotos = 4;
   int _currentPhotos = 0;
+
+  Map<String, String> tagMapEnToKo = {
+    "Campus Life": "대학생활",
+    "Academics": "학업관련",
+    "Living Info": "생활정보",
+    "Culture": "문화정보",
+    "Dormitory": "기숙사"
+  };
+
+  Map<String, String> tagMapZhToKo = {
+    "校园生活": "대학생활",
+    "学术": "학업관련",
+    "生活信息": "생활정보",
+    "文化信息": "문화정보",
+    "宿舍": "기숙사"
+  };
+
+  String translateTagOtherToKo(String ohterTag, String nowLanguage) {
+    switch (nowLanguage) {
+      case 'EN-US':
+        return tagMapEnToKo[ohterTag] ?? ohterTag;
+      case 'ZH':
+        return tagMapZhToKo[ohterTag] ?? ohterTag;
+      default:
+        return ohterTag;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +136,7 @@ class _HelperWriteScreenState extends State<QnaWriteScreen> {
                       ),
                       const SizedBox(height: 20),
                       Text(
-                        tr('사진'),
+                        tr('helper.picture'),
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -212,19 +241,6 @@ class _HelperWriteScreenState extends State<QnaWriteScreen> {
               onPressed: () async {
                 if (_titleController.text != "" &&
                     _contentController.text != "") {
-                  var articleInfo = {
-                    "title": _titleController.text,
-                    "content": _contentController.text,
-                    "author": "messi",
-                    "category": "temp",
-                    "country": "korea",
-                  };
-
-                  // TODO 글쓴 정보들로 글쓰기 post 보내기
-                  // id를 리턴받아서 qnas list에 넣기
-                  // Map<String, dynamic> res =
-                  //     await QnaService.createQnaPost(articleInfo, images);
-
                   FlutterSecureStorage storage = const FlutterSecureStorage();
 
                   var author = await storage.read(key: "userName");
@@ -233,7 +249,8 @@ class _HelperWriteScreenState extends State<QnaWriteScreen> {
                     "title": _titleController.text,
                     "author": author,
                     "context": _contentController.text,
-                    "tag": _helperWriteList[_selectedIndex].toString(),
+                    "tag": translateTagOtherToKo(
+                        _helperWriteList[_selectedIndex].toString(), language),
                     "country": country,
                   };
                   var res = await QnaService.createQnaPost(qnaPost, images);
@@ -242,7 +259,9 @@ class _HelperWriteScreenState extends State<QnaWriteScreen> {
                   if (widget.selectedTag == null ||
                       widget.selectedTag == '' ||
                       widget.selectedTag ==
-                          _helperWriteList[_selectedIndex].toString()) {
+                          translateTagOtherToKo(
+                              _helperWriteList[_selectedIndex].toString(),
+                              language)) {
                     widget.qnas.insert(
                         0,
                         QnaPostModel(
