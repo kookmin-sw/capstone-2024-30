@@ -21,6 +21,8 @@ public class QUser extends EntityPathBase<User> {
 
     public final com.example.capstone.global.entity.QBaseTimeEntity _super = new com.example.capstone.global.entity.QBaseTimeEntity(this);
 
+    public final StringPath bigmajor = createString("bigmajor");
+
     public final StringPath country = createString("country");
 
     //inherited

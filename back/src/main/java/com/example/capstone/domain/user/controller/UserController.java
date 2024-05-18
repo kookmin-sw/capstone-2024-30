@@ -8,6 +8,7 @@ import com.example.capstone.domain.user.entity.User;
 import com.example.capstone.domain.user.service.LoginService;
 import com.example.capstone.domain.user.service.UserService;
 import com.example.capstone.global.dto.ApiResult;
+import com.example.capstone.global.util.Timer;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -28,6 +29,7 @@ public class UserController {
     private final LoginService loginService;
     private final UserService userService;
 
+    @Timer
     @PostMapping("/signup")
     @Operation(summary = "회원가입", description = "FireBase로 인증된 유저를 회원가입 시킵니다.")
     @ApiResponses(value = {
@@ -49,6 +51,7 @@ public class UserController {
                 .body(new ApiResult<>("Successfully Signup", ""));
     }
 
+    @Timer
     @PostMapping("/signin")
     @Operation(summary = "로그인", description = "FireBase로 인증이 완료된 유저를 로그인 시키고 Token을 부여합니다.")
     @ApiResponses(value = {
@@ -65,6 +68,7 @@ public class UserController {
                 .ok(new ApiResult<>("Successfully Sign in", response));
     }
 
+    @Timer
     @Operation(summary = "내 정보 받아오기", description = "내 정보를 받아옵니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "정보 받기 성공"),
@@ -77,7 +81,7 @@ public class UserController {
                 .ok(new ApiResult<>("Successfully gey my info", user));
     }
 
-
+    @Timer
     @PutMapping("/me")
     @Operation(summary = "내 정보 수정하기", description = "내 정보를 수정합니다.")
     @ApiResponses(value = {
@@ -92,6 +96,7 @@ public class UserController {
                 .ok(new ApiResult<>("Successfully modify my info", user));
     }
 
+    @Timer
     @GetMapping("/{userId}")
     @Operation(summary = "특정 유저 정보 받기", description = "특정 유저 정보를 받아옵니다.")
     @ApiResponses(value = {
@@ -104,6 +109,7 @@ public class UserController {
                 .ok(new ApiResult<>("Successfully get user info", user));
     }
 
+    @Timer
     @GetMapping("/test")
     @Operation(summary = "토큰 내놔", description = "토큰 강제로 내놔.")
     @ApiResponses(value = {

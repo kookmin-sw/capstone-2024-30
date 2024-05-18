@@ -10,6 +10,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Deprecated
 public class AnnouncementFile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

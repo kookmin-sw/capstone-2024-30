@@ -8,6 +8,7 @@ import com.example.capstone.domain.announcement.service.AnnouncementCallerServic
 import com.example.capstone.domain.announcement.service.AnnouncementSearchService;
 import com.example.capstone.global.dto.ApiResult;
 import com.example.capstone.global.error.exception.BusinessException;
+import com.example.capstone.global.util.Timer;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -42,6 +43,7 @@ public class AnnouncementController {
                 .ok("");
     }
 
+    @Timer
     @GetMapping("")
     @Operation(summary = "공지사항 받아오기", description = "커서기반으로 공지사항을 받아옵니다")
     @ApiResponses(value = {
@@ -50,7 +52,7 @@ public class AnnouncementController {
     })
     ResponseEntity<ApiResult<AnnouncementListWrapper>> getAnnouncementList(
             @Parameter(description = "공지사항 유형입니다. 입력하지 않으면 전체를 받아옵니다.")
-            @RequestParam(defaultValue = "all", value = "type") String type,
+            @RequestParam(defaultValue = "전체", value = "type") String type,
             @Parameter(description = "공지사항 언어입니다. 입력하지 않으면 한국어로 받아옵니다.")
             @RequestParam(defaultValue = "KO", value = "language") String language,
             @Parameter(description = "어디까지 로드됐는지 가르키는 커서입니다. 입력하지 않으면 처음부터 10개 받아옵니다.")
@@ -74,6 +76,7 @@ public class AnnouncementController {
                 .ok(new ApiResult<>("Successfully load announcement list", response));
     }
 
+    @Timer
     @GetMapping("/{announcementId}")
     @Operation(summary = "공지사항 세부정보 받아오기", description = "공지사항의 세부적인 내용을 받아옵니다.")
     @ApiResponses(value = {
@@ -86,6 +89,7 @@ public class AnnouncementController {
                 .ok(new ApiResult<>("Successfully load announcement", announcement));
     }
 
+    @Timer
     @GetMapping("/search")
     @Operation(summary = "공지사항 검색기반으로 가져오기", description = "검색한 공지사항을 커서기반으로 받아옵니다. 2글자 이상으로만 검색됩니다.")
     @ApiResponses(value = {
@@ -94,19 +98,19 @@ public class AnnouncementController {
     })
     ResponseEntity<ApiResult<AnnouncementListWrapper>> getAnnouncementSearchList(
             @Parameter(description = "공지사항 유형입니다. 입력하지 않으면 전체를 받아옵니다.")
-            @RequestParam(defaultValue = "all", value = "type") String type,
+            @RequestParam(defaultValue = "전체", value = "type") String type,
             @Parameter(description = "공지사항 언어입니다. 입력하지 않으면 한국어로 받아옵니다.")
             @RequestParam(defaultValue = "KO", value = "language") String language,
             @Parameter(description = "어디까지 로드됐는지 가르키는 커서입니다. 입력하지 않으면 처음부터 10개 받아옵니다.")
             @RequestParam(defaultValue = "0", value = "cursor") long cursor,
-            @RequestBody AnnouncementSearchListRequest request
+            @Parameter(description = "검색어입니다. 문자열을 인코딩해서 보내주셔야됩니다.")
+            @RequestParam(value = "word") String word
     ) {
-
-        if (request.word().length() < 2) throw new BusinessException(SEARCH_TOO_SHORT);
+        if (word.length() < 2) throw new BusinessException(SEARCH_TOO_SHORT);
 
 
         Slice<AnnouncementListResponse> slice = announcementSearchService.getAnnouncementSearchList(cursor, type,
-                language, request.word());
+                language, word);
 
         List<AnnouncementListResponse> announcements = slice.getContent();
         boolean hasNext = slice.hasNext();

@@ -10,27 +10,27 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
+import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
-import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.security.Key;
-import java.util.Map;
 import java.util.function.Function;
 
-@Component
 @Slf4j
+@Component
 public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<AuthorizationHeaderFilter.Config> {
     private Key key;
+    private final ReactiveRedisTemplate<String, Object> redisTemplate;
 
-    public AuthorizationHeaderFilter(@Value("${jwt.secret.key}") String secret) {
+    public AuthorizationHeaderFilter(@Value("${jwt.secret.key}") String secret,
+                                     ReactiveRedisTemplate<String, Object> redisTemplate) {
         super(Config.class);
         byte[] keyBytes = Decoders.BASE64.decode(secret);
         this.key = Keys.hmacShaKeyFor(keyBytes);
+        this.redisTemplate = redisTemplate;
     }
 
     @Override
@@ -50,24 +50,37 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
                 throw JwtTokenInvalidException.INSTANCE;
             }
 
-            String userRole = resolveTokenRole(token).replace("[", "").replace("]", "");
+            return isTokenBlacked(token)
+                    .flatMap(isBlacked -> {
+                        if (isBlacked) {
+                            throw JwtTokenInvalidException.INSTANCE;
+                        }
+                        String userRole = resolveTokenRole(token).replace("[", "").replace("]", "");
 
-            if (requiredRole.equalsIgnoreCase("role_admin")) {
-                if (!userRole.equalsIgnoreCase("role_admin")) {
-                    throw JwtTokenInvalidException.INSTANCE;
-                }
-            } else if (requiredRole.equalsIgnoreCase("role_user")) {
-                if (!userRole.equalsIgnoreCase("role_user")) {
-                    throw JwtTokenInvalidException.INSTANCE;
-                }
-            }
+                        if (requiredRole.equalsIgnoreCase("role_admin")) {
+                            if (!userRole.equalsIgnoreCase("role_admin")) {
+                                throw JwtTokenInvalidException.INSTANCE;
+                            }
+                        } else if (requiredRole.equalsIgnoreCase("role_user")) {
+                            if (!userRole.equalsIgnoreCase("role_user")) {
+                                throw JwtTokenInvalidException.INSTANCE;
+                            }
+                        }
 
-            String uuid = extractUUID(token);
-            addAuthorizationHeaders(request, uuid);
-            return chain.filter(exchange);
+                        String uuid = extractUUID(token);
+                        addAuthorizationHeaders(request, uuid);
+                        return chain.filter(exchange);
+                    });
         };
 
         return filter;
+    }
+
+    private Mono<Boolean> isTokenBlacked(String accessToken) {
+        return redisTemplate.opsForValue()
+                .get(accessToken)
+                .map(value -> "logout".equals(value))
+                .defaultIfEmpty(false);
     }
 
     private boolean validateToken(String token) {

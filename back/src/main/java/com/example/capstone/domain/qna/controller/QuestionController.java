@@ -6,6 +6,7 @@ import com.example.capstone.domain.qna.entity.Question;
 import com.example.capstone.domain.qna.service.ImageService;
 import com.example.capstone.domain.qna.service.QuestionService;
 import com.example.capstone.global.dto.ApiResult;
+import com.example.capstone.global.util.Timer;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -27,8 +28,8 @@ public class QuestionController {
 
     private final QuestionService questionService;
     private final ImageService imageService;
-    private final JwtTokenProvider jwtTokenProvider;
 
+    @Timer
     @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "질문글 생성", description = "request 정보를 기반으로 질문글을 생성합니다. imgList 정보를 통해 이미지 파일을 업로드 합니다")
     @ApiResponse(responseCode = "200", description = "request 정보를 기반으로 생성된 질문글과 imgList을 통해 업로드된 이미지 파일의 url 정보가 함께 반환됩니다.")
@@ -46,6 +47,7 @@ public class QuestionController {
                 .ok(new ApiResult<>("Successfully create question", new QuestionEntireResponse(quest, urlList)));
     }
 
+    @Timer
     @GetMapping("/read")
     @Operation(summary = "질문글 불러오기", description = "id를 통해 해당 질문글을 가져옵니다.")
     @ApiResponse(responseCode = "200", description = "해당 id의 질문글과 이미지 url을 반환합니다.")
@@ -58,6 +60,7 @@ public class QuestionController {
                 .ok(new ApiResult<>("Successfully read question", new QuestionEntireResponse(questionResponse, urlList)));
     }
 
+    @Timer
     @PutMapping("/update")
     @Operation(summary = "질문글 수정", description = "request 정보를 기반으로 질문글을 수정합니다.")
     @ApiResponse(responseCode = "200", description = "완료시 200을 리턴합니다.")
@@ -69,6 +72,7 @@ public class QuestionController {
                 .ok(new ApiResult<>("Successfully update question", 200));
     }
 
+    @Timer
     @DeleteMapping("/erase")
     @Operation(summary = "질문글 삭제", description = "id를 기반으로 해당 질문글을 삭제합니다.")
     @ApiResponse(responseCode = "200", description = "완료시 200을 리턴합니다.")
@@ -85,6 +89,7 @@ public class QuestionController {
                 .ok(new ApiResult<>("Successfully delete question", 200));
     }
 
+    @Timer
     @PostMapping("/list")
     @Operation(summary = "질문글 미리보기 리스트 생성", description = "request 정보를 기반으로 페이지네이션이 적용된 질문글 리스트를 반환합니다.")
     @ApiResponse(responseCode = "200", description = "request 조건에 맞는 질문글 리스트를 반환합니다.")

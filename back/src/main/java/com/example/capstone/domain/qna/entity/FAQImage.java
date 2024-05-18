@@ -16,7 +16,7 @@ public class FAQImage {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "faq_id")
     private FAQ faqId;
 
