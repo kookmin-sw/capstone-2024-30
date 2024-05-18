@@ -6,6 +6,7 @@ import com.example.capstone.domain.qna.entity.FAQ;
 import com.example.capstone.domain.qna.service.FAQService;
 import com.example.capstone.domain.qna.service.ImageService;
 import com.example.capstone.global.dto.ApiResult;
+import com.example.capstone.global.util.Timer;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -30,8 +31,7 @@ public class FAQController {
 
     private final ImageService imageService;
 
-    private final JwtTokenProvider jwtTokenProvider;
-
+    @Timer
     @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "FAQ글 생성", description = "request 정보를 기반으로 FAQ글을 생성합니다. imgList 정보를 통해 이미지 파일을 업로드 합니다")
     @ApiResponse(responseCode = "200", description = "request 정보를 기반으로 생성된 FAQ글과 imgList을 통해 업로드된 이미지 파일의 url 정보가 함께 반환됩니다.")
@@ -50,6 +50,7 @@ public class FAQController {
                 .ok(new ApiResult<>("Successfully create FAQ", new FAQEntireResponse(faq, urlList)));
     }
 
+    @Timer
     @GetMapping("/read")
     @Operation(summary = "FAQ글 읽기", description = "FAQ글을 읽어 반환합니다.")
     @ApiResponse(responseCode = "200", description = "FAQ글의 내용이 담긴 faqResponse와 첨부이미지 주소가 담긴 imgUrl이 반환됩니다.")
@@ -61,6 +62,7 @@ public class FAQController {
                 .ok(new ApiResult<>("Successfully read FAQ", new FAQEntireResponse(faqResponse, urlList)));
     }
 
+    @Timer
     @PutMapping("/update")
     @Operation(summary = "FAQ글 수정", description = "FAQ글을 수정합니다.")
     @ApiResponse(responseCode = "200", description = "완료시 200을 반환합니다.")
@@ -71,6 +73,7 @@ public class FAQController {
                 .ok(new ApiResult<>("Successfully update FAQ", 200));
     }
 
+    @Timer
     @DeleteMapping("/erase")
     @Operation(summary = "FAQ글 삭제", description = "FAQ글을 삭제합니다.")
     @ApiResponse(responseCode = "200", description = "완료시 200을 반환합니다.")
@@ -86,6 +89,7 @@ public class FAQController {
                 .ok(new ApiResult<>("Successfully delete FAQ", 200));
     }
 
+    @Timer
     @PostMapping("/list")
     @Operation(summary = "FAQ글의 미리보기 리스트 생성", description = "FAQ글 리스트를 생성하여 반환합니다.")
     @ApiResponse(responseCode = "200", description = "FAQ글의 미리보기 리스트가 반환됩니다.")

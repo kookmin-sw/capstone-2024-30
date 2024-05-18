@@ -30,7 +30,7 @@ public class AnnouncementRepositoryImpl implements AnnouncementCustomRepository 
         predicate = predicate.and(eqCursorId(cursorId));
         predicate = predicate.and(announcement.language.eq(language));
 
-        if(!type.equals("all")){
+        if(!type.equals("전체")){
             predicate = predicate.and(announcement.type.eq(type));
         }
 
@@ -60,7 +60,7 @@ public class AnnouncementRepositoryImpl implements AnnouncementCustomRepository 
         predicate = predicate.and(eqCursorId(cursorId));
         predicate = predicate.and(announcement.language.eq(language));
 
-        if(!type.equals("all")){
+        if(!type.equals("전체")){
             predicate = predicate.and(announcement.type.eq(type));
         }
 

@@ -1,6 +1,12 @@
 spring:
   application:
     name: back-gateway
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      data: 0
+
 
 jwt:
   secret:
@@ -9,3 +15,4 @@ jwt:
 server:
   port: 8081
   chatbot-url: ${CHATBOT_URL}
+

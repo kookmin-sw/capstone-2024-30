@@ -45,12 +45,8 @@ public class Answer {
         this.updatedDate = updatedDate;
     }
 
-    public void upLikeCount() {
-        this.likeCount += 1;
-    }
-
-    public void downLikeCount() {
-        this.likeCount -= 1;
+    public void updateLikeCount(Long count) {
+        likeCount = count;
     }
 
     public AnswerResponse toDTO() {
