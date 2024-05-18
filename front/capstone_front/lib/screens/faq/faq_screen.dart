@@ -22,7 +22,7 @@ class FaqScreenState extends State<FaqScreen> {
   String selectedItemToShow = language == 'KO'
       ? '전공'
       : language == "EN-US"
-          ? "major"
+          ? "Major"
           : "专业";
 
   List<Map<String, dynamic>> filteredFaqs = [];
@@ -56,7 +56,8 @@ class FaqScreenState extends State<FaqScreen> {
   }
 
   void filterFaqs(String query) {
-    final List<Map<String, dynamic>> allFaqs = faqs[selectedItem]!;
+    final List<Map<String, dynamic>> allFaqs =
+        faqs[faqsEnToFormEn[selectedItem] ?? selectedItem]!;
     if (query.isEmpty) {
       filteredFaqs = allFaqs;
     } else {
@@ -76,7 +77,7 @@ class FaqScreenState extends State<FaqScreen> {
     print(category);
     setState(() {
       selectedItem = category;
-      filteredFaqs = faqs[selectedItem]!;
+      filteredFaqs = faqs[faqsEnToFormEn[selectedItem] ?? selectedItem]!;
       widget.performSearch(widget.searchController.text);
     });
   }
