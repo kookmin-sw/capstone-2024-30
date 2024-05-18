@@ -1,5 +1,8 @@
+import 'package:capstone_front/main.dart';
 import 'package:capstone_front/screens/faq/test_faq_data.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class FaqScreen extends StatefulWidget {
   final Function(String) performSearch;
@@ -12,22 +15,49 @@ class FaqScreen extends StatefulWidget {
   State<FaqScreen> createState() => FaqScreenState();
 }
 
+FlutterSecureStorage storage = const FlutterSecureStorage();
+
 class FaqScreenState extends State<FaqScreen> {
   String selectedItem = 'major';
-  String selectedItemToShow = '전공';
+  String selectedItemToShow = language == 'KO'
+      ? '전공'
+      : language == "EN-US"
+          ? "Major"
+          : "专业";
+
   List<Map<String, dynamic>> filteredFaqs = [];
+  // String? language;
+
+  Future<void> initialize() async {
+    // language = await storage.read(key: "language");
+    setState(() {});
+  }
 
   @override
   void initState() {
     super.initState();
+
+    initialize();
     filteredFaqs = faqs[selectedItem]!;
     widget.searchController.addListener(() {
       widget.performSearch(widget.searchController.text);
     });
   }
 
+  String translateTagOtherToEn(String ohterTag, String nowLanguage) {
+    switch (nowLanguage) {
+      case 'KO':
+        return faqCategoryMapperKoToEn[ohterTag] ?? ohterTag;
+      case 'ZH':
+        return faqCategoryMapperZhToEn[ohterTag] ?? ohterTag;
+      default:
+        return ohterTag;
+    }
+  }
+
   void filterFaqs(String query) {
-    final List<Map<String, dynamic>> allFaqs = faqs[selectedItem]!;
+    final List<Map<String, dynamic>> allFaqs =
+        faqs[faqsEnToFormEn[selectedItem] ?? selectedItem]!;
     if (query.isEmpty) {
       filteredFaqs = allFaqs;
     } else {
@@ -42,10 +72,12 @@ class FaqScreenState extends State<FaqScreen> {
   }
 
   void changeCategory(String category) {
+    selectedItemToShow = category;
+    category = translateTagOtherToEn(category, language);
+    print(category);
     setState(() {
-      selectedItem = faqCategoryMapper[category]!;
-      selectedItemToShow = category;
-      filteredFaqs = faqs[selectedItem]!;
+      selectedItem = category;
+      filteredFaqs = faqs[faqsEnToFormEn[selectedItem] ?? selectedItem]!;
       widget.performSearch(widget.searchController.text);
     });
   }

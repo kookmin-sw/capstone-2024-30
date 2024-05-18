@@ -96,7 +96,7 @@ class _SpeechSentenceCardState extends State<SpeechSentenceCard> {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: const Text("취소"),
+                child: Text(tr("speech.cancel")),
               ),
             ),
             Container(
@@ -104,7 +104,7 @@ class _SpeechSentenceCardState extends State<SpeechSentenceCard> {
                 onPressed: () {
                   openAppSettings();
                 },
-                child: const Text("설정"),
+                child: Text(tr("speech.setting")),
               ),
             ),
           ],

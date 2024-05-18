@@ -122,7 +122,7 @@ class _CafeteriaMenuScreenState extends State<CafeteriaMenuScreen>
                     ],
                   );
                 } else if (snapshot.hasError) {
-                  return const Center(child: Text("에러가 발생하였습니다."));
+                  return Center(child: Text(tr('cafeteria.error_message')));
                 } else {
                   return Expanded(
                     child: TabBarView(

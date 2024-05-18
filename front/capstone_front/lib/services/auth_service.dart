@@ -146,6 +146,7 @@ class AuthService {
 
     final String decodedBody = utf8.decode(response.bodyBytes);
     final Map<String, dynamic> jsonMap = jsonDecode(decodedBody);
+    print(jsonMap);
     if (response.statusCode == 200) {
       print("logout success");
     } else {

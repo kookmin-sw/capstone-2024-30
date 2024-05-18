@@ -37,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen>
   void initState() {
     super.initState();
 
-    noticesRes = NoticeService.getNotices(0, 'all', language);
+    noticesRes = NoticeService.getNotices(0, '전체', language);
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
@@ -469,9 +469,9 @@ class _HomeScreenState extends State<HomeScreen>
                   const SizedBox(height: 5),
                   ElevatedButton(
                     onPressed: () async {
-                      await AuthService.logout();
-                      logout();
-                      await storage.write(key: 'isLogin', value: 'false');
+                      // await AuthService.logout();
+                      // logout();
+                      // await storage.write(key: 'isLogin', value: 'false');
                       context.go('/login');
                     },
                     child: Text(tr("mainScreen.logout")),
