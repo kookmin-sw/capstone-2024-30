@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 
-final Map<String, List<Map<String, dynamic>>> faqs = {
+final Map<String, List<Map<String, dynamic>>> faqsKo = {
   'major': majorFaq,
   'doubleMajor': doubleMajorFaq,
   'teachingCertification': teachingCertificationFaq,
@@ -657,6 +657,7 @@ final List<Map<String, dynamic>> eastsoftFieldPracticeFaq = [
     'content': """"해딩확기 기준5~ 8차학기 재획상만 지원 가능합니다.""",
   },
 ];
+
 final List<Map<String, dynamic>> currentStudentJobExperienceFaq = [
   {
     'title':

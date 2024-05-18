@@ -1,4 +1,5 @@
 import 'package:capstone_front/main.dart';
+import 'package:capstone_front/screens/faq/faq_en_data.dart';
 import 'package:capstone_front/screens/faq/test_faq_data.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ class FaqScreen extends StatefulWidget {
 FlutterSecureStorage storage = const FlutterSecureStorage();
 
 class FaqScreenState extends State<FaqScreen> {
+  var faqs = language == 'KO' ? faqsKo : faqsEn;
   String selectedItem = 'major';
   String selectedItemToShow = language == 'KO'
       ? '전공'
