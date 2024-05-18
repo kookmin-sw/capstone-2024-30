@@ -24,7 +24,7 @@ class _NoticeScreenState extends State<NoticeScreen> {
   String selectedItemToView = language == 'KO'
       ? '전체'
       : language == 'EN-US'
-          ? 'all'
+          ? 'All'
           : '全部';
   // final _controller = TextEditingController();
 
