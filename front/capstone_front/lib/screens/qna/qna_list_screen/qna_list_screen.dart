@@ -1,3 +1,4 @@
+import 'package:capstone_front/main.dart';
 import 'package:capstone_front/models/qna_post_model.dart';
 import 'package:capstone_front/models/qna_response.dart';
 import 'package:capstone_front/screens/qna/qna_detail/qna_detail_screen.dart';
@@ -33,7 +34,7 @@ class QnaListScreenState extends State<QnaListScreen> {
   String? word;
   String? selectedTag;
   String? selectedTagForView;
-  String? language;
+  // String? language;
 
   Map<String, String> tagMapEn = {
     "대학생활": "Campus Life",
@@ -113,7 +114,7 @@ class QnaListScreenState extends State<QnaListScreen> {
   }
 
   Future<void> initialize() async {
-    language = await storage.read(key: "language");
+    // language = await storage.read(key: "language");
     setState(() {});
     await loadQnas(cursor, selectedTag, word);
   }
@@ -132,7 +133,7 @@ class QnaListScreenState extends State<QnaListScreen> {
   }
 
   void selectTag(String tag) {
-    tag = translateTagOtherToKo(tag, language!);
+    tag = translateTagOtherToKo(tag, language);
     setState(() {
       if (selectedTagForView == tag) {
         selectedTagForView = '';
@@ -235,7 +236,7 @@ class QnaListScreenState extends State<QnaListScreen> {
                                   name: post.author,
                                   country: post.country,
                                   tag: translateTagKoToOther(
-                                      post.category, language!),
+                                      post.category, language),
                                   answerCount: post.answerCount,
                                 ),
                               ),
