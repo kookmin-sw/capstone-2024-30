@@ -20,8 +20,12 @@ class NoticeScreen extends StatefulWidget {
 FlutterSecureStorage storage = const FlutterSecureStorage();
 
 class _NoticeScreenState extends State<NoticeScreen> {
-  String selectedItem = 'all';
-  String selectedItemToView = 'all';
+  String selectedItem = '전체';
+  String selectedItemToView = language == 'KO'
+      ? '전체'
+      : language == 'EN-US'
+          ? 'all'
+          : '全部';
   // final _controller = TextEditingController();
 
   List<NoticeModel> notices = [];

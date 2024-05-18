@@ -37,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen>
   void initState() {
     super.initState();
 
-    noticesRes = NoticeService.getNotices(0, 'all', language);
+    noticesRes = NoticeService.getNotices(0, '전체', language);
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),

@@ -29,7 +29,7 @@ final List<String> noticeKinds = [
 ];
 
 final Map<String, String> noticeMapperEnToKo = {
-  "all": "all",
+  "all": "전체",
   "universityAdmissionNotice": "대학입학공지",
   "graduateAdmissionNotice": "대학원입학공지",
   "academicNotice": "학사공지",
@@ -57,7 +57,7 @@ final Map<String, String> noticeMapperEnToKo = {
 };
 
 final Map<String, String> noticeMapperZhToKo = {
-  "全部": "all",
+  "全部": "전체",
   "大学入学通知": "대학입학공지",
   "研究生入学通知": "대학원입학공지",
   "学术通知": "학사공지",
@@ -85,7 +85,7 @@ final Map<String, String> noticeMapperZhToKo = {
 };
 
 final Map<String, String> noticeMapperKoToEn = {
-  "all": "all",
+  "전체": "all",
   "대학입학공지": "universityAdmissionNotice",
   "대학원입학공지": "graduateAdmissionNotice",
   "학사공지": "academicNotice",
