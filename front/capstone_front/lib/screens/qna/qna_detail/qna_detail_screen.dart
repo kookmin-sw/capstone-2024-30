@@ -68,6 +68,33 @@ class _QnaDetailScreenState extends State<QnaDetailScreen>
     });
   }
 
+  Map<String, String> tagMapEn = {
+    "대학생활": "Campus Life",
+    "학업관련": "Academics",
+    "생활정보": "Living Info",
+    "문화정보": "Culture",
+    "기숙사": "Dormitory",
+  };
+
+  Map<String, String> tagMapZh = {
+    "대학생활": "校园生活",
+    "학업관련": "学术",
+    "생활정보": "生活信息",
+    "문화정보": "文化信息",
+    "기숙사": "宿舍",
+  };
+
+  String translateTagKoToOther(String koreanTag, String nowLanguage) {
+    switch (nowLanguage) {
+      case 'EN-US':
+        return tagMapEn[koreanTag] ?? koreanTag;
+      case 'ZH':
+        return tagMapZh[koreanTag] ?? koreanTag;
+      default:
+        return koreanTag;
+    }
+  }
+
   @override
   void initState() {
     _controller = AnimationController(vsync: this);
@@ -86,7 +113,9 @@ class _QnaDetailScreenState extends State<QnaDetailScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.postModel.category),
+        title: Text(
+          translateTagKoToOther(widget.postModel.category, language),
+        ),
         scrolledUnderElevation: 0,
       ),
       body: Column(
