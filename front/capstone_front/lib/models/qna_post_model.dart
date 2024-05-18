@@ -5,10 +5,8 @@ class QnaPostModel {
   String content;
   String category;
   String country;
-  DateTime? datePublished;
-  DateTime? dateUpdated;
-  List<String> imagesList;
-  int commentAmount;
+  String createdDate;
+  int answerCount;
 
   QnaPostModel({
     required this.id,
@@ -17,25 +15,42 @@ class QnaPostModel {
     required this.content,
     required this.category,
     required this.country,
-    this.datePublished,
-    this.dateUpdated,
-    required this.imagesList,
-    required this.commentAmount,
+    required this.createdDate,
+    required this.answerCount,
   });
 
   QnaPostModel.fromJson(Map<String, dynamic> json)
       : id = json['id'] as int,
         title = json['title'] as String,
         author = json['author'] as String,
-        content = json['content'] as String,
-        category = json['category'] as String,
+        content = json['context'] as String,
+        category = json['tag'] as String,
         country = json['country'] as String,
-        commentAmount = json['commentAmount'] as int,
-        datePublished = json['date_published'] == null
-            ? null
-            : DateTime.tryParse(json['date_published'] as String),
-        dateUpdated = json['date_updated'] == null
-            ? null
-            : DateTime.tryParse(json['date_updated'] as String),
-        imagesList = json['imagesList'] as List<String>;
+        answerCount = json['answerCount'] as int,
+        createdDate = json['createdDate'] as String;
+}
+
+class QnaPostDetailModel {
+  int id;
+  String title;
+  String author;
+  String content;
+  String category;
+  String country;
+  String createdDate;
+  String uuid;
+  List<String> imgUrl;
+
+  QnaPostDetailModel.fromJson(Map<String, dynamic> json)
+      : id = json['questionResponse']['id'] as int,
+        title = json['questionResponse']['title'] as String,
+        author = json['questionResponse']['author'] as String,
+        content = json['questionResponse']['context'] as String,
+        category = json['questionResponse']['tag'] as String,
+        country = json['questionResponse']['country'] as String,
+        createdDate = json['questionResponse']['createdDate'] as String,
+        uuid = json['questionResponse']['uuid'] as String,
+        imgUrl = (json['imgUrl'] as List<dynamic>)
+            .map((item) => item as String)
+            .toList();
 }

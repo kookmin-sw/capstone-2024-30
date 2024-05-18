@@ -83,7 +83,8 @@ class _SpeechScreenState extends State<SpeechPracticeScreen> {
                                 ],
                               );
                             } else if (snapshot.hasError) {
-                              return const Center(child: Text("에러가 발생하였습니다."));
+                              return Center(
+                                  child: Text(tr('cafeteria.error_message')));
                             } else {
                               speechModel = snapshot.data;
                               getWordContainerList();
