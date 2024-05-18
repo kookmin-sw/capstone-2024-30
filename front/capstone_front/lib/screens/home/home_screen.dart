@@ -121,8 +121,7 @@ class _HomeScreenState extends State<HomeScreen>
                                 ),
                                 const SizedBox(height: 15),
                                 Text(
-                                  '$userBigMajor  $userMajor',
-                                ),
+                                    '${tr('college.$userBigMajor')}\n${tr('department.$userMajor')}'),
                               ],
                             ),
                           ),

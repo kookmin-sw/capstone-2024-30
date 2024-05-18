@@ -87,11 +87,11 @@
     "hint_custom_example": "Please enter a sentence you want to practice",
     "guide": "Record and check the results",
     "record": "Press button to start recording",
-    "complete": "complete",
+    "complete": "Complete",
     "pause": "Pause",
     "resume": "Resume",
     "my_speech": "My Speech",
-    "re_record": "Re-record",
+    "re_record": "Re-Record",
     "get_result": "Check Result",
     "result": " Analysis Result ",
     "accuracy": "Accuracy Score",
@@ -246,7 +246,8 @@
     "미래모빌리티학과": "College of Future Mobility",
     "교양대학": "College of General Education",
     "교직과정부": "Department of Teaching Profession",
-    "인문기술융합학부": "School of Humanities, Art & Technology"
+    "인문기술융합학부": "School of Humanities, Art & Technology",
+    "enter_college": "Please select your college"
   },
   "department": {
     "한국어문학부": "Department of Korean Language and Literature",
@@ -308,6 +309,7 @@
     "미래모빌리티학과": "Department of Future Mobility",
     "교양대학": "College of General Education",
     "교직과정부": "Department of Teaching Profession",
-    "인문기술융합부": "School of Humanities, Art & Technology"
+    "인문기술융합부": "School of Humanities, Art & Technology",
+    "enter_department": "Please select your department"
   }
 }
