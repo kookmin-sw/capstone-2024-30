@@ -1,6 +1,8 @@
-## 0. 중간발표 자료
+# 👋 외국인 유학생들을 위한 앱, 외국민
 
-[https://drive.google.com/drive/folders/1qLw6-LrNG9_9Of6zh4YmYm2VoOt31NlA?usp=drive_link](https://drive.google.com/drive/folders/1qLw6-LrNG9_9Of6zh4YmYm2VoOt31NlA?usp=drive_link)
+캡스톤 30조
+
+중간발표 자료 : [https://drive.google.com/drive/folders/1qLw6-LrNG9_9Of6zh4YmYm2VoOt31NlA?usp=drive_link](https://drive.google.com/drive/folders/1qLw6-LrNG9_9Of6zh4YmYm2VoOt31NlA?usp=drive_link)
 
 <br>
 
@@ -108,7 +110,7 @@ ON국민에도 자주 물어보는 질문들을 모아둔 FAQ가 있습니다. �
 
 ## 6. 기술스택
 
-### Frontend
+### 🛠 Frontend
 
 |역할|종류|
 |-|-|
@@ -186,18 +188,6 @@ ON국민에도 자주 물어보는 질문들을 모아둔 FAQ가 있습니다. �
 
 ## 8. 사용법
 
-### Backend
-
-`.env.example`을 바탕으로 `.env`를 작성합니다. 그 다음
-
-```
-docker-compose up -d
-```
-
-를 통해 docker compose를 통하여 실행하시면 됩니다. 이미지는 모두 Dockerhub에 업로드 되어 있습니다.
-
-<br>
-
 ### Frontend
 
 #### 1. 플러터 설치
@@ -223,6 +213,18 @@ flutter pub get
 ```
 flutter run
 ```
+
+<br>
+
+### Backend
+
+`.env.example`을 바탕으로 `.env`를 작성합니다. 그 다음
+
+```
+docker-compose up -d
+```
+
+를 통해 docker compose를 통하여 실행하시면 됩니다. 이미지는 모두 Dockerhub에 업로드 되어 있습니다.
 
 <br>
 
