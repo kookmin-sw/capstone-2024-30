@@ -41,7 +41,7 @@ class _NoticeDetailState extends State<NoticeDetailScreen> {
         // backgroundColor: Theme.of(context).primaryColor,
         // foregroundColor: Colors.white,
         title: Text(
-          widget.notice.department!,
+          translateTagKoToOther(widget.notice.type!, language),
           style: const TextStyle(
             fontWeight: FontWeight.bold,
           ),
