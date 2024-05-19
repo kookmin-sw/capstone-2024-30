@@ -98,7 +98,7 @@
     "fluency": "Fluency Score",
     "completeness": "Completeness Score",
     "result_detail": "Detailed Analysis Result",
-    "wrong_speech": "Incorrect Pronunciation",
+    "wrong_speech": "Incorrect",
     "omission": "Omission",
     "insertion": "Insertion",
     "cancel": "Cancel",

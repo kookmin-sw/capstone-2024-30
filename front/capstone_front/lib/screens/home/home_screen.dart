@@ -469,9 +469,9 @@ class _HomeScreenState extends State<HomeScreen>
                   const SizedBox(height: 5),
                   ElevatedButton(
                     onPressed: () async {
-                      // await AuthService.logout();
-                      // logout();
-                      // await storage.write(key: 'isLogin', value: 'false');
+                      await AuthService.logout();
+                      logout();
+                      await storage.write(key: 'isLogin', value: 'false');
                       context.go('/login');
                     },
                     child: Text(tr("mainScreen.logout")),
