@@ -30,14 +30,17 @@ class _SpeechPracitceCardState extends State<SpeechPracticeCard> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: const Color(0xffd2d7dd),
-          width: 1.5,
-        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.15),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: const Offset(0, 3),
+          ),
+        ],
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(
-            vertical: 10.0 + _verticalPadding, horizontal: 10),
+        padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 15),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,6 +51,9 @@ class _SpeechPracitceCardState extends State<SpeechPracticeCard> {
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
               ),
+            ),
+            const SizedBox(
+              height: 4,
             ),
             Text(
               widget.sentence2,

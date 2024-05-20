@@ -2,6 +2,7 @@ package com.example.capstone.domain.qna.service;
 
 import com.example.capstone.domain.qna.dto.*;
 import com.example.capstone.domain.qna.entity.Question;
+import com.example.capstone.domain.qna.exception.QuestionNotFoundException;
 import com.example.capstone.domain.qna.repository.AnswerRepository;
 import com.example.capstone.domain.qna.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,8 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Map;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -25,21 +24,27 @@ public class QuestionService {
         LocalDateTime current = LocalDateTime.now();
         Question quest = questionRepository.save(Question.builder().title(request.title()).context(request.context())
                 .author(request.author()).createdDate(current).updatedDate(current).tag(request.tag())
-                .country(request.country()).uuid(UUID.fromString(userId)).build());
+                .country(request.country()).uuid(userId).build());
 
         return quest.toDTO();
     }
 
     public QuestionResponse getQuestion(Long id) {
-        Question quest = questionRepository.findById(id).get();
+        Question quest = questionRepository.findById(id).orElseThrow(() ->
+            new QuestionNotFoundException(id)
+        );
         return quest.toDTO();
     }
 
     @Transactional
     public void updateQuestion(String userId, QuestionPutRequest request) {
         LocalDateTime current = LocalDateTime.now();
-        Question quest = questionRepository.findById(request.id()).get();
-        quest.update(request.title(), request.context(), current);
+        Question quest = questionRepository.findById(request.id()).orElseThrow(() ->
+            new QuestionNotFoundException(request.id())
+        );
+        if(quest.getUuid().equals(userId)) {
+            quest.update(request.title(), request.context(), current);
+        }
     }
 
     public void eraseQuestion(Long id){

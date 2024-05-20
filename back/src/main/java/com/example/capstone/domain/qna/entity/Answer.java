@@ -5,9 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table(name = "answers")
@@ -40,20 +37,16 @@ public class Answer {
     @Column(name = "updated_date", nullable = false)
     private LocalDateTime updatedDate;
 
-    @Column(name = "uuid", nullable = false, unique = true)
-    private UUID uuid;
+    @Column(name = "uuid", nullable = false)
+    private String uuid;
 
     public void update(String context, LocalDateTime updatedDate) {
         this.context = context;
         this.updatedDate = updatedDate;
     }
 
-    public void upLikeCount() {
-        this.likeCount += 1;
-    }
-
-    public void downLikeCount() {
-        this.likeCount -= 1;
+    public void updateLikeCount(Long count) {
+        likeCount = count;
     }
 
     public AnswerResponse toDTO() {

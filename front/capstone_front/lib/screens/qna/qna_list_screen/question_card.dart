@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class QuestionCard extends StatelessWidget {
   final String title, content, name, country, tag;
-  final int commentAmount;
+  final int answerCount;
 
   const QuestionCard({
     super.key,
@@ -11,7 +11,7 @@ class QuestionCard extends StatelessWidget {
     required this.name,
     required this.country,
     required this.tag,
-    required this.commentAmount,
+    required this.answerCount,
   });
 
   @override
@@ -125,7 +125,7 @@ class QuestionCard extends StatelessWidget {
                       width: 10,
                     ),
                     Text(
-                      commentAmount.toString(),
+                      answerCount.toString(),
                       style: const TextStyle(
                         fontSize: 16,
                         color: Color(0xFFa1a1ad),

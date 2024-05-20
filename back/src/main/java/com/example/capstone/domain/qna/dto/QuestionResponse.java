@@ -1,7 +1,6 @@
 package com.example.capstone.domain.qna.dto;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 public record QuestionResponse(
         Long id,
@@ -12,6 +11,6 @@ public record QuestionResponse(
         LocalDateTime updatedDate,
         String tag,
         String country,
-        UUID uuid
+        String uuid
 ) {
 }

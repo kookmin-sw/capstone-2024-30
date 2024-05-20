@@ -1,8 +1,11 @@
+import 'package:capstone_front/main.dart';
 import 'package:capstone_front/models/notice_model.dart';
 import 'package:capstone_front/models/notice_response.dart';
 import 'package:capstone_front/screens/notice/test_notice_data.dart';
 import 'package:capstone_front/screens/notice/notice_detail_screen.dart';
 import 'package:capstone_front/services/notice_service.dart';
+import 'package:capstone_front/utils/search_screen.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -14,15 +17,23 @@ class NoticeScreen extends StatefulWidget {
   State<NoticeScreen> createState() => _NoticeScreenState();
 }
 
+FlutterSecureStorage storage = const FlutterSecureStorage();
+
 class _NoticeScreenState extends State<NoticeScreen> {
-  String selectedItem = 'all';
-  final _controller = TextEditingController();
+  String selectedItem = '전체';
+  String selectedItemToView = language == 'KO'
+      ? '전체'
+      : language == 'EN-US'
+          ? 'All'
+          : '全部';
+  // final _controller = TextEditingController();
 
   List<NoticeModel> notices = [];
   var cursor = 0;
   var hasNext = true;
   var itemCount = 0;
-  var language = 'KO';
+  bool isSearchMode = false;
+  String _word = '';
 
   void loadNotices(int lastCursor, String language) async {
     try {
@@ -42,20 +53,74 @@ class _NoticeScreenState extends State<NoticeScreen> {
     }
   }
 
-  void initLanguageAndLoadNotices() async {
-    const storage = FlutterSecureStorage();
-    String? storedLanguage = await storage.read(key: 'language');
-    var temp = '';
-    if (storedLanguage == "english") {
-      temp = 'EN-US';
-    } else {
-      temp = 'KO';
+  void loadNoticesByWord(int lastCursor, String language, String word) async {
+    try {
+      word ??= '';
+      NoticesResponse res = await NoticeService.getNoticesByWord(
+          lastCursor, selectedItem, language, word);
+      setState(() {
+        hasNext = res.hasNext;
+        if (hasNext) {
+          cursor = res.lastCursorId!;
+        }
+        notices.addAll(res.notices);
+        itemCount += res.notices.length;
+      });
+    } catch (e) {
+      print(e);
+      throw Exception('error');
     }
-    setState(() {
-      language = temp;
-    });
+  }
+
+  String translateTagOtherToKo(String ohterTag, String nowLanguage) {
+    switch (nowLanguage) {
+      case 'EN-US':
+        return noticeMapperEnToKo[ohterTag] ?? ohterTag;
+      case 'ZH':
+        return noticeMapperZhToKo[ohterTag] ?? ohterTag;
+      default:
+        return ohterTag;
+    }
+  }
+
+  String translateTagKoToOther(String koreanTag, String nowLanguage) {
+    switch (nowLanguage) {
+      case 'EN-US':
+        return noticeMapperKoToEn[koreanTag] ?? koreanTag;
+      case 'ZH':
+        return noticeMapperKoToZh[koreanTag] ?? koreanTag;
+      default:
+        return koreanTag;
+    }
+  }
+
+  void initLanguageAndLoadNotices() async {
+    // const storage = FlutterSecureStorage();
+    // String? storedLanguage = await storage.read(key: 'language');
+    // var temp = '';
+    // if (storedLanguage != "KO") {
+    //   temp = 'EN-US';
+    // } else {
+    //   temp = 'KO';
+    // }
+    // setState(() {
+    //   language = temp;
+    // });
 
     loadNotices(cursor, language);
+  }
+
+  void searchNotice(String searchWord) {
+    setState(() {
+      cursor = 0;
+      hasNext = true;
+      itemCount = 0;
+      notices = [];
+      isSearchMode = true;
+      _word = searchWord;
+    });
+    print(_word);
+    loadNoticesByWord(cursor, language, _word);
   }
 
   @override
@@ -69,42 +134,66 @@ class _NoticeScreenState extends State<NoticeScreen> {
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0,
-        title: TextField(
-          controller: _controller,
-          onChanged: (text) {
-            setState(() {});
-          },
-          decoration: InputDecoration(
-            hintText: "검색어를 입력하세요",
-            border: InputBorder.none,
-            hintStyle: const TextStyle(
-              color: Color(0XFFd7d7d7),
-            ),
-            suffixIcon: _controller.text.isNotEmpty
-                ? IconButton(
-                    onPressed: () {
-                      _controller.clear();
-                      setState(() {});
-                    },
-                    icon: const Icon(
-                      Icons.cancel,
-                      color: Colors.grey,
-                    ),
-                  )
-                : null,
-          ),
-          style: const TextStyle(
-            color: Colors.black,
-            fontSize: 18.0,
-          ),
-        ),
+        title: Text(tr("mainScreen.notice")),
+        // title: TextField(
+        //   controller: _controller,
+        //   onChanged: (text) {
+        //     if (text.trim() == "") {
+        //       setState(() {
+        //         isSearchMode = false;
+        //       });
+        //     }
+        //   },
+        //   decoration: InputDecoration(
+        //     hintText: "검색어를 입력하세요",
+        //     border: InputBorder.none,
+        //     hintStyle: const TextStyle(
+        //       color: Color(0XFFd7d7d7),
+        //     ),
+        //     suffixIcon: _controller.text.isNotEmpty
+        //         ? IconButton(
+        //             onPressed: () {
+        //               _controller.clear();
+        //               setState(() {
+        //                 setState(() {
+        //                   cursor = 0;
+        //                   hasNext = true;
+        //                   itemCount = 0;
+        //                   notices = [];
+        //                   isSearchMode = false;
+        //                 });
+        //                 loadNotices(cursor, language);
+        //               });
+        //             },
+        //             icon: const Icon(
+        //               Icons.cancel,
+        //               color: Colors.grey,
+        //             ),
+        //           )
+        //         : null,
+        //   ),
+        //   style: const TextStyle(
+        //     color: Colors.black,
+        //     fontSize: 18.0,
+        //   ),
+        // ),
         actions: [
           IconButton(
             icon: Icon(
               Icons.search,
               color: Theme.of(context).primaryColor,
             ),
-            onPressed: () => {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => SearchScreen(
+                          searchCallback: (text) {
+                            searchNotice(text);
+                          },
+                        )),
+              );
+            },
           ),
         ],
       ),
@@ -142,9 +231,13 @@ class _NoticeScreenState extends State<NoticeScreen> {
                                   (item) => ListTile(
                                     onTap: () {
                                       setState(() {
-                                        selectedItem = item;
+                                        selectedItemToView = item;
+                                        selectedItem = translateTagOtherToKo(
+                                            item, language);
                                         notices = [];
                                         itemCount = 0;
+                                        _word = '';
+                                        isSearchMode = false;
                                       });
                                       loadNotices(0, language);
                                       Navigator.of(context).pop();
@@ -171,7 +264,7 @@ class _NoticeScreenState extends State<NoticeScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        selectedItem,
+                        selectedItemToView,
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -190,11 +283,20 @@ class _NoticeScreenState extends State<NoticeScreen> {
           Expanded(
             child: RefreshIndicator(
               onRefresh: () async {
-                loadNotices(0, language);
+                setState(() {
+                  notices = [];
+                  cursor = 0;
+                  itemCount = 0;
+                });
+                isSearchMode
+                    ? loadNoticesByWord(cursor, language, _word)
+                    : loadNotices(cursor, language);
               },
               child: ListView.separated(
                 itemCount: notices.length,
                 itemBuilder: (context, index) {
+                  print(index + 1);
+                  print(itemCount);
                   if (index + 1 == itemCount && hasNext) {
                     loadNotices(cursor, language);
                   }
@@ -210,7 +312,7 @@ class _NoticeScreenState extends State<NoticeScreen> {
                     subtitle: Row(
                       children: [
                         Text(
-                          notice.type!,
+                          translateTagKoToOther(notice.type!, language),
                           style: const TextStyle(
                             fontSize: 16,
                             color: Color(0xFF8266DF),

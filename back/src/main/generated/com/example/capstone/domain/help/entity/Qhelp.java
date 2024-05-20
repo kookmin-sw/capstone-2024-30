@@ -37,7 +37,7 @@ public class QHelp extends EntityPathBase<Help> {
 
     public final DateTimePath<java.time.LocalDateTime> updatedDate = createDateTime("updatedDate", java.time.LocalDateTime.class);
 
-    public final ComparablePath<java.util.UUID> uuid = createComparable("uuid", java.util.UUID.class);
+    public final StringPath uuid = createString("uuid");
 
     public QHelp(String variable) {
         super(Help.class, forVariable(variable));

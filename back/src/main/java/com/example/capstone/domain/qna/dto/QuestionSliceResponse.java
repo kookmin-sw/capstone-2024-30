@@ -6,7 +6,6 @@ import java.util.Map;
 public record QuestionSliceResponse(
         Long lastCursorId,
         Boolean hasNext,
-        List<QuestionListResponse> questionList,
-        Map<Long, Long> answerCountList
+        List<QuestionListResponse> questionList
 ) {
 }

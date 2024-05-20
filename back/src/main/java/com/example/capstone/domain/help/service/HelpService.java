@@ -1,6 +1,7 @@
 package com.example.capstone.domain.help.service;
 
 import com.example.capstone.domain.help.dto.*;
+import com.example.capstone.domain.help.exception.HelpNotFoundException;
 import com.example.capstone.domain.help.repository.HelpListRepository;
 import com.example.capstone.domain.help.repository.HelpRepository;
 import com.example.capstone.domain.help.entity.Help;
@@ -12,8 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Map;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -24,21 +23,26 @@ public class HelpService {
         LocalDateTime current = LocalDateTime.now();
         Help help = helpRepository.save(Help.builder().title(request.title()).context(request.context())
                 .author(request.author()).createdDate(current).updatedDate(current).isHelper(request.isHelper())
-                .isDone(false).country(request.country()).uuid(UUID.fromString(userId)).build());
+                .isDone(false).country(request.country()).uuid(userId).build());
 
         return help.toDTO();
     }
 
     public HelpResponse getHelp(Long id) {
-        Help help = helpRepository.findById(id).get();
+        Help help = helpRepository.findById(id).orElseThrow(() ->
+            new HelpNotFoundException(id)
+        );
         return help.toDTO();
     }
 
     @Transactional
     public void updateHelp(String userId, HelpPutRequest request) {
         LocalDateTime current = LocalDateTime.now();
-        Help help = helpRepository.findById(request.id()).get();
-        help.update(request.title(), request.context(), current);
+        Help help = helpRepository.findById(request.id()).orElseThrow(() ->
+                new HelpNotFoundException(request.id()));
+        if(help.getUuid().equals(userId)){
+            help.update(request.title(), request.context(), current);
+        }
     }
 
     public void eraseHelp(Long id){
@@ -55,8 +59,12 @@ public class HelpService {
     }
 
     @Transactional
-    public void doneHelp(Long id) {
-        Help help = helpRepository.findById(id).get();
-        help.done();
+    public void doneHelp(String userId, Long id) {
+        Help help = helpRepository.findById(id).orElseThrow(() ->
+            new HelpNotFoundException(id)
+        );
+        if(help.getUuid().equals(userId)){
+            help.done();
+        }
     }
 }

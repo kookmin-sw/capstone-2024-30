@@ -1,11 +1,11 @@
 import 'package:capstone_front/services/auth_service.dart';
 import 'package:capstone_front/services/login_service.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
+import 'package:restart_app/restart_app.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -44,12 +44,13 @@ class _LoginScreenState extends State<LoginScreen> {
               Row(
                 children: [
                   Flexible(
-                    child: loginTextField(context, tr("kmu_email"), 0, false),
+                    child: loginTextField(
+                        context, tr("login.kmu_email"), 0, false),
                   ),
                   const Text("@kookmin.ac.kr"),
                 ],
               ),
-              loginTextField(context, tr("password"), 1, true),
+              loginTextField(context, tr("login.password"), 1, true),
               Row(
                 children: [
                   Flexible(
@@ -59,26 +60,28 @@ class _LoginScreenState extends State<LoginScreen> {
                             '${_userInfo[0]}@kookmin.ac.kr', _userInfo[1]);
                         switch (result) {
                           case "success":
-                            await storage.write(key: 'isLogin', value: 'true');
-                            await storage.write(
-                                key: 'userEmail',
-                                value: '${_userInfo[0]}@kookmin.ac.kr');
                             var uuid = await storage.read(key: 'uuid');
                             var isLogined = await AuthService.signIn({
                               "uuid": uuid,
                               "email": '${_userInfo[0]}@kookmin.ac.kr',
                             });
                             if (isLogined) {
-                              makeToast("로그인에 성공하였습니다");
+                              var accessToken =
+                                  await storage.read(key: "accessToken");
+                              await AuthService.getUserInfo(
+                                  uuid!, accessToken!);
+
+                              await storage.write(
+                                  key: 'isLogin', value: 'true');
+                              makeToast(tr("login.login_success"));
                               context.go('/');
                             }
-
                           case "email":
-                            makeToast("이메일이 인증되지 않았습니다");
+                            makeToast(tr("login.email_not_varified"));
                           case "invalid-credential":
-                            makeToast("아이디 또는 비밀번호가 일치하지 않습니다");
+                            makeToast(tr("login.invalid_credential"));
                           default:
-                            makeToast("로그인 실패");
+                            makeToast(tr("login.login_fail"));
                         }
                       },
                       child: Ink(
@@ -140,6 +143,71 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ],
               ),
+              const SizedBox(height: 20),
+              InkWell(
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20.0),
+                            topRight: Radius.circular(20.0),
+                          ),
+                        ),
+                        child: SingleChildScrollView(
+                          child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(tr('mainScreen.language_setting')),
+                                const SizedBox(height: 5),
+                                Row(
+                                  children: [
+                                    IconButton(
+                                      icon: const Text(
+                                          "\u{1f1f0}\u{1f1f7}"), // 한국어
+                                      onPressed: () async {
+                                        await storage.write(
+                                            key: 'language', value: 'KO');
+                                        restartDialog(context, "KO");
+                                      },
+                                    ),
+                                    IconButton(
+                                        icon: const Text(
+                                            "\u{1f1fa}\u{1f1f8}"), // 영어
+                                        onPressed: () async {
+                                          await storage.write(
+                                              key: 'language', value: 'EN-US');
+                                          restartDialog(context, 'EN-US');
+                                        }),
+                                    IconButton(
+                                        icon: const Text(
+                                            "\u{1F1E8}\u{1F1F3}"), // 중국어
+                                        onPressed: () async {
+                                          await storage.write(
+                                              key: 'language', value: 'ZH');
+                                          restartDialog(context, 'ZH');
+                                        }),
+                                  ],
+                                ),
+                                const SizedBox(height: 5),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+                child: const Text(
+                  "Change Language",
+                  style: TextStyle(decoration: TextDecoration.underline),
+                ),
+              )
             ],
           ),
         ),
@@ -185,6 +253,35 @@ class _LoginScreenState extends State<LoginScreen> {
       msg: msg,
       gravity: ToastGravity.BOTTOM,
       fontSize: 20,
+    );
+  }
+
+  Future<dynamic> restartDialog(BuildContext context, String language) {
+    return showDialog(
+      context: context,
+      builder: ((context) {
+        return AlertDialog(
+          content: Text(tr("mainScreen.language_setting_notice")),
+          actions: [
+            Container(
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text(tr("mainScreen.no")),
+              ),
+            ),
+            Container(
+              child: ElevatedButton(
+                onPressed: () {
+                  Restart.restartApp(webOrigin: "/");
+                },
+                child: Text(tr("mainScreen.yes")),
+              ),
+            ),
+          ],
+        );
+      }),
     );
   }
 }

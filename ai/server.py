@@ -22,7 +22,6 @@ sched = BackgroundScheduler(timezone='Asia/Seoul')
 
 class Query(BaseModel):
     query: str
-    target_lang: str
 
 class CustomException(Exception):
     def __init__(self, name: str):
@@ -98,7 +97,7 @@ async def initiate():
     sched.start()
     return "안녕하세요! 국민대학교 전용 챗봇 KUKU입니다. 국민대학교에 대한 건 모든 질문해주세요!"
 
-@app.post("/api/chatbot")
+@app.post("/query")
 async def query(query: Query):
     try:
         ans = llm.query(query.query, query.target_lang)
@@ -110,6 +109,10 @@ async def query(query: Query):
                                                     'answer': ans
                                                     }})
 
+@app.post("/input")
+async def input(data: UploadFile):
+    vdb.add_content(data.file)
+    return 
 
 @app.exception_handler(CustomException)
 async def MyCustomExceptionHandler(request: Request, exception: CustomException):

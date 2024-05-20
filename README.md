@@ -1,12 +1,15 @@
-## 0. 중간발표 자료
+# 👋 외국인 유학생들을 위한 앱, 외국민
+![최종 발표자료](https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/20fc41c1-8a22-4c90-a1f1-8539dea92ed1)
 
-[https://drive.google.com/drive/folders/1qLw6-LrNG9_9Of6zh4YmYm2VoOt31NlA?usp=drive_link](https://drive.google.com/drive/folders/1qLw6-LrNG9_9Of6zh4YmYm2VoOt31NlA?usp=drive_link)
+[중간발표 자료 및 보고서](https://drive.google.com/drive/folders/1qLw6-LrNG9_9Of6zh4YmYm2VoOt31NlA?usp=drive_link)
+
+[최종발표 자료 및 보고서](https://drive.google.com/drive/folders/1gVtsjX9nk8KhyeNu-hTzpeZjZnjj-pR8?usp=sharing)
 
 <br>
 
 ## 1. 프로젝트 소개
 
-이 프로젝트는 국민대학교에서 공부하는 외국인 유학생들을 위한 종합적인 앱 서비스를 개발하는 것입니다. 앱은 학생들이 캠퍼스 생활에 빠르게 적응할 수 있도록 다양한 정보와 서비스를 제공합니다.
+이 프로젝트는 국민대학교 유학생들이 겪는 언어적, 문화적 불편함을 해결하기 위한 프로젝트입니다. 이 프로젝트에서 제공하는 앱에서 유학생들이 캠퍼스 생활에 빠르게 적응할 수 있도록 다양한 정보와 서비스를 제공합니다.
 
 <br>
 
@@ -18,9 +21,35 @@ This project aims to develop a comprehensive app service for international stude
 
 ## 3. 프로젝트 기능
 
-### 기능 1
+#### 1️⃣ 번역된 공지사항 / 학식 / 학교정보 제공
 
-### 기능 2
+국민대학교에서는 공지사항, 학식, 학교정보의 번역을 잘 지원하지 않습니다. 이에따라 외국인 유학생들은 매번 번역기를 사용하여 학교에 대한 정보를 얻기 때문에 정보의 접근성이 낮습니다.
+
+따라서, 외국민 서비스는 설정한 언어에 맞춰서 공지사항/학식/학교정보 번역본을 제공합니다.
+
+#### 2️⃣ 챗봇 기능
+
+국민대학교에서는 ON국민 챗봇 "쿠민이"를 서비스하고있으나, 성능이 매우 형편없습니다. 간단한 질문에도 동문서답을 하거나, 영어로 질문했는데 한글로 답변하는 등 전혀 챗봇으로서의 기능을 수행하지 못하고 있습니다.
+
+따라서, 외국민은 RAG와 LLM을 사용하여 국민대학교에 특화된 답변을 제공하고 다국어를 지원하는 "KuKu" 챗봇을 제공합니다.
+
+#### 3️⃣ 발음 교정 기능
+
+많은 외국인들은 한국에 와서 언어 문제로 힘들어합니다. 특히 학교 생활을 하다보면 발표를 하거나 일상생활에서 의사소통을 해야할 때, 본인의 발음이 정확한지 확인할 방법이 없어서 힘들어합니다.
+
+따라서, 외국민은 자신의 발표 스크립트를 입력으로 넣어서 발음 평가를 받을 수 있을 뿐만 아니라, 한국의 일상생활에서 많이 쓰이는 여러 표현들을 연습할 수 있도록하여 한국 유학생활을 돕고자 합니다.
+
+#### 4️⃣ 헬퍼 매칭 기능
+
+많은 외국인들이 낯선 땅에 왔을 때 도움을 받을 사람이 없어서 매우 힘들어합니다.
+
+따라서, 외국민은 외국인들을 도울 수 있도록 헬퍼 매칭 기능을 제공합니다. 한국인 or 오랜 유학생활을 하여 한국 생활에 익숙해진 외국인 헬퍼를 구할 수 있도록 커뮤니티를 제공합니다.
+
+#### 5️⃣ Q&A와 FAQ 기능
+
+유학생들이 한국생활에서 궁금한 것을 물어볼만한 곳이 마땅치 않고, ON국민에 있는 FAQ의 존재를 알기 쉽지 않습니다. 하지만, 이 FAQ 또한 번역을 제공하지 않고 있습니다.
+
+따라서, 외국민은 Q&A 게시판과 다국어로 번역된 FAQ를 제공합니다.
 
 <br>
 
@@ -82,7 +111,7 @@ This project aims to develop a comprehensive app service for international stude
 
 ## 6. 기술스택
 
-### Frontend
+### 🛠 Frontend
 
 |역할|종류|
 |-|-|
@@ -98,13 +127,13 @@ This project aims to develop a comprehensive app service for international stude
 |-|-|
 |Framework|<img alt="RED" src ="https://img.shields.io/badge/SPRING Boot-6DB33F.svg?&style=for-the-badge&logo=SpringBoot&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/Spring Security-6DB33F.svg?&style=for-the-badge&logo=springsecurity&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/Spring Cloud Gateway-6DB33F.svg?&style=for-the-badge&logo=Spring&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/Ruby On Rails-D30001.svg?&style=for-the-badge&logo=rubyonrails&logoColor=white"/>|
 |Database|<img alt="RED" src ="https://img.shields.io/badge/MySQL-4479A1.svg?&style=for-the-badge&logo=MySQL&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/Redis-DC382D.svg?&style=for-the-badge&logo=Redis&logoColor=white"/>|
-|Programming Language|<img alt="RED" src ="https://img.shields.io/badge/JAVA-004027.svg?&style=for-the-badge&logo=Jameson&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/Ruby-CC342D.svg?&style=for-the-badge&logo=Ruby&logoColor=white"/>|
-|API|![REST](https://img.shields.io/badge/Rest-4B3263?style=for-the-badge&logo=rest&logoColor=white)                                     
-|Test|<img alt="RED" src ="https://img.shields.io/badge/JUnit5-25A162.svg?&style=for-the-badge&logo=JUnit5&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/Test Conatiner-333333.svg?&style=for-the-badge&logo=linuxcontainers&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/Jacoco-85EA2D.svg?&style=for-the-badge&logo=jacoco&logoColor=white"/>|
+|Programming Language|<img alt="RED" src ="https://img.shields.io/badge/JAVA-004027.svg?&style=for-the-badge&logo=Jameson&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/Ruby-CC342D.svg?&style=for-the-badge&logo=Ruby&logoColor=white"/>|             
+|Test|<img alt="RED" src ="https://img.shields.io/badge/JUnit5-25A162.svg?&style=for-the-badge&logo=JUnit5&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/Test Conatiner-333333.svg?&style=for-the-badge&logo=linuxcontainers&logoColor=white"/> |
 |Deploy|<img alt="RED" src ="https://img.shields.io/badge/Nginx-009639.svg?&style=for-the-badge&logo=nginx&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/Docker-2496ED.svg?&style=for-the-badge&logo=docker&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/Amazon EC2-FF9900.svg?&style=for-the-badge&logo=AmazonEC2&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/Amazon Rds-527FFF.svg?&style=for-the-badge&logo=AmazonRds&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/Amazon S3-569A31.svg?&style=for-the-badge&logo=AmazonS3&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/Amazon Route 53-8C4FFF.svg?&style=for-the-badge&logo=Amazon Route 53&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/Certbot-FF1E0D.svg?&style=for-the-badge&logo=Certbot&logoColor=white"/>|
 |CI/CD|<img alt="RED" src ="https://img.shields.io/badge/Github Actions-2088FF.svg?&style=for-the-badge&logo=githubactions&logoColor=white"/>|
 |ETC|<img alt="RED" src ="https://img.shields.io/badge/Azure Speech SDK-0078D4.svg?&style=for-the-badge&logo=Microsoft Azure&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/Let's Encrypt-003A70.svg?&style=for-the-badge&logo=letsencrypt&logoColor=white"/> <img alt="RED" src ="https://img.shields.io/badge/DeepL-0F2B46.svg?&style=for-the-badge&logo=DeepL&logoColor=white"/>|
-<br />
+<br />                  
+
 
 ### 📻 AI
 
@@ -133,7 +162,12 @@ This project aims to develop a comprehensive app service for international stude
 ### 💻 서비스 아키택처
 
 <br>
-<img src = "https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/824e72af-b435-4c15-ad24-663df94ccdc2" width=800>
+<img src = "https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/dc5dc4de-8111-46c0-bd60-34f5e15a3f9a" width=800>
+
+### 🤖 챗봇 아키텍처
+
+<br>
+<img src = "https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/e059e861-d395-4634-bcab-8de9aea6fcaf" width=900>
 
 ### 📂 디렉토리 구조
 
@@ -154,18 +188,6 @@ This project aims to develop a comprehensive app service for international stude
 ```
 
 ## 8. 사용법
-
-### Backend
-
-`.env.example`을 바탕으로 `.env`를 작성합니다. 그 다음
-
-```
-docker-compose up -d
-```
-
-를 통해 docker compose를 통하여 실행하시면 됩니다. 이미지는 모두 Dockerhub에 업로드 되어 있습니다.
-
-<br>
 
 ### Frontend
 
@@ -192,6 +214,18 @@ flutter pub get
 ```
 flutter run
 ```
+
+<br>
+
+### Backend
+
+`.env.example`을 바탕으로 `.env`를 작성합니다. 그 다음
+
+```
+docker-compose up -d
+```
+
+를 통해 docker compose를 통하여 실행하시면 됩니다. 이미지는 모두 Dockerhub에 업로드 되어 있습니다.
 
 <br>
 
