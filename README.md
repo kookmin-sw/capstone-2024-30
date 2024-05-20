@@ -1,15 +1,15 @@
 # 👋 외국인 유학생들을 위한 앱, 외국민
 ![최종 발표자료](https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/20fc41c1-8a22-4c90-a1f1-8539dea92ed1)
 
-캡스톤 30조
+[중간발표 자료](https://drive.google.com/drive/folders/1qLw6-LrNG9_9Of6zh4YmYm2VoOt31NlA?usp=drive_link)
 
-중간발표 자료 : [https://drive.google.com/drive/folders/1qLw6-LrNG9_9Of6zh4YmYm2VoOt31NlA?usp=drive_link](https://drive.google.com/drive/folders/1qLw6-LrNG9_9Of6zh4YmYm2VoOt31NlA?usp=drive_link)
+[최종발표 자료](https://drive.google.com/drive/folders/1gVtsjX9nk8KhyeNu-hTzpeZjZnjj-pR8?usp=sharing)
 
 <br>
 
 ## 1. 프로젝트 소개
 
-이 프로젝트는 국민대학교에서 공부하는 외국인 유학생들을 위한 종합적인 앱 서비스를 개발하는 것입니다. 앱은 학생들이 캠퍼스 생활에 빠르게 적응할 수 있도록 다양한 정보와 서비스를 제공합니다.
+이 프로젝트는 국민대학교 유학생들이 겪는 언어적, 문화적 불편함을 해결하기 위한 프로젝트입니다. 이 프로젝트에서 제공하는 앱에서 유학생들이 캠퍼스 생활에 빠르게 적응할 수 있도록 다양한 정보와 서비스를 제공합니다.
 
 <br>
 
@@ -45,7 +45,7 @@ This project aims to develop a comprehensive app service for international stude
 
 외국인들은 한국인 or 오랜 유학생활을 하여 한국 생활에 익숙해진 외국인 헬퍼를 구할 수 있도록 커뮤니티를 제공합니다.
 
-#### 5️⃣Q&A와 FAQ 기능
+#### 5️⃣ Q&A와 FAQ 기능
 
 ON국민에도 자주 물어보는 질문들을 모아둔 FAQ가 있습니다. 하지만, 이 또한 번역을 전혀 제공하지 않고 있습니다. 따라서, 저희는 이 FAQ도 번역하여 제공합니다.
 
