@@ -25,10 +25,13 @@ notice_vdb = VectorDB()
 notice_vdb.load_local(vector_db_path + '/NOTICE')
 school_vdb = VectorDB()
 school_vdb.load_local(vector_db_path + '/SCHOOL_INFO')
+naver_vdb = VectorDB()
+naver_vdb.load_local(vector_db_path + '/NAVER')
 
 llm = LLM_RAG(trace=True)
-llm.set_retriver(data_type='notice', retriever=notice_vdb.get_retriever())
-llm.set_retriver(data_type='school_info', retriever=school_vdb.get_retriever())
+llm.set_retriver(data_type='notice', retriever=notice_vdb.get_retriever(k=2))
+llm.set_retriver(data_type='school_info', retriever=school_vdb.get_retriever(k=3))
+llm.set_retriver(data_type='naver', retriever= naver_vdb.get_retriever(k=5))
 llm.set_chain()
 
 print("AI: hello! if you want to stop, please enter '0'")
@@ -40,5 +43,5 @@ while True:
     if q == str(0):
         break
     print('AI : ', end='')
-    print(llm.query(q))
+    print(llm.query(q, 'en'))
     print()
