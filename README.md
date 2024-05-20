@@ -8,10 +8,12 @@
 
 [최종발표 자료&포스터 및 보고서](https://drive.google.com/drive/folders/1gVtsjX9nk8KhyeNu-hTzpeZjZnjj-pR8?usp=sharing)
 
+<br>
+
 `파트별 자세한 내용은 각 프로젝트 디렉토리의 readme에 있습니다.`
 
 <table>
-    <tr>
+    <tr align="center">
         <td>
             프론트
         </td>
@@ -22,7 +24,7 @@
         AI
     </td>
     </tr>
-    <tr>
+    <tr align="center">
         <td>
             <a href="https://github.com/kookmin-sw/capstone-2024-30/tree/main/front">README.md</a>
         </td>
