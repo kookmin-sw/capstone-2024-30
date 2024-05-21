@@ -3,42 +3,39 @@
 ![최종 발표자료](https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/20fc41c1-8a22-4c90-a1f1-8539dea92ed1)
 
 <div style="text-align: center; display: flex; flex-direction: column;">
-
-[중간발표 자료 및 보고서](https://drive.google.com/drive/folders/1qLw6-LrNG9_9Of6zh4YmYm2VoOt31NlA?usp=drive_link)
-
-<br>
-
-[최종발표 자료&포스터 및 보고서](https://drive.google.com/drive/folders/1gVtsjX9nk8KhyeNu-hTzpeZjZnjj-pR8?usp=sharing)
-
-<br>
-
-`파트별 자세한 내용은 각 프로젝트 디렉토리의 readme에 있습니다.`
-
-<table>
-    <tr align="center">
-        <td>
-            프론트
-        </td>
-    <td>
-        백
-    </td>
-    <td>
-        AI
-    </td>
-    </tr>
-    <tr align="center">
-        <td>
-            <a href="https://github.com/kookmin-sw/capstone-2024-30/tree/main/front">README.md</a>
-        </td>
-    <td>
-        <a href="https://github.com/kookmin-sw/capstone-2024-30/tree/main/back">README.md</a>
-    </td>
-    <td>
-        <a href="https://github.com/kookmin-sw/capstone-2024-30/tree/main/ai">README.md</a>
-    </td>
-    </tr>
-</table>
-
+    <a href="https://drive.google.com/drive/folders/1qLw6-LrNG9_9Of6zh4YmYm2VoOt31NlA?usp=drive_link">
+        [중간발표 자료 및 보고서]
+    </a>
+    <br>
+    <a href="https://drive.google.com/drive/folders/1gVtsjX9nk8KhyeNu-hTzpeZjZnjj-pR8?usp=sharing">
+        [최종발표 자료&포스터 및 보고서]
+    </a>
+    <br>
+    `파트별 자세한 내용은 각 프로젝트 디렉토리의 readme에 있습니다.`
+    <table>
+        <tr align="center">
+            <td>
+                프론트
+            </td>
+            <td>
+                백
+            </td>
+            <td>
+                AI
+            </td>
+        </tr>
+        <tr align="center">
+            <td>
+                <a href="https://github.com/kookmin-sw/capstone-2024-30/tree/main/front">README.md</a>
+            </td>
+            <td>
+                <a href="https://github.com/kookmin-sw/capstone-2024-30/tree/main/back">README.md</a>
+            </td>
+            <td>
+                <a href="https://github.com/kookmin-sw/capstone-2024-30/tree/main/ai">README.md</a>
+            </td>
+        </tr>
+    </table>
 </div>
 
 <br>
