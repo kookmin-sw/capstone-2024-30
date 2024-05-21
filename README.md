@@ -72,11 +72,20 @@ This project aims to develop a comprehensive app service for international stude
 
 따라서, 외국민은 RAG와 LLM을 사용하여 국민대학교에 특화된 답변을 제공하고 다국어를 지원하는 "KuKu" 챗봇을 제공합니다.
 
+|국민대 관련 질문|다국어 지원|일상 대화|
+|------|---|---|
+|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/4ebbe481-d563-45c7-b8dc-65c87877d6c6">|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/7b9c7a7f-339d-4a53-ad1d-a90a3988a75e">|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/b10efb4b-110c-4ca8-aff7-c38445256123">|
+
+
 #### 3️⃣ 발음 교정 기능
 
 많은 외국인들은 한국에 와서 언어 문제로 힘들어합니다. 특히 학교 생활을 하다보면 발표를 하거나 일상생활에서 의사소통을 해야할 때, 본인의 발음이 정확한지 확인할 방법이 없어서 힘들어합니다.
 
 따라서, 외국민은 자신의 발표 스크립트를 입력으로 넣어서 발음 평가를 받을 수 있을 뿐만 아니라, 한국의 일상생활에서 많이 쓰이는 여러 표현들을 연습할 수 있도록하여 한국 유학생활을 돕고자 합니다.
+
+|일상생활에 자주쓰는 예문 지원|문장 커스텀 지원|발음 평가 제공|
+|------|---|---|
+|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/d31a5971-f01b-469f-8345-db9ea5c152cb">|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/d0cb0cb5-7043-4737-8994-119dc5139220">|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/dee0fc3a-481e-4612-bb2a-760321efdfbe">|
 
 #### 4️⃣ 헬퍼 매칭 기능
 
@@ -84,11 +93,20 @@ This project aims to develop a comprehensive app service for international stude
 
 따라서, 외국민은 외국인들을 도울 수 있도록 헬퍼 매칭 기능을 제공합니다. 한국인 or 오랜 유학생활을 하여 한국 생활에 익숙해진 외국인 헬퍼를 구할 수 있도록 커뮤니티를 제공합니다.
 
+|헬퍼 및 헬피 게시판|디테일|채팅|
+|------|---|---|
+|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/60f40d3b-4930-4c4a-bcb3-1e97a75119c0">|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/141b4d12-070e-4e59-abe2-22bd5f96547e">|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/00644b04-3e5e-416f-ba57-b45662e45869">|
+
 #### 5️⃣ Q&A와 FAQ 기능
 
 유학생들이 한국생활에서 궁금한 것을 물어볼만한 곳이 마땅치 않고, ON국민에 있는 FAQ의 존재를 알기 쉽지 않습니다. 하지만, 이 FAQ 또한 번역을 제공하지 않고 있습니다.
 
 따라서, 외국민은 Q&A 게시판과 다국어로 번역된 FAQ를 제공합니다.
+
+|헬퍼 및 헬피 게시판|디테일|채팅|
+|------|---|---|
+|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/5801b9fa-fb82-48f6-a675-0997c6bfae34">|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/ae9525c7-c605-4e88-9ea2-49285bbe84bd">|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/dcaa5cf2-0f9c-457f-a81c-351bd4578ca7">|
+
 
 <br>
 
