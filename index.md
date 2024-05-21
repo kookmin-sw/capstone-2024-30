@@ -64,6 +64,7 @@ This project aims to develop a comprehensive app service for international stude
 |번역된 공지사항|공지사항 디테일|번역된 학식정보|
 |------|---|---|
 |<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/8f30d871-0e41-4009-8832-4f7cefd1867b">|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/62146792-21cc-4eb4-bbfd-98daa4ae159e">|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/34695d44-0efb-4cb7-9efa-a1547ab8ee82">|
+
 <br>
 
 #### 2️⃣ 챗봇 기능
@@ -75,6 +76,7 @@ This project aims to develop a comprehensive app service for international stude
 |국민대 관련 질문|다국어 지원|일상 대화|
 |------|---|---|
 |<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/4ebbe481-d563-45c7-b8dc-65c87877d6c6">|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/7b9c7a7f-339d-4a53-ad1d-a90a3988a75e">|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/b10efb4b-110c-4ca8-aff7-c38445256123">|
+
 <br>
 
 #### 3️⃣ 발음 교정 기능
@@ -86,6 +88,7 @@ This project aims to develop a comprehensive app service for international stude
 |일상생활에 자주쓰는 예문 지원|문장 커스텀 지원|발음 평가 제공|
 |------|---|---|
 |<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/d31a5971-f01b-469f-8345-db9ea5c152cb">|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/d0cb0cb5-7043-4737-8994-119dc5139220">|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/dee0fc3a-481e-4612-bb2a-760321efdfbe">|
+
 <br>
 
 #### 4️⃣ 헬퍼 매칭 기능
@@ -97,6 +100,7 @@ This project aims to develop a comprehensive app service for international stude
 |헬퍼 및 헬피 게시판|디테일|채팅|
 |------|---|---|
 |<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/60f40d3b-4930-4c4a-bcb3-1e97a75119c0">|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/141b4d12-070e-4e59-abe2-22bd5f96547e">|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/00644b04-3e5e-416f-ba57-b45662e45869">|
+
 <br>
 
 #### 5️⃣ Q&A와 FAQ 기능
