@@ -6,6 +6,8 @@
 
 [중간발표 자료 및 보고서](https://drive.google.com/drive/folders/1qLw6-LrNG9_9Of6zh4YmYm2VoOt31NlA?usp=drive_link)
 
+<br>
+
 [최종발표 자료&포스터 및 보고서](https://drive.google.com/drive/folders/1gVtsjX9nk8KhyeNu-hTzpeZjZnjj-pR8?usp=sharing)
 
 <br>
