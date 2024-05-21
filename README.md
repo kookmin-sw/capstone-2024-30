@@ -61,6 +61,11 @@ This project aims to develop a comprehensive app service for international stude
 
 따라서, 외국민 서비스는 설정한 언어에 맞춰서 공지사항/학식/학교정보 번역본을 제공합니다.
 
+|번역된 공지사항|공지사항 디테일|번역된 학식정보|
+|------|---|---|
+|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/8f30d871-0e41-4009-8832-4f7cefd1867b">|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/62146792-21cc-4eb4-bbfd-98daa4ae159e">|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/34695d44-0efb-4cb7-9efa-a1547ab8ee82">|
+
+
 #### 2️⃣ 챗봇 기능
 
 국민대학교에서는 ON국민 챗봇 "쿠민이"를 서비스하고있으나, 성능이 매우 형편없습니다. 간단한 질문에도 동문서답을 하거나, 영어로 질문했는데 한글로 답변하는 등 전혀 챗봇으로서의 기능을 수행하지 못하고 있습니다.
