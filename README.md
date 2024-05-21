@@ -94,7 +94,7 @@ This project aims to develop a comprehensive app service for international stude
 
 따라서, 외국민은 외국인들을 도울 수 있도록 헬퍼 매칭 기능을 제공합니다. 한국인 or 오랜 유학생활을 하여 한국 생활에 익숙해진 외국인 헬퍼를 구할 수 있도록 커뮤니티를 제공합니다.
 
-|헬퍼 및 헬피 게시판|디테일|채팅|
+|헬퍼 및 헬피 게시판|디테일|채팅|
 |------|---|---|
 |<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/60f40d3b-4930-4c4a-bcb3-1e97a75119c0">|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/141b4d12-070e-4e59-abe2-22bd5f96547e">|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/00644b04-3e5e-416f-ba57-b45662e45869">|
 <br>
@@ -105,7 +105,7 @@ This project aims to develop a comprehensive app service for international stude
 
 따라서, 외국민은 Q&A 게시판과 다국어로 번역된 FAQ를 제공합니다.
 
-|헬퍼 및 헬피 게시판|디테일|채팅|
+|Q&A 게시판|디테일|FAQ 조회|
 |------|---|---|
 |<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/5801b9fa-fb82-48f6-a675-0997c6bfae34">|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/ae9525c7-c605-4e88-9ea2-49285bbe84bd">|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/dcaa5cf2-0f9c-457f-a81c-351bd4578ca7">|
 
