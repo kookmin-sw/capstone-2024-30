@@ -1,62 +1,92 @@
+import 'package:capstone_front/main.dart';
+import 'package:capstone_front/screens/faq/faq_en_data.dart';
 import 'package:capstone_front/screens/faq/test_faq_data.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class FaqScreen extends StatefulWidget {
-  const FaqScreen({super.key});
+  final Function(String) performSearch;
+  final TextEditingController searchController;
+
+  const FaqScreen(
+      {super.key, required this.performSearch, required this.searchController});
 
   @override
   State<FaqScreen> createState() => FaqScreenState();
 }
 
+FlutterSecureStorage storage = const FlutterSecureStorage();
+
 class FaqScreenState extends State<FaqScreen> {
+  var faqs = language == 'KO' ? faqsKo : faqsEn;
   String selectedItem = 'major';
-  String selectedItemToShow = '전공';
-  final _controller = TextEditingController();
+  String selectedItemToShow = language == 'KO'
+      ? '전공'
+      : language == "EN-US"
+          ? "Major"
+          : "专业";
+
+  List<Map<String, dynamic>> filteredFaqs = [];
+  // String? language;
+
+  Future<void> initialize() async {
+    // language = await storage.read(key: "language");
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    initialize();
+    filteredFaqs = faqs[selectedItem]!;
+    widget.searchController.addListener(() {
+      widget.performSearch(widget.searchController.text);
+    });
+  }
+
+  String translateTagOtherToEn(String ohterTag, String nowLanguage) {
+    switch (nowLanguage) {
+      case 'KO':
+        return faqCategoryMapperKoToEn[ohterTag] ?? ohterTag;
+      case 'ZH':
+        return faqCategoryMapperZhToEn[ohterTag] ?? ohterTag;
+      default:
+        return ohterTag;
+    }
+  }
+
+  void filterFaqs(String query) {
+    final List<Map<String, dynamic>> allFaqs =
+        faqs[faqsEnToFormEn[selectedItem] ?? selectedItem]!;
+    if (query.isEmpty) {
+      filteredFaqs = allFaqs;
+    } else {
+      filteredFaqs = allFaqs.where((faq) {
+        final title = faq['title'].toLowerCase();
+        final content = faq['content'].toLowerCase();
+        final searchQuery = query.toLowerCase();
+        return title.contains(searchQuery) || content.contains(searchQuery);
+      }).toList();
+    }
+    setState(() {});
+  }
+
+  void changeCategory(String category) {
+    selectedItemToShow = category;
+    category = translateTagOtherToEn(category, language);
+    print(category);
+    setState(() {
+      selectedItem = category;
+      filteredFaqs = faqs[faqsEnToFormEn[selectedItem] ?? selectedItem]!;
+      widget.performSearch(widget.searchController.text);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        scrolledUnderElevation: 0,
-        title: TextField(
-          controller: _controller,
-          onChanged: (text) {
-            setState(() {});
-          },
-          decoration: InputDecoration(
-            hintText: "검색어를 입력하세요",
-            border: InputBorder.none,
-            hintStyle: const TextStyle(
-              color: Color(0XFFd7d7d7),
-            ),
-            suffixIcon: _controller.text.isNotEmpty
-                ? IconButton(
-                    onPressed: () {
-                      _controller.clear();
-                      setState(() {});
-                    },
-                    icon: const Icon(
-                      Icons.cancel,
-                      color: Colors.grey,
-                    ),
-                  )
-                : null,
-          ),
-          style: const TextStyle(
-            color: Colors.black,
-            fontSize: 18.0,
-          ),
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.search,
-              color: Theme.of(context).primaryColor,
-            ),
-            onPressed: () => {},
-          ),
-        ],
-      ),
       body: Column(
         children: [
           Padding(
@@ -90,10 +120,7 @@ class FaqScreenState extends State<FaqScreen> {
                                 ...faqKinds.map(
                                   (item) => ListTile(
                                     onTap: () {
-                                      setState(() {
-                                        selectedItem = faqCategoryMapper[item]!;
-                                        selectedItemToShow = item;
-                                      });
+                                      changeCategory(item);
                                       Navigator.of(context).pop();
                                     },
                                     title: Center(
@@ -136,13 +163,13 @@ class FaqScreenState extends State<FaqScreen> {
           ),
           Expanded(
             child: ListView.separated(
-              itemCount: faqs[selectedItem]!.length,
+              itemCount: filteredFaqs.length,
               itemBuilder: (context, index) {
                 return Theme(
                   data: ThemeData().copyWith(dividerColor: Colors.transparent),
                   child: ExpansionTile(
                     title: Text(
-                      faqs[selectedItem]![index]['title'],
+                      filteredFaqs[index]['title'],
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
                         fontSize: 18,
@@ -151,7 +178,7 @@ class FaqScreenState extends State<FaqScreen> {
                     children: <Widget>[
                       ListTile(
                         subtitle: Text(
-                          faqs[selectedItem]![index]['content'],
+                          filteredFaqs[index]['content'],
                         ),
                       ),
                     ],
@@ -165,7 +192,7 @@ class FaqScreenState extends State<FaqScreen> {
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );

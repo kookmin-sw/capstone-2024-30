@@ -15,10 +15,10 @@ class SignupCollegeScreen extends StatefulWidget {
 
 class _SignupCollegeScreenState extends State<SignupCollegeScreen> {
   List<String>? collegeList = collegeInfo['korean'];
-  List<String>? departmentList = ['학과를 골라주세요'];
+  List<String>? departmentList = [tr('signup.enter_department')];
 
-  String _college = tr('signup.enter_college');
-  String _department = tr('signup.enter_department');
+  String _college = 'enter_college';
+  String _department = 'enter_department';
 
   final bool _selectCollege = false;
   final bool _selectDepartment = false;
@@ -69,12 +69,12 @@ class _SignupCollegeScreenState extends State<SignupCollegeScreen> {
                                   itemCount: collegeList!.length,
                                   itemBuilder: (context, index) {
                                     return ListTile(
-                                      title: Text(collegeList![index]),
+                                      title: Text(
+                                          tr('college.${collegeList![index]}')),
                                       onTap: () {
                                         setState(() {
                                           _college = collegeList![index];
-                                          _department =
-                                              tr('signup.enter_department');
+                                          _department = 'enter_department';
                                           departmentList =
                                               departmentInfo['korean']![index];
                                           context.pop();
@@ -88,7 +88,7 @@ class _SignupCollegeScreenState extends State<SignupCollegeScreen> {
                     child: Ink(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10.0),
-                        child: Text(_college),
+                        child: Text(tr('college.$_college')),
                       ),
                     ),
                   ),
@@ -123,7 +123,8 @@ class _SignupCollegeScreenState extends State<SignupCollegeScreen> {
                                   itemCount: departmentList!.length,
                                   itemBuilder: (context, index) {
                                     return ListTile(
-                                      title: Text(departmentList![index]),
+                                      title: Text(tr(
+                                          'department.${departmentList![index]}')),
                                       onTap: () {
                                         setState(() {
                                           _department = departmentList![index];
@@ -138,7 +139,7 @@ class _SignupCollegeScreenState extends State<SignupCollegeScreen> {
                     child: Ink(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10.0),
-                        child: Text(_department),
+                        child: Text(tr('department.$_department')),
                       ),
                     ),
                   ),

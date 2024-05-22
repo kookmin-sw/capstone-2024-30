@@ -40,7 +40,7 @@ dependencies:
   firebase_core: ^2.27.1
   firebase_auth: ^4.17.9
   provider: ^6.1.2
-  shared_preferences: ^2.2.2
+  shared_preferences: ^2.2.3
   logger: 1.4.0
   fluttertoast: ^8.2.4
   easy_localization: ^3.0.5
@@ -58,6 +58,9 @@ dependencies:
   audioplayers: ^6.0.0
   record: ^5.0.5
   change_app_package_name: ^1.1.0
+  photo_view: ^0.15.0
+  flutter_native_splash: ^2.4.0
+  http_parser: ^4.0.2
 
 dev_dependencies:
   flutter_test:
@@ -81,6 +84,11 @@ flutter:
     - assets/translations/
     - assets/images/carrot_profile.png
     - assets/images/koomin.png
+    - assets/images/kookmin_map.jpg
+    - assets/images/kookmin_map_row.jpg
+    - assets/images/facility_time_ko.jpg
+    - assets/images/facility_time_en.jpg
+    - assets/images/facility_time_zh.jpg
     - assets/audio/sample.wav
 
     - .env
@@ -116,3 +124,12 @@ flutter:
       fonts:
         - asset: assets/fonts/WAGURI_TTF.ttf
           weight: 500
+
+flutter_native_splash:
+  image: assets/images/app_logo_icon.png
+  color: "#ffffff"
+  android_12:
+    #   image: assets/images/app_logo_icon.png
+
+    #   # Splash screen background color.
+    color: "#ffffff"

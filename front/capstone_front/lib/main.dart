@@ -1,23 +1,23 @@
 import 'package:capstone_front/firebase_options.dart';
+import 'package:capstone_front/models/chat_init_model.dart';
+import 'package:capstone_front/models/cafeteria_menu_model.dart';
+import 'package:capstone_front/models/helper_article_preview_model.dart';
 import 'package:capstone_front/models/notice_model.dart';
 import 'package:capstone_front/models/qna_post_model.dart';
 import 'package:capstone_front/provider/qna_provider.dart';
 import 'package:capstone_front/screens/cafeteriaMenu/cafeteriaMenuScreen.dart';
-import 'package:capstone_front/screens/chatbot/chatbot.dart';
+import 'package:capstone_front/screens/chatbot/chatbot_screen.dart';
 import 'package:capstone_front/screens/faq/faq_screen.dart';
-import 'package:capstone_front/screens/helper/helper_board/helper_board_screen.dart';
+import 'package:capstone_front/screens/helper/helper_chatting/helper_chatting_room.dart';
 import 'package:capstone_front/screens/helper/helper_screen.dart';
 import 'package:capstone_front/screens/helper/helper_write_screen.dart';
-import 'package:capstone_front/screens/helper/helper_board/helper_writing_screen.dart';
-import 'package:capstone_front/screens/home/home_screen.dart';
+import 'package:capstone_front/screens/helper/helper_board/helper_detail_screen.dart';
 import 'package:capstone_front/screens/login/login_screen.dart';
 import 'package:capstone_front/screens/question/question_screen.dart';
 import 'package:capstone_front/screens/signup/signup_college_screen.dart';
 import 'package:capstone_front/screens/signup/signup_country_screen.dart';
 import 'package:capstone_front/screens/signup/signup_email_screen.dart';
-import 'package:capstone_front/screens/signup/signup_email_auth_screen.dart';
 import 'package:capstone_front/screens/signup/signup_name.dart';
-import 'package:capstone_front/screens/signup/signup_service.dart';
 import 'package:capstone_front/screens/main_screen.dart';
 import 'package:capstone_front/screens/notice/notice_screen.dart';
 import 'package:capstone_front/screens/notice/notice_detail_screen.dart';
@@ -27,20 +27,25 @@ import 'package:capstone_front/screens/qna/qna_write/qna_write_screen.dart';
 import 'package:capstone_front/screens/signup/singup_password_screen.dart';
 import 'package:capstone_front/screens/speech_practice/speech_practice_screen.dart';
 import 'package:capstone_front/screens/speech_practice/speech_screen.dart';
-import 'package:capstone_front/screens/speech_practice/speech_example_sentences/speech_select_sentence_screen.dart';
-import 'package:capstone_front/screens/speech_practice/utils/recorder_screen.dart';
+import 'package:capstone_front/services/cafeteria_menu_service.dart';
 import 'package:capstone_front/utils/page_animation.dart';
+import 'package:capstone_front/utils/search_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 // 앱에서 지원하는 언어 리스트 변수
-final supportedLocales = [const Locale('en', 'US'), const Locale('ko', 'KR')];
+final supportedLocales = [
+  const Locale('ko', 'KR'),
+  const Locale('en', 'US'),
+  const Locale('zh', 'CN'),
+];
 
 // 기본적으로 한국어로 세팅
 List<String> languageSetting = ['ko', 'KR'];
@@ -48,19 +53,38 @@ List<String> languageSetting = ['ko', 'KR'];
 // 로그인 되어있었는지 여부
 bool _isLogin = false;
 
+// 학식 메뉴
+late CafeteriaMenuModel menus;
+
+// 로그인 유저 정보
+String userName = '';
+String userMajor = '';
+String userBigMajor = '';
+String language = 'KO';
+
 // 언어를 설정해주고 로그인 정보를 불러오는 함수
 Future<void> setSetting() async {
   const storage = FlutterSecureStorage();
-  String? language = await storage.read(key: 'language');
-  if (language == 'english') {
+  String? tmpLanguage = await storage.read(key: 'language');
+  if (tmpLanguage == 'EN-US') {
     languageSetting = ['en', 'US'];
+    language = 'EN-US';
+  } else if (tmpLanguage == 'ZH') {
+    languageSetting = ['zh', 'CN'];
+    language = 'ZH';
   } else {
     languageSetting = ['ko', 'KR'];
+    language = 'KO';
   }
   String? str = await storage.read(key: 'isLogin');
   if (str == 'true') {
     _isLogin = true;
   }
+  // storage.write(key: "uuid", value: "D8WsXf9Ncncn2lvjjGSvwKUOrEl2");
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  // prefs.remove("chatRoomData");
+  // prefs.remove("L02OBbuvRGfI6QPE0GcKkywVcdJ2");
+  // prefs.remove("3YuwArylP5gr6njKBtMcAe9RgJr1");
 }
 
 void initializeFirebase() async {
@@ -69,12 +93,42 @@ void initializeFirebase() async {
   );
 }
 
+Future<void> getMenus() async {
+  menus = await getCafeteriaMenu(DateTime.now().toString().substring(0, 10));
+}
+
+Future<void> getUserInfo() async {
+  const storage = FlutterSecureStorage();
+  String? tmpUserName = (await storage.read(key: "userName"));
+  if (tmpUserName == null) {
+    userName = '';
+  } else {
+    userName = tmpUserName;
+  }
+  String? tmpUserMajor = (await storage.read(key: "userMajor"));
+  if (tmpUserMajor == null) {
+    userMajor = '';
+  } else {
+    userMajor = tmpUserMajor;
+  }
+  String? tmpUserBigMajor = (await storage.read(key: "userBigMajor"));
+  if (tmpUserBigMajor == null) {
+    userBigMajor = '';
+  } else {
+    userBigMajor = tmpUserBigMajor;
+  }
+}
+
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   initializeFirebase();
   await setSetting();
   await EasyLocalization.ensureInitialized();
   await dotenv.load(fileName: ".env");
+  await getMenus();
+  getUserInfo();
+  FlutterNativeSplash.remove();
 
   runApp(
     EasyLocalization(
@@ -121,7 +175,13 @@ final GoRouter router = GoRouter(
             GoRoute(
               name: 'helperWriting',
               path: 'writing',
-              builder: (context, state) => const HelperWritingScreen(),
+              builder: (context, state) {
+                final notice = state.extra as HelperArticlePreviewModel?;
+                if (notice == null) {
+                  return const HelperScreen();
+                }
+                return HelperDetailScreen(notice);
+              },
             ),
             GoRoute(
               name: 'helperWrite',
@@ -203,28 +263,43 @@ final GoRouter router = GoRouter(
             return const QnaListScreen();
           }
           return QnaDetailScreen(
-            data: qna,
+            postModel: qna,
           );
         }),
     GoRoute(
-        name: 'qnawrite',
-        path: '/qnawrite',
-        builder: (context, state) {
-          final qnas = state.extra as List<QnaPostModel>?;
-          if (qnas == null) {
-            return const QnaListScreen();
-          }
-          return QnaWriteScreen(qnas: qnas);
-        }),
+      name: 'qnawrite',
+      path: '/qnawrite',
+      builder: (context, state) {
+        final Map<String, dynamic> data = state.extra as Map<String, dynamic>;
+        return QnaWriteScreen(
+          qnas: data['qnas'],
+          selectedTag: data['selectedTag'],
+        );
+      },
+    ),
     GoRoute(
       name: 'faq',
       path: '/faq',
-      builder: (context, state) => const FaqScreen(),
+      builder: (context, state) => FaqScreen(
+        performSearch: (text) {},
+        searchController: TextEditingController(),
+      ),
     ),
     GoRoute(
       name: 'question',
       path: '/question',
       builder: (context, state) => const QuestionScreen(),
+    ),
+    GoRoute(
+      name: 'chatroom',
+      path: '/chatroom',
+      builder: (context, state) {
+        final chatInitModel = state.extra as ChatInitModel?;
+        if (chatInitModel == null) {
+          return const HelperWriteScreen();
+        }
+        return HelperChattingRoom(chatInitModel);
+      },
     ),
   ],
 );

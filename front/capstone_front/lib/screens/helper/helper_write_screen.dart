@@ -1,7 +1,10 @@
+import 'package:capstone_front/services/helper_service.dart';
 import 'package:capstone_front/utils/basic_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:go_router/go_router.dart';
 
 class HelperWriteScreen extends StatefulWidget {
   const HelperWriteScreen({super.key});
@@ -90,13 +93,22 @@ class _HelperWriteScreenState extends State<HelperWriteScreen> {
             const SizedBox(height: 20),
             BasicButton(
               text: tr('helper.write_complete'),
-              onPressed: () {
-                setState(() {
-                  // Todo: 서버로 작성된 내용 전송
-                  print("작성 완료 ㅇㅅㅇ");
-                  print(_titleController.text);
-                  print(_contentController.text);
-                });
+              onPressed: () async {
+                if (_titleController.text != "" &&
+                    _contentController.text != "") {
+                  FlutterSecureStorage storage = const FlutterSecureStorage();
+
+                  var author = await storage.read(key: "userName");
+                  var country = await storage.read(key: "userCountry");
+                  var result = HelperService.createHelperPost({
+                    "title": _titleController.text,
+                    "author": author,
+                    "country": country,
+                    "context": _contentController.text,
+                    "isHelper": _selectedIndex
+                  });
+                  Navigator.pop(context, result);
+                }
               },
             )
           ],

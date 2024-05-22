@@ -2,6 +2,7 @@ import 'package:capstone_front/utils/basic_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class SpeechCustomSentenceScreen extends StatefulWidget {
   const SpeechCustomSentenceScreen({super.key});
@@ -21,18 +22,23 @@ class _SpeechCustomSentenceScreenState
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: Column(
-            children: [
-              Container(
+        body: Column(
+          children: [
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5),
+              child: Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(
-                    color: const Color(0xffd2d7dd),
-                    width: 2,
-                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.15),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
                 ),
                 padding: const EdgeInsets.all(10),
                 child: TextField(
@@ -51,18 +57,56 @@ class _SpeechCustomSentenceScreenState
                   ),
                 ),
               ),
-              const Spacer(),
-              BasicButton(
+            ),
+            const Spacer(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+              child: BasicButton(
                   text: tr('speech.speech_practice'),
-                  onPressed: () {
-                    context.push('/speech/practice',
-                        extra: [_textController.text, '']);
+                  onPressed: () async {
+                    var status = await Permission.microphone.request();
+                    if (status != PermissionStatus.granted) {
+                      permssionNotice(context);
+                    } else {
+                      context.push('/speech/practice',
+                          extra: [_textController.text, '']);
+                    }
                   }),
-              const SizedBox(height: 15),
-            ],
-          ),
+            ),
+            const SizedBox(height: 15),
+          ],
         ),
       ),
+    );
+  }
+
+  // 녹음 권한 거부 시 설정
+  Future<dynamic> permssionNotice(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: ((context) {
+        return AlertDialog(
+          content: Text(tr("speech.permission_allow_notice")),
+          actions: [
+            Container(
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text(tr("speech.cancel")),
+              ),
+            ),
+            Container(
+              child: ElevatedButton(
+                onPressed: () {
+                  openAppSettings();
+                },
+                child: Text(tr("speech.setting")),
+              ),
+            ),
+          ],
+        );
+      }),
     );
   }
 }
