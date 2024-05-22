@@ -40,6 +40,12 @@
 
 <br>
 
+<div style="text-align: center; display: flex; flex-direction: column;">
+    <img src="https://github.com/kookmin-sw/capstone-2024-30/assets/53148103/94c25725-56cb-4db8-8fad-fbddfa95c762" width="300px" height"300px">
+    <br>
+    <a href="https://play.google.com/store/apps/details?id=com.foreign.kookmin&pli=1">Play 스토어 다운로드</a>
+</div>
+
 ## 1. 프로젝트 소개
 
 이 프로젝트는 국민대학교 유학생들이 겪는 언어적, 문화적 불편함을 해결하기 위한 프로젝트입니다. 이 프로젝트에서 제공하는 앱에서 유학생들이 캠퍼스 생활에 빠르게 적응할 수 있도록 다양한 정보와 서비스를 제공합니다.
