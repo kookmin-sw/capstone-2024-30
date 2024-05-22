@@ -26,13 +26,13 @@
         </tr>
         <tr align="center">
             <td>
-                <a href="https://github.com/kookmin-sw/capstone-2024-30/tree/main/front">README.md</a>
+                <a href="https://kookmin-sw.github.io/capstone-2024-30/front/">README.md</a>
             </td>
             <td>
-                <a href="https://github.com/kookmin-sw/capstone-2024-30/tree/main/back">README.md</a>
+                <a href="https://kookmin-sw.github.io/capstone-2024-30/back/">README.md</a>
             </td>
             <td>
-                <a href="https://github.com/kookmin-sw/capstone-2024-30/tree/main/ai">README.md</a>
+                <a href="https://kookmin-sw.github.io/capstone-2024-30/ai/">README.md</a>
             </td>
         </tr>
     </table>
