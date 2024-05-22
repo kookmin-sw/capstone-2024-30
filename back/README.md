@@ -78,11 +78,19 @@ Write 전략은 Write Around 전략을 활용했다. 데이터를 쓸 때, Redis
 
 #### 사용자 트래픽 제한
 
+A라는 사람이 악의적으로 우리 AI 모델에게 1분에 100만번의 요청을 보낼 수 있다. 그러면 우리 AI Token은 모두 사라진다. B라는 사람은 Spring 비즈니스 서버에 1초에 1000만번 요청을 날린다. 그러면, 역시 서버가 터질 것이다. 따라서, 서버와 클라이언트 사이에서 미들웨어 역할을 하여 분당 API 사용량을 제한할 필요가 있다. 그래서 API Rate Limiter를 적용했다.
+
 <img src="https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/94dd51b2-c4fb-4b89-a817-a2349fe86560">
+
+사용자가 최대 가질 수 있는 Token Bucket Capacity가 정해져 있다. 그리고 계속, 지속적으로 일정시간마다 Token이 리필이 된다. 이 Token 리필은 Bucket Size가 꽉찼을때는 되지 않는다. 그리고, 사용자가 API 요청을 보낼 때 마다 Bucket에서 Token을 꺼내간다. 만약, 꺼낼 Token이 없다면, Status 429를 보내준다. (Too Many Requests) 이외에도 누출 버킷 알고리즘, 고정 윈도 카운터 알고리즘, 이동 윈도 로깅 알고리즘, 이동 윈도 카운터 알고리즘 등이 존재한다. 하지만, 일반적으로 Token Bucket Algorithm을 많이 쓰기 때문에 이를 사용했다.
+
+<img src="https://github.com/Alpha-e-Um/Frontend/assets/55117706/b5879ae7-ff3c-40e9-b154-39be1bca8a8a">
+
+Redis는 인메모리 DB이기 때문에 매우 빨라서 적합하다. 또한, Redis의 또 다른 특징은 싱글 스레드에서 실행될 수 있다는 것이다. 그래서, 다중 사용자의 요청에도 일관되게 처리할 수 있다. 이를 이용하여 초당 사용자가 6~7번의 요청까지만 보내고, 아닐경우 429 Error를 보내도록 설정해서 트래픽 제한을 걸었다.
 
 <img src="https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/59056b7e-9501-4f3e-a793-4d96a3dfd5de">
 
-실제로 위에 사진처럼
+실제로 위에 사진처럼 Apache Jmeter로 시뮬레이션을 돌려보면, 429 Error를 반환하는 것을 볼 수 있다.
 
 
 #### 사용자 업로드 파일 용량 제한
@@ -95,15 +103,49 @@ Write 전략은 Write Around 전략을 활용했다. 데이터를 쓸 때, Redis
 
 #### 사용자 비밀번호 암호화
 
+사용자의 비밀번호를 그대로 DB에 보관하는 것은 잘못된 일이다. 비밀번호를 암호화하지 않고 저장하면, DB가 해킹당했을 경우 큰 피해가 발생한다. 실제로, 비밀번호 암호화는 젤 기초적인 작업임에도 불구하고 하지않아 개인정보유출에서 큰 피해를 본 기업들이 많이 있다.
+
+그래서, “외국민” 서비스는 Firebase를 이용하여 사용자의 ID와 비밀번호를 관리한다. Firebase는 비밀번호를 암호화해서 안전하게 잘 보관해주기 때문이다.
+
 #### JWT를 통한 Authentication
+
+Token은 서버가 각각의 클라이언트가 누구인지 구별할 수 있도록 사용자의 유니크한 정보를 담은 암호화된 데이터이다. 우리 서비스의 여러 기능들은 인증된 사용자만 접근 할 수 있도록 하는 것이 정상일 것이다. 따라서, 로그인시 Main Business Server에서 Access 및 Refresh Token을 발급해주고, 매 요청마다 Header로 AccessToken을 보내야 한다. 그러면 API Gateway서버에서 해당 토큰을 확인해보고, Invalid한 JWT Token일 경우 403 에러를 보내준다. 정상적인 Token일 경우, 해당 서버로 라우팅을 해주어 요청을 처리하도록 구성했다.
 
 #### Token 탈취 상황 예방
 
+JWT토큰은 탈취의 위험성이 있다. JWT기반 인증 방식에서는 세션과 다르게 Stateless하다는 특징이 있기 때문에, Token이 탈취당해도 우리 서버가 그걸 알아차리고 해당 Token을 중지시킬 수 있는 방법은 존재하지 않는다. 따라서, accessToken은 유효기간이 짧은 단위의 토큰으로 구성해야 한다. 주로 15~30분 정도로 구성하는 경우가 많다. 하지만, 이렇게 짧은 시간으로 설정한다면, 사용자는 15~30분마다 계속해서 재로그인을 해야된다는 번거로움이 있다. 그래서 등장한 것이 Refresh Token이다.
+
+<img src="https://github.com/Alpha-e-Um/Frontend/assets/55117706/9f20ab5b-4898-4e84-a14a-700cda120316">
+
+Refresh Token은 AccessToken과 다르게 매우 긴 유효기간을 가지고 있다. Access Token과 Refresh Token을 사용할 때, 플로우는 아래와 같이 흘러간다.
+
+1. 클라이언트가 회원가입 혹은 로그인에 성공하면 서버는 응답값으로 Access Token과 Refresh Token을 함께 제공한다.
+2. 클라이언트는 API를 호출할 때 Access Token 담아 보내고, 서버에서 Access Token을 통해 유저를 인증한다.
+3. 만약 Access Token의 유효 기간이 만료되었다면, 클라이언트는 Refresh Token을 서버에 전달하여 새로운 Access Token을 발급받는다.
+
+즉, Access Token과 Refresh Token으로 나누고, Access Token을 통해 통신함으로써, 악의적 이용자에 의해 Access Token이 탈취당하더라도 유효기간이 짧기에 크게 부담이 되지 않고, 주 통신은 Access Token으로 이루어지기 때문에 Refresh Token이 탈취당할 가능성을 크게 줄일 수 있다.
+
+그런데 RefreshToken도 탈취당하면 어떻게하지?라는 생각이 들 수 있다. 그래서 많이 쓰는 방법이 Refresh Token Rotation(RTR) 방법이다.
+
+<img src="https://github.com/Alpha-e-Um/Frontend/assets/55117706/a703e6bc-5ffd-4a71-9e19-afa30f31f670">
+
+Refresh Token Ratation(RTR)이란 Access Token이 만료되고 Refresh Token으로 새로운 Access Token을 받아올 때, 새로운 Refresh Token도 받아오도록 하는 방법이다. 즉. Refresh Token이 사용될 때마다 새로운 Access Token과 Refresh Token을 발급하여 이전에 발급된 Token들은 사용이 불가능하도록 한다.
+
 #### AccessToken Ban
+
+만약에 사용자가 로그아웃을 했다고 해보자. AccessToken의 기간이 만약에 30분인데, 5분만에 로그아웃을 했는데도, 그 Token가지고 요청을 보낼 수도 있다. 따라서, 로그아웃을 할 경우, Redis에 해당 AccessToken을 Ban을 해두어서 요청을 보내지 못하도록 설정했다.
 
 #### HMAC
 
+우리 서비스의 대부분에 AccessToken을 요구하더라도, 로그인 및 회원가입 같은 경우는 Token이 없는 상황에서 발생하는 요청이다. 하지만, 누군가 우리 Endpoint를 알아내고, Flutter 앱이 아닌 다른 곳에서 요청을 보낸다면 이는 비정상적인 요청일 것이다.
+
+<img src="https://github.com/Alpha-e-Um/Frontend/assets/55117706/588f068d-ddd3-44b4-bd0c-748d5739eb5c">
+
+따라서, 회원가입 및 로그인 시에는 HMAC을 포함하여 요청을 보내도록 구성했다. 우리 Flutter 앱과 서버 모두 공통된 Secret를 가지고 있으며, 이 Secret을 가지고 우리 Request의 HMAC을 같이 보내도록 구성했다. 그러면, 우리 앱에서 보내지 않은 요청들은 모두 막을 수 있을 것이다.
+
 #### 환경변수 적용
+
+JWT Secret, HMAC Secret, API Key 등등을 우리 Code에 Hard Coding해서는 절대 안된다. 따라서, env 파일로 환경변수를 분리하여 노출되지 않도록 설정했다.
 
 <br>
 
