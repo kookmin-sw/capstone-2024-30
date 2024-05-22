@@ -24,6 +24,18 @@ public class GlobalLoggingFilter {
     public GlobalFilter preLoggingFilter() {
         return (exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
+
+            log.info("Global Filter Start: request id -> {}", request.getId());
+            log.info("Request: {} {}", request.getMethod(), request.getURI());
+
+            if(request.getHeaders().containsKey("Authorization")) {
+                log.info("Authorization: {}", request.getHeaders().get("Authorization"));
+            }
+
+            if(request.getMethod().toString().equals("GET")) {
+                return chain.filter(exchange);
+            }
+
             return DataBufferUtils.join(request.getBody())
                     .flatMap(dataBuffer -> {
                         byte[] bodyBytes = new byte[dataBuffer.readableByteCount()];
@@ -39,8 +51,6 @@ public class GlobalLoggingFilter {
                             jsonBody = bodyString;
                         }
 
-                        log.info("Global Filter Start: request id -> {}", request.getId());
-                        log.info("Request: {} {}", request.getMethod(), request.getURI());
                         log.info("Request Body: {}", jsonBody);
 
                         return chain.filter(exchange);
