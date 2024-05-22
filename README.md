@@ -235,7 +235,7 @@ This project aims to develop a comprehensive app service for international stude
 ### 💻 서비스 아키택처
 
 <br>
-<img src = "https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/dc5dc4de-8111-46c0-bd60-34f5e15a3f9a" width=800>
+<img src = "https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/bc51c38d-aa69-4b6c-a152-7d5cc7d197a4" width=800>
 
 ### 🤖 챗봇 아키텍처
 
