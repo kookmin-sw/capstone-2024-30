@@ -55,7 +55,7 @@ public class AnnouncementCrawlService {
                 String dateStr = announcement.select(".board_etc > span").first().text();
                 LocalDate noticeDate = LocalDate.parse(dateStr, formatter);
 
-                if (noticeDate.equals(currentDate) || noticeDate.isEqual(currentDate.minusDays(1))) {
+                if (noticeDate.equals(currentDate)) {
                     String href = announcement.attr("href");
                     links.add(href);
                 }
@@ -251,7 +251,7 @@ public class AnnouncementCrawlService {
                 String dateStr = announcement.select(".date").text();
                 LocalDate noticeDate = LocalDate.parse(dateStr, formatter);
 
-                if (noticeDate.equals(currentDate) || noticeDate.isAfter(currentDate.minusDays(4))) {
+                if (noticeDate.equals(currentDate)) {
                     String href = announcement.select(".subject > a").attr("href");
                     links.add(href.substring(1, href.length()));
                 }

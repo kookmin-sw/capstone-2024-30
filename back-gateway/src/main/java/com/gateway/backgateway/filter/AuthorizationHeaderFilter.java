@@ -38,13 +38,14 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
         GatewayFilter filter = (exchange, chain) -> {
             String requiredRole = config.getRequiredRole();
             ServerHttpRequest request = exchange.getRequest();
-            log.info("요청한 uri : " + request.getURI());
 
             if (!request.getHeaders().containsKey(HttpHeaders.AUTHORIZATION))
                 throw JwtTokenInvalidException.INSTANCE;
 
             String token = request.getHeaders()
                     .getFirst(HttpHeaders.AUTHORIZATION).replace("Bearer ", "");
+
+            log.info("Authorization Token : {}", token);
 
             if (!validateToken(token)) {
                 throw JwtTokenInvalidException.INSTANCE;
