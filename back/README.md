@@ -1,4 +1,4 @@
-### 기능적 고려 사항
+![image](https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/be6e2f51-ade6-4453-9ba1-07ae10ec4bfa)### 기능적 고려 사항
 
 ### 성능적 고려 사항
 
@@ -48,6 +48,13 @@ Write 전략은 Write Around 전략을 활용했다. 데이터를 쓸 때, Redis
 <br>
 
 #### 사용자 트래픽 제한
+
+<img src="https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/94dd51b2-c4fb-4b89-a817-a2349fe86560">
+
+<img src="https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/59056b7e-9501-4f3e-a793-4d96a3dfd5de">
+
+실제로 위에 사진처럼
+
 
 #### 사용자 업로드 파일 용량 제한
 
@@ -122,5 +129,25 @@ Write 전략은 Write Around 전략을 활용했다. 데이터를 쓸 때, Redis
 #### 캐싱
 
 이미지를 받아오는 S3도 캐싱을 무조건 해야한다. 아니면 S3 비용이 굉장히 많아질 것이고 응답시간이 길어진다. 일반적으로 AWS CloudFront같은 CDN 서버를 두는 경우가 많은데, 이 부분은 시간이 부족해서 하지 못했다.
+
+<br>
+
+#### 모니터링 및 로깅 강화
+
+<img src ="https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/ced776d3-c974-4365-956e-f1c598ecbd7b">
+
+우리 서비스의 전반적인 로깅을 하는 것도 중요하다. 현재 로깅은 Nginx 단에서 파일 저장으로 한번, API Gateway단에서 요청 url, body, Authorization으로 한번, 각 MSA 서버 단에서 한번 이루어진다. 하지만, 애플리케이션 단에서의 로그는 파일로 저장하고 있지 않아 우리가 직접 컨테이너에 접근해서 하나하나 찾아봐야한다. 또한, MSA 구조다 보니깐, 각각 컨테이너에 직접 접근해서 봐야한다는 문제점이 있다. 하지만, 이런식으로 진행하면 애플리케이션 로그를 검색하고 파악하는데 시간을 더 써서 서비스에 매우 치명적이다. 따라서, Kafka + ELK Stack을 통하여 비동기적으로 로그 데이터를 ELK Stack으로 전송하고, 이를 분석한 후, 대시보드 형태의 시각적인 데이터로 바꿔주는 시스템이 구축되어야 할 것이다.
+
+<img src="https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/a0804af8-0a7a-4201-b30f-2c8950e4c5c6">
+
+또한, 서비스를 운영할 때 모니터링 및 성능 관리는 매우 중요하다. 우리가 24시간 365일 컴퓨터 앞에 상주하여 서버 모니터링을 할 수 없기 때문이다. 따라서, Prometheus + Grafana나 Datadog 등을 이용하여 우리 서비스를 모니터링 하는 환경은 필수적이다. 이런 환경을 구축해두면 서버의 CPU나 메모리 사용량이 급증 했을 때, 우리 팀 Slack으로 결과를 전송하고 대시보드로 현황을 쉽게 현황을 파악할 수 있을 것이다. 
+
+<br>
+
+#### 컨테이너 오케스트라제이션
+
+<img src="https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/5d3fbe14-adef-4439-b950-e613262038c0">
+
+현재 우리 서비스는 MSA 구조에 가까운 형태여서 수많은 Container들이 돌아가고 있다. 돌아가는 Container만 세보더라도, Redis, Spring, Spring Cloud Gateway, Ruby On Rails, Nginx, Certbot, FastAPI 벌써 7가지가 있다. 그런데 여기에 앞서 언급한 Kafka, Grafana, Prometheus, DB Replication, ELK Stack 등 까지 적용하면 수많은 컨테이너가 돌아갈 것이다. 거기에 로드 밸린성까지 적용한다면 우리가 이 컨테이너들을 한번에 관리하는 것은 무리일 것이다. 그래서, EKS, Docker Swarm, Kubernetes같은 자동으로 컨테이너 장애 복구를 도와주는 컨테이너 오케스트라제이션이 필요하다. 
 
 
