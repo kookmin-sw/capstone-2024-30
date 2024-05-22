@@ -42,7 +42,7 @@
 
 <div style="text-align: center; display: flex; flex-direction: column;">
     <p align="center">
-        <img src="https://github.com/kookmin-sw/capstone-2024-30/assets/53148103/94c25725-56cb-4db8-8fad-fbddfa95c762" width="300" height="300"/>
+        <img src="https://github.com/kookmin-sw/capstone-2024-30/assets/53148103/6ecaf324-4b45-4c73-a30f-503215347794" width="300" height="300"/>
     </p>
     <br>
     <a href="https://play.google.com/store/apps/details?id=com.foreign.kookmin&pli=1">Play 스토어 다운로드</a>
