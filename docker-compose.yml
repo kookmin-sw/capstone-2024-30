@@ -1,9 +1,6 @@
 ## Production Deploy Version
 
 version: '3'
-networks:
-  backend_network:
-  ssl_network:
 
 services:
   redis:
@@ -34,6 +31,7 @@ services:
     ports:
       - "8081:8081"
     networks:
+      - gateway_network
       - backend_network
 
   spring:
@@ -87,7 +85,7 @@ services:
       - "ruby"
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
     networks:
-      - backend_network
+      - gateway_network
       - ssl_network
 
   certbot:
@@ -99,3 +97,11 @@ services:
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
     networks:
       - ssl_network
+
+networks:
+  gateway_network:
+    driver: bridge
+  backend_network:
+    driver: bridge
+  ssl_network:
+    driver: bridge
