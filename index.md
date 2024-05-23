@@ -11,6 +11,10 @@
         [최종발표 자료&포스터 및 보고서]
     </a>
     <br>
+    <a href="https://github.com/kookmin-sw/capstone-2024-30">
+        [Github]
+    </a>
+    <br>
     `파트별 자세한 내용은 각 프로젝트 디렉토리의 마크다운 문서를 확인해주시기 바랍니다`
     <table>
         <tr align="center">
@@ -62,7 +66,7 @@ This project aims to develop a comprehensive app service for international stude
 
 ## 3. 프로젝트 기능
 
-#### 1️⃣ 번역된 공지사항 / 학식 / 학교정보 제공
+### 1️⃣ 번역된 공지사항 / 학식 / 학교정보 제공
 
 국민대학교에서는 공지사항, 학식, 학교정보의 번역을 잘 지원하지 않습니다. 이에따라 외국인 유학생들은 매번 번역기를 사용하여 학교에 대한 정보를 얻기 때문에 정보의 접근성이 낮습니다.
 
@@ -74,7 +78,7 @@ This project aims to develop a comprehensive app service for international stude
 
 <br>
 
-#### 2️⃣ 챗봇 기능
+### 2️⃣ 챗봇 기능
 
 국민대학교에서는 ON국민 챗봇 "쿠민이"를 서비스하고있으나, 성능이 매우 형편없습니다. 간단한 질문에도 동문서답을 하거나, 영어로 질문했는데 한글로 답변하는 등 전혀 챗봇으로서의 기능을 수행하지 못하고 있습니다.
 
@@ -86,7 +90,7 @@ This project aims to develop a comprehensive app service for international stude
 
 <br>
 
-#### 3️⃣ 발음 교정 기능
+### 3️⃣ 발음 교정 기능
 
 많은 외국인들은 한국에 와서 언어 문제로 힘들어합니다. 특히 학교 생활을 하다보면 발표를 하거나 일상생활에서 의사소통을 해야할 때, 본인의 발음이 정확한지 확인할 방법이 없어서 힘들어합니다.
 
@@ -98,7 +102,7 @@ This project aims to develop a comprehensive app service for international stude
 
 <br>
 
-#### 4️⃣ 헬퍼 매칭 기능
+### 4️⃣ 헬퍼 매칭 기능
 
 많은 외국인들이 낯선 땅에 왔을 때 도움을 받을 사람이 없어서 매우 힘들어합니다.
 
@@ -110,7 +114,7 @@ This project aims to develop a comprehensive app service for international stude
 
 <br>
 
-#### 5️⃣ Q&A와 FAQ 기능
+### 5️⃣ Q&A와 FAQ 기능
 
 유학생들이 한국생활에서 궁금한 것을 물어볼만한 곳이 마땅치 않고, ON국민에 있는 FAQ의 존재를 알기 쉽지 않습니다. 하지만, 이 FAQ 또한 번역을 제공하지 않고 있습니다.
 
@@ -309,27 +313,22 @@ docker-compose up -d
 국민대에 관한 모든 것을 물어보세요 !  
 국민대 관련 데이터를 기반으로 답변을 생성하는 챗봇 <쿠쿠>입니다.
 
-### 학습한 데이터
+### 주요 수집 데이터 출처
 
 - [국민대 2023 요람 PDF](https://www.kookmin.ac.kr/comm/cmfile/thumbnail2.do?encSvrFileNm=223d2bdfdbb4df30ad85271267bd6e6a0a913159736ab9843bb76fc00eeeb5ddb1e88f35002b9cf1b749bfe96b751f16b8be21ad5273d348a74b10a57513dd4540bbcb178d3151db4d507c693a1f7ef9&encFileGrpSeq=8e8e9041def64eb5f7f8c21154bcff06&encFileSeq=cf9f1626435aafc6e0e182b36c8e23d9)
-- [2023~2024.03.28 국민대 전체 공지사항](https://www.kookmin.ac.kr/user/kmuNews/notice/index.do)
+- [국민대 전체 공지사항](https://www.kookmin.ac.kr/user/kmuNews/notice/index.do)
+- [국민대 홈페이지 대학소개](https://www.kookmin.ac.kr/comm/menu/user/dcc49bd0de0a82d918456e893d7bb02e/content/index.do)
+- [국민대 홈페이지 대학생활](https://www.kookmin.ac.kr/comm/menu/user/dcc49bd0de0a82d918456e893d7bb02e/content/index.do)
+- [국민대 홈페이지 학사안내](https://www.kookmin.ac.kr/comm/menu/user/dcc49bd0de0a82d918456e893d7bb02e/content/index.do)
+- [국민대 소프트웨어융합대학](https://cs.kookmin.ac.kr/intro/intro)
+- [국민대 소프트웨어융합대학 공지사항](https://cs.kookmin.ac.kr/news/notice/)
+- 그 외 네이버 및 구글 기타 수집 데이터
 
-### 실행 방법
+### Metrics
 
-2024_03_30 아나콘다 환경 python 3.8 에서 실행 확인
+[RAGAS](https://docs.ragas.io/en/stable/concepts/metrics/index.html)
 
-1. /ai 경로로 작업 디렉토리 이동
-2. 패키지 설치 `pip install -r requirements.txt`
-3. /ai 경로에 .env 파일 생성 (OPENAI_API_KEY = 'your_api')
-4. `python run_chatbot.py`
-
-### TEST
-
-![image](https://github.com/kookmin-sw/capstone-2024-30/assets/54922676/6b7c8514-35dd-41bb-9815-56a182a7ccfb)
-
-![image](https://github.com/kookmin-sw/capstone-2024-30/assets/54922676/e37af8f8-a35b-4808-a357-aff5aebb8d88)
-
-![image](https://github.com/kookmin-sw/capstone-2024-30/assets/54922676/d7b5cd40-43b7-4cca-8be8-6fff257ed303)
+<br>
 
 ## 9. 기타
 
