@@ -66,6 +66,10 @@ This project aims to develop a comprehensive app service for international stude
 
 ## 3. 시연 영상
 
+<video controls width="250">
+  <source src="https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/69c09b39-f44e-4edf-abab-6b16485a2f57" type="video/webm" />
+</video>
+
 <br>
 
 ## 4. 프로젝트 기능
