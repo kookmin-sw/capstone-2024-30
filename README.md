@@ -33,10 +33,10 @@
                 <a href="https://github.com/kookmin-sw/capstone-2024-30/blob/main/front/FRONT.md">FRONT.md</a>
             </td>
             <td>
-                <a href="https://github.com/kookmin-sw/capstone-2024-30/tree/main/back/BACK.md">README.md</a>
+                <a href="https://github.com/kookmin-sw/capstone-2024-30/tree/main/back/BACK.md">BACK.md</a>
             </td>
             <td>
-                <a href="https://github.com/kookmin-sw/capstone-2024-30/tree/main/ai">README.md</a>
+                <a href="https://github.com/kookmin-sw/capstone-2024-30/tree/main/ai">AI.md</a>
             </td>
         </tr>
     </table>
