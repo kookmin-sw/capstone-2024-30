@@ -1,10 +1,10 @@
-# 💾 Backend 기술 문서
+# **💾 Backend 기술 문서**
 
-## 기능적 고려 사항
+## **기능적 고려 사항**
 
 <br>
 
-### 채팅 구현
+### **채팅 구현**
 
 채팅 서버는 크게 Polling, Long Polling, Steaming, Websocket 방식으로 구현할 수 있다. 앞선 3가지 방법은 일반적인 RESTFUL API를 이용한 구현 방법이다. 그래서 비교적 구현이 쉽다. 하지만, 이들의 특성상 클라이언트 → 서버로 데이터 전송이 가능하지만, 서버 → 클라이언트로 전송은 불가능하다. 또한, 100% 실시간성을 보장하지 않는다. 이를 극복하기 위해서 나온 방법이 바로 4번 WebSocket 방식이다. 그런데 채팅을 websocket으로 구현하면, 굉장히 리소스를 많이 잡아먹고 구현이 까다롭다.  
 
@@ -16,7 +16,7 @@
 
 <br>
 
-### 크롤링
+### **크롤링**
 
 현재 크롤링은 학식과 공지사항 분야에서 실시되고 있다. 크롤링 할 때도 몇가지 고려할 사항이 존재한다.
 
@@ -30,7 +30,29 @@
 
 <br>
 
-### 로깅
+### **발음 연습**
+
+발음 연습 구현을 위해서 [Azure에서 제공하는 Speech Service](https://learn.microsoft.com/ko-kr/azure/ai-services/speech-service/)를 사용하였다.
+
+그런데, 발음 연습이 분명히 Local에서는 잘됐음에도 불구하고, Docker로 Container한 후, 클라우드 서버에 올리니
+```
+Could not initialize class com.microsoft.cognitiveservices.speech.SpeechConfig
+```
+위와 같은 오류가 발생하였다.
+
+이유는 Spring Docker를 위해, JDK 이미지를 alpine을 사용했는데, [SDK 설치 설명서](https://learn.microsoft.com/ko-kr/azure/ai-services/speech-service/quickstarts/setup-platform?tabs=linux%2Cubuntu%2Cdotnetcli%2Cdotnet%2Cjre%2Cmaven%2Cnodejs%2Cmac%2Cpypi&pivots=programming-language-java)를 확인해보면 Debian 또는 Ubuntu 환경에서만 작동한다고 명시되어 있다. 그래서 alpine이 아닌 ubuntu 기반의 JDK Image를 사용해서 Build를 하였다.
+
+하지만, 또다른 오류가 발생하였다. 모든 점수가 0점이 나오는 오류였다. 이유는 역시 설명서에 명시되어 있었다.
+
+<img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FeB7RQg%2FbtsG49u1HIo%2Ff5u2Hfkyar6dJR34Hkvyx0%2Fimg.png">
+
+설명서를 잘 보면, Ubuntu 22.04는 기본값이 OpenSSL 3.0인데, 이는 지원하지 않는다고 한다. 그리고, Docker Build를 위해 사용한 eclipse-temurin:17-jdk는 Ubuntu 22.04이다. 따라서 기존 3.0버전의 Open SSL을 지우고, 1.1 버전을 설치하는 과정이 필요했다. 그래서 [Speech SDK Github Issue](https://github.com/Azure-Samples/cognitive-services-speech-sdk/issues/2276)에 올라와있는 OpenSSL 다운그레이드 하는 방법을 참고하여 새로 Dockerfile을 작성하여 고쳤다.
+
+자세한 Dockerfile은 필자 블로그의 [Azure 발음평가 해결과정 포스팅](https://mclub4.tistory.com/33)을 참고해주면 감사하겠다. 
+
+<br>
+
+### **로깅**
 
 로깅은 우선 할 수 있는 만큼 최대한 많이, 그 다음에 필요 없는 로그는 지우거나 레벨을 낮추는 식으로 운영하는게 좋다. 그래서, 로깅은 두가지 부분에서 처리를 하였다.
 
@@ -44,7 +66,7 @@
 
 <br>
 
-### 배포
+### **배포**
 
 AWS EC2 인스턴스에 배포한다던지, 컴퓨터와 노트북을 번갈아가며 개발하다던지, 이러면 각각 개발 환경이 틀려 매번 설정을 해주어야 한다. 하지만 Docker가 있다면? 귀찮게 그럴 필요 없이 쉽게 배포를 진행할 수 있다. 따라서, 실행하는 OS 환경에 상관없이, 언제나 같은 환경에서 결과를 낼 수 있도록 Docker Container화를 진행했다. Ruby On Rails나 AI서버의 Docker Container화는 다른 것과 별반 다를게 없는데, Spring Container화를 좀 특이하게 진행하였다. 일반적인 Docker 배포 방식으로 Spring 서버를 배포한다면, jar 파일이 무거워질수록 docker image를 만드는 과정이 비효율적으로 된다. 그런데, Docker의 장점이 레이어마다 캐쉬를 사용하고, 이를 통해 빠르게 이미지를 만들 수 있다는 것이다. 하지만, 해당 방식으로 진행하면 소스 코드가 한줄만 바꿔도 캐쉬가 깨지기 때문에 다시 연산을 해야되가지고, Docker를 사용하는 장점이 없어진다. 왜냐하면, Spring의 모든 애플리케이션 코드와 라이브러리가 Single layer에 배치되기 때문이다. 결국 컨테이너 환경에서의 시작 시간에도 영향을 미친다.
 
@@ -62,24 +84,24 @@ CI/CD로 대표적인 것은 Jenkins와 Git Actions가 있는데, 우리는 Git 
 
 setup-env에서 git actions secret으로부터 받은 .env를 생성한다. 그리고 이걸 우리 ec2에 scp 프로토콜을 이용해서 전송한다. 또한, 실질적인 서버 배포를 담당한 docker-compose.yml도 scp 프로토콜을 통해서 전송한다.
 
-그 다음, 우리의 spring, ruby, spring gateway, nginx 등을 docker image로 build한다. 이때, 일반적으로 build를 진행한다면 docker의 이점인 docker cache를 적용하지 못한다고 한다. 따라서, cache를 적용하기 위해서 docker에서 공식적으로 제공해주는 docker buildX를 이용했다. 그 후, 우리 docker hub로 업로드한다.
+그 다음, 우리의 spring, ruby, spring gateway, nginx 등을 docker image로 build한다. 그런데 여기서 문제가 있다. Git Actions는 매번 새로운 RunTime 환경에서 실행되기 때문에, docker의 이점인 docker cache를 적용하지 못한다. 그래서 Build 할 때 굉장히 시간이 오래걸린다. 따라서, cache를 적용하기 위해서 docker에서 공식적으로 제공해주는 docker buildX를 이용했다. BuildX를 사용하면, Git Actions 내부적인 Cache 저장소를 활용하여 Docker Cache를 저장할 수 있다. **실제로, BuildX를 적용하기 전에는 Spring Container 빌드 시간이 13 ~ 15분 정도 걸렸다. 하지만, 캐시를 적용한 이후로는 위 사진에서 보이는 것 처럼 5분으로 Build 시간이 10분 가까이 줄어들었다.**
 
 마지막으로, 우리 ec2에 ssh로 접속해서 이미지를 내려받고 docker-compose를 실행하여 배포를 완료하도록 구성했다.
 
 <br>
 
-## 성능적 고려 사항
+## **성능적 고려 사항**
 
 <br>
 
-### 캐싱
+### **캐싱**
 
 유저들이 자주 접근하는 데이터는 캐싱하는 것이 좋다. 
 예를 들어서, 공지사항 목록이나 Q&A 목록인 경우, 자주 바뀌지도 않을텐데 유저들이 해당 게시판에 접속할 때마다 매번 RDB에서 목록을 읽어오는 것은 비효율적이다. 
 따라서, Redis같은 곳에 캐싱해두고, 똑같은 요청이 들어오면 빠르게 Redis에서 뽑아가도록 구성했다. 
 캐싱 전략은 다음과 같다. 
 
-캐싱 전략은 Look Aside와 Write Around 전략의 조합을 택하였다. 
+캐싱 전략은 Look Aside와 Write Around 전략의 조합을 택하였다.
 Read 전략은 Look Aside 전략을 활용했다. 우선적으로 Redis에서 읽어오고, cache miss가 발생했을 때만, RDS에서 읽어오고 다시 redis에 저장하는 방식이다. 
 Write 전략은 Write Around 전략을 활용했다. 데이터를 쓸 때, Redis에 저장하지 않고, 반드시 RDB에 저장하고 기존 캐시는 무효화하는 전략이다.
 
@@ -89,7 +111,7 @@ Write 전략은 Write Around 전략을 활용했다. 데이터를 쓸 때, Redis
 
 <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcmB6P8%2FbtsHv9UPRkR%2FFhuxs9J6QGfSkd5TIK77W0%2Fimg.png">
 
-하지만 캐싱 후에는 12ms로 단축되었다.
+하지만 **캐싱 후에는 12ms로 단축되었다. 실행시간이 1/40 단축된 것이다.**
 
 <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FdugCYt%2FbtsHwfUZui3%2FeGa64zkKyhVTc3nbetwWWk%2Fimg.png">
 
@@ -99,7 +121,7 @@ Write 전략은 Write Around 전략을 활용했다. 데이터를 쓸 때, Redis
 
 <br>
 
-### 비동기 처리
+### **비동기 처리**
 
 모든 요청을 동기적으로 처리하는 것은 매우 비효율적이다. 특히, 이미지를 업로드하거나, 번역 API 같은 다른 API에 요청을 보내거나, 크롤링 등은 매우 오래걸리는 작업이다. 이 모든 작업을 동기적으로 처리하면, 성능에 매우 치명적일 것이다. 그래서, 해당 기능들을 사용하는 경우에는 Async를 통한 비동기 처리를 실시하였다.
 
@@ -111,7 +133,7 @@ Write 전략은 Write Around 전략을 활용했다. 데이터를 쓸 때, Redis
 
 <br>
 
-### Race Condition 해결
+### **Race Condition 해결**
 
 프로젝트에서 답변의 추천기능을 구현하면서 추천 / 추천 해제 기능을 만들었다. 문제가 있다면 추천수, 조회수와 같은 기능은 하나의 필드에 대해 수많은 트랜젝션 요청이 오가는 기능이기 때문에 이경우 자원에 접근하는 것에 대한 Race Condition, 동시성 문제가 발생하게 된다. 이러한 경우를 해결하기 위해서 Redis를 사용하였다. Redis는 싱글 스레드로 자원에 대한 Race Condition 문제를 해결할 수 있기 때문이다. 이 문제를 해결하기 위해 Cache Write 전략중에서 Write Back 전략을 응용하였다. Redis에 요청을 보낼 countTemplate를 선언하고 이를 통해서 Redis에 객체와 답변의 추천수를 저장하고 일정시간마다 이렇게 Cache에 저장된 내용을 DB에 반영시키도록 하였다. 이렇게 Redis에 저장된 변경 사항은 30초 간격으로 DB에 반영되는 방식으로 구현하였다. 
 
@@ -121,7 +143,7 @@ Write 전략은 Write Around 전략을 활용했다. 데이터를 쓸 때, Redis
 
 <br>
 
-### N+1 문제
+### **N+1 문제**
 
 여러 참조관계를 가진 테이블이 존재하고 비즈니스 로직에서 이들을 Join하여 호출하는 상황이 많이 있었으며 이때 N+1문제가 발생하였다. 이를 해결하기 위해 Fetch Join을 사용하거나 Projection 주입을 사용하는 경우의 Inner Join과 같이 여러 경우의 N+1의 해결 방법을 모색하여 적용하였다. 이로 인해 서버 비즈니스 로직의 성능향상이 이루어질 수 있었다. 이 과정에서 여러 시행 착오가 있었다. 기존의 방식은 Projection을 사용하여 DTO를 바탕으로 JPA 검색을 사용하는 방식이었는데 이 경우 Fetch Join이나 EntityGraph로는 해결이 불가능하다. @Projection을 사용한 해결 방안도 있으나 좀 더 고민해본 결과 Join의 목적에서 N+1문제를 야기할 필드값이 큰 문제가 없어 InnerJoin으로도 충분히 해결되는 범주였다는 것을 깨달았다.
 
@@ -129,11 +151,11 @@ Write 전략은 Write Around 전략을 활용했다. 데이터를 쓸 때, Redis
 
 <br>
 
-## 안정성 고려 사항
+## **안정성 고려 사항**
 
 <br>
 
-### 사용자 트래픽 제한
+### **사용자 트래픽 제한**
 
 A라는 사람이 악의적으로 우리 AI 모델에게 1분에 100만번의 요청을 보낼 수 있다. 그러면 우리 AI Token은 모두 사라진다. B라는 사람은 Spring 비즈니스 서버에 1초에 1000만번 요청을 날린다. 그러면, 역시 서버가 터질 것이다. 따라서, 서버와 클라이언트 사이에서 미들웨어 역할을 하여 분당 API 사용량을 제한할 필요가 있다. 그래서 API Rate Limiter를 적용했다.
 
@@ -151,17 +173,17 @@ Redis는 인메모리 DB이기 때문에 매우 빨라서 적합하다. 또한, 
 
 <br>
 
-### 사용자 업로드 파일 용량 제한
+### **사용자 업로드 파일 용량 제한**
 
 외국민 서비스에는 발음평가와 게시판에서 이미지를 업로드 하는 기능이 존재한다. 이 상황에서, Client는 Server에 파일을 업로드 할텐데, 만약에 너무 크기가 큰 파일을 보낸다면 서버에 큰 부담을 줄 것이다. 그래서, Nginx를 이용하여 제일 최전방에서 빠르게 용량이 너무 큰 파일은 올리지 못하도록 차단하였다.
 
 <br>
 
-## 보안적 고려 사항
+## **보안적 고려 사항**
 
 <br>
 
-### 사용자 비밀번호 암호화
+### **사용자 비밀번호 암호화**
 
 사용자의 비밀번호를 그대로 DB에 보관하는 것은 잘못된 일이다. 비밀번호를 암호화하지 않고 저장하면, DB가 해킹당했을 경우 큰 피해가 발생한다. 실제로, 비밀번호 암호화는 젤 기초적인 작업임에도 불구하고 하지않아 개인정보유출에서 큰 피해를 본 기업들이 많이 있다.
 
@@ -169,13 +191,13 @@ Redis는 인메모리 DB이기 때문에 매우 빨라서 적합하다. 또한, 
 
 <br>
 
-### JWT를 통한 Authentication
+### **JWT를 통한 Authentication**
 
 Token은 서버가 각각의 클라이언트가 누구인지 구별할 수 있도록 사용자의 유니크한 정보를 담은 암호화된 데이터이다. 우리 서비스의 여러 기능들은 인증된 사용자만 접근 할 수 있도록 하는 것이 정상일 것이다. 따라서, 로그인시 Main Business Server에서 Access 및 Refresh Token을 발급해주고, 매 요청마다 Header로 AccessToken을 보내야 한다. 그러면 API Gateway서버에서 해당 토큰을 확인해보고, Invalid한 JWT Token일 경우 403 에러를 보내준다. 정상적인 Token일 경우, 해당 서버로 라우팅을 해주어 요청을 처리하도록 구성했다.
 
 <br>
 
-### Token 탈취 상황 예방
+### **Token 탈취 상황 예방**
 
 JWT토큰은 탈취의 위험성이 있다. JWT기반 인증 방식에서는 세션과 다르게 Stateless하다는 특징이 있기 때문에, Token이 탈취당해도 우리 서버가 그걸 알아차리고 해당 Token을 중지시킬 수 있는 방법은 존재하지 않는다. 따라서, accessToken은 유효기간이 짧은 단위의 토큰으로 구성해야 한다. 주로 15분 정도로 구성하는 경우가 많다. 하지만, 이렇게 짧은 시간으로 설정한다면, 사용자는 계속해서 재로그인을 해야된다는 번거로움이 있다. 그래서 등장한 것이 Refresh Token이다.
 
@@ -197,13 +219,13 @@ Refresh Token Ratation(RTR)이란 Access Token이 만료되고 Refresh Token으�
 
 <br>
 
-### AccessToken Ban
+### **AccessToken Ban**
 
 만약에 사용자가 로그아웃을 했다고 해보자. AccessToken의 기간이 만약에 30분인데, 5분만에 로그아웃을 했는데도, 그 Token가지고 요청을 보낼 수도 있다. 따라서, 로그아웃을 할 경우, Redis에 해당 AccessToken을 Ban을 해두어서 요청을 보내지 못하도록 설정했다.
 
 <br>
 
-### HMAC
+### **HMAC**
 
 우리 서비스의 대부분에 AccessToken을 요구하더라도, 로그인 및 회원가입 같은 경우는 Token이 없는 상황에서 발생하는 요청이다. 하지만, 누군가 우리 Endpoint를 알아내고, Flutter 앱이 아닌 다른 곳에서 요청을 보낸다면 이는 비정상적인 요청일 것이다.
 
@@ -213,23 +235,23 @@ Refresh Token Ratation(RTR)이란 Access Token이 만료되고 Refresh Token으�
 
 <br>
 
-### 환경변수 적용
+### **환경변수 적용**
 
 JWT Secret, HMAC Secret, API Key 등등을 우리 Code에 Hard Coding해서는 절대 안된다. 따라서, env 파일로 환경변수를 분리하여 노출되지 않도록 설정했다.
 
 <br>
 
-## 테스트 고려 사항
+## **테스트 고려 사항**
 
 <br>
 
-### Test Container
+### **Test Container**
 
 또한, 우리가 실제 서비스하는 RDS를 가지고 테스트를 진행한다면, 매우 위험할 것이다. 하지만, 통합 테스트 진행을 위해서 분명히 DB에 데이터를 저장하고 테스트 해봐야되는 순간이 존재한다. 따라서, 우리 서비스는 Test Container를 이용하여 MySQL, Redis 테스트 컨테이너를 만든 뒤, 독립된 환경에서 안전하게 테스트를 진행하도록 하였다.
 
 <br>
 
-### Apache Jmeter
+### **Apache Jmeter**
 
 <img src="https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/0ea87996-f744-4deb-86e5-4166daf0d96f">
 
@@ -237,7 +259,7 @@ JWT Secret, HMAC Secret, API Key 등등을 우리 Code에 Hard Coding해서는 �
 
 <br>
 
-## 아키텍처 설계
+## **아키텍처 설계**
 
 <img src="https://github.com/Alpha-e-Um/Frontend/assets/55117706/26a39b50-e5a9-45ca-87e5-c5f64aaefa5d">
 
@@ -266,17 +288,17 @@ JWT Secret, HMAC Secret, API Key 등등을 우리 Code에 Hard Coding해서는 �
 
 <br>
 
-## 현실적 제한 및 개선 필요 사항
+## **현실적 제한 및 개선 필요 사항**
 
 <br>
 
-### 검색 기능 개선
+### **검색 기능 개선**
 
 현재 게시물 및 공지사항 검색은 제목으로만 검색된다. 하지만, 이보다 제목 + 내용으로 검색이 가능한 것이 더 좋을 것이다. 이를 위해서 SQL Like 연산자로 내용까지 검색이 가능하긴 하나, Like 연산자는 선형 연산자이기 때문에 성능에 매우 치명적이다. 따라서, ElasticSearch를 이용해서 빠르게 검색하는 것이 더 좋을 것이다. ElasticSearch는 분산 검색 및 분석 엔진으로, 대규모 데이터에서 빠른 전체 텍스트 검색을 지원한다. 추후, ElasticSearch를 통해 우리 RDB에 저장된 글들을 역색인하여 거의 실시간에 가깝게 검색하도록 개선할 것이다.
 
 <br>
 
-### 인스턴스 성능의 한계
+### **인스턴스 성능의 한계**
 
 <img src="https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/61f41786-00e2-4ae2-b059-9bbe080edc91">
 
@@ -284,7 +306,7 @@ JWT Secret, HMAC Secret, API Key 등등을 우리 Code에 Hard Coding해서는 �
 
 <br>
 
-### 무중단 배포
+### **무중단 배포**
 
 현재 우리 서비스는 Git Actions를 이용한 CI/CD를 적용하고 있다. 하지만, 현재 방식은 새 버전으로 서버가 배포될 때 반드시 1~2분정도 서버가 중단될 수 밖에 없다. 이는, 실제 서비스할 때 매우 치명적이다. 따라서, 무중단 배포가 반드시 필요하다.
 
@@ -298,13 +320,13 @@ JWT Secret, HMAC Secret, API Key 등등을 우리 Code에 Hard Coding해서는 �
 
 <br>
 
-### 로드 밸런싱
+### **로드 밸런싱**
 
 서버를 단일로 구성하면, 많은 트래픽이 몰렸을 때 감당하기 힘들 것이다. 따라서, 서버를 여러개 만들고, Load Balacning하는게 좋은 선택지일 것이다. 하지만, 로드 밸런싱을 하기엔 비용적인 문제 때문에 환경 구축이 어렵다. 왜냐하면, 여러개의 EC2를 띄워야되기 때문이다. 그래서, 어쩔 수 없이 단일 서버로 운영하게 되었지만, 추후 사용자가 늘어나면 로드 밸런싱을 적용할 계획이다.
 
 <br>
 
-### 모니터링 및 로깅 강화
+### **모니터링 및 로깅 강화**
 
 <img src ="https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/ced776d3-c974-4365-956e-f1c598ecbd7b">
 
@@ -316,7 +338,7 @@ JWT Secret, HMAC Secret, API Key 등등을 우리 Code에 Hard Coding해서는 �
 
 <br>
 
-### 컨테이너 오케스트라제이션
+### **컨테이너 오케스트라제이션**
 
 <img src="https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/5d3fbe14-adef-4439-b950-e613262038c0">
 
