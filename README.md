@@ -1,4 +1,4 @@
-# 👋 외국인 유학생들을 위한 앱, 외국민
+r# 👋 외국인 유학생들을 위한 앱, 외국민
 
 ![최종 발표자료](https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/20fc41c1-8a22-4c90-a1f1-8539dea92ed1)
 
@@ -130,7 +130,7 @@ This project aims to develop a comprehensive app service for international stude
 
 ## 4. 소개 영상
 
-[![Video Label](http://img.youtube.com/vi/4em2UsKIx_U/0.jpg)](https://youtu.be/4em2UsKIx_U)
+https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/69c09b39-f44e-4edf-abab-6b16485a2f57
 
 <br>
 
