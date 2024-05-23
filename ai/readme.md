@@ -122,7 +122,7 @@ Answer Relevance는 Reverse Engineering을 통해 계산된다. 순서는 다음
 
 # Test Log
 
-[chatbot_result.xlsx](./chatbot_result.xlsx)
+`chatbot_result.xlsx`
 
 ![image](https://github.com/kookmin-sw/capstone-2024-30/assets/54922676/63d47585-ad8f-405f-be70-a29cf97db895)
 
