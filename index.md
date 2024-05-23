@@ -126,6 +126,7 @@ https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/69c09b39-f44e-4ed
 |------|---|---|
 |<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/5801b9fa-fb82-48f6-a675-0997c6bfae34">|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/ae9525c7-c605-4e88-9ea2-49285bbe84bd">|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/dcaa5cf2-0f9c-457f-a81c-351bd4578ca7">|
 
+
 <br>
 
 ## 5. 팀원 소개
