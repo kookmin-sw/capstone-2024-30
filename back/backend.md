@@ -2,6 +2,8 @@
 
 ## 기능적 고려 사항
 
+<br>
+
 ### 채팅 구현
 
 채팅 서버는 크게 Polling, Long Polling, Steaming, Websocket 방식으로 구현할 수 있다. 앞선 3가지 방법은 일반적인 RESTFUL API를 이용한 구현 방법이다. 그래서 비교적 구현이 쉽다. 하지만, 이들의 특성상 클라이언트 → 서버로 데이터 전송이 가능하지만, 서버 → 클라이언트로 전송은 불가능하다. 또한, 100% 실시간성을 보장하지 않는다. 이를 극복하기 위해서 나온 방법이 바로 4번 WebSocket 방식이다. 그런데 채팅을 websocket으로 구현하면, 굉장히 리소스를 많이 잡아먹고 구현이 까다롭다.  
@@ -11,6 +13,8 @@
 그래서 우리 서비스는 Long Polling을 이용하여 채팅을 개발하기로 결정했다. 우리 서비스의 채팅은 100% 실시간성을 보장할 필요 없을 뿐더러, 채팅이 메인 비즈니스 기능이 아니고, 프로젝트 마감기한이 임박하여 빠르게 개발해야되기 때문에 Long Polling을 이용하여 채팅을 개발하기로 결정했다.
 
 채팅 시스템 설계 및 시나리오에 관한 더 자세한 내용은 [채팅 구현에 대한 고찰](https://mclub4.tistory.com/31) 필자의 블로그에 서술해놓았다.
+
+<br>
 
 ### 크롤링
 
@@ -23,6 +27,8 @@
 세번째, 공격적인 크롤러는 상대 서버에게 무리를 줄 수 있다. 따라서, 크롤링을 진행할 때 상대 서버에 부담을 줄일 수 있도록 고려해야한다. 그래서, 학식같은 경우는 국민대 학식 API가 존재하여 이를 이용하여 정보를 가져왔다. 하지만, 공지사항은 이런 API가 없기 때문에 다른 방법이 고려해야된다. 그래서 크롤링 횟수를 하루에 1~2번으로 줄였고, 되도록 사람이 적게 몰리는 새벽 또는 식사 시간대에 크롤링을 진행하도록 구성했다. 또한, 웹사이트의 robots.txt을 준수하여 크롤링이 허용되지 않은 영역은 진행하지 않았다. 
 
 네번째, Jsoup를 이용하여 크롤링을 진행하였는데, Jsoup은 정적 메소드만 제공해서 테스트가 어렵다는 점을 고려해야 한. 그래서 이를 해결하기 위해서 단위테스트시 Mockito같은 라이브러리를 이용하여 테스트를 진행하면 된다. 하지만, 이 부분은 시간이 부족하여 고려만하고 진행하지 못하였다. 추후, 다른 프로젝트를 진행할 때는 이 점을 고려하여 테스트를 진행할 예정이다.
+
+<br>
 
 ### 로깅
 
@@ -38,7 +44,35 @@
 
 <br>
 
+### 배포
+
+<br>
+
+AWS EC2 인스턴스에 배포한다던지, 컴퓨터와 노트북을 번갈아가며 개발하다던지, 이러면 각각 개발 환경이 틀려 매번 설정을 해주어야 한다. 하지만 Docker가 있다면? 귀찮게 그럴 필요 없이 쉽게 배포를 진행할 수 있다. 따라서, 실행하는 OS 환경에 상관없이, 언제나 같은 환경에서 결과를 낼 수 있도록 Docker Container화를 진행했다. Ruby On Rails나 AI서버의 Docker Container화는 다른 것과 별반 다를게 없는데, Spring Container화를 좀 특이하게 진행하였다. 일반적인 Docker 배포 방식으로 Spring 서버를 배포한다면, jar 파일이 무거워질수록 docker image를 만드는 과정이 비효율적으로 된다. 그런데, Docker의 장점이 레이어마다 캐쉬를 사용하고, 이를 통해 빠르게 이미지를 만들 수 있다는 것이다. 하지만, 해당 방식으로 진행하면 소스 코드가 한줄만 바꿔도 캐쉬가 깨지기 때문에 다시 연산을 해야되가지고, Docker를 사용하는 장점이 없어진다. 왜냐하면, Spring의 모든 애플리케이션 코드와 라이브러리가 Single layer에 배치되기 때문이다. 결국 컨테이너 환경에서의 시작 시간에도 영향을 미친다.
+
+그래서 Multistage Build와 Jar 파일의 특성 두가지를 고려해서 Dockerfile을 작성했다. 우선, 일반적인 방식으로 Docker Image를 생성시, 우리는 jar 파일만 필요한데 쓸데없는 소스 코드까지 다 포함하게 되어서 용량이 지나치게 커지고, 업로드하는데도 오래 걸리게 된다. 따라서, MultiStage Build를 이용하여 Build할 때만 필수적인 코드로 jar 파일을 생성하고, 최종 Docker image에는 이것들이 포함되지 않도록 설정했다.
+
+<img src = "https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/46e720c7-709e-4a74-b508-260d928762c4" width = 500 height= 100>
+
+또한, Spring 공식 Docs를 들어가보면 Spring의 Jar 파일은 위 사진과 같이 4가지 Layer로 나뉜다고 한다. 해당 문서에서, application layer가 가장 자주 바뀌고, 그다음은 snatphot, 그다음은 spring-boot-loader, dependencies 순으로 자주 바뀌지 않는다고 한다. 즉, Dependencies가 가장 바뀌지 않는다는 것이다. 그러면 Dockerfile을 작성할 때, Docker File은 제일 자주 바뀌지 않는 것부터 차례로 작성해주는 것이 좋기 때문에 이것의 역순으로 Docker File을 작성하였다.
+
+CI/CD로 대표적인 것은 Jenkins와 Git Actions가 있는데, 우리는 Git Actions을 택했다. 그 이유는 Github에서 관리하는 것이다 보니깐, 코드 저장소랑 바로바로 연결이 되고, PR을 생성하게 되면 GitHub Actions를 통해 해당 코드 변경 부분에 문제가 없는지 각종 검사를 진행할 수도 있기 때문이다.
+
+<img src="https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/a1cf82e4-9881-4cd1-8f06-e2af9b4703dd">
+
+위와 같은 플로우로 Github에서 자동으로 서버들이 배포될 수 있도록 Git Actions 설정을 해놨다. 
+
+setup-env에서 git actions secret으로부터 받은 .env를 생성한다. 그리고 이걸 우리 ec2에 scp 프로토콜을 이용해서 전송한다. 또한, 실질적인 서버 배포를 담당한 docker-compose.yml도 scp 프로토콜을 통해서 전송한다.
+
+그 다음, 우리의 spring, ruby, spring gateway, nginx 등을 docker image로 build한다. 이때, 일반적으로 build를 진행한다면 docker의 이점인 docker cache를 적용하지 못한다고 한다. 따라서, cache를 적용하기 위해서 docker에서 공식적으로 제공해주는 docker buildX를 이용했다. 그 후, 우리 docker hub로 업로드한다.
+
+마지막으로, 우리 ec2에 ssh로 접속해서 이미지를 내려받고 docker-compose를 실행하여 배포를 완료하도록 구성했다.
+
+<br>
+
 ## 성능적 고려 사항
+
+<br>
 
 ### 캐싱
 
@@ -65,6 +99,8 @@ Write 전략은 Write Around 전략을 활용했다. 데이터를 쓸 때, Redis
 
 또한, 이미지를 받아오는 S3도 캐싱을 무조건 해야한다. 아니면 S3 비용이 굉장히 많아질 것이고 응답시간이 길어진다. 그래서 AWS CloudFront를 S3 앞단에 두어 캐싱될 수 있도록 구성했다.
 
+<br>
+
 ### 비동기 처리
 
 모든 요청을 동기적으로 처리하는 것은 매우 비효율적이다. 특히, 이미지를 업로드하거나, 번역 API 같은 다른 API에 요청을 보내거나, 크롤링 등은 매우 오래걸리는 작업이다. 이 모든 작업을 동기적으로 처리하면, 성능에 매우 치명적일 것이다. 그래서, 해당 기능들을 사용하는 경우에는 Async를 통한 비동기 처리를 실시하였다.
@@ -75,6 +111,8 @@ Write 전략은 Write Around 전략을 활용했다. 데이터를 쓸 때, Redis
 
 그래서, 위 사진과 같이 Async의 Executor를 ThreadPool방식의 Executor로 설정했다. 이는, 사용할 스레드 풀에 속한 기본 스레드 수인 corepoolsize, corepoolsize가 가득 찬 상태에서 더이상 추가 처리가 불가능 할때, 대기하는 장소 크기인 queuecapacity, 스레드 풀이 확장될 수 있는 스레드의 상한선, 즉 스레드 수의 상한선인 maxpoolsize를 조정하여 ThreadPool방식의 Async Executor를 구성했다.
 
+<br>
+
 ### Race Condition 해결
 
 프로젝트에서 답변의 추천기능을 구현하면서 추천 / 추천 해제 기능을 만들었다. 문제가 있다면 추천수, 조회수와 같은 기능은 하나의 필드에 대해 수많은 트랜젝션 요청이 오가는 기능이기 때문에 이경우 자원에 접근하는 것에 대한 Race Condition, 동시성 문제가 발생하게 된다. 이러한 경우를 해결하기 위해서 Redis를 사용하였다. Redis는 싱글 스레드로 자원에 대한 Race Condition 문제를 해결할 수 있기 때문이다. 이 문제를 해결하기 위해 Cache Write 전략중에서 Write Back 전략을 응용하였다. Redis에 요청을 보낼 countTemplate를 선언하고 이를 통해서 Redis에 객체와 답변의 추천수를 저장하고 일정시간마다 이렇게 Cache에 저장된 내용을 DB에 반영시키도록 하였다. 이렇게 Redis에 저장된 변경 사항은 30초 간격으로 DB에 반영되는 방식으로 구현하였다. 
@@ -82,6 +120,8 @@ Write 전략은 Write Around 전략을 활용했다. 데이터를 쓸 때, Redis
 하지만, Redis를 이용하더라도 결국에는 Redis에서 값을 읽고 비교하고 쓰는 이 일련의 행위는 Spring 코드에서 Lock이 걸리지 않고 실행되기 때문에 Atomic하게 실행되지 않는다. 그래서 이 문제를 해결하기 위해 Redis Lock을 걸어주어 Atomic하게 실행되도록 보장하였다. 물론, 우리는 Redis Lock을 이용하였지만, 이외에도 Redis Transaction 이용, Redis 내부에서 Lua Script를 이용하여 Atomic하게 실행, DB Lock, DB의 Isolation Level 조정 등의 방법이 있을 것이다.
 
 현재 방법도 동시성 문제를 해결하는 방법이지만 내가 추천한 답변의 추천수가 즉시 반영되어 보여지지는 않는다. 이는 데이터를 읽어올때는 캐시에서 찾는 방식이 아니기 때문이다. 추후에는 캐시에서 값을 찾도록 구현할 필요가 있다.
+
+<br>
 
 ### N+1 문제
 
@@ -111,6 +151,7 @@ Redis는 인메모리 DB이기 때문에 매우 빨라서 적합하다. 또한, 
 
 실제로 위에 사진처럼 Apache Jmeter로 시뮬레이션을 돌려보면, 429 Error를 반환하는 것을 볼 수 있다.
 
+<br>
 
 ### 사용자 업로드 파일 용량 제한
 
@@ -120,15 +161,21 @@ Redis는 인메모리 DB이기 때문에 매우 빨라서 적합하다. 또한, 
 
 ## 보안적 고려 사항
 
+<br>
+
 ### 사용자 비밀번호 암호화
 
 사용자의 비밀번호를 그대로 DB에 보관하는 것은 잘못된 일이다. 비밀번호를 암호화하지 않고 저장하면, DB가 해킹당했을 경우 큰 피해가 발생한다. 실제로, 비밀번호 암호화는 젤 기초적인 작업임에도 불구하고 하지않아 개인정보유출에서 큰 피해를 본 기업들이 많이 있다.
 
 그래서, “외국민” 서비스는 Firebase를 이용하여 사용자의 ID와 비밀번호를 관리한다. Firebase는 비밀번호를 암호화해서 안전하게 잘 보관해주기 때문이다.
 
+<br>
+
 ### JWT를 통한 Authentication
 
 Token은 서버가 각각의 클라이언트가 누구인지 구별할 수 있도록 사용자의 유니크한 정보를 담은 암호화된 데이터이다. 우리 서비스의 여러 기능들은 인증된 사용자만 접근 할 수 있도록 하는 것이 정상일 것이다. 따라서, 로그인시 Main Business Server에서 Access 및 Refresh Token을 발급해주고, 매 요청마다 Header로 AccessToken을 보내야 한다. 그러면 API Gateway서버에서 해당 토큰을 확인해보고, Invalid한 JWT Token일 경우 403 에러를 보내준다. 정상적인 Token일 경우, 해당 서버로 라우팅을 해주어 요청을 처리하도록 구성했다.
+
+<br>
 
 ### Token 탈취 상황 예방
 
@@ -150,9 +197,13 @@ Refresh Token은 AccessToken과 다르게 매우 긴 유효기간을 가지고 �
 
 Refresh Token Ratation(RTR)이란 Access Token이 만료되고 Refresh Token으로 새로운 Access Token을 받아올 때, 새로운 Refresh Token도 받아오도록 하는 방법이다. 즉. Refresh Token이 사용될 때마다 새로운 Access Token과 Refresh Token을 발급하여 이전에 발급된 Token들은 사용이 불가능하도록 한다.
 
+<br>
+
 ### AccessToken Ban
 
 만약에 사용자가 로그아웃을 했다고 해보자. AccessToken의 기간이 만약에 30분인데, 5분만에 로그아웃을 했는데도, 그 Token가지고 요청을 보낼 수도 있다. 따라서, 로그아웃을 할 경우, Redis에 해당 AccessToken을 Ban을 해두어서 요청을 보내지 못하도록 설정했다.
+
+<br>
 
 ### HMAC
 
@@ -162,6 +213,8 @@ Refresh Token Ratation(RTR)이란 Access Token이 만료되고 Refresh Token으�
 
 따라서, 회원가입 및 로그인 시에는 HMAC을 포함하여 요청을 보내도록 구성했다. 우리 Flutter 앱과 서버 모두 공통된 Secret를 가지고 있으며, 이 Secret을 가지고 우리 Request의 HMAC을 같이 보내도록 구성했다. 그러면, 우리 앱에서 보내지 않은 요청들은 모두 막을 수 있을 것이다.
 
+<br>
+
 ### 환경변수 적용
 
 JWT Secret, HMAC Secret, API Key 등등을 우리 Code에 Hard Coding해서는 절대 안된다. 따라서, env 파일로 환경변수를 분리하여 노출되지 않도록 설정했다.
@@ -170,9 +223,13 @@ JWT Secret, HMAC Secret, API Key 등등을 우리 Code에 Hard Coding해서는 �
 
 ## 테스트 고려 사항
 
+<br>
+
 ### Test Container
 
 또한, 우리가 실제 서비스하는 RDS를 가지고 테스트를 진행한다면, 매우 위험할 것이다. 하지만, 통합 테스트 진행을 위해서 분명히 DB에 데이터를 저장하고 테스트 해봐야되는 순간이 존재한다. 따라서, 우리 서비스는 Test Container를 이용하여 MySQL, Redis 테스트 컨테이너를 만든 뒤, 독립된 환경에서 안전하게 테스트를 진행하도록 하였다.
+
+<br>
 
 ### Apache Jmeter
 
@@ -209,6 +266,7 @@ JWT Secret, HMAC Secret, API Key 등등을 우리 Code에 Hard Coding해서는 �
 
 마지막으로, Spring 메인 비즈니스 서버에 Redis를 적용하였다. 이는 Redis를 이용하여 Refresh Token을 저장하고, 로그아웃시 Access Token을 Ban할 수 있는 기능을 구현할 수 있게 되었다. 또한, 글의 추천수나 조회수 등에서 Race Condition을 예방하는 용도로도 사용하였다. 원래 곧바로 우리 RDB에 저장하면 동시에 많은 사용자 요청이 들어왔을 때 Race Condition이 발생할 가능성이 매우 높았다. 하지만, Redis는 싱글스레드이기 때문에, Redis에 임시로 조회수를 저장하고, 주기적으로 Scheduler를 이용해 진짜 우리 서비스 RDB에 반영하도록 구성했다. 뿐만 아니라, Redis를 이용해 Cache를 구현할 수 있게 되었다. 매번 똑같은 정보를 RDB에 접근하여 받아오는 것은 오버헤드가 크므로 Redis에 Caching을 함으로써 Response Time을 줄일 수 있었다.
 
+<br>
 
 ## 현실적 제한 및 개선 필요 사항
 
