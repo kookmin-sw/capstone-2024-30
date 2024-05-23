@@ -70,62 +70,53 @@ https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/69c09b39-f44e-4ed
 
 <br>
 
-## 4. 프로젝트 기능
+## 3. 프로젝트 기능
 
-#### 1️⃣ 번역된 공지사항 / 학식 / 학교정보 제공
+### 1️⃣ 번역된 공지사항 / 학식 / 학교정보 제공
 
 국민대학교에서는 공지사항, 학식, 학교정보의 번역을 잘 지원하지 않습니다. 이에따라 외국인 유학생들은 매번 번역기를 사용하여 학교에 대한 정보를 얻기 때문에 정보의 접근성이 낮습니다.
-
-따라서, 외국민 서비스는 설정한 언어에 맞춰서 공지사항/학식/학교정보 번역본을 제공합니다.
 
 |번역된 공지사항|공지사항 디테일|번역된 학식정보|
 |------|---|---|
 |<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/8f30d871-0e41-4009-8832-4f7cefd1867b">|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/62146792-21cc-4eb4-bbfd-98daa4ae159e">|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/34695d44-0efb-4cb7-9efa-a1547ab8ee82">|
+
 <br>
 
-#### 2️⃣ 챗봇 기능
+### 2️⃣ 챗봇 기능
 
 국민대학교에서는 ON국민 챗봇 "쿠민이"를 서비스하고있으나, 성능이 매우 형편없습니다. 간단한 질문에도 동문서답을 하거나, 영어로 질문했는데 한글로 답변하는 등 전혀 챗봇으로서의 기능을 수행하지 못하고 있습니다.
 
-따라서, 외국민은 RAG와 LLM을 사용하여 국민대학교에 특화된 답변을 제공하고 다국어를 지원하는 "KuKu" 챗봇을 제공합니다.
-
+	@@ -87,10 +92,9 @@ This project aims to develop a comprehensive app service for international stude
 |국민대 관련 질문|다국어 지원|일상 대화|
 |------|---|---|
 |<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/4ebbe481-d563-45c7-b8dc-65c87877d6c6">|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/7b9c7a7f-339d-4a53-ad1d-a90a3988a75e">|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/b10efb4b-110c-4ca8-aff7-c38445256123">|
+
 <br>
 
-#### 3️⃣ 발음 교정 기능
+### 3️⃣ 발음 교정 기능
 
 많은 외국인들은 한국에 와서 언어 문제로 힘들어합니다. 특히 학교 생활을 하다보면 발표를 하거나 일상생활에서 의사소통을 해야할 때, 본인의 발음이 정확한지 확인할 방법이 없어서 힘들어합니다.
-
-따라서, 외국민은 자신의 발표 스크립트를 입력으로 넣어서 발음 평가를 받을 수 있을 뿐만 아니라, 한국의 일상생활에서 많이 쓰이는 여러 표현들을 연습할 수 있도록하여 한국 유학생활을 돕고자 합니다.
 
 |일상생활에 자주쓰는 예문 지원|문장 커스텀 지원|발음 평가 제공|
 |------|---|---|
 |<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/d31a5971-f01b-469f-8345-db9ea5c152cb">|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/d0cb0cb5-7043-4737-8994-119dc5139220">|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/dee0fc3a-481e-4612-bb2a-760321efdfbe">|
+
 <br>
 
-#### 4️⃣ 헬퍼 매칭 기능
+### 4️⃣ 헬퍼 매칭 기능
 
 많은 외국인들이 낯선 땅에 왔을 때 도움을 받을 사람이 없어서 매우 힘들어합니다.
 
-따라서, 외국민은 외국인들을 도울 수 있도록 헬퍼 매칭 기능을 제공합니다. 한국인 or 오랜 유학생활을 하여 한국 생활에 익숙해진 외국인 헬퍼를 구할 수 있도록 커뮤니티를 제공합니다.
-
+	@@ -111,10 +114,9 @@ This project aims to develop a comprehensive app service for international stude
 |헬퍼 및 헬피 게시판|디테일|채팅|
 |------|---|---|
 |<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/60f40d3b-4930-4c4a-bcb3-1e97a75119c0">|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/141b4d12-070e-4e59-abe2-22bd5f96547e">|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/00644b04-3e5e-416f-ba57-b45662e45869">|
+
 <br>
 
-#### 5️⃣ Q&A와 FAQ 기능
+### 5️⃣ Q&A와 FAQ 기능
 
 유학생들이 한국생활에서 궁금한 것을 물어볼만한 곳이 마땅치 않고, ON국민에 있는 FAQ의 존재를 알기 쉽지 않습니다. 하지만, 이 FAQ 또한 번역을 제공하지 않고 있습니다.
-
-따라서, 외국민은 Q&A 게시판과 다국어로 번역된 FAQ를 제공합니다.
-
-|Q&A 게시판|디테일|FAQ 조회|
-|------|---|---|
-|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/5801b9fa-fb82-48f6-a675-0997c6bfae34">|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/ae9525c7-c605-4e88-9ea2-49285bbe84bd">|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/dcaa5cf2-0f9c-457f-a81c-351bd4578ca7">|
-
 
 <br>
 
