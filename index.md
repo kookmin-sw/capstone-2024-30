@@ -11,7 +11,7 @@
         [최종발표 자료&포스터 및 보고서]
     </a>
     <br>
-    `파트별 자세한 내용은 각 프로젝트 디렉토리의 readme에 있습니다.`
+    `파트별 자세한 내용은 각 프로젝트 디렉토리의 마크다운 문서를 확인해주시기 바랍니다`
     <table>
         <tr align="center">
             <td>
@@ -29,7 +29,7 @@
                 <a href="https://kookmin-sw.github.io/capstone-2024-30/front/FRONT.md">README.md</a>
             </td>
             <td>
-                <a href="https://kookmin-sw.github.io/capstone-2024-30/back/BACK.md">README.md</a>
+                <a href="https://kookmin-sw.github.io/capstone-2024-30/back/BACK.html">README.md</a>
             </td>
             <td>
                 <a href="https://kookmin-sw.github.io/capstone-2024-30/ai/">README.md</a>
