@@ -1,4 +1,4 @@
-# 👋 외국인 유학생들을 위한 앱, 외국민
+[![Typing SVG](https://readme-typing-svg.demolab.com/?lines=👋 외국인 유학생들을 위한 앱, 외국민)](https://git.io/typing-svg)
 
 ![최종 발표자료](https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/20fc41c1-8a22-4c90-a1f1-8539dea92ed1)
 
