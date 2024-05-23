@@ -60,17 +60,23 @@
 
 ## **1. 프로젝트 소개**
 
+<br>
+
 이 프로젝트는 국민대학교 유학생들이 겪는 언어적, 문화적 불편함을 해결하기 위한 프로젝트입니다. 이 프로젝트에서 제공하는 앱에서 유학생들이 캠퍼스 생활에 빠르게 적응할 수 있도록 다양한 정보와 서비스를 제공합니다.
 
 <br>
 
 ## **2. Abstract**
 
+<br>
+
 This project aims to develop a comprehensive app service for international students studying at Kookmin University. The app provides a variety of information and services to help students quickly adapt to campus life.
 
 <br>
 
 ## **3. 시연 영상**
+
+<br>
 
 <video controls width="740">
   <source src="https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/69c09b39-f44e-4edf-abab-6b16485a2f57" type="video/webm" />
@@ -80,7 +86,11 @@ This project aims to develop a comprehensive app service for international stude
 
 ## **4. 프로젝트 기능**
 
+<br>
+
 ### 1️⃣ 번역된 공지사항 / 학식 / 학교정보 제공
+
+<br>
 
 국민대학교에서는 공지사항, 학식, 학교정보의 번역을 잘 지원하지 않습니다. 이에따라 외국인 유학생들은 매번 번역기를 사용하여 학교에 대한 정보를 얻기 때문에 정보의 접근성이 낮습니다.
 
@@ -92,6 +102,8 @@ This project aims to develop a comprehensive app service for international stude
 
 ### 2️⃣ 챗봇 기능
 
+<br>
+
 국민대학교에서는 ON국민 챗봇 "쿠민이"를 서비스하고있으나, 성능이 매우 형편없습니다. 간단한 질문에도 동문서답을 하거나, 영어로 질문했는데 한글로 답변하는 등 전혀 챗봇으로서의 기능을 수행하지 못하고 있습니다.
 
 |국민대 관련 질문|다국어 지원|일상 대화|
@@ -101,6 +113,8 @@ This project aims to develop a comprehensive app service for international stude
 <br>
 
 ### 3️⃣ 발음 교정 기능
+
+<br>
 
 많은 외국인들은 한국에 와서 언어 문제로 힘들어합니다. 특히 학교 생활을 하다보면 발표를 하거나 일상생활에서 의사소통을 해야할 때, 본인의 발음이 정확한지 확인할 방법이 없어서 힘들어합니다.
 
@@ -112,6 +126,8 @@ This project aims to develop a comprehensive app service for international stude
 
 ### 4️⃣ 헬퍼 매칭 기능
 
+<br>
+
 많은 외국인들이 낯선 땅에 왔을 때 도움을 받을 사람이 없어서 매우 힘들어합니다.
 
 |헬퍼 및 헬피 게시판|디테일|채팅|
@@ -121,6 +137,8 @@ This project aims to develop a comprehensive app service for international stude
 <br>
 
 ### 5️⃣ Q&A와 FAQ 기능
+
+<br>
 
 유학생들이 한국생활에서 궁금한 것을 물어볼만한 곳이 마땅치 않고, ON국민에 있는 FAQ의 존재를 알기 쉽지 않습니다. 하지만, 이 FAQ 또한 번역을 제공하지 않고 있습니다.
 
@@ -184,6 +202,8 @@ This project aims to develop a comprehensive app service for international stude
 
 ## **6. 기술스택**
 
+<br>
+
 ### 🛠 Frontend
 
 | 역할                 | 종류                                                                                                                                                                                                                                                |
@@ -235,6 +255,8 @@ This project aims to develop a comprehensive app service for international stude
 
 ## **7. 시스템 구조**
 
+<br>
+
 ### 💻 서비스 아키택처
 
 <br>
@@ -263,7 +285,11 @@ This project aims to develop a comprehensive app service for international stude
 └── 📕Readme.md
 ```
 
+<br>
+
 ## **8. 사용법**
+
+<br>
 
 ### Frontend
 
