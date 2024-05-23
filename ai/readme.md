@@ -30,7 +30,9 @@
 ![image](https://github.com/kookmin-sw/capstone-2024-30/assets/54922676/2d4ed4fc-1f19-44a4-aa30-915b39c84a1c)
 [RAGAS](https://docs.ragas.io/en/stable/concepts/metrics/index.html)
 
+```
 Ragas is a framework that helps you evaluate your Retrieval Augmented Generation (RAG) pipelines. RAG denotes a class of LLM applications that use external data to augment the LLM’s context. There are existing tools and frameworks that help you build these pipelines but evaluating it and quantifying your pipeline performance can be hard. This is where Ragas (RAG Assessment) comes in.
+```
 
 
  > __비교 모델__ (Comparison model)
@@ -43,8 +45,10 @@ Ragas is a framework that helps you evaluate your Retrieval Augmented Generation
 
 ## Faithfulness
 
+```
 This measures the factual consistency of the generated answer against the given context. It is calculated from answer and retrieved context. The answer is scaled to (0,1) range. Higher the better.
 The generated answer is regarded as faithful if all the claims that are made in the answer can be inferred from the given context. To calculate this a set of claims from the generated answer is first identified. Then each one of these claims are cross checked with given context to determine if it can be inferred from given context or not. The faithfulness score is given by divided by
+```
 
 ![image](https://github.com/kookmin-sw/capstone-2024-30/assets/54922676/612cce91-8e97-4613-8463-926a731d1d15)
 - Faithfulness는 챗봇의 답변 비율이 얼마나 사실에 기반했는지 평가하는 지표이다.
@@ -58,12 +62,16 @@ The generated answer is regarded as faithful if all the claims that are made in 
 
 ## Answer Relevancy
 
+```
 The evaluation metric, Answer Relevancy, focuses on assessing how pertinent the generated answer is to the given prompt. A lower score is assigned to answers that are incomplete or contain redundant information and higher scores indicate better relevancy. This metric is computed using the question, the context and the answer.
+```
 
 ![image](https://github.com/kookmin-sw/capstone-2024-30/assets/54922676/acd26582-174f-4b4a-9c09-6f355db0190a)
 ![image](https://github.com/kookmin-sw/capstone-2024-30/assets/54922676/941267d5-135c-4872-a0ed-97e64253ddb5)
 
+```
 The Answer Relevancy is defined as the mean cosine similartiy of the original question to a number of artifical questions, which where generated (reverse engineered) based on the answer
+```
 
 - Answer Relevance은 생성된 답변이 주어진 프롬프트와 얼마나 적절한지를 평가하는 데 초점을 맞춘다. 
 - 불완전하거나 중복 정보가 포함된 답변에는 낮은 점수가 할당되고, 더 높은 점수는 더 좋은 적합성을 나타낸다.
