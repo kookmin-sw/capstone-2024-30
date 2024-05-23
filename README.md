@@ -1,4 +1,4 @@
-[![Typing SVG](https://readme-typing-svg.demolab.com/?lines=👋+외국인+유학생들을+위한+앱,+외국민)](https://git.io/typing-svg)
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=Nanum+Gothic&pause=1000&random=false&width=435&lines=%F0%9F%91%8B+%EC%99%B8%EA%B5%AD%EC%9D%B8+%EC%9C%A0%ED%95%99%EC%83%9D%EB%93%A4%EC%9D%84+%EC%9C%84%ED%95%9C+%EC%95%B1%2C+%EC%99%B8%EA%B5%AD%EB%AF%BC)](https://git.io/typing-svg)
 
 
 ![최종 발표자료](https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/20fc41c1-8a22-4c90-a1f1-8539dea92ed1)
