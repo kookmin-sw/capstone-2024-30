@@ -64,12 +64,6 @@ This project aims to develop a comprehensive app service for international stude
 
 <br>
 
-## 3. 소개 영상
-
-https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/69c09b39-f44e-4edf-abab-6b16485a2f57
-
-<br>
-
 ## 3. 프로젝트 기능
 
 ### 1️⃣ 번역된 공지사항 / 학식 / 학교정보 제공
@@ -86,7 +80,6 @@ https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/69c09b39-f44e-4ed
 
 국민대학교에서는 ON국민 챗봇 "쿠민이"를 서비스하고있으나, 성능이 매우 형편없습니다. 간단한 질문에도 동문서답을 하거나, 영어로 질문했는데 한글로 답변하는 등 전혀 챗봇으로서의 기능을 수행하지 못하고 있습니다.
 
-	@@ -87,10 +92,9 @@ This project aims to develop a comprehensive app service for international stude
 |국민대 관련 질문|다국어 지원|일상 대화|
 |------|---|---|
 |<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/4ebbe481-d563-45c7-b8dc-65c87877d6c6">|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/7b9c7a7f-339d-4a53-ad1d-a90a3988a75e">|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/b10efb4b-110c-4ca8-aff7-c38445256123">|
@@ -107,7 +100,6 @@ https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/69c09b39-f44e-4ed
 
 많은 외국인들이 낯선 땅에 왔을 때 도움을 받을 사람이 없어서 매우 힘들어합니다.
 
-	@@ -111,10 +114,9 @@ This project aims to develop a comprehensive app service for international stude
 |헬퍼 및 헬피 게시판|디테일|채팅|
 |------|---|---|
 |<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/60f40d3b-4930-4c4a-bcb3-1e97a75119c0">|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/141b4d12-070e-4e59-abe2-22bd5f96547e">|<img width="388" src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/00644b04-3e5e-416f-ba57-b45662e45869">|
