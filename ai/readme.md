@@ -125,5 +125,5 @@ Answer Relevance는 Reverse Engineering을 통해 계산된다. 순서는 다음
 
 `chatbot_result.xlsx`
 
-![image](https://github.com/kookmin-sw/capstone-2024-30/assets/54922676/63d47585-ad8f-405f-be70-a29cf97db895)
+![image](https://github.com/kookmin-sw/capstone-2024-30/assets/54922676/d6442b14-606f-4182-976c-a1dfa241b5ee)
 
