@@ -13,6 +13,11 @@
     </a>
     <br>
     <br>
+    <a href="https://kookmin-sw.github.io/capstone-2024-30/">
+        [Github 홈페이지]
+    </a>
+    <br>
+    <br>
     파트별 자세한 내용은 각 프로젝트 디렉토리의 readme에 있습니다.
     <br>
     <br>
