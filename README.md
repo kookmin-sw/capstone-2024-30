@@ -332,7 +332,3 @@ docker-compose up -d
 
 [RAGAS](https://docs.ragas.io/en/stable/concepts/metrics/index.html)
 
-
-## 9. 기타
-
-<br>
