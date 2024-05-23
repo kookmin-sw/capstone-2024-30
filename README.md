@@ -41,7 +41,7 @@
                 <a href="https://github.com/kookmin-sw/capstone-2024-30/tree/main/back/BACK.md">BACK.md</a>
             </td>
             <td>
-                <a href="https://github.com/kookmin-sw/capstone-2024-30/tree/main/AI.md">AI.md</a>
+                <a href="https://github.com/kookmin-sw/capstone-2024-30/tree/main/ai/AI.md">AI.md</a>
             </td>
         </tr>
     </table>
