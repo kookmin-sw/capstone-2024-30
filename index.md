@@ -1,4 +1,4 @@
-# 👋 외국인 유학생들을 위한 앱, 외국민
+# 👋 외국인 유학생을 위한 앱, 외국민
 
 ![최종 발표자료](https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/20fc41c1-8a22-4c90-a1f1-8539dea92ed1)
 
@@ -26,13 +26,13 @@
         </tr>
         <tr align="center">
             <td>
-                <a href="https://kookmin-sw.github.io/capstone-2024-30/front/FRONT.md">README.md</a>
+                <a href="https://kookmin-sw.github.io/capstone-2024-30/front/FRONT.html">FRONT.md</a>
             </td>
             <td>
-                <a href="https://kookmin-sw.github.io/capstone-2024-30/back/BACK.html">README.md</a>
+                <a href="https://kookmin-sw.github.io/capstone-2024-30/back/BACK.html">BACK.md</a>
             </td>
             <td>
-                <a href="https://kookmin-sw.github.io/capstone-2024-30/ai/">README.md</a>
+                <a href="https://kookmin-sw.github.io/capstone-2024-30/ai/">AI.md</a>
             </td>
         </tr>
     </table>
