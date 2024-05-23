@@ -1,4 +1,4 @@
-# 👋 외국인 유학생을 위한 앱, 외국민
+# **👋 외국인 유학생을 위한 앱, 외국민**
 
 ![최종 발표자료](https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/20fc41c1-8a22-4c90-a1f1-8539dea92ed1)
 
@@ -58,21 +58,21 @@
 
 <br>
 
-## 2. Abstract
+## **2. Abstract**
 
 This project aims to develop a comprehensive app service for international students studying at Kookmin University. The app provides a variety of information and services to help students quickly adapt to campus life.
 
 <br>
 
-## 3. 시연 영상
+## **3. 시연 영상**
 
-<video controls width="250">
+<video controls width="740">
   <source src="https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/69c09b39-f44e-4edf-abab-6b16485a2f57" type="video/webm" />
 </video>
 
 <br>
 
-## 4. 프로젝트 기능
+## **4. 프로젝트 기능**
 
 ### 1️⃣ 번역된 공지사항 / 학식 / 학교정보 제공
 
@@ -126,7 +126,7 @@ This project aims to develop a comprehensive app service for international stude
 
 <br>
 
-## 5. 팀원 소개
+## **5. 팀원 소개**
 
 <table>
     <tr align="center">
@@ -176,7 +176,7 @@ This project aims to develop a comprehensive app service for international stude
 
 <br>
 
-## 6. 기술스택
+## **6. 기술스택**
 
 ### 🛠 Frontend
 
@@ -227,7 +227,7 @@ This project aims to develop a comprehensive app service for international stude
 
 <br>
 
-## 7. 시스템 구조
+## **7. 시스템 구조**
 
 ### 💻 서비스 아키택처
 
@@ -257,7 +257,7 @@ This project aims to develop a comprehensive app service for international stude
 └── 📕Readme.md
 ```
 
-## 8. 사용법
+## **8. 사용법**
 
 ### Frontend
 
@@ -320,9 +320,5 @@ docker-compose up -d
 ### Metrics
 
 [RAGAS](https://docs.ragas.io/en/stable/concepts/metrics/index.html)
-
-<br>
-
-## 9. 기타
 
 <br>
