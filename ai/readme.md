@@ -22,6 +22,7 @@ Ragas is a framework that helps you evaluate your Retrieval Augmented Generation
 - ChatGPT(gpt-3.5-turbo)
 - ON국민 쿠민이
 
+테스트에 사용된 약 200개의 질문은 `question_list.md` 에서 확인 가능
 
 ## Faithfulness
 
