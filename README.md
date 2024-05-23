@@ -30,7 +30,7 @@
         </tr>
         <tr align="center">
             <td>
-                <a href="https://github.com/kookmin-sw/capstone-2024-30/tree/main/front">FRONT.md</a>
+                <a href="https://github.com/kookmin-sw/capstone-2024-30/blob/main/front/FRONT.md">FRONT.md</a>
             </td>
             <td>
                 <a href="https://github.com/kookmin-sw/capstone-2024-30/tree/main/back">README.md</a>
