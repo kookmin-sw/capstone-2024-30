@@ -26,10 +26,10 @@
         </tr>
         <tr align="center">
             <td>
-                <a href="https://kookmin-sw.github.io/capstone-2024-30/front/">README.md</a>
+                <a href="https://kookmin-sw.github.io/capstone-2024-30/front/FRONT.md">README.md</a>
             </td>
             <td>
-                <a href="https://kookmin-sw.github.io/capstone-2024-30/back/">README.md</a>
+                <a href="https://kookmin-sw.github.io/capstone-2024-30/back/BACK.md">README.md</a>
             </td>
             <td>
                 <a href="https://kookmin-sw.github.io/capstone-2024-30/ai/">README.md</a>
