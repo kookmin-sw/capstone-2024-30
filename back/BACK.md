@@ -40,7 +40,7 @@ Could not initialize class com.microsoft.cognitiveservices.speech.SpeechConfig
 ```
 위와 같은 오류가 발생하였다.
 
-이유는 Spring Docker를 위해, JDK 이미지를 alpine을 사용했는데, [SDK 설치 설명서](https://learn.microsoft.com/ko-kr/azure/ai-services/speech-service/quickstarts/setup-platform?tabs=linux%2Cubuntu%2Cdotnetcli%2Cdotnet%2Cjre%2Cmaven%2Cnodejs%2Cmac%2Cpypi&pivots=programming-language-java)를 확인해보면 Debian 또는 Ubuntu 환경에서만 작동한다고 명시되어 있다. 그래서 alpine이 아닌 ubuntu 기반의 JDK Image를 사용해서 Build를 하였다.
+이유는 Spring Docker를 위해, JDK 경량화 이미지인 alpine을 사용했는데, [SDK 설치 설명서](https://learn.microsoft.com/ko-kr/azure/ai-services/speech-service/quickstarts/setup-platform?tabs=linux%2Cubuntu%2Cdotnetcli%2Cdotnet%2Cjre%2Cmaven%2Cnodejs%2Cmac%2Cpypi&pivots=programming-language-java)를 확인해보면 Debian 또는 Ubuntu 환경에서만 작동한다고 명시되어 있다. 그래서 alpine이 아닌 ubuntu 기반의 JDK Image를 사용해서 Build를 하였다.
 
 하지만, 또다른 오류가 발생하였다. 모든 점수가 0점이 나오는 오류였다. 이유는 역시 설명서에 명시되어 있었다.
 
