@@ -297,6 +297,9 @@ flutter run
 
 ### Backend
 
+> [!NOTE]
+> 도커가 설치된 환경에서만 진행이 가능합니다.
+
 `.env.example`을 바탕으로 `.env`를 작성합니다. 그 다음
 
 ```
