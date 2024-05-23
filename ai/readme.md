@@ -80,6 +80,7 @@ The generated answer is regarded as faithful if all the claims that are made in 
 ![image](https://github.com/kookmin-sw/capstone-2024-30/assets/54922676/3e444258-7d20-4fa5-b041-a69ff6764969)
 
 -  디스코드 봇을 통해 국민대 19학번으로 구성된 ‘외국민’ 팀원이 직접 사실관계를 평가하여 측정
+![image](https://github.com/kookmin-sw/capstone-2024-30/assets/54922676/c49c1e68-b4d9-4bbf-8d32-7cb2036f15cd)
 
 
 ## Answer Relevancy
