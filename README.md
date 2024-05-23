@@ -317,12 +317,17 @@ docker-compose up -d
 
 ### AI
 
-### Chat bot `KUKU` 소개
+1. `git clone https://github.com/kookmin-sw/capstone-2024-30.git`
+2. `cd YOUR PATH/ai/`
+3. `pip install -r requirements.txt`
+4. 벡터 저장소 FAISS 폴더를 `/ai` 에 위치  [다운로드 링크](https://drive.google.com/file/d/1-U5X_xRg0PLITrDWDNMeZK_NAP5IIwsL/view?usp=sharing)
+5. `python run_chatbot.py`
 
-국민대에 관한 모든 것을 물어보세요 !  
-국민대 관련 데이터를 기반으로 답변을 생성하는 챗봇 <쿠쿠>입니다.
+<br>
 
-### 주요 수집 데이터 출처
+## 9. 기타
+
+### 챗봇 주요 수집 데이터 출처
 
 - [국민대 2023 요람 PDF](https://www.kookmin.ac.kr/comm/cmfile/thumbnail2.do?encSvrFileNm=223d2bdfdbb4df30ad85271267bd6e6a0a913159736ab9843bb76fc00eeeb5ddb1e88f35002b9cf1b749bfe96b751f16b8be21ad5273d348a74b10a57513dd4540bbcb178d3151db4d507c693a1f7ef9&encFileGrpSeq=8e8e9041def64eb5f7f8c21154bcff06&encFileSeq=cf9f1626435aafc6e0e182b36c8e23d9)
 - [국민대 전체 공지사항](https://www.kookmin.ac.kr/user/kmuNews/notice/index.do)
