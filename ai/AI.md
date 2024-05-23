@@ -127,3 +127,16 @@ Answer Relevance는 Reverse Engineering을 통해 계산된다. 순서는 다음
 
 ![image](https://github.com/kookmin-sw/capstone-2024-30/assets/54922676/d6442b14-606f-4182-976c-a1dfa241b5ee)
 
+# LangSmith Tracing
+
+LangSmith를 통해 디버깅 및 추적
+
+- 랭스미스를 통해 Langchain의 체인간의 입출력 확인 가능
+- Retriever의 결과로 어떤 문서가 검색되었는지 확인 가능
+
+
+예시)
+![image](https://github.com/kookmin-sw/capstone-2024-30/assets/54922676/9602ab01-9ce5-4847-a681-6a022045908b)
+
+
+
