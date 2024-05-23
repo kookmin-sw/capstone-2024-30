@@ -26,6 +26,28 @@
 
 ![image](https://github.com/kookmin-sw/capstone-2024-30/assets/54922676/02bc878b-a121-4ffc-9f09-6be149cf004d)
 
+# Usage
+다음 세 가지 방법 중 선택
+
+### 1. 외국민 App
+플레이스토어의 외국민 어플리케이션을 다운받아 챗봇을 사용
+
+### 2. Python
+1. `git clone https://github.com/kookmin-sw/capstone-2024-30.git`
+2. `cd YOUR PATH/ai/`
+3. `pip install -r requirements.txt`
+4. 벡터 저장소 FAISS 폴더를 `/ai` 에 위치  [다운로드 링크](https://drive.google.com/file/d/1-U5X_xRg0PLITrDWDNMeZK_NAP5IIwsL/view?usp=sharing)
+5. `python run_chatbot.py`
+
+### 3. DiscordBot
+
+![image](https://github.com/kookmin-sw/capstone-2024-30/assets/54922676/ea2fd088-3bfa-4fb1-940f-ab34dc6b74d0)
+
+- 디스코드 채널의 KUKU 봇 초대 후 명령어를 통해 채팅
+- 봇 초대 권한 필요 (서버 관리자) 
+- 봇 초대 링크 : https://discord.com/oauth2/authorize?client_id=1229021729192677488
+- `!p 질문 내용` 명령어로 채팅 가능
+
 # Metrics
 ![image](https://github.com/kookmin-sw/capstone-2024-30/assets/54922676/2d4ed4fc-1f19-44a4-aa30-915b39c84a1c)
 [RAGAS](https://docs.ragas.io/en/stable/concepts/metrics/index.html)
