@@ -63,7 +63,7 @@ Ragas is a framework that helps you evaluate your Retrieval Augmented Generation
 - ChatGPT(gpt-3.5-turbo)
 - ON국민 쿠민이
 
-테스트에 사용된 약 200개의 질문은 `question_list.md` 에서 확인 가능
+테스트에 사용된 약 200개의 질문은 [question_list.md](./question_list.md) 에서 확인 가능
 
 ## Faithfulness
 
@@ -120,9 +120,9 @@ Answer Relevance는 Reverse Engineering을 통해 계산된다. 순서는 다음
 ![image](https://github.com/kookmin-sw/capstone-2024-30/assets/54922676/5a5bc026-8884-4e44-8b1a-cec26b3216f3)
 ![image](https://github.com/kookmin-sw/capstone-2024-30/assets/54922676/80c9b745-4c78-430e-9f39-bb0945a27000)
 
-# Test Log 일부
+# Test Log
 
-`chatbot_result.xlsx`
+[chatbot_result.xlsx](./chatbot_result.xlsx)
 
 ![image](https://github.com/kookmin-sw/capstone-2024-30/assets/54922676/63d47585-ad8f-405f-be70-a29cf97db895)
 
