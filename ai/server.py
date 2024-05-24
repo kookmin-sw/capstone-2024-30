@@ -22,6 +22,7 @@ sched = BackgroundScheduler(timezone='Asia/Seoul')
 
 class Query(BaseModel):
     query: str
+    target_lang: str
 
 class CustomException(Exception):
     def __init__(self, name: str):
@@ -43,14 +44,12 @@ async def lifespan(app:FastAPI):
     notice_vdb.load_local(vector_db_path + '/NOTICE')
     school_vdb = VectorDB()
     school_vdb.load_local(vector_db_path + '/SCHOOL_INFO')
-    naver_vdb = VectorDB()
-    naver_vdb.load_local(vector_db_path + '/NAVER')
 
     llm = LLM_RAG(trace=True)
-    llm.set_retriver(data_type='notice', retriever=notice_vdb.get_retriever(k=2))
-    llm.set_retriver(data_type='school_info', retriever=school_vdb.get_retriever(k=3))
-    llm.set_retriver(data_type='naver', retriever= naver_vdb.get_retriever(k=5))
+    llm.set_retriver(data_type='notice', retriever=notice_vdb.get_retriever())
+    llm.set_retriver(data_type='school_info', retriever=school_vdb.get_retriever())
     llm.set_chain()
+    vdb = VectorDB()
     yield
 
 app = FastAPI(lifespan=lifespan)
@@ -75,7 +74,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@sched.scheduled_job('cron', hour='1', minute='30', id='load announcement')
+@sched.scheduled_job('cron', hour='0', minute='30', id='load announcement')
 def log_new_announcements():
     # 하루 전의 시간 계산
     one_day_ago = datetime.datetime.now(datetime.UTC) - datetime.timedelta(days=1)
@@ -84,20 +83,20 @@ def log_new_announcements():
     # 조회된 announcement 로그에 기록
     docs = []
     for announcement in new_announcements:
-        doc = Document()
-        doc.page_content = announcement.document
+        doc = Document(announcement.document)
         doc.metadata['title'] = announcement.title
         doc.metadata['datetime'] = announcement.writtenDate
         docs.append(doc)
-    with open(f'{datetime.datetime.now(datetime.UTC)}.pkl', 'wb') as f:
-            pickle.dump(docs, f)
+    with open(f'./data/{datetime.datetime.now(datetime.UTC).date()}.pkl', 'wb') as f:
+        pickle.dump(docs, f)
+    vdb.add_content(f'./data/{datetime.datetime.now(datetime.UTC).date()}.pkl', './FAISS/NOTICE')
 
 @app.get("/")
 async def initiate():
     sched.start()
     return "안녕하세요! 국민대학교 전용 챗봇 KUKU입니다. 국민대학교에 대한 건 모든 질문해주세요!"
 
-@app.post("/query")
+@app.post("/api/chatbot")
 async def query(query: Query):
     try:
         ans = llm.query(query.query, query.target_lang)
@@ -109,10 +108,6 @@ async def query(query: Query):
                                                     'answer': ans
                                                     }})
 
-@app.post("/input")
-async def input(data: UploadFile):
-    vdb.add_content(data.file)
-    return 
 
 @app.exception_handler(CustomException)
 async def MyCustomExceptionHandler(request: Request, exception: CustomException):
