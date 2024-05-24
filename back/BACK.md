@@ -66,6 +66,26 @@ Could not initialize class com.microsoft.cognitiveservices.speech.SpeechConfig
 
 <br>
 
+### **API 응답 및 문서**
+
+Response로 받는 Json 형식이 정해져있지 않다면, 프론트 개발자들은 매번 API 문서를 참고하여 매번 그에 맞춰 수정해야될 것이다. 따라서, 프론트엔드에서 모듈화하여 유연하게 Response를 받을 수 있게 하기 위해 API 공통 응답을 설계했다. 공통 API 응답 설계는 [카카오의 API 공통응답 기술문서](https://docs.kakaoi.ai/kakao_work/webapireference/commonguide/)를 참고하였다.
+
+![image](https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/5dd65c4f-dd1e-4e6c-848f-3ede0d82194a)
+
+성공했을 때는 위와 같이 성공 여부를 알려주는 success, 그에 대한 message, 그리고 응답에 대한 결과값인 response로 구성된다. response안에 이제 프론트 측에서 원하는 결과가 담겨있다.
+
+![image](https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/9f1a40dc-03e6-4a19-adb6-2339d7c8ecfd)
+
+실패했을 때는 success가 false, 실패에 대한 message, 그리고 오류 코드를 알려주는 code로 구성된다. 해당 오류 코드는 서버 측에서 Enum으로 정의되어 있으며, 테스트를 용이하게 위해서 만들었다.
+
+![image](https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/609b8800-59ba-445c-8a9c-8a075cc69a73)
+
+API 문서는 Swagger를 사용하였다. 소프트웨어공학에서 Agile Process에 대해서 과도한 문서화를 하지 말라고 언급하였다. 특히, API 문서화 같은 경우는 계속해서 응답 형식이나 파라미터 등이 변할 수 있는데, 매번 API 문서를 최신화 하는 것도 어렵고, 서버와 문서가 서로 안맞는 정합성 문제가 발생할 수도 있다. 그러면, 오히려 문서를 유지보수하거나 오류를 해결하는데 Cost와 Time을 증가시킨다.
+
+따라서, Swagger를 이용하여 API가 변경되더라도 자동으로 API 문서를 최신화 해도록 구성하였다. 이로써, API 문서를 유지 보수하는데 시간을 크게 줄일 수 있었다. 또한, Swagger를 통해 API 문서에서 바로 테스트를 진행해볼 수도 있어서 협업의 능률을 향상시켰다.
+
+<br>
+
 ### **배포**
 
 AWS EC2 인스턴스에 배포한다던지, 컴퓨터와 노트북을 번갈아가며 개발하다던지, 이러면 각각 개발 환경이 틀려 매번 설정을 해주어야 한다. 하지만 Docker가 있다면? 귀찮게 그럴 필요 없이 쉽게 배포를 진행할 수 있다. 따라서, 실행하는 OS 환경에 상관없이, 언제나 같은 환경에서 결과를 낼 수 있도록 Docker Container화를 진행했다. Ruby On Rails나 AI서버의 Docker Container화는 다른 것과 별반 다를게 없는데, Spring Container화를 좀 특이하게 진행하였다. 일반적인 Docker 배포 방식으로 Spring 서버를 배포한다면, jar 파일이 무거워질수록 docker image를 만드는 과정이 비효율적으로 된다. 그런데, Docker의 장점이 레이어마다 캐쉬를 사용하고, 이를 통해 빠르게 이미지를 만들 수 있다는 것이다. 하지만, 해당 방식으로 진행하면 소스 코드가 한줄만 바꿔도 캐쉬가 깨지기 때문에 다시 연산을 해야되가지고, Docker를 사용하는 장점이 없어진다. 왜냐하면, Spring의 모든 애플리케이션 코드와 라이브러리가 Single layer에 배치되기 때문이다. 결국 컨테이너 환경에서의 시작 시간에도 영향을 미친다.
@@ -297,6 +317,14 @@ JWT Secret, HMAC Secret, API Key 등등을 우리 Code에 Hard Coding해서는 �
 ### **검색 기능 개선**
 
 현재 게시물 및 공지사항 검색은 제목으로만 검색된다. 하지만, 이보다 제목 + 내용으로 검색이 가능한 것이 더 좋을 것이다. 이를 위해서 SQL Like 연산자로 내용까지 검색이 가능하긴 하나, Like 연산자는 선형 연산자이기 때문에 성능에 매우 치명적이다. 따라서, ElasticSearch를 이용해서 빠르게 검색하는 것이 더 좋을 것이다. ElasticSearch는 분산 검색 및 분석 엔진으로, 대규모 데이터에서 빠른 전체 텍스트 검색을 지원한다. 추후, ElasticSearch를 통해 우리 RDB에 저장된 글들을 역색인하여 거의 실시간에 가깝게 검색하도록 개선할 것이다.
+
+<br>
+
+### **테스트 진행 강화**
+
+현재 시간 부족으로 테스트 코드는 일부 시나리오에 대해서만 통합 테스트가 진행되고 있다. 하지만, 통합 테스트 뿐만 아니라 각각 Domain에 대하여 단위 테스트가 진행될 필요성이 있다. 따라서, 더욱 이상적인 CI/CD 파이프라인이 진행되기 위해서 테스트 코드를 강화할 필요가 있다.
+
+또한, 현재는 우리 테스트 코드의 Code Coverage를 시각적으로 측정할 수 있는 방법이 없다. 그래서, 우리가 미쳐 생각하지 못한 시나리오나 Domain에 대하여 누락될 가능성도 있다. 그래서 추후 Jacoco같은 라이브러리를 이용하여 우리 테스트 코드의 Code Coverage를 측정하고, html로 리포트를 생성하여 팀원들이 쉽게 볼 수 있도록 추출할 것이다.
 
 <br>
 
