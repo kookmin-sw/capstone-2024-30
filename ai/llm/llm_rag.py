@@ -92,12 +92,6 @@ class LLM_RAG:
             self.score_route
         )
 
-        self.translate_chain = (
-            self.translate_prompt
-            | self.llm
-            | StrOutputParser()
-        )
-
     def qna_route(self, info):        
         if "casual" in info["topic"].lower():
             self.result =  self.casual_answer_chain.invoke(self.ko_query)
