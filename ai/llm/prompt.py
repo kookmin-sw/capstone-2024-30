@@ -14,8 +14,7 @@ def casual_prompt():
 def is_qna_prompt():
     prompt = PromptTemplate.from_template(
     """Given the user input below, classify it as either being about `question`, `casual`.
-    Input that asks for information is always classified as a question.
-    Do not respond with more than one word.
+    Input that asks for information is always classified as a 'question'. On the other hand, inputs that have casual conversations or ask about you should be classified as casual.
     <input>
     {input}
     </input>
@@ -42,6 +41,8 @@ def rag_prompt():
     prompt = PromptTemplate.from_template(
 '''
 You are an assistant 'KUKU' for question-answering tasks. Use the following pieces of retrieved context to answer the question. If you don't know the answer, just say that you don't know. Use three sentences maximum and keep the answer concise.
+
+REMEMBER : your name is 'KUKU'.
 
 Question: {question} 
 

@@ -16,7 +16,7 @@ class VectorDB:
 
         self.load_local(vector_db_path)
 
-        text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size=800, chunk_overlap=150)
         if content.startswith('https:'):
             loader = WebBaseLoader(content)
         elif content.endswith('.txt'):

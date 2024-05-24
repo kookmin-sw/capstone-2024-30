@@ -44,10 +44,13 @@ async def lifespan(app:FastAPI):
     notice_vdb.load_local(vector_db_path + '/NOTICE')
     school_vdb = VectorDB()
     school_vdb.load_local(vector_db_path + '/SCHOOL_INFO')
+    naver_vdb = VectorDB()
+    naver_vdb.load_local(vector_db_path + '/NAVER')
 
     llm = LLM_RAG(trace=True)
     llm.set_retriver(data_type='notice', retriever=notice_vdb.get_retriever())
     llm.set_retriver(data_type='school_info', retriever=school_vdb.get_retriever())
+    llm.set_retriver(data_type='naver', retriever=school_vdb.get_retriever())
     llm.set_chain()
     vdb = VectorDB()
     yield
