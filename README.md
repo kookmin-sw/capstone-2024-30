@@ -148,7 +148,7 @@ https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/69c09b39-f44e-4ed
         <td><img src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/7627b57d-585c-4021-b02a-5ae6daded453" width="250"></td>
     </tr>
     <tr align="center">
-        <td><a href="https://github.com/ji-hunc>최지훈</a></td>
+        <td><a href="https://github.com/ji-hunc">최지훈</a></td>
         <td><a href="https://github.com/kevinmj12">김민제</a></td>
         <td><a href="https://github.com/mclub4">조현진</a></td>
     </tr>
