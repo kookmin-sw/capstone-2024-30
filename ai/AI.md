@@ -29,15 +29,28 @@
 # Usage
 다음 세 가지 방법 중 선택
 
-### 1. 외국민 App
+### 1. 외국민 App (추천)
 플레이스토어의 외국민 어플리케이션을 다운받아 챗봇을 사용
 
 ### 2. Python
+
+이 방법은 API KEY가 필요 합니다!
+
 1. `git clone https://github.com/kookmin-sw/capstone-2024-30.git`
 2. `cd YOUR PATH/ai/`
 3. `pip install -r requirements.txt`
 4. 벡터 저장소 FAISS 폴더를 `/ai` 에 위치  [다운로드 링크](https://drive.google.com/file/d/1-U5X_xRg0PLITrDWDNMeZK_NAP5IIwsL/view?usp=sharing)
-5. `python run_chatbot.py`
+5. /ai에 `.env` 파일 생성
+```
+OPENAI_API_KEY = 
+LANGCHAIN_API_KEY = 
+TAVILY_API_KEY = 
+CHANNEL_ID = 
+DEEPL_API_KEY = 
+PAPAGO_ID = 
+PAPAGO_API_KEY = 
+```
+7. `python run_chatbot.py`
 
 ### 3. DiscordBot
 
