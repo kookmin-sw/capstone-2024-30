@@ -172,7 +172,7 @@ https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/69c09b39-f44e-4ed
     </tr>
     <tr align="center">
         <td><a href="https://github.com/BlueBerrySoda">채원찬</a></td>
-        <td><a href="https://github.com/Borikhs>김혜성</a></td>
+        <td><a href="https://github.com/Borikhs">김혜성</a></td>
         <td><a href="https://github.com/guahama">최영락</a></td>
     </tr>
     <tr align="center">
