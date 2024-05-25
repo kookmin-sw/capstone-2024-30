@@ -29,7 +29,7 @@
 # Usage
 다음 세 가지 방법 중 선택
 
-### 1. 외국민 App (추천)
+### 1. 외국민 App (추천) `gpt-4o 모델`
 플레이스토어의 외국민 어플리케이션을 다운받아 챗봇을 사용
 
 ### 2. Python
@@ -52,7 +52,7 @@ PAPAGO_API_KEY =
 ```
 7. `python run_chatbot.py`
 
-### 3. DiscordBot
+### 3. DiscordBot `gpt-3.5-turbo`
 
 ![image](https://github.com/kookmin-sw/capstone-2024-30/assets/54922676/ea2fd088-3bfa-4fb1-940f-ab34dc6b74d0)
 
@@ -60,6 +60,7 @@ PAPAGO_API_KEY =
 - 봇 초대 권한 필요 (서버 관리자) 
 - 봇 초대 링크 : https://discord.com/oauth2/authorize?client_id=1229021729192677488
 - `!p 질문 내용` 명령어로 채팅 가능
+- (비용 문제로 gpt-3.5-turbo를 사용중. 외국민 앱과 성능이 다를 수 있음) 
 
 # Metrics
 ![image](https://github.com/kookmin-sw/capstone-2024-30/assets/54922676/2d4ed4fc-1f19-44a4-aa30-915b39c84a1c)
