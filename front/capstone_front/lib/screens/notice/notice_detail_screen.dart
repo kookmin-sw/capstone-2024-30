@@ -1,4 +1,6 @@
+import 'package:capstone_front/main.dart';
 import 'package:capstone_front/models/notice_model.dart';
+import 'package:capstone_front/screens/notice/test_notice_data.dart';
 import 'package:capstone_front/services/notice_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
@@ -14,6 +16,17 @@ class NoticeDetailScreen extends StatefulWidget {
 class _NoticeDetailState extends State<NoticeDetailScreen> {
   late Future<NoticeModel> detail;
 
+  String translateTagKoToOther(String koreanTag, String nowLanguage) {
+    switch (nowLanguage) {
+      case 'EN-US':
+        return noticeMapperKoToEn[koreanTag] ?? koreanTag;
+      case 'ZH':
+        return noticeMapperKoToZh[koreanTag] ?? koreanTag;
+      default:
+        return koreanTag;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -28,7 +41,7 @@ class _NoticeDetailState extends State<NoticeDetailScreen> {
         // backgroundColor: Theme.of(context).primaryColor,
         // foregroundColor: Colors.white,
         title: Text(
-          widget.notice.department!,
+          translateTagKoToOther(widget.notice.type!, language),
           style: const TextStyle(
             fontWeight: FontWeight.bold,
           ),
@@ -56,7 +69,7 @@ class _NoticeDetailState extends State<NoticeDetailScreen> {
                   Row(
                     children: [
                       Text(
-                        widget.notice.type!,
+                        translateTagKoToOther(widget.notice.type!, language),
                         style: const TextStyle(
                           color: Color(0xFF8266DF),
                           fontSize: 16,

@@ -4,6 +4,7 @@ import 'package:capstone_front/screens/cafeteriaMenu/cafeteriaMenuScreen.dart';
 import 'package:capstone_front/screens/home/image_screen.dart';
 import 'package:capstone_front/screens/home/webview_screen.dart';
 import 'package:capstone_front/screens/notice/notice_screen.dart';
+import 'package:capstone_front/services/auth_service.dart';
 import 'package:capstone_front/services/login_service.dart';
 import 'package:capstone_front/services/notice_service.dart';
 import 'package:capstone_front/utils/bubble_painter2.dart';
@@ -36,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen>
   void initState() {
     super.initState();
 
-    noticesRes = NoticeService.getNotices(0, 'all', language);
+    noticesRes = NoticeService.getNotices(0, '전체', language);
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
@@ -120,8 +121,7 @@ class _HomeScreenState extends State<HomeScreen>
                                 ),
                                 const SizedBox(height: 15),
                                 Text(
-                                  userMajor,
-                                ),
+                                    '${tr('college.$userBigMajor')}\n${tr('department.$userMajor')}'),
                               ],
                             ),
                           ),
@@ -141,7 +141,7 @@ class _HomeScreenState extends State<HomeScreen>
                                           fontWeight: FontWeight.w700,
                                         )),
                                     Transform.translate(
-                                      offset: Offset(10, -10),
+                                      offset: const Offset(10, -10),
                                       child: IconButton(
                                         icon: const Icon(Icons.add),
                                         onPressed: () {
@@ -240,7 +240,7 @@ class _HomeScreenState extends State<HomeScreen>
                                           fontWeight: FontWeight.w700,
                                         )),
                                     Transform.translate(
-                                      offset: Offset(10, -10),
+                                      offset: const Offset(10, -10),
                                       child: IconButton(
                                         icon: const Icon(Icons.add),
                                         onPressed: () {
@@ -469,6 +469,7 @@ class _HomeScreenState extends State<HomeScreen>
                   const SizedBox(height: 5),
                   ElevatedButton(
                     onPressed: () async {
+                      await AuthService.logout();
                       logout();
                       await storage.write(key: 'isLogin', value: 'false');
                       context.go('/login');

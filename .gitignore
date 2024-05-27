@@ -5,6 +5,10 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+### for android build ###
+front/capstone_front/android/settings.gradle
+front/capstone_front/android/app/release/
+
 ### STS ###
 .apt_generated
 .classpath

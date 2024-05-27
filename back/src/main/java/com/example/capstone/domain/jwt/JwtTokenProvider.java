@@ -126,6 +126,14 @@ public class JwtTokenProvider {
         return new UsernamePasswordAuthenticationToken(principalDetails, "", authorities);
     }
 
+    public Claims parseClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder()

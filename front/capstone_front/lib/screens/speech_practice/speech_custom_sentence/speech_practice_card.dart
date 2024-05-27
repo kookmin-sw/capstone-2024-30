@@ -40,8 +40,7 @@ class _SpeechPracitceCardState extends State<SpeechPracticeCard> {
         ],
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(
-            vertical: 10.0 + _verticalPadding, horizontal: 10),
+        padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 15),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,6 +51,9 @@ class _SpeechPracitceCardState extends State<SpeechPracticeCard> {
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
               ),
+            ),
+            const SizedBox(
+              height: 4,
             ),
             Text(
               widget.sentence2,

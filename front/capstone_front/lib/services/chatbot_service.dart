@@ -18,11 +18,24 @@ Future<String> getChatbotAnswer(String question) async {
     language = tmpLanguage;
   }
 
+  switch (language) {
+    case "EN-US":
+      language = "en";
+      break;
+    case "ZH":
+      language = 'zh-CN';
+      break;
+    default:
+      language = 'ko';
+      break;
+  }
+
   Map data = {
     "query": question,
     "target_lang": language,
   };
   var body = json.encode(data);
+  print(body);
 
   final response = await http.post(
     url,

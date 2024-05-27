@@ -2,6 +2,7 @@ package com.example.capstone.domain.qna.service;
 
 import com.example.capstone.domain.qna.dto.*;
 import com.example.capstone.domain.qna.entity.Question;
+import com.example.capstone.domain.qna.exception.QuestionNotFoundException;
 import com.example.capstone.domain.qna.repository.AnswerRepository;
 import com.example.capstone.domain.qna.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,14 +30,18 @@ public class QuestionService {
     }
 
     public QuestionResponse getQuestion(Long id) {
-        Question quest = questionRepository.findById(id).get();
+        Question quest = questionRepository.findById(id).orElseThrow(() ->
+            new QuestionNotFoundException(id)
+        );
         return quest.toDTO();
     }
 
     @Transactional
     public void updateQuestion(String userId, QuestionPutRequest request) {
         LocalDateTime current = LocalDateTime.now();
-        Question quest = questionRepository.findById(request.id()).get();
+        Question quest = questionRepository.findById(request.id()).orElseThrow(() ->
+            new QuestionNotFoundException(request.id())
+        );
         if(quest.getUuid().equals(userId)) {
             quest.update(request.title(), request.context(), current);
         }

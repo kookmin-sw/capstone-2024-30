@@ -1,3 +1,4 @@
+import 'package:capstone_front/main.dart';
 import 'package:capstone_front/models/qna_post_model.dart';
 import 'package:capstone_front/models/qna_response.dart';
 import 'package:capstone_front/screens/qna/qna_detail/qna_detail_screen.dart';
@@ -9,18 +10,21 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 
-GlobalKey<_QnaListScreenState> qnaListScreenGlobalKey = GlobalKey();
+GlobalKey<QnaListScreenState> qnaListScreenGlobalKey = GlobalKey();
 
 class QnaListScreen extends StatefulWidget {
   const QnaListScreen({super.key});
 
   @override
-  State<QnaListScreen> createState() => _QnaListScreenState();
+  State<QnaListScreen> createState() => QnaListScreenState();
 }
 
-class _QnaListScreenState extends State<QnaListScreen> {
+FlutterSecureStorage storage = const FlutterSecureStorage();
+
+class QnaListScreenState extends State<QnaListScreen> {
   final _controller = TextEditingController();
 
   List<QnaPostModel> qnas = [];
@@ -29,6 +33,40 @@ class _QnaListScreenState extends State<QnaListScreen> {
   int itemCount = 0;
   String? word;
   String? selectedTag;
+  String? selectedTagForView;
+  // String? language;
+
+  Map<String, String> tagMapEn = {
+    "대학생활": "Campus Life",
+    "학업관련": "Academics",
+    "생활정보": "Living Info",
+    "문화정보": "Culture",
+    "기숙사": "Dormitory",
+  };
+
+  Map<String, String> tagMapZh = {
+    "대학생활": "校园生活",
+    "학업관련": "学术",
+    "생활정보": "生活信息",
+    "문화정보": "文化信息",
+    "기숙사": "宿舍",
+  };
+
+  Map<String, String> tagMapEnToKo = {
+    "Campus Life": "대학생활",
+    "Academics": "학업관련",
+    "Living Info": "생활정보",
+    "Culture": "문화정보",
+    "Dormitory": "기숙사"
+  };
+
+  Map<String, String> tagMapZhToKo = {
+    "校园生活": "대학생활",
+    "学术": "학업관련",
+    "生活信息": "생활정보",
+    "文化信息": "문화정보",
+    "宿舍": "기숙사"
+  };
 
   Future<void> loadQnas(int lastCursor, String? tag, String? word) async {
     try {
@@ -47,10 +85,38 @@ class _QnaListScreenState extends State<QnaListScreen> {
     }
   }
 
+  String translateTagKoToOther(String koreanTag, String nowLanguage) {
+    switch (nowLanguage) {
+      case 'EN-US':
+        return tagMapEn[koreanTag] ?? koreanTag;
+      case 'ZH':
+        return tagMapZh[koreanTag] ?? koreanTag;
+      default:
+        return koreanTag;
+    }
+  }
+
+  String translateTagOtherToKo(String ohterTag, String nowLanguage) {
+    switch (nowLanguage) {
+      case 'EN-US':
+        return tagMapEnToKo[ohterTag] ?? ohterTag;
+      case 'ZH':
+        return tagMapZhToKo[ohterTag] ?? ohterTag;
+      default:
+        return ohterTag;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    loadQnas(cursor, selectedTag, word);
+    initialize();
+  }
+
+  Future<void> initialize() async {
+    // language = await storage.read(key: "language");
+    setState(() {});
+    await loadQnas(cursor, selectedTag, word);
   }
 
   void searchQna(String searchWord) {
@@ -67,19 +133,19 @@ class _QnaListScreenState extends State<QnaListScreen> {
   }
 
   void selectTag(String tag) {
+    tag = translateTagOtherToKo(tag, language);
     setState(() {
-      if (selectedTag == tag) {
+      if (selectedTagForView == tag) {
+        selectedTagForView = '';
         selectedTag = '';
       } else {
         selectedTag = tag;
+        selectedTagForView = tag;
       }
-    });
-    setState(() {
       qnas = [];
       cursor = 0;
       hasNext = true;
       itemCount = 0;
-      word = null;
     });
     loadQnas(0, selectedTag, word);
   }
@@ -113,19 +179,23 @@ class _QnaListScreenState extends State<QnaListScreen> {
                               const SizedBox(
                                 width: 15,
                               ),
-                              buildSelectableButton("학사안내"),
+                              buildSelectableButton(tr('qna.category_1')),
                               const SizedBox(
                                 width: 10,
                               ),
-                              buildSelectableButton("대학생활"),
+                              buildSelectableButton(tr('qna.category_2')),
                               const SizedBox(
                                 width: 10,
                               ),
-                              buildSelectableButton("교직원안내"),
+                              buildSelectableButton(tr('qna.category_3')),
                               const SizedBox(
                                 width: 10,
                               ),
-                              buildSelectableButton("교수자"),
+                              buildSelectableButton(tr('qna.category_4')),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              buildSelectableButton(tr('qna.category_5')),
                               const SizedBox(
                                 width: 15,
                               ),
@@ -165,7 +235,8 @@ class _QnaListScreenState extends State<QnaListScreen> {
                                   content: post.content,
                                   name: post.author,
                                   country: post.country,
-                                  tag: post.category,
+                                  tag: translateTagKoToOther(
+                                      post.category, language),
                                   answerCount: post.answerCount,
                                 ),
                               ),
@@ -190,7 +261,10 @@ class _QnaListScreenState extends State<QnaListScreen> {
               onPressed: () async {
                 var result = await context.push(
                   '/qnawrite',
-                  extra: qnas,
+                  extra: {
+                    'selectedTag': selectedTag,
+                    'qnas': qnas,
+                  },
                 );
                 setState(() {});
               },
@@ -208,17 +282,18 @@ class _QnaListScreenState extends State<QnaListScreen> {
   }
 
   Widget buildSelectableButton(String tag) {
-    final bool isSelected = selectedTag == tag;
+    final bool isSelected =
+        selectedTagForView == translateTagOtherToKo(tag, language ?? "KO");
     return ElevatedButton(
       onPressed: () {
         selectTag(tag);
       },
       style: ElevatedButton.styleFrom(
         elevation: 0,
-        foregroundColor: isSelected ? Colors.white : const Color(0xff6E2FF4),
-        backgroundColor: isSelected ? const Color(0xff6E2FF4) : Colors.white,
+        foregroundColor: isSelected ? Colors.white : const Color(0xFF8266DF),
+        backgroundColor: isSelected ? const Color(0xFF8266DF) : Colors.white,
         side: const BorderSide(
-          color: Color(0xff6E2FF4),
+          color: Color(0xFF8266DF),
           width: 1,
         ),
         shape: RoundedRectangleBorder(
@@ -228,103 +303,11 @@ class _QnaListScreenState extends State<QnaListScreen> {
       child: Text(
         tag,
         style: TextStyle(
-          color: isSelected ? Colors.white : const Color(0xff6E2FF4),
+          color: isSelected ? Colors.white : const Color(0xFF8266DF),
           fontSize: 16,
           fontWeight: FontWeight.w700,
         ),
       ),
-    );
-  }
-}
-
-class MyCustomBottomSheet extends StatefulWidget {
-  const MyCustomBottomSheet({super.key});
-
-  @override
-  _MyCustomBottomSheetState createState() => _MyCustomBottomSheetState();
-}
-
-class _MyCustomBottomSheetState extends State<MyCustomBottomSheet> {
-  bool productInfo = false;
-  bool ingredientInfo = false;
-  bool nutritionAnalysis = false;
-  bool others = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min, // 컨텐츠 크기에 맞춰 조정
-      children: <Widget>[
-        Text(
-          tr('qna.writetitle'),
-          style: const TextStyle(fontSize: 24.0, fontWeight: FontWeight.w700),
-        ),
-        const SizedBox(
-          height: 30,
-        ),
-        CheckboxListTile(
-          title: Text(tr('qna.category_1')),
-          value: productInfo,
-          activeColor: Theme.of(context).primaryColor,
-          checkColor: Colors.white,
-          onChanged: (bool? value) {
-            setState(() {
-              productInfo = value!;
-            });
-          },
-        ),
-        const Divider(
-          color: Color(0xFFc9c9c9),
-        ),
-        CheckboxListTile(
-          title: Text(tr('qna.category_2')),
-          value: ingredientInfo,
-          activeColor: Theme.of(context).primaryColor,
-          checkColor: Colors.white,
-          onChanged: (bool? value) {
-            setState(() {
-              ingredientInfo = value!;
-            });
-          },
-        ),
-        const Divider(
-          color: Color(0xFFc9c9c9),
-        ),
-        CheckboxListTile(
-          title: Text(tr('qna.category_3')),
-          value: nutritionAnalysis,
-          activeColor: Theme.of(context).primaryColor,
-          checkColor: Colors.white,
-          onChanged: (bool? value) {
-            setState(() {
-              nutritionAnalysis = value!;
-            });
-          },
-        ),
-        const Divider(
-          color: Color(0xFFc9c9c9),
-        ),
-        CheckboxListTile(
-          title: Text(tr('qna.category_4')),
-          value: others,
-          activeColor: Theme.of(context).primaryColor,
-          checkColor: Colors.white,
-          onChanged: (bool? value) {
-            setState(() {
-              others = value!;
-            });
-          },
-        ),
-        const SizedBox(
-          height: 30,
-        ),
-        BasicButton(
-          text: "선택완료",
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-      ],
     );
   }
 }

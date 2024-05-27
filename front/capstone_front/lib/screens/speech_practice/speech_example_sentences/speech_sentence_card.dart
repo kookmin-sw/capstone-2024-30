@@ -57,7 +57,7 @@ class _SpeechSentenceCardState extends State<SpeechSentenceCard> {
           ),
           child: Padding(
             padding: EdgeInsets.symmetric(
-                vertical: 10.0 + _verticalPadding, horizontal: 10),
+                vertical: 15.0 + _verticalPadding, horizontal: 15),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,6 +69,9 @@ class _SpeechSentenceCardState extends State<SpeechSentenceCard> {
                     fontWeight: FontWeight.w600,
                     overflow: TextOverflow.ellipsis,
                   ),
+                ),
+                const SizedBox(
+                  height: 4,
                 ),
                 Text(
                   sentences[_index][1],
@@ -96,7 +99,7 @@ class _SpeechSentenceCardState extends State<SpeechSentenceCard> {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: const Text("취소"),
+                child: Text(tr("speech.cancel")),
               ),
             ),
             Container(
@@ -104,7 +107,7 @@ class _SpeechSentenceCardState extends State<SpeechSentenceCard> {
                 onPressed: () {
                   openAppSettings();
                 },
-                child: const Text("설정"),
+                child: Text(tr("speech.setting")),
               ),
             ),
           ],

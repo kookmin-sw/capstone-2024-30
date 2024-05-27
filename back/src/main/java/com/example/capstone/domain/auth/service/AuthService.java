@@ -1,9 +1,11 @@
 package com.example.capstone.domain.auth.service;
 
 import com.example.capstone.domain.auth.dto.TokenResponse;
+import com.example.capstone.domain.jwt.JwtClaim;
 import com.example.capstone.domain.jwt.JwtTokenProvider;
 import com.example.capstone.domain.jwt.PrincipalDetails;
 import com.example.capstone.global.error.exception.BusinessException;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -43,5 +45,13 @@ public class AuthService {
         );
 
         return tokenResponse;
+    }
+
+    public void logout(String accessToken, String refreshToken) {
+        Claims claims = jwtTokenProvider.parseClaims(refreshToken);
+        String userId = claims.get(JwtClaim.UUID.getKey(), String.class);
+        redisTemplate.opsForValue().getAndDelete(userId);
+
+        redisTemplate.opsForValue().set(accessToken, "logout");
     }
 }
