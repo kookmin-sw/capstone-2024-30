@@ -148,9 +148,9 @@ https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/69c09b39-f44e-4ed
         <td><img src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/7627b57d-585c-4021-b02a-5ae6daded453" width="250"></td>
     </tr>
     <tr align="center">
-        <td>최지훈</td>
-        <td>김민제</td>
-        <td>조현진</td>
+        <td><a href="https://github.com/ji-hunc">최지훈</a></td>
+        <td><a href="https://github.com/kevinmj12">김민제</a></td>
+        <td><a href="https://github.com/mclub4">조현진</a></td>
     </tr>
     <tr align="center">
         <td>****1683</td>
@@ -171,9 +171,9 @@ https://github.com/kookmin-sw/capstone-2024-30/assets/55117706/69c09b39-f44e-4ed
         <td><img src="https://github.com/kookmin-sw/capstone-2024-30/assets/52407470/1c9ac172-5d97-4002-b254-c003f5d07ac2" width="250"></td>
     </tr>
     <tr align="center">
-        <td>채원찬</td>
-        <td>김혜성</td>
-        <td>최영락</td>
+        <td><a href="https://github.com/BlueBerrySoda">채원찬</a></td>
+        <td><a href="https://github.com/Borikhs">김혜성</a></td>
+        <td><a href="https://github.com/guahama">최영락</a></td>
     </tr>
     <tr align="center">
         <td>****1676</td>
