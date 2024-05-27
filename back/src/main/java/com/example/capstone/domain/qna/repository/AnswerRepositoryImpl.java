@@ -74,7 +74,7 @@ public class AnswerRepositoryImpl implements AnswerListRepository {
         List<OrderSpecifier> orderSpecifierList = new ArrayList<>();
 
         if(sortBy.equals("date")) {
-            orderSpecifierList.add(new OrderSpecifier(Order.DESC, answer.createdDate));
+            orderSpecifierList.add(new OrderSpecifier(Order.ASC, answer.createdDate));
         }
         else if(sortBy.equals("like")) {
             orderSpecifierList.add(new OrderSpecifier(Order.DESC, answer.likeCount));
