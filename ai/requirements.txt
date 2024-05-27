@@ -7,3 +7,4 @@ beautifulsoup4==4.12.3
 pypdf==4.1.0
 python-dotenv==1.0.1
 langchain-text-splitters==0.0.1
+tavily-python
