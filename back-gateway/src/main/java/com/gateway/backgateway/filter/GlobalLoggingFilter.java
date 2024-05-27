@@ -27,12 +27,25 @@ public class GlobalLoggingFilter {
     public GlobalFilter preLoggingFilter() {
         return (exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
+
+            log.info("Global Filter Start: request id -> {}", request.getId());
+            log.info("Request: {} {}", request.getMethod(), request.getURI());
+
+            if (request.getHeaders().containsKey("Authorization")) {
+                log.info("Authorization: {}", request.getHeaders().get("Authorization"));
+            }
+
+            if (request.getMethod().toString().equals("GET")) {
+                return chain.filter(exchange);
+            }
+
             return DataBufferUtils.join(request.getBody())
                     .flatMap(dataBuffer -> {
                         byte[] bodyBytes = new byte[dataBuffer.readableByteCount()];
                         dataBuffer.read(bodyBytes);
                         DataBufferUtils.release(dataBuffer);
                         String bodyString = new String(bodyBytes, StandardCharsets.UTF_8);
+
                         String jsonBody;
                         try {
                             Object json = objectMapper.readValue(bodyString, Object.class);
@@ -41,11 +54,17 @@ public class GlobalLoggingFilter {
                             jsonBody = bodyString;
                         }
 
-                        log.info("Global Filter Start: request id -> {}", request.getId());
-                        log.info("Request: {} {}", request.getMethod(), request.getURI());
                         log.info("Request Body: {}", jsonBody);
 
-                        return chain.filter(exchange);
+                        ServerHttpRequest mutatedRequest = new ServerHttpRequestDecorator(request) {
+                            @Override
+                            public Flux<DataBuffer> getBody() {
+                                DataBuffer buffer = exchange.getResponse().bufferFactory().wrap(bodyBytes);
+                                return Flux.just(buffer);
+                            }
+                        };
+
+                        return chain.filter(exchange.mutate().request(mutatedRequest).build());
                     });
         };
     }
@@ -53,10 +72,8 @@ public class GlobalLoggingFilter {
     @Bean
     @Order(Ordered.LOWEST_PRECEDENCE)
     public GlobalFilter postLoggingFilter() {
-        return (exchange, chain) -> {
-            return chain.filter(exchange).then(Mono.fromRunnable(() -> {
-                log.info("Response: " + exchange.getResponse().getStatusCode());
-            }));
-        };
+        return (exchange, chain) -> chain.filter(exchange).then(Mono.fromRunnable(() -> {
+            log.info("Response: {}", exchange.getResponse().getStatusCode());
+        }));
     }
 }
