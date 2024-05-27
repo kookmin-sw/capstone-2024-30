@@ -303,20 +303,25 @@ class _QnaDetailScreenState extends State<QnaDetailScreen>
                                     children: [
                                       IconButton(
                                         icon: Icon(
-                                          likeList[index]
+                                          answerList[index].likeCheck
                                               ? Icons.favorite_rounded
                                               : Icons.favorite_border_rounded,
                                         ),
                                         color: const Color(0xFF848484),
                                         iconSize: 26,
                                         onPressed: () {
+                                          QnaService.toggleLike(
+                                              answerList[index].id,
+                                              answerList[index].likeCheck);
                                           setState(() {
-                                            if (likeList[index]) {
-                                              likeCount[index] -= 1;
+                                            if (answerList[index].likeCheck) {
+                                              answerList[index].likeCount -= 1;
                                             } else {
-                                              likeCount[index] += 1;
+                                              answerList[index].likeCount += 1;
                                             }
-                                            likeList[index] = !likeList[index];
+
+                                            answerList[index].likeCheck =
+                                                !answerList[index].likeCheck;
                                           });
                                         },
                                       ),

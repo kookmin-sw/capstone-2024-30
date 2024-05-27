@@ -15,7 +15,7 @@ import static com.example.capstone.domain.announcement.service.AnnouncementUrl.*
 public class AnnouncementCallerService {
     private final AnnouncementCrawlService announcementCrawlService;
 
-    @Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(cron = "0 0 12,18 * * *")
     public void crawlingAnnouncement() {
         announcementCrawlService.crawlKookminAnnouncement(KOOKMIN_OFFICIAL);
         announcementCrawlService.crawlInternationlAnnouncement(INTERNATIONAL_ACADEMIC);

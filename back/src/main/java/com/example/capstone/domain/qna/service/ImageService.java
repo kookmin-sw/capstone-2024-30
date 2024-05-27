@@ -36,6 +36,8 @@ public class ImageService {
 
     @Value("${s3.bucket.name}")
     private String bucketName;
+    @Value("${s3.cloud.front.url}")
+    private String cloudFront;
 
     private final QuestionImageRepository questionImageRepository;
 
@@ -125,7 +127,7 @@ public class ImageService {
             is.close();
         }
 
-        return amazonS3.getUrl(bucketName, s3FileName).toString();
+        return "https://" + cloudFront + "/" + s3FileName;
     }
 
     public void deleteImageFromS3(String imageAddress) {
