@@ -3,6 +3,11 @@
 .env
 *.zip
 *.pyc
-__pycache__
+ai/llm/__pycache__/*
+ai/vectordb/__pycache__/*
 data/
 cap30.pem
+chatbot.pem
+FAISS/
+*.pkl
+*.faiss

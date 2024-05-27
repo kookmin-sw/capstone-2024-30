@@ -34,6 +34,7 @@ jobs:
           echo REDIS_PORT=${{ secrets.REDIS_PORT }} >> .env
           echo S3_ACCESS_KEY=${{ secrets.S3_ACCESS_KEY }} >> .env
           echo S3_SECRET_KEY=${{ secrets.S3_SECRET_KEY }} >> .env
+          echo CLOUD_FRONT_URL=${{ secrets.CLOUD_FRONT_URL }} >> .env
           echo SECRET_KEY_BASE=${{ secrets.SECRET_KEY_BASE }} >> .env
           echo SERVER_NAME=${{ secrets.SERVER_NAME }} >> .env
           echo SERVER_URL=${{ secrets.SERVER_URL }} >> .env
