@@ -2,7 +2,6 @@ package com.example.capstone.domain.announcement.controller;
 
 import com.example.capstone.domain.announcement.dto.AnnouncementListResponse;
 import com.example.capstone.domain.announcement.dto.AnnouncementListWrapper;
-import com.example.capstone.domain.announcement.dto.AnnouncementSearchListRequest;
 import com.example.capstone.domain.announcement.entity.Announcement;
 import com.example.capstone.domain.announcement.service.AnnouncementCallerService;
 import com.example.capstone.domain.announcement.service.AnnouncementSearchService;

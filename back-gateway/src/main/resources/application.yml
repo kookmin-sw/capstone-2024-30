@@ -8,11 +8,19 @@ spring:
       data: 0
 
 
+
 jwt:
   secret:
     key: ${JWT_SECRET}
+
 
 server:
   port: 8081
   chatbot-url: ${CHATBOT_URL}
 
+logging:
+  level:
+    root: INFO
+    com:
+      gateway:
+        backgateway: DEBUG
