@@ -25,12 +25,10 @@ public class MenuCrawlingService {
         else throw new BusinessException(TEST_KEY_NOT_VALID);
     }
 
-    @Scheduled(cron = "0 0 4 * * MON")
+    @Scheduled(cron = "0 0,7,14,21,28,35,42 4 * * MON")
     public void crawlingMenus(){
         LocalDate startDay = LocalDate.now();
-
-        for(int i=0; i<7; i++){
-            menuUpdateService.updateMenus(startDay.plusDays(i));
-        }
+        int i = LocalDateTime.now().getMinute() / 7;
+        menuUpdateService.updateMenus(startDay.plusDays(i));
     }
 }
