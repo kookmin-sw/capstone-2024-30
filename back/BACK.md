@@ -62,6 +62,16 @@ Could not initialize class com.microsoft.cognitiveservices.speech.SpeechConfig
 
 <br>
 
+### **API Gateway**
+
+JWT 확인 로직과 API Rate Limiter는 채팅서버, 챗봇서버, 메인 서버 모두 필요한 로직이다. 하지만, 이를 각각 서버마다 구현하는 것은 매우 비효율적이고 코드 중복이 많아진다. 따라서, API Gateway를 구축하여 모든 요청이 이를 통과하도록 구성하면 매우 효율적이다.
+
+하지만, API Gateway를 SpringMVC로 구현하는 것은 매우 비효율적이다. SpringMVC의 WAS는 Tomcat인데, Tomcat은 요청이 들어오면 ThreadPool에서 Thread를 하나 배정해준다. 또한, 각 요청을 동기적으로 처리하고, 동기적으로 처리하는 동안 해당 스레드는 블로킹 된다. (비동기 처리가 불가능한 것은 아님. 하지만 비동기 처리를 하더라도 어찌됐던 간에 ThreadPool을 소모하니깐, ThreadPool 고갈 문제는 여전) 그래서 동시에 많은 요청이 들어올 경우 스레드풀이 고갈되어, 성능이 저하될 수 있다. 따라서, API Gateway로 적합하지 않다. 그래서 택한 것이 Spring Cloud Gateway이다.
+
+Spring Cloud Gateway는 Netty 기반이다. Netty는 논블로킹 비동기 Event-driven 구조이다. 그래서 빠르게 대규모 트래픽을 처리해줘야하는 API Gateway 구조에서 Netty가 적합하다. 이를 통해 적은 양의 스레드와 최소한의 자원으로 효율적으로 요청을 처리할 수 있었다.
+
+다만, Spring Cloud Gateway말고도, AWS에서 제공하는 API Gateway를 이용하는 방법도 있을 것으로 보인다. (하지만, 이는 코드 레벨 관리가 아니라 인프라 레벨에서의 관리라서 살짝 차이가 있음)
+
 ### **로깅**
 
 로깅은 우선 할 수 있는 만큼 최대한 많이, 그 다음에 필요 없는 로그는 지우거나 레벨을 낮추는 식으로 운영하는게 좋다. 그래서, 로깅은 두가지 부분에서 처리를 하였다.
